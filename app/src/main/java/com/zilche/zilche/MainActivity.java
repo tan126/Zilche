@@ -5,14 +5,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println("test");
         setContentView(R.layout.activity_main);
     }
 
@@ -33,6 +33,10 @@ public class MainActivity extends Activity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        else if (id == R.id.fuck_jye){
+            TextView v = (TextView) findViewById(R.id.fuck_jye_after);
+            v.setText("Fuck Jye");
         }
 
         return super.onOptionsItemSelected(item);
