@@ -17,9 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -43,32 +40,17 @@ public class MainActivity extends AppCompatActivity {
         pts.setTextColor(0xffffffff);
         pts.setDrawFullUnderline(true);
         pts.setTabIndicatorColor(getResources().getColor(R.color.material_deep_teal_200));
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
-        showActionBar();
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         mySearchView = (SearchView) findViewById(R.id.my_search_bar);
         mySearchView.setIconifiedByDefault(false);
         return true;
-    }
-
-    private void showActionBar() {
-        LayoutInflater inflator = (LayoutInflater) this
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflator.inflate(R.layout.actionbar_custom, null);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(false);
-        actionBar.setDisplayShowHomeEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.material_deep_teal_500)));
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setCustomView(v);
-        Toolbar parent =(Toolbar) v.getParent();
-        parent.setContentInsetsAbsolute(0, 0);
     }
 
     @Override
