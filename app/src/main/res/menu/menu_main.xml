@@ -8,6 +8,6 @@
         android:id="@+id/menu_list"
         android:title="menu_list"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_list_white"
+        android:icon="@mipmap/ic_menu_white"
         />
 </menu>
