@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     SlideViewAdapter adapter;
     ViewPager viewPager;
     PagerTabStrip pts;
+    SearchView mySearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.menu_main, menu);
         showActionBar();
-
-
+        mySearchView = (SearchView) findViewById(R.id.my_search_bar);
+        mySearchView.setIconifiedByDefault(false);
         return true;
     }
 
