@@ -2,10 +2,12 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:contentInsetLeft="0dp"
+    android:contentInsetStart="0dp"
     >
  <RelativeLayout
-     android:layout_width="match_parent"
-     android:layout_height="match_parent">
+     android:layout_width="fill_parent"
+     android:layout_height="fill_parent">
 
     <ImageButton
         android:id="@+id/menu_list"
@@ -14,7 +16,7 @@
         android:src="@mipmap/ic_menu_white"
         android:background="@null"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
+        android:layout_gravity="left"
         />
 
     <SearchView
@@ -28,7 +30,7 @@
         android:textColor="#ff000000"
         android:background="#8effffff"
         android:layout_marginLeft="17dp"
-        android:layout_marginRight="55dp"
+        android:layout_marginRight="60dp"
         android:layout_toRightOf="@id/menu_list"
         />
 
@@ -40,6 +42,7 @@
         android:src="@mipmap/ic_notifications_white"
         android:background="@null"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
         />
  </RelativeLayout>
 

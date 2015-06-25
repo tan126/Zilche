@@ -10,6 +10,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.material_deep_teal_500)));
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setCustomView(v);
+        Toolbar parent =(Toolbar) v.getParent();
+        parent.setContentInsetsAbsolute(0, 0);
     }
 
     @Override
