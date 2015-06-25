@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
@@ -20,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 
@@ -28,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
     SlideViewAdapter adapter;
     ViewPager viewPager;
     PagerTabStrip pts;
-    ListView listView;
-    SlidingPaneLayout slidingPane;
-    String[] menu = {"Poll", "Survey", "Settings", "Log out"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +41,7 @@ public class MainActivity extends AppCompatActivity {
         pts.setTextColor(0xffffffff);
         pts.setDrawFullUnderline(true);
         pts.setTabIndicatorColor(getResources().getColor(R.color.material_deep_teal_200));
-        //slidingPane = (SlidingPaneLayout)findViewById(R.id.SlidingPanel);
-        //listView = (ListView)findViewById(R.id.MenuList);
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.menu_text_array));
-        //listView.setAdapter(adapter);
+
     }
 
     @Override
@@ -55,17 +49,8 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.menu_main, menu);
         showActionBar();
-        /*ImageButton menulist = (ImageButton)findViewById(R.id.menu_list);
-        menulist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (slidingPane.isOpen() == true) {
-                    slidingPane.closePane();
-                } else {
-                    slidingPane.openPane();
-                }
-            }
-        });*/
+
+
         return true;
     }
 
