@@ -2,6 +2,7 @@ package com.zilche.zilche;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,16 +11,33 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
+
+import static com.zilche.zilche.R.array.menu_text_array;
 
 
 public class MainActivity extends AppCompatActivity {
     // Global variable
     TextView welcomeText;
+    ListView listView;
+    SlidingPaneLayout slidingPane;
+    String[] menuText = {"Poll", "Survey", "Settings", "Log Out"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        slidingPane = (SlidingPaneLayout) findViewById(R.id.SlidingPanel);
+        listView = (ListView) findViewById(R.id.MenuList);
+        //welcomeText = (TextView) findViewById(R.id.hello_world);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.menu_text_array));
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -27,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.menu_main, menu);
         showActionBar();
+        ImageButton menulist = (ImageButton) findViewById(R.id.menu_list);
+        menulist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //welcomeText.setText("changed");
+                if (slidingPane.isOpen() == true)
+                    slidingPane.closePane();
+                else
+                    slidingPane.openPane();
+            }
+        });
         return true;
     }
 
@@ -49,11 +78,6 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menu_list) {
-
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

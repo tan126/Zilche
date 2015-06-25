@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="menu_text_array">
+        <item>Polls</item>
+        <item>Surveys</item>
+        <item>Settings</item>
+        <item>Log Out</item>
+    </string-array>
+</resources>
