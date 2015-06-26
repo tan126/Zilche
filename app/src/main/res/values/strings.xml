@@ -9,4 +9,8 @@
     <string name="newest_posts">NEWEST</string>
     <string name="popular_posts">POPULAR</string>
     <string name="title_activity_search_list">SearchList</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="signup">Sign Up</string>
 </resources>
