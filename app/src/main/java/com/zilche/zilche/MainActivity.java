@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     PagerTabStrip pts;
     SearchView mySearchView;
-
+//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
