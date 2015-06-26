@@ -39,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
         adapter = new SlideViewAdapter(getSupportFragmentManager());
         viewPager = (ViewPager)findViewById(R.id.pager);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
         pts = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
         pts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         pts.setTextColor(0xffffffff);
         pts.setDrawFullUnderline(true);
-        pts.setTabIndicatorColor(getResources().getColor(R.color.material_deep_teal_200));
+        pts.setTabIndicatorColor(0xffffffff);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
