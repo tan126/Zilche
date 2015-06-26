@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:hint="Enter Name"
+        android:hint="Username"
         android:focusable="true"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/textview3"
@@ -48,6 +48,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
         android:inputType="textEmailAddress" />
 
 
@@ -63,7 +65,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:inputType="text" />
+        android:background="@drawable/rounded_edittext"
+        android:paddingLeft="10dp"
+        android:ellipsize="start"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/button1"
