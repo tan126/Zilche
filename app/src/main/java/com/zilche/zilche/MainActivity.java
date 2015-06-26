@@ -2,6 +2,7 @@ package com.zilche.zilche;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -49,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        SearchView b = (SearchView) findViewById(R.id.my_search_bar);
-        b.setOnClickListener(new View.OnClickListener() {
+        LinearLayout searchBar = (LinearLayout) findViewById(R.id.my_search_bar);
+        ImageView searchIcon = (ImageView) findViewById(R.id.searchicon);
+        searchIcon.setColorFilter(0x66ffffff, PorterDuff.Mode.MULTIPLY);
+        searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, SearchList.class);

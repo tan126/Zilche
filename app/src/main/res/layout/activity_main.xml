@@ -33,21 +33,32 @@
                     android:layout_gravity="left"
                     />
 
-                <SearchView
-                    android:id="@+id/my_search_bar"
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
-                    android:queryHint="@string/search_hint"
-                    android:focusable="false"
-                    android:text="Search Zilche"
-                    android:textSize="12sp"
-                    android:layout_centerVertical="true"
-                    android:textColor="#55000000"
-                    android:background="#ffffffff"
+                    android:orientation="horizontal"
+                    android:background="#fff"
                     android:layout_marginLeft="17dp"
                     android:layout_marginRight="60dp"
                     android:layout_toRightOf="@id/menu_list"
-                    />
+                    android:id="@+id/my_search_bar">
+
+                    <ImageView
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="8dp"
+                        android:id="@+id/searchicon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_search_black_24dp"/>
+
+                    <TextView
+                        android:paddingLeft="10dp"
+                        android:hint="@string/search_hint"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <ImageButton
                     android:id="@+id/notification_button"
