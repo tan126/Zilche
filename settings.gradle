@@ -1,1 +1,1 @@
-include ':ParseStarterProject', ':app'
+include ':app'
