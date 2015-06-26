@@ -81,8 +81,8 @@
     <Button
         android:id="@+id/button2"
         android:layout_marginTop="5dp"
-        android:paddingLeft="50dip"
-        android:paddingRight="50dip"
+        android:paddingLeft="47dip"
+        android:paddingRight="47dip"
         android:background="@drawable/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
