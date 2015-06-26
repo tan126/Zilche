@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/toolbar"
-            android:background="@color/material_deep_teal_500"
+            android:background="#673AB7"
             android:contentInsetLeft="0dp"
             android:contentInsetStart="0dp"
             >
@@ -86,7 +86,7 @@
                 android:layout_gravity="top"
                 android:paddingTop="15dp"
                 android:paddingBottom="10dp"
-                android:background="@color/material_deep_teal_500"
+                android:background="#673AB7"
                 android:id="@+id/pager_tab_strip" />
         </android.support.v4.view.ViewPager>
 
