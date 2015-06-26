@@ -64,30 +64,4 @@
         android:layout_alignParentEnd="true"
         android:inputType="text" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="login"
-        android:id="@+id/button"
-        android:layout_below="@+id/editText2"
-        android:layout_toLeftOf="@+id/textview"
-        android:layout_toStartOf="@+id/textview" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:id="@+id/button2"
-        android:layout_below="@+id/editText2"
-        android:layout_toRightOf="@+id/textview"
-        android:layout_toEndOf="@+id/textview" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login with Google"
-        android:id="@+id/button3"
-        android:layout_below="@+id/button"
-        android:layout_centerHorizontal="true" />
-
 </RelativeLayout>
