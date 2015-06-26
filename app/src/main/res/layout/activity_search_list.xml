@@ -1,0 +1,59 @@
+<android.support.v4.widget.DrawerLayout
+
+    android:layout_width="match_parent"
+    android:id="@+id/drawer_layout"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar"
+            android:background="@color/material_deep_teal_500"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            >
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageButton
+                    android:id="@+id/back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_menu_white"
+                    android:background="@null"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="left"
+                    />
+
+                <SearchView
+                    android:id="@+id/my_search_bar"
+                    android:layout_width="fill_parent"
+                    android:queryHint="@string/search_hint"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_text"
+                    android:textSize="25dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#ff000000"
+                    android:background="#ffffffff"
+                    android:iconifiedByDefault="false"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_toRightOf="@id/back_button"
+                    />
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>

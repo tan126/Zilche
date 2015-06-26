@@ -8,4 +8,5 @@
     <string name="categories">CATEGORIES</string>
     <string name="newest_posts">NEWEST</string>
     <string name="popular_posts">POPULAR</string>
+    <string name="title_activity_search_list">SearchList</string>
 </resources>
