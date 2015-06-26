@@ -4,15 +4,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="#ccffff"
+    android:background="#99ffff"
     tools:context="com.zilche.zilche.LoginActivity">
 
     <TextView android:text="Welcome to" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textview"
-        android:textSize="35dp"
+        android:textSize="40dp"
         android:layout_alignParentTop="true"
         android:textColor="#0099ff"
+        android:fontFamily="lobster"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -23,7 +24,7 @@
         android:layout_below="@+id/textview"
         android:layout_centerHorizontal="true"
         android:textColor="#00ccff"
-        android:textSize="50dp" />
+        android:textSize="70dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -88,6 +89,20 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button1"
         android:text="Sign up"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="@drawable/button_text"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="47dip"
+        android:paddingRight="47dip"
+        android:background="@drawable/login_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button2"
+        android:text="Proceed without logging in"
         android:layout_centerHorizontal="true"
         style="?android:attr/borderlessButtonStyle"
         android:textColor="@drawable/button_text"/>
