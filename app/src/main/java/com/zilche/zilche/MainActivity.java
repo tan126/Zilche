@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     SlideViewAdapter adapter;
     ViewPager viewPager;
     PagerTabStrip pts;
-    SearchView mySearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
