@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/toolbar"
-            android:background="@color/material_deep_teal_500"
+            android:background="#3F51B5"
             android:contentInsetLeft="0dp"
             android:contentInsetStart="0dp"
             >
