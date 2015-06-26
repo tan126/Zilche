@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:id="@+id/drawer_layout"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:orientation="vertical"
@@ -35,12 +36,13 @@
                 <SearchView
                     android:id="@+id/my_search_bar"
                     android:layout_width="fill_parent"
-                    android:queryHint="@string/search_hint"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_text"
-                    android:textSize="25dp"
+                    android:layout_height="40dp"
+                    android:queryHint="@string/abc_search_hint"
+                    android:focusable="false"
+                    android:text="Search Zilche"
+                    android:textSize="12sp"
                     android:layout_centerVertical="true"
-                    android:textColor="#ff000000"
+                    android:textColor="#55000000"
                     android:background="#ffffffff"
                     android:layout_marginLeft="17dp"
                     android:layout_marginRight="60dp"
@@ -62,21 +64,23 @@
 
         </android.support.v7.widget.Toolbar>
 
-<android.support.v4.view.ViewPager
-     android:id="@+id/pager"
-     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-     <android.support.v4.view.PagerTabStrip
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:layout_gravity="top"
-         android:paddingTop="15dp"
-         android:paddingBottom="20dp"
-         android:background="@color/material_deep_teal_500"
-         android:id="@+id/pager_tab_strip" />
-</android.support.v4.view.ViewPager>
-</LinearLayout>
+            <android.support.v4.view.PagerTabStrip
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp"
+                android:background="@color/material_deep_teal_500"
+                android:id="@+id/pager_tab_strip" />
+        </android.support.v4.view.ViewPager>
+
+        </LinearLayout>
+
     <ListView android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
