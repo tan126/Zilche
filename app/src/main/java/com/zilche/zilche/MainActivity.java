@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
         actionA.setTitle("New Poll");
         FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
-        actionA.setTitle("New Suevey");
+        actionA.setTitle("New Survey");
 
         TextView email_text = (TextView) findViewById(R.id.portfolio_email);
         email_text.setText("example@purdue.edu");
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         list.setAdapter(myadapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
             }
         });
@@ -103,6 +103,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void loginAndSignup(View v) {
+        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(i);
     }
 
     @Override

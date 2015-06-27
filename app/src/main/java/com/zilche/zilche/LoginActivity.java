@@ -14,12 +14,6 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        TextView txt = (TextView) findViewById(R.id.textview);
-        Typeface font = Typeface.createFromAsset(getAssets(), "lobster_bold.ttf");
-        txt.setTypeface(font);
-        TextView txt2 = (TextView) findViewById(R.id.textview2);
-        Typeface font2 = Typeface.createFromAsset(getAssets(), "lobster_bold_italic.ttf");
-        txt2.setTypeface(font2);
     }
 
     @Override
