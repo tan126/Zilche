@@ -91,7 +91,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = new placeHolder();
+            Fragment fragment;
+            if(position == 0){
+                fragment = new categories();
+            }
+            else {
+                fragment = new placeHolder();
+            }
             Bundle args = new Bundle();
             args.putInt(placeHolder.ARG_OBJECT, position + 1);
             fragment.setArguments(args);
@@ -108,6 +114,18 @@ public class MainActivity extends AppCompatActivity {
             return titles[position];
         }
 
+    }
+
+    //fragment for categories
+    public static class categories extends Fragment {
+        public static final String ARG_OBJECT = "object";
+
+        public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inf.inflate(R.layout.categories, container, false);
+            Bundle args = getArguments();
+            //((TextView) rootView.findViewById(R.id.textview)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
+            return rootView;
+        }
     }
 
     public static class placeHolder extends Fragment {
