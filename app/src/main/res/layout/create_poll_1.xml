@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_clear_black_24dp"
+
+        />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="create poll"
+        android:id="@+id/textview"
+        android:textColor="#00ccff"
+        android:textSize="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+        />
+    <TextView
+        android:id="@+id/textview2"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="Questions:"
+        android:layout_below="@id/imageView"
+        android:textSize="40dp"
+        />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:id="@id/textview3"
+        android:layout_below="@id/textview2"
+        android:inputType="text"
+        android:background="@drawable/rounded_edittext"
+        />
+    <TextView
+        android:id="@+id/textview4"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:text="Time ends:"
+        android:layout_below="@id/textview3"
+        android:textSize="40dp"
+        />
+    <EditText
+        android:id="@+id/textview5"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/textview4"
+        android:inputType="time"
+        android:background="@drawable/rounded_edittext"
+        />
+
+
+
+</RelativeLayout>
