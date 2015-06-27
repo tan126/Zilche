@@ -14,18 +14,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:background="#3F51B5"
-            android:gravity="center">
+            >
+
+            <ImageButton
+                android:id="@+id/menu_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:src="@drawable/ic_keyboard_backspace_white_24dp"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left"
+            />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="Zilche"
                 android:textColor="#ffffff"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:gravity="center"/>
         </RelativeLayout>
 
-        
+    <!--ViewPager for the two tabs and then Tap Indicators???? for the sliding?
+    -->
 
     </RelativeLayout>
 </ScrollView>
