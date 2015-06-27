@@ -51,9 +51,17 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
         actionA.setTitle("New Poll");
         FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
-        actionA.setTitle("New Poll");
+        actionB.setTitle("New Survey");
 
     }
+    public void newPoll(View v) {
+        setContentView(R.layout.activity_login);
+    }
+
+    public void newSurvey(View v) {
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -138,6 +146,4 @@ public class MainActivity extends AppCompatActivity {
             return rootView;
         }
     }
-
-
 }
