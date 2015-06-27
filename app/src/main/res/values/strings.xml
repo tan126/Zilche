@@ -13,8 +13,21 @@
     <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="signup">Sign Up</string>
+    <string name="category_all">ALL</string>
+    <string name="category_auto">AUTOMOBILE</string>
+    <string name="category_entertainment">ENTERTAINMENT</string>
+    <string name="category_food">FOOD</string>
+    <string name="category_fashion">FASHION</string>
+    <string name="category_games">GAMES</string>
+    <string name="category_it">I.T</string>
+    <string name="category_other">OTHERS</string>
+    <string name="category_pet">PETS</string>
+    <string name="category_social">SOCIAL</string>
+    <string name="category_sports">SPORTS</string>
+    <string name="category_travel">TRAVEL</string>
+    <string name="category_tech">TECHNOLOGY</string>
     <string name="portfolio_text">User Name</string>
     <string name="portfolio_email">User Email</string>
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_open">Open Navigation</string>
+    <string name="drawer_close">Close Navigation</string>
 </resources>
