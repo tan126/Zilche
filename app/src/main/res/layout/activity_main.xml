@@ -143,9 +143,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+
             fab:fab_colorNormal="#999"
-            android:src="@mipmap/ic_assignment_white_24dp"
-            fab:fab_size="mini"
+            android:src="@mipmap/ic_assessment_white_24dp"
             fab:fab_title="New Poll"
             />
 
@@ -156,8 +156,7 @@
             fab:fab_colorNormal="#999"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@mipmap/ic_assessment_white_24dp"
-            fab:fab_size="mini"
+            android:src="@mipmap/ic_assignment_white_24dp"
             fab:fab_title="New Survey"
             />
 
