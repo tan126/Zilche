@@ -2,28 +2,36 @@ package com.zilche.zilche;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     SlideViewAdapter adapter;
     ViewPager viewPager;
     PagerTabStrip pts;
+    FloatingActionsMenu plusButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +60,48 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
         actionA.setTitle("New Poll");
         FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
-        actionA.setTitle("New Poll");
+        actionA.setTitle("New Suevey");
+
+        TextView email_text = (TextView) findViewById(R.id.portfolio_email);
+        email_text.setText("example@purdue.edu");
+
+        plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        String menu[] = {"Poll", "Survey", "Settings", "Log Out"};
+        Integer imgID[] = {R.mipmap.ic_assignment_white_24dp, R.mipmap.ic_assessment_white_24dp,
+                R.drawable.ic_settings_white_24dp, R.drawable.ic_power_settings_new_white_24dp};
+
+        CustomListAdapter myadapter=new CustomListAdapter(this, menu, imgID);
+        ListView list=(ListView)findViewById(R.id.menulist);
+        list.setAdapter(myadapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
+        final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        myDrawer.setDrawerShadow(R.drawable.shadow, GravityCompat.START);
+        ImageView portfolio = (ImageView) findViewById(R.id.portfolio_img);
+        portfolio.setColorFilter(Color.rgb(189, 189, 189));
+
+        ImageButton menuButton = (ImageButton) findViewById(R.id.menu_list);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                plusButton.setVisibility(View.INVISIBLE);
+                myDrawer.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        myDrawer.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                plusButton.setVisibility(View.VISIBLE);
+            }
+        });
 
     }
 
