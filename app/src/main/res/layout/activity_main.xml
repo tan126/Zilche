@@ -130,6 +130,7 @@
         android:id="@+id/multiple_actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:layout_gravity="end|bottom"
         fab:fab_addButtonColorNormal="#ff5252"
         fab:fab_addButtonColorPressed="#ff5252"
@@ -140,7 +141,10 @@
             android:id="@+id/action_a"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             fab:fab_colorNormal="#999"
+            android:src="@mipmap/ic_assignment_white_24dp"
             fab:fab_size="mini"
             fab:fab_title="New Poll"
             />
@@ -150,6 +154,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="#999"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_assessment_white_24dp"
             fab:fab_size="mini"
             fab:fab_title="New Survey"
             />
