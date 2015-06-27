@@ -34,7 +34,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        android:id="@id/textview3"
+        android:id="@+id/textview3"
         android:layout_below="@id/textview2"
         android:inputType="text"
         android:background="@drawable/rounded_edittext"

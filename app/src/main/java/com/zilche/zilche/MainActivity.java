@@ -55,11 +55,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void newPoll(View v) {
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.create_poll); // temporary redirect
     }
 
     public void newSurvey(View v) {
-
+        setContentView(R.layout.activity_login); // temporary redirect
     }
 
 
