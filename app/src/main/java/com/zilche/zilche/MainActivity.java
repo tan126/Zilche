@@ -108,6 +108,18 @@ public class MainActivity extends AppCompatActivity {
                 super.onDrawerOpened(drawerView);
                 plusButton.setVisibility(View.GONE);
             }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, slideOffset);
+
+                if (slideOffset == 0) {
+                    plusButton.setVisibility(View.VISIBLE);
+                } else if (plusButton.getVisibility() == View.VISIBLE) {
+                    plusButton.setVisibility(View.GONE);
+                }
+            }
+
         });
 
     }
