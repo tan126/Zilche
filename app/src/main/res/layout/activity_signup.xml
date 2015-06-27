@@ -20,7 +20,7 @@
         android:inputType="text"
         android:background="@drawable/rounded_edittext"
         android:textColor="#00ccff"
-        android:textSize="15dp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/txtpassword"
@@ -38,7 +38,7 @@
         android:inputType="textPassword"
         android:background="@drawable/rounded_edittext"
         android:textColor="#00ccff"
-        android:textSize="15dp" />
+        android:textSize="20dp" />
     <TextView
         android:id="@+id/txtemail"
         android:layout_width="fill_parent"
@@ -55,7 +55,7 @@
         android:inputType="text"
         android:background="@drawable/rounded_edittext"
         android:textColor="#00ccff"
-        android:textSize="15dp" />
+        android:textSize="20dp" />
 
 
     <Button
