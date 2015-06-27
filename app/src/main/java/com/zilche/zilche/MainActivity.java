@@ -47,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
         pts.setTabIndicatorColor(0xffffffff);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
+        actionA.setTitle("New Poll");
+        FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
+        actionA.setTitle("New Poll");
+
     }
 
     @Override

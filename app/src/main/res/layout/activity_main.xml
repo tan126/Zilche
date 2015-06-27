@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <android.support.v4.widget.DrawerLayout
@@ -116,7 +117,7 @@
 
 </android.support.v4.widget.DrawerLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <!--android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -124,7 +125,36 @@
         app:borderWidth="0dp"
         android:src="@mipmap/ic_add_white_24dp"
         android:layout_gravity="end|bottom"
-        />
+        /-->
+    <com.zilche.zilche.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        fab:fab_addButtonColorNormal="#ff5252"
+        fab:fab_addButtonColorPressed="#ff5252"
+        fab:fab_addButtonPlusIconColor="#ffffffff"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        >
+        <com.zilche.zilche.FloatingActionButton
+            android:id="@+id/action_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="#999"
+            fab:fab_size="mini"
+            fab:fab_title="New Poll"
+            />
+
+        <com.zilche.zilche.FloatingActionButton
+            android:id="@+id/action_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="#999"
+            fab:fab_size="mini"
+            fab:fab_title="New Survey"
+            />
+
+    </com.zilche.zilche.FloatingActionsMenu>
 
 
 </android.support.design.widget.CoordinatorLayout>
