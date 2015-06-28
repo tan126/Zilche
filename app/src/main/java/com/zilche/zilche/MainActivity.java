@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
         actionA.setTitle("New Poll");
         FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
-        actionA.setTitle("New Survey");
+        actionB.setTitle("New Survey");
 
         TextView email_text = (TextView) findViewById(R.id.portfolio_email);
         email_text.setText("example@purdue.edu");

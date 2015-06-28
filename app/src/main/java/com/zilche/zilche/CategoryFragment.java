@@ -55,12 +55,14 @@ public class CategoryFragment extends Fragment {
 
         private Context c;
         private Integer[] thumbnails = {
-            R.drawable.car
+             R.drawable.all2, R.drawable.car2, R.drawable.enter2, R.drawable.fashion2, R.drawable.food2,
+                R.drawable.games2, R.drawable.it2, R.drawable.pet2, R.drawable.science2, R.drawable.sport2,
+                R.drawable.social, R.drawable.tech2, R.drawable.travel
         };
         private Integer[] strings = {
                 R.string.category_all, R.string.category_auto, R.string.category_entertainment, R.string.category_fashion,
-                R.string.category_food, R.string.category_games, R.string.category_it, R.string.category_other,
-                R.string.category_pet, R.string.category_sports, R.string.category_social, R.string.category_tech,
+                R.string.category_food, R.string.category_games, R.string.category_it,
+                R.string.category_pet, R.string.category_science, R.string.category_sports, R.string.category_social, R.string.category_tech,
                 R.string.category_travel
         };
 
@@ -93,7 +95,7 @@ public class CategoryFragment extends Fragment {
             TextView tv = (TextView) convertView.findViewById(R.id.category_text);
             tv.setText(c.getResources().getString(strings[position]));
             tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
-            iv.setImageResource(thumbnails[0]);
+            iv.setImageResource(thumbnails[position]);
             iv.setAdjustViewBounds(true);
             convertView.setTag(position);
             return convertView;

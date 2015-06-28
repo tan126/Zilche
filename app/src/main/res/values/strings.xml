@@ -20,8 +20,8 @@
     <string name="category_fashion">FASHION</string>
     <string name="category_games">GAMES</string>
     <string name="category_it">I.T</string>
-    <string name="category_other">OTHERS</string>
     <string name="category_pet">PETS</string>
+    <string name="category_science">SCIENCE</string>
     <string name="category_social">SOCIAL</string>
     <string name="category_sports">SPORTS</string>
     <string name="category_travel">TRAVEL</string>
