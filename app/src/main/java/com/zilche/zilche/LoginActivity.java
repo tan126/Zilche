@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.graphics.Typeface;
+import android.view.View;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -37,5 +38,9 @@ public class LoginActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void backButtonLogin(View v) {
+        finish();
     }
 }
