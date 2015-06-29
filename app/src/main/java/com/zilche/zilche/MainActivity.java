@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -33,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     PagerTabStrip pts;
     FloatingActionsMenu plusButton;
+    private ImageView filter_bg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        filter_bg = (ImageView) findViewById(R.id.filter_bg);
+        filter_bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (plusButton != null)
+                    plusButton.collapse();
+            }
+        });
+
         FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
         actionA.setTitle("New Poll");
         FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
@@ -71,6 +82,18 @@ public class MainActivity extends AppCompatActivity {
         final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        plusButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+
+            @Override
+            public void onMenuExpanded() {
+                filter_bg.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                filter_bg.setVisibility(View.GONE);
+            }
+        });
         String menu[] = {"All Posts", "My Poll", "My Survey", "Settings", "Log Out"};
         Integer imgID[] = {R.drawable.ic_dashboard_white_24dp, R.mipmap.ic_assignment_white_24dp, R.mipmap.ic_assessment_white_24dp,
                 R.drawable.ic_settings_white_24dp, R.drawable.ic_power_settings_new_white_24dp};
@@ -112,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView){
                 super.onDrawerOpened(drawerView);
+                plusButton.collapse();
                 plusButton.setVisibility(View.GONE);
             }
 
@@ -122,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 if (slideOffset == 0) {
                     plusButton.setVisibility(View.VISIBLE);
                 } else if (plusButton.getVisibility() == View.VISIBLE) {
+                    plusButton.collapse();
                     plusButton.setVisibility(View.GONE);
                 }
             }
