@@ -88,7 +88,7 @@ public class MyPollActivity extends AppCompatActivity {
                             startActivity(i);
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         }
-                    }, 180);
+                    }, 250);
                     myDrawer.closeDrawer(Gravity.LEFT);
                 }
             }
