@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
 
+
         pts = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
         pts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         pts.setTextColor(0xffffffff);
@@ -69,9 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        TextView email_text = (TextView) findViewById(R.id.portfolio_email);
-        email_text.setText("example@purdue.edu");
-
         plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         String menu[] = {"All Posts", "My Poll", "My Survey", "Settings", "Log Out"};
         Integer imgID[] = {R.drawable.ic_dashboard_white_24dp, R.mipmap.ic_assignment_white_24dp, R.mipmap.ic_assessment_white_24dp,
@@ -84,25 +82,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView v = (TextView) view.findViewById(R.id.item);
-                if( v.getText() == "My Poll" ){
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent i = new Intent(MainActivity.this, MyPollActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(i);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                        }
-                    }, 250);
-                    myDrawer.closeDrawer(Gravity.LEFT);
-
+                if (v.getText() == "My Poll") {
+                    Intent i = new Intent(MainActivity.this, MyPollActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
             }
         });
 
         myDrawer.setDrawerShadow(R.drawable.shadow, GravityCompat.START);
-        ImageView portfolio = (ImageView) findViewById(R.id.portfolio_img);
-        portfolio.setColorFilter(Color.rgb(189, 189, 189));
 
         ImageButton menuButton = (ImageButton) findViewById(R.id.menu_list);
         menuButton.setOnClickListener(new View.OnClickListener() {

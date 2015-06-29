@@ -46,18 +46,22 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         switch(itemname[position]){
             case "My Poll":
                 extratxt.setText("Browse my polls");
+                imageView.setColorFilter(Color.parseColor("#00BFA5"));
                 break;
             case "My Survey":
                 extratxt.setText("Browse my surveys");
+                imageView.setColorFilter(Color.parseColor("#F57F17"));
                 break;
             case "Settings":
                 extratxt.setText("Customize my settings");
+                imageView.setColorFilter(Color.parseColor("#3E2723"));
                 break;
             case "Log Out":
                 extratxt.setText("Logging out or change user");
                 break;
             case "All Posts":
                 extratxt.setText("Browse all posts");
+                imageView.setColorFilter(Color.parseColor("#AA00FF"));
                 break;
         }
 

@@ -112,46 +112,57 @@
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
+        android:clickable="true"
         android:background="#fff">
 
-        <ImageButton
-            android:id="@+id/portfolio_img"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_account_circle_white_48dp"
-            android:background="@null"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:onClick="loginAndSignup"
-            />
+            android:orientation="vertical"
+            android:background="#3F51B5"
+            >
+            <ImageView
+                android:layout_width="fill_parent"
+                android:id="@+id/colorspan1"
+                android:layout_height="80dp"
+                />
+            <TextView
+                android:id="@+id/portfolio_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zilche"
+                android:textSize="32sp"
+                android:textColor="#fff"
+                android:background="@null"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:text="@string/portfolio_text"
+                android:id="@+id/portfolio_text"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="#fff"
+                android:onClick="loginAndSignup"
+                android:fontFamily="sans-serif-thin"
+                android:textStyle="normal"
+                />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="49dp"
+                android:onClick="loginAndSignup"
+                />
+        </LinearLayout>
 
-        <TextView
-            android:paddingTop="20dp"
-            android:text="@string/portfolio_text"
-            android:id="@+id/portfolio_text"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="#000"
-            />
-
-        <TextView
-            android:paddingTop="2dp"
-            android:text="@string/portfolio_email"
-            android:id="@+id/portfolio_email"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"
-            android:textColor="#000"
-            />
 
         <ListView
             android:id="@+id/menulist"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="6dp"
             >
         </ListView>
 
