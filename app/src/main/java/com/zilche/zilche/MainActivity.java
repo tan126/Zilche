@@ -36,6 +36,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
 
+        // Load Username
+        TextView pt = (TextView) findViewById(R.id.portfolio_text);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // do stuff with the user
+            pt.setText("Welcome " + currentUser.getUsername());
+        } else {
+            // show the signup or login screen
+            //pt.setText("Guest");
+        }
 
         pts = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
         pts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -94,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 filter_bg.setVisibility(View.GONE);
             }
         });
+
         String menu[] = {"All Posts", "My Poll", "My Survey", "Settings", "Log Out"};
         Integer imgID[] = {R.drawable.ic_dashboard_white_24dp, R.mipmap.ic_assignment_white_24dp, R.mipmap.ic_assessment_white_24dp,
                 R.drawable.ic_settings_white_24dp, R.drawable.ic_power_settings_new_white_24dp};
@@ -117,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
                     }, 250);
                     myDrawer.closeDrawer(Gravity.LEFT);
 
+                }
+                else if (v.getText() == "Log Out") {
+                    ParseUser u = new ParseUser();
+                    u.logOut();
+                    Intent i = new Intent(MainActivity.this, MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
             }
         });
