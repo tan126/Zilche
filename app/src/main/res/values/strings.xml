@@ -30,4 +30,5 @@
     <string name="portfolio_email">User Email</string>
     <string name="drawer_open">Open Navigation</string>
     <string name="drawer_close">Close Navigation</string>
+    <string name="title_activity_my_poll">MyPollActivity</string>
 </resources>

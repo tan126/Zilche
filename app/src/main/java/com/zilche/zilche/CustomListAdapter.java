@@ -15,20 +15,26 @@ public class CustomListAdapter extends ArrayAdapter<String> {
     private final Activity context;
     private final String[] itemname;
     private final Integer[] imgid;
+    private int current_position;
 
-    public CustomListAdapter(Activity context, String[] itemname, Integer[] imgid) {
+    public CustomListAdapter(Activity context, String[] itemname, Integer[] imgid, int current_position) {
         super(context, R.layout.listentry, itemname);
         // TODO Auto-generated constructor stub
 
         this.context=context;
         this.itemname=itemname;
         this.imgid=imgid;
+        this.current_position = current_position;
+
     }
 
     public View getView(int position,View view,ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.listentry, null,true);
 
+        if (position == current_position){
+            rowView.setBackgroundColor(Color.rgb(230, 230, 230));
+        }
         TextView txtTitle = (TextView) rowView.findViewById(R.id.item);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView extratxt = (TextView) rowView.findViewById(R.id.textView1);
@@ -38,17 +44,20 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         imageView.setColorFilter(0xffff0000, PorterDuff.Mode.MULTIPLY);
         extratxt.setText("Description " + itemname[position]);
         switch(itemname[position]){
-            case "Poll":
-                extratxt.setText("Check out all polls");
+            case "My Poll":
+                extratxt.setText("Browse my polls");
                 break;
-            case "Survey":
-                extratxt.setText("Check out all surveys");
+            case "My Survey":
+                extratxt.setText("Browse my surveys");
                 break;
             case "Settings":
-                extratxt.setText("Customize your settings");
+                extratxt.setText("Customize my settings");
                 break;
             case "Log Out":
                 extratxt.setText("Logging out or change user");
+                break;
+            case "All Posts":
+                extratxt.setText("Browse all posts");
                 break;
         }
 

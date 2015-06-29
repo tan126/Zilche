@@ -23,6 +23,10 @@
             android:name=".SearchList"
             android:label="@string/title_activity_search_list" >
         </activity>
+        <activity
+            android:name=".MyPollActivity"
+            android:label="@string/title_activity_my_poll" >
+        </activity>
     </application>
 
 </manifest>

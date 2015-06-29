@@ -33,32 +33,27 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-
-public class MainActivity extends AppCompatActivity {
+public class MyPollActivity extends AppCompatActivity {
 
     SlideViewAdapter adapter;
     ViewPager viewPager;
-    PagerTabStrip pts;
     FloatingActionsMenu plusButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        int SELECTED_POSITION = 0;
+        setContentView(R.layout.activity_my_poll);
+        int SELECTED_POSITION = 1;
+
         adapter = new SlideViewAdapter(getSupportFragmentManager());
         viewPager = (ViewPager)findViewById(R.id.pager);
         viewPager.setPageTransformer(false, new FadePageTransformer());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
 
-        pts = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
-        pts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        pts.setTextColor(0xffffffff);
-        pts.setDrawFullUnderline(true);
-        pts.setTabIndicatorColor(0xffffffff);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -84,18 +79,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView v = (TextView) view.findViewById(R.id.item);
-                if( v.getText() == "My Poll" ){
+                if( v.getText() == "All Posts" ){
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(MainActivity.this, MyPollActivity.class);
+                            Intent i = new Intent(MyPollActivity.this, MainActivity.class);
                             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                         }
                     }, 220);
                     myDrawer.closeDrawer(Gravity.LEFT);
-
                 }
             }
         });
@@ -142,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loginAndSignup(View v) {
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        Intent i = new Intent(MyPollActivity.this, LoginActivity.class);
         startActivity(i);
     }
 
@@ -156,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, SearchList.class);
+                Intent i = new Intent(MyPollActivity.this, SearchList.class);
                 startActivity(i);
             }
         });
