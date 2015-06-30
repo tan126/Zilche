@@ -18,10 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 
 public class SignUpActivity extends FragmentActivity {
@@ -96,19 +98,17 @@ public class SignUpActivity extends FragmentActivity {
                         loginBtn.setClickable(false);
                         String userName = email.getText().toString();
                         String passWord = password.getText().toString();
-                        ParseUser user = new ParseUser();
                         ParseUser.logInInBackground(userName, passWord, new LogInCallback() {
                             @Override
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
-                                    // Hooray! The user is logged in.
                                     Intent i = new Intent(getActivity(), MainActivity.class);
                                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    getActivity().finish();
                                     startActivity(i);
-                                    //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                 } else {
-                                    // Signup failed. Look at the ParseException to see what happened.
-                                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                                    Toast.makeText(getActivity().getBaseContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                                    /*AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
                                     builder1.setMessage("Invalid Username/Password");
 
                                     builder1.setNeutralButton("Retry", new DialogInterface.OnClickListener() {
@@ -117,7 +117,7 @@ public class SignUpActivity extends FragmentActivity {
                                         }
                                     });
                                     AlertDialog alert11 = builder1.create();
-                                    alert11.show();
+                                    alert11.show(); */
                                     loginBtn.setClickable(true);
                                 }
                             }
@@ -168,6 +168,26 @@ public class SignUpActivity extends FragmentActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.regis_btn: {
+                        registerButton.setClickable(false);
+                        ParseUser newUser = new ParseUser();
+                        newUser.setUsername(email.getText().toString());
+                        newUser.setPassword(password.getText().toString());
+                        newUser.setEmail(email.getText().toString());
+                        newUser.put("name", flname.getText().toString());
+                        newUser.signUpInBackground(new SignUpCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Intent i = new Intent(getActivity(), MainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    getActivity().finish();
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(getActivity().getBaseContext(), "Sign up failed.", Toast.LENGTH_SHORT).show();
+                                    registerButton.setClickable(true);
+                                }
+                            }
+                        });
                         break;
                     }
 
