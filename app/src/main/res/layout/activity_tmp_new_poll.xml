@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:background="#ffffff">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#3F51B5"
+            >
+
+            <ImageButton
+                android:id="@+id/menu_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:src="@drawable/ic_arrow_back_white_24dp"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left"
+                android:onClick="backButtonLogin"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Tmp New Poll"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:gravity="center"/>
+        </RelativeLayout>
+
+        <!--ViewPager for the two tabs and then Tap Indicators???? for the sliding?
+        -->
+        <Button
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/add"
+            android:layout_marginTop="80dp"
+            android:gravity="center_horizontal"
+            android:text="Add Poll"
+            />
+
+
+    </RelativeLayout>
+</RelativeLayout>

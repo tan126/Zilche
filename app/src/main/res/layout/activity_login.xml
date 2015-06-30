@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -20,7 +20,7 @@
                 android:id="@+id/menu_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dip"
+                android:paddingLeft="10dp"
                 android:src="@drawable/ic_arrow_back_white_24dp"
                 android:background="@null"
                 android:layout_centerVertical="true"
@@ -49,26 +49,32 @@
             >
             <EditText
                 android:layout_gravity="center_horizontal"
-                android:layout_width="240dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/username_box"
                 android:hint="Username"
+                android:singleLine="true"
+                android:fontFamily="sans-serif-medium"
+                android:maxLength="15"
                 />
             <EditText
                 android:layout_gravity="center_horizontal"
-                android:layout_width="240dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/password_box"
                 android:hint="Password"
-                android:layout_marginTop="20dp"
+                android:singleLine="true"
+                android:layout_marginTop="40dp"
                 android:inputType="textPassword"
+                android:maxLength="20"
                 android:password="true"
+                android:fontFamily="sans-serif-medium"
                 />
 
             <Button
-                android:layout_width="240dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="60dp"
                 android:text="Log In"
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/login_button"
@@ -87,7 +93,7 @@
                 />
 
             <Button
-                android:layout_width="240dp"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/fblogin"
                 android:layout_marginTop="20dp"
@@ -102,4 +108,4 @@
 
 
     </RelativeLayout>
-</ScrollView>
+</RelativeLayout>

@@ -96,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
         actionB.setTitle("New Survey");
 
+        actionA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
+                startActivity(t);
+            }
+        });
+
         final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
