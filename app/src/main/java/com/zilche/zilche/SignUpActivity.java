@@ -1,6 +1,8 @@
 package com.zilche.zilche;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -8,8 +10,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 public class SignUpActivity extends FragmentActivity {
@@ -21,6 +25,7 @@ public class SignUpActivity extends FragmentActivity {
         setContentView(R.layout.activity_sign_up);
         ViewPager vp = (ViewPager) findViewById(R.id.viewpager_login);
         vp.setAdapter(new SignUpFragmentAdapter(getSupportFragmentManager()));
+        vp.setOffscreenPageLimit(2);
         SlidingTabLayout stl = (SlidingTabLayout) findViewById(R.id.pager_tab_strip2);
         stl.setDistributeEvenly(true);
         stl.setHorizontalScrollBarEnabled(false);
@@ -64,8 +69,29 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public static class LoginFragment extends Fragment {
+
+        private Button loginBtn;
+        private Button fbBtn;
+        private View.OnClickListener buttonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.login_btn: {
+                        break;
+                    }
+                    case R.id.login_fb_btn: {
+                        break;
+                    }
+                }
+            }
+        };
+
         public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inf.inflate(R.layout.fragment_login, container, false);
+            loginBtn = (Button) rootView.findViewById(R.id.login_btn);
+            loginBtn.setOnClickListener(buttonListener);
+            fbBtn = (Button) rootView.findViewById(R.id.login_fb_btn);
+           fbBtn.setOnClickListener(buttonListener);
             return rootView;
         }
     }
@@ -78,12 +104,7 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public void backButtonLogin(View v) {
-        //finish();
-     //   Intent i = new Intent(LoginActivity.this, MainActivity.class);
-      //  i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
-      //  startActivity(i);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
 

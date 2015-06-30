@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPageTransformer(false, new FadePageTransformer());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
+        // not sure if this will cause problems
+        viewPager.setOffscreenPageLimit(3);
 
         ImageView v = (ImageView) findViewById(R.id.loginArea);
         v.setClickable(true);
