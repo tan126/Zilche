@@ -35,6 +35,10 @@
             android:name=".CreatePoll"
             android:label="@string/title_activity_create_poll" >
         </activity>
+        <activity
+            android:name=".tmpNewPoll"
+            android:label="@string/title_activity_tmp_new_poll" >
+        </activity>
     </application>
 
 </manifest>
