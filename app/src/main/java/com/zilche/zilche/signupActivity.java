@@ -26,6 +26,7 @@ public class SignUpActivity extends FragmentActivity {
         stl.setCustomTabView(R.layout.custom_tab, 0);
         stl.setSelectedIndicatorColors(0xffffffff);
         stl.setViewPager(vp);
+
     }
 
     private class SignUpFragmentAdapter extends FragmentPagerAdapter {
