@@ -33,7 +33,11 @@
     <string name="title_activity_my_poll">MyPollActivity</string>
     <string name="title_activity_create_poll">CreatePoll</string>
     <string name="title_activity_tmp_new_poll">tmpNewPoll</string>
-    <string name="title_activity_signup">signupActivity</string>
+    <string name="title_activity_signup">SignUpActivity</string>
     <string name="existing_user">EXISTING USER</string>
     <string name="new_user">NEW USER</string>
+    <string name="login_with_zilche">Log in with Zilche</string>
+    <string name="login_with_facebook">Log in with Facebook</string>
+    <string name="or">OR</string>
+    <string name="forgot_password">Forgot Password?</string>
 </resources>
