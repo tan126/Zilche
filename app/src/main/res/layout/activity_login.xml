@@ -74,7 +74,7 @@
                 android:id="@+id/login_button"
                 android:background="#3F51B5"
                 android:textColor="#fff"
-                android:fontFamily="sans-serif-thin"
+                android:fontFamily="sans-serif-medium"
                 />
 
             <TextView
@@ -95,11 +95,8 @@
                 android:text="Login with Facebook"
                 android:textColor="#fff"
                 android:background="#3F51B5"
-                android:fontFamily="sans-serif-thin"
+                android:fontFamily="sans-serif-medium"
                 />
-
-
-
 
         </LinearLayout>
 

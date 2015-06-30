@@ -58,12 +58,17 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(1);
 
+        ImageView v = (ImageView) findViewById(R.id.loginArea);
+        v.setClickable(true);
         // Load Username
         TextView pt = (TextView) findViewById(R.id.portfolio_text);
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             // do stuff with the user
             pt.setText("Welcome " + currentUser.getUsername());
+            pt.setClickable(false);
+            v.setClickable(false);
+
         } else {
             // show the signup or login screen
             //pt.setText("Guest");
