@@ -36,4 +36,12 @@
     <string name="title_activity_signup">signupActivity</string>
     <string name="existing_user">EXISTING USER</string>
     <string name="new_user">NEW USER</string>
+    <string name="title_activity_upload_image">UploadImage</string>
+    <string name="or">OR</string>
+    <string name="login_with_zilche">Log in with Zilche</string>
+    <string name="login_with_facebook">Log in with Facebook</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="first_last_name">First and last name</string>
+    <string name="sign_up_with_zilche">Sign Up with Zilche</string>
+    <string name="sign_up_with_facebook">Sign Up with Facebook</string>
 </resources>
