@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class signupActivity extends FragmentActivity {
+public class SignUpActivity extends FragmentActivity {
 
 
     @Override
