@@ -32,15 +32,16 @@
             android:label="@string/title_activity_my_poll" >
         </activity>
         <activity
-            android:name=".CreatePoll"
-            android:label="@string/title_activity_create_poll" >
-        </activity>
-        <activity
             android:name=".tmpNewPoll"
             android:label="@string/title_activity_tmp_new_poll" >
         </activity>
-        <activity android:name=".signupActivity"
-            android:label="@string/title_activity_signup"></activity>
+        <activity
+            android:name=".signupActivity"
+            android:label="@string/title_activity_signup" />
+        <activity
+            android:name=".CreatePollActivity"
+            android:label="@string/title_activity_create_poll" >
+        </activity>
     </application>
 
 </manifest>

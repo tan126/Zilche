@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
         actionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
+                //Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
+                Intent t = new Intent(MainActivity.this, CreatePollActivity.class);
                 startActivity(t);
             }
         });
@@ -298,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void newPoll(View v) {
 
-        Intent i = new Intent(this, CreatePoll.class);
+        Intent i = new Intent(this, CreatePollActivity.class);
         startActivity(i);/*
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
