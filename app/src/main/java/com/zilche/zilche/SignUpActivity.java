@@ -1,5 +1,6 @@
 package com.zilche.zilche;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -74,6 +75,15 @@ public class SignUpActivity extends FragmentActivity {
             View rootView = inf.inflate(R.layout.fragment_register, container, false);
             return rootView;
         }
+    }
+
+    public void backButtonLogin(View v) {
+        //finish();
+     //   Intent i = new Intent(LoginActivity.this, MainActivity.class);
+      //  i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        finish();
+      //  startActivity(i);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
 

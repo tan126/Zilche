@@ -19,7 +19,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:id="@+id/login_password"
         android:inputType="textPassword"
         android:hint="@string/password"
@@ -58,7 +58,6 @@
         android:text="@string/login_with_facebook"
         android:fontFamily="sans-serif-medium"
         android:textSize="16sp"
-
         android:background="#403F9F"
         android:textColor="#fff"/>
 
