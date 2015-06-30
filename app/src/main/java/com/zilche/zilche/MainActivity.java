@@ -292,5 +292,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void newPoll(View v) {
 
+        Intent i = new Intent(this, CreatePoll.class);
+        startActivity(i);/*
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);*/
+    }
 }

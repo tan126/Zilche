@@ -31,4 +31,5 @@
     <string name="drawer_open">Open Navigation</string>
     <string name="drawer_close">Close Navigation</string>
     <string name="title_activity_my_poll">MyPollActivity</string>
+    <string name="title_activity_create_poll">CreatePoll</string>
 </resources>

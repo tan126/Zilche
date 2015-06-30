@@ -1,0 +1,43 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    tools:context="com.zilche.zilche.CreatePoll">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#3F51B5"
+            >
+
+            <ImageButton
+                android:id="@+id/menu_list"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_close_white_24dp"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left"
+                android:onClick="cancelCreatePoll"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Create Poll"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:gravity="center"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
