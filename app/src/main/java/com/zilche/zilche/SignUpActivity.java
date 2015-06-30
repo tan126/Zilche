@@ -1,17 +1,27 @@
 package com.zilche.zilche;
 
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
 public class SignUpActivity extends FragmentActivity {
@@ -83,9 +93,48 @@ public class SignUpActivity extends FragmentActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.login_btn: {
+                        loginBtn.setClickable(false);
+                        String userName = email.getText().toString();
+                        String passWord = password.getText().toString();
+                        ParseUser user = new ParseUser();
+                        ParseUser.logInInBackground(userName, passWord, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser user, ParseException e) {
+                                if (user != null) {
+                                    // Hooray! The user is logged in.
+                                    Intent i = new Intent(getActivity(), MainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(i);
+                                    //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                } else {
+                                    // Signup failed. Look at the ParseException to see what happened.
+                                    AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                                    builder1.setMessage("Invalid Username/Password");
+
+                                    builder1.setNeutralButton("Retry", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    AlertDialog alert11 = builder1.create();
+                                    alert11.show();
+                                    loginBtn.setClickable(true);
+                                }
+                            }
+                        });
                         break;
                     }
                     case R.id.login_fb_btn: {
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
+                        builder1.setMessage("Developing...");
+
+                        builder1.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
                         break;
                     }
                 }
@@ -103,6 +152,7 @@ public class SignUpActivity extends FragmentActivity {
             forgotPassword = (TextView) rootView.findViewById(R.id.forgot_pw);
             return rootView;
         }
+
     }
 
     public static class RegisterFragment extends Fragment {

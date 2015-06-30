@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             // show the signup or login screen
-            //pt.setText("Guest");
+            SELECTED_POSITION = 1;
         }
 
         pts = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loginAndSignup(View v) {
-        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+        Intent i = new Intent(MainActivity.this, SignUpActivity.class);
         startActivity(i);
     }
 

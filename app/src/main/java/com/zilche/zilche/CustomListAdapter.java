@@ -32,9 +32,9 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.listentry, null,true);
 
-        if (position == current_position){
+        if (position == 0)
             rowView.setBackgroundColor(Color.rgb(230, 230, 230));
-        }
+
         TextView txtTitle = (TextView) rowView.findViewById(R.id.item);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
         TextView extratxt = (TextView) rowView.findViewById(R.id.textView1);
@@ -47,10 +47,24 @@ public class CustomListAdapter extends ArrayAdapter<String> {
             case "My Poll":
                 extratxt.setText("Browse my polls");
                 imageView.setColorFilter(Color.parseColor("#00BFA5"));
+                rowView.setClickable(false);
+                if (current_position == 1) {
+                    imageView.setColorFilter(Color.parseColor("#BDBDBD"));
+                    txtTitle.setTextColor(Color.parseColor("#BDBDBD"));
+                    extratxt.setTextColor(Color.parseColor("#BDBDBD"));
+                    rowView.setClickable(true);
+                }
                 break;
             case "My Survey":
                 extratxt.setText("Browse my surveys");
                 imageView.setColorFilter(Color.parseColor("#F57F17"));
+                rowView.setClickable(false);
+                if (current_position == 1) {
+                    imageView.setColorFilter(Color.parseColor("#BDBDBD"));
+                    txtTitle.setTextColor(Color.parseColor("#BDBDBD"));
+                    extratxt.setTextColor(Color.parseColor("#BDBDBD"));
+                    rowView.setClickable(true);
+                }
                 break;
             case "Settings":
                 extratxt.setText("Customize my settings");
@@ -58,6 +72,13 @@ public class CustomListAdapter extends ArrayAdapter<String> {
                 break;
             case "Log Out":
                 extratxt.setText("Logging out or change user");
+                rowView.setClickable(false);
+                if (current_position == 1) {
+                    imageView.setColorFilter(Color.parseColor("#BDBDBD"));
+                    txtTitle.setTextColor(Color.parseColor("#BDBDBD"));
+                    extratxt.setTextColor(Color.parseColor("#BDBDBD"));
+                    rowView.setClickable(true);
+                }
                 break;
             case "All Posts":
                 extratxt.setText("Browse all posts");

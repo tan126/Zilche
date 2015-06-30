@@ -15,7 +15,10 @@
         android:textSize="14sp"
         android:singleLine="true"
         android:fontFamily="sans-serif-medium"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        />
 
     <EditText
         android:layout_width="match_parent"

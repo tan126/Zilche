@@ -86,6 +86,7 @@ public class tmpNewPoll extends ActionBarActivity {
                         poll.add("votes", 0);
                     poll.put("author", ParseUser.getCurrentUser().toString());
                     poll.put("id", pollID + 1);
+                    poll.put("category", Arrays.asList(1, 2, 3));
                     poll.saveInBackground();
                 } else {
                     // something went wrong
