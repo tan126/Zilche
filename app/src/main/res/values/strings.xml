@@ -40,4 +40,7 @@
     <string name="login_with_facebook">Log in with Facebook</string>
     <string name="or">OR</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="first_last_name">First and last name</string>
+    <string name="sign_up_with_zilche">Sign Up with Zilche</string>
+    <string name="sign_up_with_facebook">Sign Up with Facebook</string>
 </resources>

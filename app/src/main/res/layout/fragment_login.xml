@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/login_email"
+        android:inputType="textEmailAddress"
         android:hint="@string/email"
         android:textSize="14sp"
         android:singleLine="true"
@@ -47,7 +48,7 @@
         android:layout_marginTop="40dp"
         android:text="@string/or"
         android:textSize="14sp"
-        android:textColor="#33000000"
+        android:textColor="#44000000"
         />
 
     <Button
@@ -69,6 +70,6 @@
         android:fontFamily="sans-serif-medium"
         android:textSize="12sp"
         android:layout_gravity="center_horizontal"
-        android:textColor="#33000000"/>
+        android:textColor="#44000000"/>
 
 </LinearLayout>
