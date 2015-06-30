@@ -1,84 +1,79 @@
 package com.zilche.zilche;
-import android.app.Activity;
-import android.content.Intent;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
-import com.parse.ParseException;
 
-/**
- * Created by khe on 6/25/2015.
- */
-public class signupActivity extends Activity {
+public class signupActivity extends FragmentActivity {
 
-    Button signup;
-    String usernametxt;
-    String passwordtxt;
-    String emailtxt;
-    EditText username;
-    EditText password;
-    EditText email;
-    public void onCreate(Bundle savedInstanceState){
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
-        username = (EditText)findViewById(R.id.username);
-        password = (EditText)findViewById((R.id.password));
-        email = (EditText)findViewById(R.id.email);
+        setContentView(R.layout.activity_sign_up);
+        ViewPager vp = (ViewPager) findViewById(R.id.viewpager_login);
+        vp.setAdapter(new SignUpFragmentAdapter(getSupportFragmentManager()));
+        SlidingTabLayout stl = (SlidingTabLayout) findViewById(R.id.pager_tab_strip2);
+        stl.setDistributeEvenly(true);
+        stl.setHorizontalScrollBarEnabled(false);
+        stl.setCustomTabView(R.layout.custom_tab, 0);
+        stl.setSelectedIndicatorColors(0xffffffff);
+        stl.setViewPager(vp);
+    }
 
-        signup = (Button)findViewById(R.id.signup);
+    private class SignUpFragmentAdapter extends FragmentPagerAdapter {
 
-        signup.setOnClickListener(new OnClickListener() {
+        private String[] title = {getString(R.string.existing_user), getString(R.string.new_user)};
 
+        public SignUpFragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-            public void onClick(View arg0) {
-                usernametxt = username.getText().toString();
-                passwordtxt = password.getText().toString();
-                emailtxt = email.getText().toString();
-
-                if (usernametxt.equals("") && passwordtxt.equals("") && emailtxt.equals("")) {
-                    Toast.makeText(getApplicationContext(),
-                            "Please complete the sign up form",
-                            Toast.LENGTH_LONG).show();
-
-                } else {
-                    ParseUser user = new ParseUser();
-                    user.setUsername(usernametxt);
-                    user.setPassword(passwordtxt);
-                    user.setEmail(emailtxt);
-                    user.signUpInBackground(new SignUpCallback() {
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Successfully Signed up, please log in.",
-                                        Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(),
-                                        "Sign up Error", Toast.LENGTH_LONG)
-                                        .show();
-                            }
-                        }
-                    });
-                }
-
+        @Override
+        public Fragment getItem(int position) {
+            Fragment frag = null;
+            switch (position) {
+                case 0 :
+                    frag = new LoginFragment();
+                    break;
+                case 1 :
+                    frag = new RegisterFragment();
+                    break;
             }
-        });
+            return frag;
+        }
 
+        @Override
+        public int getCount() {
+            return 2;
+        }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return title[position];
+        }
+    }
+
+    public static class LoginFragment extends Fragment {
+        public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inf.inflate(R.layout.fragment_login, container, false);
+            return rootView;
+        }
+    }
+
+    public static class RegisterFragment extends Fragment {
+        public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
+            View rootView = inf.inflate(R.layout.fragment_register, container, false);
+            return rootView;
+        }
     }
 
 
-
-
-
-
-
-
-
 }
-

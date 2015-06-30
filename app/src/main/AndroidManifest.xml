@@ -39,6 +39,8 @@
             android:name=".tmpNewPoll"
             android:label="@string/title_activity_tmp_new_poll" >
         </activity>
+        <activity android:name=".signupActivity"
+            android:label="@string/title_activity_signup"></activity>
     </application>
 
 </manifest>

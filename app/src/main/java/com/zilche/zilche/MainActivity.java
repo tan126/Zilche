@@ -262,24 +262,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //fragment for categories
-    public static class categories extends Fragment {
-        public static final String ARG_OBJECT = "object";
-
-        public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inf.inflate(R.layout.categories, container, false);
-            Bundle args = getArguments();
-            //((TextView) rootView.findViewById(R.id.textview)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
-            return rootView;
-        }
-    }
-
     public static class placeHolder extends Fragment {
         public static final String ARG_OBJECT = "object";
 
         public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inf.inflate(R.layout.placeholder, container, false);
             Bundle args = getArguments();
+            Button b = (Button) rootView.findViewById(R.id.button);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), signupActivity.class);
+                    startActivity(i);
+                }
+            });
             ((TextView) rootView.findViewById(R.id.text1)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
             return rootView;
         }
