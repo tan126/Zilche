@@ -19,7 +19,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_email"
+        android:id="@+id/register_email"
         android:layout_marginTop="20dp"
         android:hint="@string/email"
         android:textSize="14sp"
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:id="@+id/login_password"
+        android:id="@+id/register_password"
         android:inputType="textPassword"
         android:hint="@string/password"
         android:fontFamily="sans-serif-medium"
@@ -43,7 +43,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_btn"
+        android:id="@+id/regis_btn"
         android:layout_marginTop="30dp"
         android:text="@string/sign_up_with_zilche"
         android:fontFamily="sans-serif-medium"
@@ -65,7 +65,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/login_fb_btn"
+        android:id="@+id/regis_fb_btn"
         android:layout_marginTop="40dp"
         android:text="@string/sign_up_with_facebook"
         android:fontFamily="sans-serif-medium"

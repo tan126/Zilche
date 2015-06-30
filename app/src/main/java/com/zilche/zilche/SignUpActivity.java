@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class SignUpActivity extends FragmentActivity {
@@ -29,6 +31,10 @@ public class SignUpActivity extends FragmentActivity {
         stl.setSelectedIndicatorColors(0xffffffff);
         stl.setViewPager(vp);
 
+    }
+
+    public void backButtonLogin(View v) {
+        finish();
     }
 
     private class SignUpFragmentAdapter extends FragmentPagerAdapter {
@@ -68,6 +74,10 @@ public class SignUpActivity extends FragmentActivity {
 
         private Button loginBtn;
         private Button fbBtn;
+        private EditText email;
+        private EditText password;
+        private TextView forgotPassword;
+
         private View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,20 +97,48 @@ public class SignUpActivity extends FragmentActivity {
             loginBtn = (Button) rootView.findViewById(R.id.login_btn);
             loginBtn.setOnClickListener(buttonListener);
             fbBtn = (Button) rootView.findViewById(R.id.login_fb_btn);
-           fbBtn.setOnClickListener(buttonListener);
+            fbBtn.setOnClickListener(buttonListener);
+            email = (EditText) rootView.findViewById(R.id.login_email);
+            password = (EditText) rootView.findViewById(R.id.login_password);
+            forgotPassword = (TextView) rootView.findViewById(R.id.forgot_pw);
             return rootView;
         }
     }
 
     public static class RegisterFragment extends Fragment {
+
+        private TextView flname;
+        private EditText email;
+        private EditText password;
+        private Button registerButton;
+        private Button fbRegisterButton;
+
+        private View.OnClickListener buttonListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.regis_btn: {
+                        break;
+                    }
+
+                    case R.id.regis_fb_btn: {
+                        break;
+                    }
+                }
+            }
+        };
+
         public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inf.inflate(R.layout.fragment_register, container, false);
+            registerButton = (Button) rootView.findViewById(R.id.regis_btn);
+            registerButton.setOnClickListener(buttonListener);
+            fbRegisterButton = (Button) rootView.findViewById(R.id.regis_fb_btn);
+            fbRegisterButton.setOnClickListener(buttonListener);
+            email = (EditText) rootView.findViewById(R.id.register_email);
+            password = (EditText) rootView.findViewById(R.id.register_password);
+            flname = (TextView) rootView.findViewById(R.id.flname);
             return rootView;
         }
-    }
-
-    public void backButtonLogin(View v) {
-        finish();
     }
 
 

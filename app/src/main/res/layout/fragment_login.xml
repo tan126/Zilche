@@ -67,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="@string/forgot_password"
+        android:id="@+id/forgot_pw"
         android:fontFamily="sans-serif-medium"
         android:textSize="12sp"
         android:layout_gravity="center_horizontal"
