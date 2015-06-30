@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".Zilche"
@@ -36,11 +37,15 @@
             android:label="@string/title_activity_tmp_new_poll" >
         </activity>
         <activity
-            android:name=".signupActivity"
+            android:name=".SignUpActivity"
             android:label="@string/title_activity_signup" />
         <activity
             android:name=".CreatePollActivity"
             android:label="@string/title_activity_create_poll" >
+        </activity>
+        <activity
+            android:name=".UploadImage"
+            android:label="@string/title_activity_upload_image" >
         </activity>
     </application>
 
