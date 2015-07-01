@@ -46,12 +46,14 @@ public class MainActivity extends AppCompatActivity {
     PagerTabStrip pts;
     FloatingActionsMenu plusButton;
     private ImageView filter_bg;
+    boolean loginFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         int SELECTED_POSITION = 0;
+        plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         adapter = new SlideViewAdapter(getSupportFragmentManager());
         viewPager = (ViewPager)findViewById(R.id.pager);
         viewPager.setPageTransformer(false, new FadePageTransformer());
@@ -70,10 +72,14 @@ public class MainActivity extends AppCompatActivity {
             pt.setText("Welcome " + currentUser.getUsername());
             pt.setClickable(false);
             v.setClickable(false);
+            loginFlag = true;
+            plusButton.setVisibility(View.VISIBLE);
 
         } else {
             // show the signup or login screen
             SELECTED_POSITION = 1;
+            loginFlag = false;
+            plusButton.setVisibility(View.GONE);
         }
 
         pts = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
@@ -116,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         plusButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
 
             @Override
@@ -181,26 +185,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                plusButton.setVisibility(View.VISIBLE);
+                if(loginFlag==true)
+                    plusButton.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onDrawerOpened(View drawerView){
                 super.onDrawerOpened(drawerView);
-                plusButton.collapse();
-                plusButton.setVisibility(View.GONE);
+                if(loginFlag==true) {
+                    plusButton.collapse();
+                    plusButton.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
-
-                if (slideOffset == 0) {
-                    plusButton.setVisibility(View.VISIBLE);
-                } else if (plusButton.getVisibility() == View.VISIBLE) {
-                    plusButton.collapse();
-                    plusButton.setVisibility(View.GONE);
-                }
+                if(loginFlag==true)
+                    if (slideOffset == 0) {
+                        plusButton.setVisibility(View.VISIBLE);
+                    } else if (plusButton.getVisibility() == View.VISIBLE) {
+                        plusButton.collapse();
+                        plusButton.setVisibility(View.GONE);
+                    }
             }
 
         });

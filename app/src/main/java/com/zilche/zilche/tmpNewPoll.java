@@ -120,7 +120,7 @@ public class tmpNewPoll extends ActionBarActivity {
                     poll.put("question", question_text.getText().toString());
                     poll.put("optionNum", optNum);
                     //poll.addAllUnique("options", Arrays.asList("Oishi", "KFC", "Ichiban", "Red Lobster"));
-                    for (int i = 0; i < 4; i ++ )
+                    for (int i = 0; i < optNum; i ++ )
                         poll.add("votes", 0);
                     poll.put("author", ParseUser.getCurrentUser().toString());
                     poll.put("id", pollID + 1);

@@ -68,6 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/newopt"
+                android:background="@null"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_add_circle_outline_black_24dp"
                 />
