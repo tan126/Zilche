@@ -58,7 +58,11 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public void backButtonLogin(View v) {
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         finish();
+        startActivity(i);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     private class SignUpFragmentAdapter extends FragmentPagerAdapter {
@@ -239,6 +243,13 @@ public class SignUpActivity extends FragmentActivity {
             return rootView;
         }
 
+        @Override
+        public void onDestroy() {
+            email.getBackground().clearColorFilter();
+            password.getBackground().clearColorFilter();
+            super.onDestroy();
+        }
+
     }
 
     public static class RegisterFragment extends Fragment {
@@ -390,6 +401,15 @@ public class SignUpActivity extends FragmentActivity {
             regis_err_text3 = (TextView) rootView.findViewById(R.id.regis_err_text3);
             return rootView;
         }
+
+        @Override
+        public void onDestroy() {
+            email.getBackground().clearColorFilter();
+            password.getBackground().clearColorFilter();
+            flname.getBackground().clearColorFilter();
+            super.onDestroy();
+        }
+
     }
 
 
