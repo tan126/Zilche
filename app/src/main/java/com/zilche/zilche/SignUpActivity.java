@@ -23,20 +23,19 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-import org.w3c.dom.Text;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class SignUpActivity extends FragmentActivity {
 
+    ViewPager vp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        ViewPager vp = (ViewPager) findViewById(R.id.viewpager_login);
+        vp = (ViewPager) findViewById(R.id.viewpager_login);
         vp.setAdapter(new SignUpFragmentAdapter(getSupportFragmentManager()));
         vp.setOffscreenPageLimit(2);
         SlidingTabLayout stl = (SlidingTabLayout) findViewById(R.id.pager_tab_strip2);
@@ -45,7 +44,6 @@ public class SignUpActivity extends FragmentActivity {
         stl.setCustomTabView(R.layout.custom_tab, 0);
         stl.setSelectedIndicatorColors(0xffffffff);
         stl.setViewPager(vp);
-
     }
 
     public static boolean isEmailValid(String email) {
@@ -261,10 +259,37 @@ public class SignUpActivity extends FragmentActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 switch (v.getId()) {
-                    case R.id.regis_btn: {
+                    case R.id.flname: {
+                        if (hasFocus == false) {
+                            if (regis_err_text1.getVisibility() == View.VISIBLE) {
+                                if (flname.getText().toString().length() >= 2) {
+                                    regis_err_text1.setVisibility(View.GONE);
+                                    flname.getBackground().clearColorFilter();
+                                }
+                            }
+                        }
                         break;
                     }
-                    case R.id.regis_fb_btn: {
+                    case R.id.register_email: {
+                        if (hasFocus == false) {
+                            if (regis_err_text2.getVisibility() == View.VISIBLE) {
+                                if (isEmailValid(email.getText().toString())) {
+                                    regis_err_text2.setVisibility(View.GONE);
+                                    email.getBackground().clearColorFilter();
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case R.id.register_password: {
+                        if (hasFocus == false) {
+                            if (regis_err_text3.getVisibility() == View.VISIBLE) {
+                                if (password.getText().toString().length() >= 6) {
+                                    regis_err_text3.setVisibility(View.GONE);
+                                    password.getBackground().clearColorFilter();
+                                }
+                            }
+                        }
                         break;
                     }
                 }
@@ -281,8 +306,10 @@ public class SignUpActivity extends FragmentActivity {
                         String userPassword = password.getText().toString();
                         String userName = flname.getText().toString();
                         boolean failed = false;
+                        int err = 0;
                         if (userName.length() < 2) {
                             failed = true;
+                            err = 1;
                             regis_err_text1.setVisibility(View.VISIBLE);
                             flname.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
                         } else {
@@ -293,7 +320,8 @@ public class SignUpActivity extends FragmentActivity {
                          }
                         if (!isEmailValid(userEmail)) {
                             failed = true;
-                            regis_err_text3.setVisibility(View.VISIBLE);
+                            if (err == 0) err = 2;
+                            regis_err_text2.setVisibility(View.VISIBLE);
                             email.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
                         } else {
                             if (regis_err_text2.getVisibility() == View.VISIBLE) {
@@ -303,7 +331,8 @@ public class SignUpActivity extends FragmentActivity {
                         }
                         if (userPassword.length() < 6) {
                             failed = true;
-                            regis_err_text2.setVisibility(View.VISIBLE);
+                            if (err == 0) err = 3;
+                            regis_err_text3.setVisibility(View.VISIBLE);
                             password.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
                         } else {
                             if (regis_err_text3.getVisibility() == View.VISIBLE) {
@@ -312,6 +341,9 @@ public class SignUpActivity extends FragmentActivity {
                             }
                         }
                         if (failed) {
+                            if (err == 1) flname.requestFocus();
+                            else if (err == 2) email.requestFocus();
+                            else if (err == 3) password.requestFocus();
                             registerButton.setClickable(true);
                             break;
                         }
@@ -351,8 +383,11 @@ public class SignUpActivity extends FragmentActivity {
             fbRegisterButton = (Button) rootView.findViewById(R.id.regis_fb_btn);
             fbRegisterButton.setOnClickListener(buttonListener);
             email = (EditText) rootView.findViewById(R.id.register_email);
+            email.setOnFocusChangeListener(focus_button);
             password = (EditText) rootView.findViewById(R.id.register_password);
+            password.setOnFocusChangeListener(focus_button);
             flname = (TextView) rootView.findViewById(R.id.flname);
+            flname.setOnFocusChangeListener(focus_button);
             regis_err_text1 = (TextView) rootView.findViewById(R.id.regis_err_text1);
             regis_err_text2 = (TextView) rootView.findViewById(R.id.regis_err_text2);
             regis_err_text3 = (TextView) rootView.findViewById(R.id.regis_err_text3);
