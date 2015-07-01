@@ -38,16 +38,66 @@
                 android:gravity="center"/>
         </RelativeLayout>
 
-        <!--ViewPager for the two tabs and then Tap Indicators???? for the sliding?
-        -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        >
+       <EditText
+           android:layout_width="240dp"
+           android:layout_height="wrap_content"
+           android:hint="Qustion"
+           android:id="@+id/question"
+           android:layout_marginTop="80dp"
+
+           />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            >
+            <EditText
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:hint="Options"
+                android:id="@+id/opt"
+
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/newopt"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_add_circle_outline_black_24dp"
+                />
+
+        </LinearLayout>
+        <EditText
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:hint="Category"
+            android:id="@+id/category"
+            android:layout_marginTop="20dp"
+
+            />
+        <TextView
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/opts"
+            android:layout_marginTop="20dp"
+
+            />
+
         <Button
-            android:layout_width="240dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:id="@+id/add"
-            android:layout_marginTop="80dp"
-            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+
             android:text="Add Poll"
             />
+    </LinearLayout>
 
 
     </RelativeLayout>

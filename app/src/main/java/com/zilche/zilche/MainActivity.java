@@ -107,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        actionB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
+                newSurvey();
+            }
+        });
+
         final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
@@ -306,5 +314,10 @@ public class MainActivity extends AppCompatActivity {
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);*/
+    }
+
+    public void newSurvey() {
+        Intent i = new Intent(this, tmpNewPoll.class);
+        startActivity(i);
     }
 }
