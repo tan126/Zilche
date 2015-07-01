@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView android:text="Question:"
+        android:textSize="40dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:id="@+id/questionheader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/question"
+        android:layout_below="@id/questionheader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter question here..."
+        android:gravity="top|left"
+        android:maxLines="10"
+        android:scrollbars="vertical"
+        android:inputType="textMultiLine" />
+    <TextView android:text="Add an Image"
+        android:id="@+id/addimageheader"
+        android:layout_marginTop="20dp"
+        android:textSize="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/question"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addimageheader"
+        android:text="Image"
+
+        />
+
+</RelativeLayout>
