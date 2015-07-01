@@ -28,7 +28,7 @@
         android:id="@+id/login_err_text1"
         android:textColor="#dd2c00"
         android:visibility="gone"
-        android:text="Invalid Email Address"
+        android:text="@string/invalid_email"
         />
 
     <EditText
@@ -52,7 +52,7 @@
         android:paddingTop="4dp"
         android:id="@+id/login_err_text2"
         android:textColor="#dd2c00"
-        android:text="Password must be at least 6 characters"
+        android:text="@string/password_too_short"
         />
 
     <Button

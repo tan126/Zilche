@@ -23,7 +23,7 @@
         android:id="@+id/regis_err_text1"
         android:textColor="#dd2c00"
         android:visibility="gone"
-        android:text="Please enter your first and last name"
+        android:text="@string/fl_name"
         />
 
     <EditText
@@ -46,7 +46,7 @@
         android:id="@+id/regis_err_text2"
         android:textColor="#dd2c00"
         android:visibility="gone"
-        android:text="Invalid Email Address"
+        android:text="@string/invalid_email"
         />
 
     <EditText
@@ -69,7 +69,7 @@
         android:id="@+id/regis_err_text3"
         android:textColor="#dd2c00"
         android:visibility="gone"
-        android:text="Password must be at least 6 characters"
+        android:text="@string/password_too_short"
         />
 
     <Button

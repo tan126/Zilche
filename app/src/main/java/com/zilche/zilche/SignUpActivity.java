@@ -29,13 +29,11 @@ import java.util.regex.Pattern;
 
 public class SignUpActivity extends FragmentActivity {
 
-    ViewPager vp;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        vp = (ViewPager) findViewById(R.id.viewpager_login);
+        ViewPager vp = (ViewPager) findViewById(R.id.viewpager_login);
         vp.setAdapter(new SignUpFragmentAdapter(getSupportFragmentManager()));
         vp.setOffscreenPageLimit(2);
         SlidingTabLayout stl = (SlidingTabLayout) findViewById(R.id.pager_tab_strip2);
@@ -50,10 +48,9 @@ public class SignUpActivity extends FragmentActivity {
         boolean isValid = false;
 
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        CharSequence inputStr = email;
 
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(inputStr);
+        Matcher matcher = pattern.matcher(email);
         if (matcher.matches()) {
             isValid = true;
         }
@@ -112,7 +109,7 @@ public class SignUpActivity extends FragmentActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 switch (v.getId()) {
                     case R.id.login_email: {
-                        if (hasFocus == false) {
+                        if (!hasFocus) {
                             if (login_err_text1.getVisibility() == View.VISIBLE) {
                                 if (isEmailValid(email.getText().toString())) {
                                     login_err_text1.setVisibility(View.GONE);
@@ -123,7 +120,7 @@ public class SignUpActivity extends FragmentActivity {
                         break;
                     }
                     case R.id.login_password: {
-                        if (hasFocus == false) {
+                        if (!hasFocus) {
                             if (login_err_text2.getVisibility() == View.VISIBLE) {
                                 if (password.getText().toString().length() >= 6) {
                                     login_err_text2.setVisibility(View.GONE);
@@ -260,7 +257,7 @@ public class SignUpActivity extends FragmentActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 switch (v.getId()) {
                     case R.id.flname: {
-                        if (hasFocus == false) {
+                        if (!hasFocus) {
                             if (regis_err_text1.getVisibility() == View.VISIBLE) {
                                 if (flname.getText().toString().length() >= 2) {
                                     regis_err_text1.setVisibility(View.GONE);
@@ -271,7 +268,7 @@ public class SignUpActivity extends FragmentActivity {
                         break;
                     }
                     case R.id.register_email: {
-                        if (hasFocus == false) {
+                        if (!hasFocus) {
                             if (regis_err_text2.getVisibility() == View.VISIBLE) {
                                 if (isEmailValid(email.getText().toString())) {
                                     regis_err_text2.setVisibility(View.GONE);
@@ -282,7 +279,7 @@ public class SignUpActivity extends FragmentActivity {
                         break;
                     }
                     case R.id.register_password: {
-                        if (hasFocus == false) {
+                        if (!hasFocus) {
                             if (regis_err_text3.getVisibility() == View.VISIBLE) {
                                 if (password.getText().toString().length() >= 6) {
                                     regis_err_text3.setVisibility(View.GONE);
@@ -343,7 +340,7 @@ public class SignUpActivity extends FragmentActivity {
                         if (failed) {
                             if (err == 1) flname.requestFocus();
                             else if (err == 2) email.requestFocus();
-                            else if (err == 3) password.requestFocus();
+                            else password.requestFocus();
                             registerButton.setClickable(true);
                             break;
                         }

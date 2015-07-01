@@ -45,4 +45,6 @@
     <string name="sign_up_with_zilche">Sign Up with Zilche</string>
     <string name="sign_up_with_facebook">Sign Up with Facebook</string>
     <string name="password_too_short">Password must be at least 6 characters</string>
+    <string name="invalid_email">Invalid Email Address</string>
+    <string name="fl_name">Please enter your first and last name</string>
 </resources>
