@@ -6,7 +6,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#3F51B5</item>
         <item name="colorPrimaryDark">#303F9F</item>
-        <item name="colorAccent">#4CAF50</item>
+        <item name="colorAccent">#EF5350</item>
     </style>
     <style name="menu_labels_style">
         <!--item name="android:background">@drawable/fab_label_background</item-->
