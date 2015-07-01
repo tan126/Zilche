@@ -48,6 +48,10 @@
             android:name=".UploadImage"
             android:label="@string/title_activity_upload_image" >
         </activity>
+        <activity
+            android:name=".FullScreenImage"
+            android:label="@string/title_activity_full_screen_image" >
+        </activity>
     </application>
 
 </manifest>

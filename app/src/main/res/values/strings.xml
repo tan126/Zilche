@@ -47,4 +47,5 @@
     <string name="password_too_short">Password must be at least 6 characters</string>
     <string name="invalid_email">Invalid Email Address</string>
     <string name="fl_name">Please enter your first and last name</string>
+    <string name="title_activity_full_screen_image">FullScreenImage</string>
 </resources>

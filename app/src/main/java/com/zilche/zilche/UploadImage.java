@@ -2,6 +2,7 @@ package com.zilche.zilche;
 
 
 import java.io.File;
+import java.io.ByteArrayOutputStream;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +16,10 @@ import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.content.Intent;
 import android.net.Uri;
+import android.graphics.Bitmap;
+
+
+
 
 import android.graphics.BitmapFactory;
 
@@ -45,7 +50,18 @@ public class UploadImage extends Activity {
                 }
                 else{
                     ImageView thisview = (ImageView) v;
-                    thisview.setImageBitmap(BitmapFactory.decodeFile("pathToImageFile"));
+
+                    Bitmap bitmap = imageAdapter.getBitmapFromView(thisview);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] b = baos.toByteArray();
+
+                    Intent intent = new Intent(UploadImage.this, FullScreenImage.class);
+                    intent.putExtra("picture", b);
+                    startActivity(intent);
+
+
+
                 }
 
 

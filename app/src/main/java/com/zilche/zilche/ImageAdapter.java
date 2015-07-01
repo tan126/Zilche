@@ -10,6 +10,10 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 public class ImageAdapter extends BaseAdapter {
 
@@ -30,13 +34,13 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int arg0) {
-        return null;
+    public Object getItem(int position) {
+        return imageList.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -94,6 +98,18 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         return inSampleSize;
+    }
+
+    public static Bitmap getBitmapFromView(View view) {
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            bgDrawable.draw(canvas);
+        else
+            canvas.drawColor(Color.WHITE);
+        view.draw(canvas);
+        return returnedBitmap;
     }
 
 }
