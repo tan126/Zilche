@@ -18,12 +18,18 @@ import android.widget.TextView;
 
 public class CreatePollActivity extends FragmentActivity {
 
+    FirstFragment firstFrag;
+    SecondFragment secondFrag;
+    ThirdFragment thirdFrag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_poll);
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        firstFrag = new FirstFragment();
+        secondFrag = new SecondFragment();
+        thirdFrag = new ThirdFragment();
     }
 
     @Override
@@ -67,16 +73,16 @@ public class CreatePollActivity extends FragmentActivity {
         public Fragment getItem(int pos) {
             switch(pos) {
 
-                case 0: return new FirstFragment();
-                case 1: return new SecondFragment();
-                case 2: return new ThirdFragment();
-                default: return new FirstFragment();
+                case 0: return firstFrag;
+                case 1: return secondFrag;
+                case 2: return thirdFrag;
+                default: return firstFrag;
             }
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return 3;
         }
     }
 
@@ -84,7 +90,7 @@ public class CreatePollActivity extends FragmentActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.activity_create_poll, container, false);
+            View v = inflater.inflate(R.layout.create_poll_1, container, false);
 
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
             tv.setText(getArguments().getString("msg"));*/
@@ -108,7 +114,7 @@ public class CreatePollActivity extends FragmentActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.activity_create_poll, container, false);
+            View v = inflater.inflate(R.layout.create_poll_2, container, false);
 
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragSecond);
             tv.setText(getArguments().getString("msg"));*/
@@ -132,7 +138,7 @@ public class CreatePollActivity extends FragmentActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.activity_create_poll, container, false);
+            View v = inflater.inflate(R.layout.create_poll_3, container, false);
 
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragThird);
             tv.setText(getArguments().getString("msg"));*/
