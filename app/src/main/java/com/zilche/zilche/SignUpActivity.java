@@ -1,6 +1,5 @@
 package com.zilche.zilche;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +95,11 @@ public class SignUpActivity extends FragmentActivity {
                         loginBtn.setClickable(false);
                         String userName = email.getText().toString();
                         String passWord = password.getText().toString();
+                        if (passWord.length() < 6) {
+                            Toast.makeText(getActivity().getBaseContext(), getString(R.string.password_too_short), Toast.LENGTH_SHORT).show();
+                            loginBtn.setClickable(true);
+                            break;
+                        }
                         ParseUser.logInInBackground(userName, passWord, new LogInCallback() {
                             @Override
                             public void done(ParseUser user, ParseException e) {
@@ -107,17 +109,7 @@ public class SignUpActivity extends FragmentActivity {
                                     getActivity().finish();
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(getActivity().getBaseContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
-                                    /*AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                                    builder1.setMessage("Invalid Username/Password");
-
-                                    builder1.setNeutralButton("Retry", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                                    AlertDialog alert11 = builder1.create();
-                                    alert11.show(); */
+                                    Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                     loginBtn.setClickable(true);
                                 }
                             }
@@ -183,7 +175,7 @@ public class SignUpActivity extends FragmentActivity {
                                     getActivity().finish();
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(getActivity().getBaseContext(), "Sign up failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                                     registerButton.setClickable(true);
                                 }
                             }
