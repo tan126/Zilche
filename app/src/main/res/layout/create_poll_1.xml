@@ -17,7 +17,7 @@
         android:textSize="40dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:id="@+id/questionhexader"
+        android:id="@+id/questionheader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/pollimage"/>
