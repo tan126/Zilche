@@ -4,13 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageButton
+        android:id="@+id/pollimage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_photo_white_24dp"
+        android:background="#C0C0C0"
+        android:layout_gravity="center"
+        />
+
     <TextView android:text="Question:"
         android:textSize="40dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
-        android:id="@+id/questionheader"
+        android:id="@+id/questionhexader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pollimage"/>
     <EditText
         android:id="@+id/question"
         android:layout_below="@id/questionheader"
@@ -21,7 +31,7 @@
         android:maxLines="10"
         android:scrollbars="vertical"
         android:inputType="textMultiLine" />
-    <TextView android:text="Add an Image"
+    <!--<TextView android:text="Add an Image"
         android:id="@+id/addimageheader"
         android:layout_marginTop="20dp"
         android:textSize="30dp"
@@ -35,6 +45,6 @@
         android:layout_below="@id/addimageheader"
         android:text="Image"
 
-        />
+        />-->
 
 </RelativeLayout>
