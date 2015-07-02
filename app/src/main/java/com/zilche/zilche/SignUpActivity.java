@@ -1,9 +1,12 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -117,7 +120,11 @@ public class SignUpActivity extends FragmentActivity {
                 switch (v.getId()) {
 
                     case R.id.login_btn: {
-                        loginBtn.setClickable(false);
+                        if (!hasInternetConnection()) {
+                            Toast.makeText(getActivity(), "Cannot connect to server. Please try again later.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        loginBtn.setEnabled(false);
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(loginBtn.getWindowToken(), 0);
                         String userName = email.getText().toString();
@@ -139,7 +146,7 @@ public class SignUpActivity extends FragmentActivity {
                             } else {
                                 email.requestFocus();
                             }
-                            loginBtn.setClickable(true);
+                            loginBtn.setEnabled(true);
                             break;
                         }
                         ParseUser.logInInBackground(userName, passWord, new LogInCallback() {
@@ -152,7 +159,7 @@ public class SignUpActivity extends FragmentActivity {
                                     startActivity(i);
                                 } else {
                                     Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    loginBtn.setClickable(true);
+                                    loginBtn.setEnabled(true);
                                 }
                             }
                         });
@@ -202,6 +209,12 @@ public class SignUpActivity extends FragmentActivity {
             return rootView;
         }
 
+        public boolean hasInternetConnection() {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        }
+
     }
 
     public static class RegisterFragment extends Fragment {
@@ -217,7 +230,11 @@ public class SignUpActivity extends FragmentActivity {
             public void onClick(View v) {
                 switch (v.getId()) {
                     case R.id.regis_btn: {
-                        registerButton.setClickable(false);
+                        if (!hasInternetConnection()) {
+                            Toast.makeText(getActivity(), "Cannot connect to server. Please try again later.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                        registerButton.setEnabled(false);
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(registerButton.getWindowToken(), 0);
                         String userEmail = email.getText().toString();
@@ -244,7 +261,7 @@ public class SignUpActivity extends FragmentActivity {
                             if (err == 1) flname.requestFocus();
                             else if (err == 2) email.requestFocus();
                             else password.requestFocus();
-                            registerButton.setClickable(true);
+                            registerButton.setEnabled(true);
                             break;
                         }
                         ParseUser newUser = new ParseUser();
@@ -262,7 +279,7 @@ public class SignUpActivity extends FragmentActivity {
                                     startActivity(i);
                                 } else {
                                     Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    registerButton.setClickable(true);
+                                    registerButton.setEnabled(true);
                                 }
                             }
                         });
@@ -286,6 +303,12 @@ public class SignUpActivity extends FragmentActivity {
             password = (EditText) rootView.findViewById(R.id.register_password);
             flname = (TextView) rootView.findViewById(R.id.flname);
             return rootView;
+        }
+
+        public boolean hasInternetConnection() {
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         }
 
 
