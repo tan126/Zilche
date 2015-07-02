@@ -1,5 +1,6 @@
 package com.zilche.zilche;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -137,6 +139,8 @@ public class SignUpActivity extends FragmentActivity {
 
                     case R.id.login_btn: {
                         loginBtn.setClickable(false);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                         String userName = email.getText().toString();
                         String passWord = password.getText().toString();
                         boolean focus_first = false;
@@ -316,6 +320,8 @@ public class SignUpActivity extends FragmentActivity {
                 switch (v.getId()) {
                     case R.id.regis_btn: {
                         registerButton.setClickable(false);
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                         String userEmail = email.getText().toString();
                         String userPassword = password.getText().toString();
                         String userName = flname.getText().toString();

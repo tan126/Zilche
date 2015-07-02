@@ -39,6 +39,7 @@
         </activity>
         <activity
             android:name=".SignUpActivity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_signup" />
         <activity
             android:name=".CreatePollActivity"

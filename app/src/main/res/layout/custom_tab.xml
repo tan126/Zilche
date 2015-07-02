@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:textSize="14sp"
     android:paddingTop="5dp"
-    android:paddingBottom="15dp"
+    android:paddingBottom="10dp"
     android:gravity="center"
     android:textColor="#fff"
+    android:fontFamily="sans-serif-medium"
+
     />
