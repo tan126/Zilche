@@ -20,23 +20,12 @@
             android:fontFamily="sans-serif-medium"
             android:layout_gravity="center_horizontal"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingLeft="3dp"
-            android:fontFamily="sans-serif-medium"
-            android:id="@+id/regis_err_text1"
-            android:textColor="#dd2c00"
-            android:visibility="gone"
-            android:text="@string/fl_name"
-            />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/register_email"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:hint="@string/email"
             android:textSize="16sp"
             android:inputType="textEmailAddress"
@@ -45,22 +34,11 @@
             android:layout_gravity="center_horizontal"/>
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:paddingLeft="3dp"
-            android:fontFamily="sans-serif-medium"
-            android:id="@+id/regis_err_text2"
-            android:textColor="#dd2c00"
-            android:visibility="gone"
-            android:text="@string/invalid_email"
-            />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:id="@+id/register_password"
             android:inputType="textPassword"
             android:hint="@string/password"
@@ -70,23 +48,11 @@
             android:layout_gravity="center_horizontal" />
 
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:fontFamily="sans-serif-medium"
-            android:paddingLeft="3dp"
-            android:id="@+id/regis_err_text3"
-            android:textColor="#dd2c00"
-            android:visibility="gone"
-            android:text="@string/password_too_short"
-            />
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/regis_btn"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="30dp"
             android:text="@string/sign_up_with_zilche"
             android:fontFamily="sans-serif-medium"
             android:textSize="16sp"
@@ -98,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:text="@string/or"
             android:textSize="14sp"
             android:textColor="#44000000"
@@ -108,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/regis_fb_btn"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:text="@string/sign_up_with_facebook"
             android:fontFamily="sans-serif-medium"
             android:textSize="16sp"

@@ -110,27 +110,6 @@ public class SignUpActivity extends FragmentActivity {
         private EditText email;
         private EditText password;
         private TextView forgotPassword;
-        private TextView login_err_text1;
-        private TextView login_err_text2;
-
-        private View.OnFocusChangeListener button_focus = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                switch (v.getId()) {
-                    case R.id.login_email: {
-                        if (!hasFocus) {
-                            if (login_err_text1.getVisibility() == View.VISIBLE) {
-                                if (isEmailValid(email.getText().toString())) {
-                                    login_err_text1.setVisibility(View.GONE);
-                                    email.getBackground().clearColorFilter();
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        };
 
         private View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
@@ -140,38 +119,26 @@ public class SignUpActivity extends FragmentActivity {
                     case R.id.login_btn: {
                         loginBtn.setClickable(false);
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                        imm.hideSoftInputFromWindow(loginBtn.getWindowToken(), 0);
                         String userName = email.getText().toString();
                         String passWord = password.getText().toString();
                         boolean focus_first = false;
                         boolean failed = false;
                         if (!isEmailValid(userName)) {
-                            login_err_text1.setVisibility(View.VISIBLE);
                             focus_first = true;
-                            email.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
+                            email.setError(getString(R.string.invalid_email));
                             failed = true;
-                        } else {
-                            if (login_err_text1.getVisibility() == View.VISIBLE) {
-                                login_err_text1.setVisibility(View.GONE);
-                                email.getBackground().clearColorFilter();
-                            }
                         }
                         if (passWord.length() < 6) {
-                            login_err_text2.setVisibility(View.VISIBLE);
+                            password.setError(getString(R.string.password_too_short));
+                            failed = true;
+                        }
+                        if (failed) {
                             if (!focus_first) {
                                 password.requestFocus();
                             } else {
                                 email.requestFocus();
                             }
-                            password.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
-                            failed = true;
-                        } else {
-                            if (login_err_text2.getVisibility() == View.VISIBLE) {
-                                login_err_text2.setVisibility(View.GONE);
-                                password.getBackground().clearColorFilter();
-                            }
-                        }
-                        if (failed) {
                             loginBtn.setClickable(true);
                             break;
                         }
@@ -229,46 +196,10 @@ public class SignUpActivity extends FragmentActivity {
             fbBtn = (Button) rootView.findViewById(R.id.login_fb_btn);
             fbBtn.setOnClickListener(buttonListener);
             email = (EditText) rootView.findViewById(R.id.login_email);
-            email.setOnFocusChangeListener(button_focus);
             password = (EditText) rootView.findViewById(R.id.login_password);
-            password.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (s.length() < 6) {
-                        if (login_err_text2.getVisibility() != View.VISIBLE) {
-                            login_err_text2.setVisibility(View.VISIBLE);
-                            password.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
-                        }
-                    } else {
-                        if (login_err_text2.getVisibility() == View.VISIBLE) {
-                            login_err_text2.setVisibility(View.GONE);
-                            password.getBackground().clearColorFilter();
-                        }
-                    }
-                }
-            });
             forgotPassword = (TextView) rootView.findViewById(R.id.forgot_pw);
             forgotPassword.setOnClickListener(buttonListener);
-            login_err_text1 = (TextView) rootView.findViewById(R.id.login_err_text1);
-            login_err_text2 = (TextView) rootView.findViewById(R.id.login_err_text2);
             return rootView;
-        }
-
-        @Override
-        public void onDestroy() {
-            email.getBackground().clearColorFilter();
-            password.getBackground().clearColorFilter();
-            super.onDestroy();
         }
 
     }
@@ -280,39 +211,6 @@ public class SignUpActivity extends FragmentActivity {
         private EditText password;
         private Button registerButton;
         private Button fbRegisterButton;
-        private TextView regis_err_text1;
-        private TextView regis_err_text2;
-        private TextView regis_err_text3;
-
-        private View.OnFocusChangeListener focus_button = new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                switch (v.getId()) {
-                    case R.id.flname: {
-                        if (!hasFocus) {
-                            if (regis_err_text1.getVisibility() == View.VISIBLE) {
-                                if (flname.getText().toString().length() >= 2) {
-                                    regis_err_text1.setVisibility(View.GONE);
-                                    flname.getBackground().clearColorFilter();
-                                }
-                            }
-                        }
-                        break;
-                    }
-                    case R.id.register_email: {
-                        if (!hasFocus) {
-                            if (regis_err_text2.getVisibility() == View.VISIBLE) {
-                                if (isEmailValid(email.getText().toString())) {
-                                    regis_err_text2.setVisibility(View.GONE);
-                                    email.getBackground().clearColorFilter();
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        };
 
         private View.OnClickListener buttonListener = new View.OnClickListener() {
             @Override
@@ -321,7 +219,7 @@ public class SignUpActivity extends FragmentActivity {
                     case R.id.regis_btn: {
                         registerButton.setClickable(false);
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                        imm.hideSoftInputFromWindow(registerButton.getWindowToken(), 0);
                         String userEmail = email.getText().toString();
                         String userPassword = password.getText().toString();
                         String userName = flname.getText().toString();
@@ -330,35 +228,17 @@ public class SignUpActivity extends FragmentActivity {
                         if (userName.length() < 2) {
                             failed = true;
                             err = 1;
-                            regis_err_text1.setVisibility(View.VISIBLE);
-                            flname.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
-                        } else {
-                            if (regis_err_text1.getVisibility() == View.VISIBLE) {
-                                regis_err_text1.setVisibility(View.GONE);
-                                flname.getBackground().clearColorFilter();
-                            }
-                         }
+                            flname.setError(getString(R.string.fl_name));
+                        }
                         if (!isEmailValid(userEmail)) {
                             failed = true;
                             if (err == 0) err = 2;
-                            regis_err_text2.setVisibility(View.VISIBLE);
-                            email.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
-                        } else {
-                            if (regis_err_text2.getVisibility() == View.VISIBLE) {
-                                regis_err_text2.setVisibility(View.GONE);
-                                email.getBackground().clearColorFilter();
-                            }
+                            email.setError(getString(R.string.invalid_email));
                         }
                         if (userPassword.length() < 6) {
                             failed = true;
                             if (err == 0) err = 3;
-                            regis_err_text3.setVisibility(View.VISIBLE);
-                            password.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
-                        } else {
-                            if (regis_err_text3.getVisibility() == View.VISIBLE) {
-                                regis_err_text3.setVisibility(View.GONE);
-                                password.getBackground().clearColorFilter();
-                            }
+                            password.setError(getString(R.string.password_too_short));
                         }
                         if (failed) {
                             if (err == 1) flname.requestFocus();
@@ -403,49 +283,11 @@ public class SignUpActivity extends FragmentActivity {
             fbRegisterButton = (Button) rootView.findViewById(R.id.regis_fb_btn);
             fbRegisterButton.setOnClickListener(buttonListener);
             email = (EditText) rootView.findViewById(R.id.register_email);
-            email.setOnFocusChangeListener(focus_button);
             password = (EditText) rootView.findViewById(R.id.register_password);
-            password.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (s.length() < 6) {
-                        if (regis_err_text3.getVisibility() != View.VISIBLE) {
-                            regis_err_text3.setVisibility(View.VISIBLE);
-                            password.getBackground().setColorFilter(0xffdd2c00, PorterDuff.Mode.SRC_ATOP);
-                        }
-                    } else {
-                        if (regis_err_text3.getVisibility() == View.VISIBLE) {
-                            regis_err_text3.setVisibility(View.GONE);
-                            password.getBackground().clearColorFilter();
-                        }
-                    }
-                }
-            });
             flname = (TextView) rootView.findViewById(R.id.flname);
-            flname.setOnFocusChangeListener(focus_button);
-            regis_err_text1 = (TextView) rootView.findViewById(R.id.regis_err_text1);
-            regis_err_text2 = (TextView) rootView.findViewById(R.id.regis_err_text2);
-            regis_err_text3 = (TextView) rootView.findViewById(R.id.regis_err_text3);
             return rootView;
         }
 
-        @Override
-        public void onDestroy() {
-            email.getBackground().clearColorFilter();
-            password.getBackground().clearColorFilter();
-            flname.getBackground().clearColorFilter();
-            super.onDestroy();
-        }
 
     }
 
