@@ -27,7 +27,6 @@
             android:maxLines="10"
             android:scrollbars="vertical"
             android:inputType="textMultiLine" />
-
         <EditText
             android:id="@+id/option2"
             android:layout_below="@id/option1"
@@ -38,7 +37,94 @@
             android:maxLines="10"
             android:scrollbars="vertical"
             android:inputType="textMultiLine" />
-
+        <EditText
+            android:id="@+id/option3"
+            android:layout_below="@id/option2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/option4"
+            android:layout_below="@id/option3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/option5"
+            android:layout_below="@id/option4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/option6"
+            android:layout_below="@id/option5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/option7"
+            android:layout_below="@id/option6"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/option8"
+            android:layout_below="@id/option7"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/option9"
+            android:layout_below="@id/option8"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
+        <EditText
+            android:id="@+id/option10"
+            android:layout_below="@id/option9"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter option here..."
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:visibility="gone"
+            android:inputType="textMultiLine" />
 
         </RelativeLayout>
 
@@ -47,11 +133,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal">
-
-        <Button
+        <ImageButton
+            android:id="@+id/addoption"
+            android:onClick="addOption"
             android:layout_width="50dp"
-            android:layout_height="20dp"
-        />
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_add_white_24dp"
+            android:background="@drawable/round_button"
+            android:layout_gravity="center"
+            />
     </RelativeLayout>
 
 </LinearLayout>
