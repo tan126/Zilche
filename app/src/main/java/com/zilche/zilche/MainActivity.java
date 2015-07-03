@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.pager);
         viewPager.setPageTransformer(false, new FadePageTransformer());
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
         // not sure if this will cause problems
         viewPager.setOffscreenPageLimit(3);
 
@@ -286,14 +286,6 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inf.inflate(R.layout.placeholder, container, false);
             Bundle args = getArguments();
-            Button b = (Button) rootView.findViewById(R.id.button);
-            b.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), SignUpActivity.class);
-                    startActivity(i);
-                }
-            });
             ((TextView) rootView.findViewById(R.id.text1)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
             return rootView;
         }
