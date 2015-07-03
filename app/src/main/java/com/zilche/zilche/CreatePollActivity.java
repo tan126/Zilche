@@ -18,8 +18,9 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
-public class CreatePollActivity extends FragmentActivity {
+public class CreatePollActivity extends FragmentActivity implements OnPageChangeListener {
 
     FirstFragment firstFrag;
     SecondFragment secondFrag;
@@ -32,6 +33,39 @@ public class CreatePollActivity extends FragmentActivity {
         setContentView(R.layout.activity_create_poll);
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+        pager.addOnPageChangeListener(this);
+
+/*        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                TextView textView = (TextView) findViewById(R.id.createpollfootertext);
+                switch (position) {
+                    case 0:
+                        textView.setText("Next");
+                        System.out.println("ONE");
+                    case 1:
+                        textView.setText("Next");
+                        System.out.println("TWO");
+                    case 2:
+                        textView.setText("Submit");
+                        System.out.println("THREE");
+                    default:
+                        textView.setText("Next");
+                        System.out.println("DEFAULT");
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });*/
+
         firstFrag = new FirstFragment();
         secondFrag = new SecondFragment();
         thirdFrag = new ThirdFragment();
@@ -68,6 +102,34 @@ public class CreatePollActivity extends FragmentActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        TextView textView = (TextView) findViewById(R.id.createpollfootertext);
+        switch (position) {
+            case 0:
+                textView.setText("Next");
+                break;
+            case 1:
+                textView.setText("Next");
+                break;
+            case 2:
+                textView.setText("Submit");
+                break;
+            default:
+                textView.setText("Next");
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
         public MyPagerAdapter(FragmentManager fm) {
@@ -77,11 +139,14 @@ public class CreatePollActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int pos) {
             switch(pos) {
-
-                case 0: return firstFrag;
-                case 1: return secondFrag;
-                case 2: return thirdFrag;
-                default: return firstFrag;
+                case 0:
+                    return firstFrag;
+                case 1:
+                    return secondFrag;
+                case 2:
+                    return thirdFrag;
+                default:
+                    return firstFrag;
             }
         }
 
@@ -96,7 +161,6 @@ public class CreatePollActivity extends FragmentActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.create_poll_1, container, false);
-
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
             tv.setText(getArguments().getString("msg"));*/
 
@@ -167,9 +231,9 @@ public class CreatePollActivity extends FragmentActivity {
         if (numOptions > 10) {
             return;
         }
+        numOptions++;
         String option = "option" + numOptions;
         String optionR = "option" + numOptions + "remove";
-        numOptions++;
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
         int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
         EditText editText = (EditText)findViewById(optionID);
@@ -178,5 +242,6 @@ public class CreatePollActivity extends FragmentActivity {
         imageButton.setVisibility(View.VISIBLE);
 
     }
+
 
 }

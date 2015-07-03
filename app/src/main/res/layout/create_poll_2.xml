@@ -259,7 +259,7 @@
                     />
             </LinearLayout>
 
-            </LinearLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="50dp"
