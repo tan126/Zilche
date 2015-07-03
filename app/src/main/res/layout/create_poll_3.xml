@@ -10,6 +10,27 @@
         android:paddingBottom="20dp"
         android:id="@+id/questionheader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+  />
+    <Button android:id="@+id/selectBtn"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Select" android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:minWidth="200px" />
+    <GridView
+        android:id="@+id/gridview1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:columnWidth="90dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:layout_below="@id/questionheader"
+        android:layout_above="@id/selectBtn"
+        android:gravity="center"/>
+
+
+
 
 </RelativeLayout>

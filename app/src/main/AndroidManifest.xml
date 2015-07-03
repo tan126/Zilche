@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
 
@@ -41,8 +41,8 @@
         </activity>
         <activity
             android:name=".SignUpActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/title_activity_signup" />
+            android:label="@string/title_activity_signup"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".CreatePollActivity"
             android:label="@string/title_activity_create_poll" >
