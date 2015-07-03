@@ -1,8 +1,12 @@
 package com.zilche.zilche;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,10 +17,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
@@ -207,14 +216,79 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.create_poll_3, container, false);
+            //View v = inflater.inflate(R.layout.create_poll_3, container, false);
 
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragThird);
             tv.setText(getArguments().getString("msg"));*/
 
-            return v;
+            //return v;
+            View rootView = inflater.inflate(R.layout.create_poll_3, container, false);
+            GridView grid = (GridView) rootView.findViewById(R.id.poll_categories_grid);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            float px10 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getActivity().getResources().getDisplayMetrics());
+            grid.setColumnWidth((int)((displayMetrics.widthPixels - px10 * 3) / 3));
+            grid.setAdapter(new ImageAdapter(getActivity()));
+            grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // redirect to results activity
+                    Toast.makeText(getActivity().getBaseContext(), Integer.toString((int) view.getTag()),
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            return rootView;
         }
+        public class ImageAdapter extends BaseAdapter {
 
+            private Context c;
+            private Integer[] thumbnails = {
+                    R.drawable.all2, R.drawable.car2, R.drawable.enter2, R.drawable.fashion2, R.drawable.food2,
+                    R.drawable.games2, R.drawable.it2, R.drawable.pet2, R.drawable.science2, R.drawable.sport2,
+                    R.drawable.social, R.drawable.tech2, R.drawable.travel
+            };
+            private Integer[] strings = {
+                    R.string.category_all, R.string.category_auto, R.string.category_entertainment, R.string.category_fashion,
+                    R.string.category_food, R.string.category_games, R.string.category_it,
+                    R.string.category_pet, R.string.category_science, R.string.category_sports, R.string.category_social, R.string.category_tech,
+                    R.string.category_travel
+            };
+
+            public ImageAdapter(Context c) {
+                this.c = c;
+            }
+
+            @Override
+            public int getCount() {
+                return strings.length;
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    convertView = vi.inflate(R.layout.categories, null);
+                }
+                ImageView iv = (ImageView) convertView.findViewById(R.id.imageView);
+                TextView tv = (TextView) convertView.findViewById(R.id.category_text);
+                tv.setText(c.getResources().getString(strings[position]));
+                tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+                iv.setImageResource(thumbnails[position]);
+                iv.setAdjustViewBounds(true);
+                convertView.setTag(position);
+                return convertView;
+            }
+        }
         public ThirdFragment() {
 
 /*            ThirdFragment f = new ThirdFragment();
@@ -228,7 +302,8 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     }
 
     public void addOption(View v) {
-        if (numOptions > 10) {
+        if (numOptions >= 10) {
+            Toast.makeText(getApplicationContext(), "Reached maximum of 10 options", Toast.LENGTH_SHORT).show();
             return;
         }
         numOptions++;

@@ -45,7 +45,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".CreatePollActivity"
-            android:label="@string/title_activity_create_poll" >
+            android:label="@string/title_activity_create_poll"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name=".UploadImage"
