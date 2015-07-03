@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,8 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +23,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,6 +69,11 @@ public class SignUpActivity extends FragmentActivity {
             isValid = true;
         }
         return isValid;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
     }
 
     public void backButtonLogin(View v) {
@@ -168,13 +178,29 @@ public class SignUpActivity extends FragmentActivity {
                     }
 
                     case R.id.login_fb_btn: {
-                        ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginFragment.this, null, new LogInCallback() {
+                        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile, email"), new LogInCallback() {
                             @Override
                             public void done(ParseUser parseUser, ParseException e) {
                                 if (parseUser == null) {
 
                                 } else if (parseUser.isNew()) {
                                     if (ParseUser.getCurrentUser() != null) {
+                                        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                                                new GraphRequest.GraphJSONObjectCallback() {
+                                                    @Override
+                                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                                        try {
+                                                            String email_str = jsonObject.getString("email");
+                                                            String name_str = jsonObject.getString("name");
+                                                            ParseUser.getCurrentUser().setEmail(email_str);
+                                                            ParseUser.getCurrentUser().put("name", name_str);
+                                                            ParseUser.getCurrentUser().saveInBackground();
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
+                                        request.executeAsync();
                                         Intent i = new Intent(getActivity(), MainActivity.class);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
@@ -302,13 +328,29 @@ public class SignUpActivity extends FragmentActivity {
                     }
 
                     case R.id.regis_fb_btn: {
-                        ParseFacebookUtils.logInWithReadPermissionsInBackground(RegisterFragment.this, null, new LogInCallback() {
+                        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile","email"), new LogInCallback() {
                             @Override
-                            public void done(ParseUser parseUser, ParseException e) {
+                            public void done(final ParseUser parseUser, ParseException e) {
                                 if (parseUser == null) {
 
                                 } else if (parseUser.isNew()) {
                                     if (ParseUser.getCurrentUser() != null) {
+                                        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                                                new GraphRequest.GraphJSONObjectCallback() {
+                                                    @Override
+                                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                                        try {
+                                                            String email_str = jsonObject.getString("email");
+                                                            String name_str = jsonObject.getString("name");
+                                                            ParseUser.getCurrentUser().setEmail(email_str);
+                                                            ParseUser.getCurrentUser().put("name", name_str);
+                                                            ParseUser.getCurrentUser().saveInBackground();
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
+                                        request.executeAsync();
                                         Intent i = new Intent(getActivity(), MainActivity.class);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
@@ -350,11 +392,6 @@ public class SignUpActivity extends FragmentActivity {
             return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         }
 
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
-        }
 
     }
 
