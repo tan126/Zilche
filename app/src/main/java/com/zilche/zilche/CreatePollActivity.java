@@ -13,6 +13,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -21,6 +24,8 @@ public class CreatePollActivity extends FragmentActivity {
     FirstFragment firstFrag;
     SecondFragment secondFrag;
     ThirdFragment thirdFrag;
+    int numOptions = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +161,22 @@ public class CreatePollActivity extends FragmentActivity {
 
             return f;*/
         }
+    }
+
+    public void addOption(View v) {
+        if (numOptions > 10) {
+            return;
+        }
+        String option = "option" + numOptions;
+        String optionR = "option" + numOptions + "remove";
+        numOptions++;
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.VISIBLE);
+        imageButton.setVisibility(View.VISIBLE);
+
     }
 
 }
