@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -167,16 +168,30 @@ public class SignUpActivity extends FragmentActivity {
                     }
 
                     case R.id.login_fb_btn: {
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                        builder1.setMessage("Developing...");
+                        ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginFragment.this, null, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser parseUser, ParseException e) {
+                                if (parseUser == null) {
 
-                        builder1.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                                } else if (parseUser.isNew()) {
+                                    if (ParseUser.getCurrentUser() != null) {
+                                        Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getActivity().finish();
+                                        startActivity(i);
+                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                    }
+                                } else {
+                                    if (ParseUser.getCurrentUser() != null) {
+                                        Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getActivity().finish();
+                                        startActivity(i);
+                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                    }
+                                }
                             }
                         });
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
                         break;
                     }
                     case R.id.forgot_pw: {
@@ -287,6 +302,30 @@ public class SignUpActivity extends FragmentActivity {
                     }
 
                     case R.id.regis_fb_btn: {
+                        ParseFacebookUtils.logInWithReadPermissionsInBackground(RegisterFragment.this, null, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser parseUser, ParseException e) {
+                                if (parseUser == null) {
+
+                                } else if (parseUser.isNew()) {
+                                    if (ParseUser.getCurrentUser() != null) {
+                                        Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getActivity().finish();
+                                        startActivity(i);
+                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                    }
+                                } else {
+                                    if (ParseUser.getCurrentUser() != null) {
+                                        Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getActivity().finish();
+                                        startActivity(i);
+                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                    }
+                                }
+                            }
+                        });
                         break;
                     }
                 }
@@ -311,6 +350,11 @@ public class SignUpActivity extends FragmentActivity {
             return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         }
 
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+        }
 
     }
 

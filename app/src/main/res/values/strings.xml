@@ -48,4 +48,5 @@
     <string name="invalid_email">Invalid email address</string>
     <string name="fl_name">Please enter your first and last name</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
+    <string name="facebook_app_id">1086189198071072</string>
 </resources>

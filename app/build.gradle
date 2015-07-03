@@ -19,10 +19,16 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'com.android.support:design:22.2.0'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile fileTree(include: 'Parse-*.jar', dir: 'libs')
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    compile files('libs/ParseFacebookUtilsV4-1.9.2.jar')
 }
