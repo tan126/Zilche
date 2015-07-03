@@ -49,4 +49,11 @@
     <string name="fl_name">Please enter your first and last name</string>
     <string name="title_activity_full_screen_image">FullScreenImage</string>
     <string name="facebook_app_id">1086189198071072</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="reset_pw_text">The instructions to reset your password will be sent to this email.</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="connection_err">Cannot connect to server. Please try again later.</string>
+    <string name="no_email">Email address is not registered.</string>
+    <string name="email_sent">Instructions to reset your password has been sent to your email address.</string>
 </resources>

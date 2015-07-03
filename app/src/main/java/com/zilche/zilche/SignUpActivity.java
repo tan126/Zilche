@@ -28,6 +28,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
@@ -132,7 +133,7 @@ public class SignUpActivity extends FragmentActivity {
 
                     case R.id.login_btn: {
                         if (!hasInternetConnection()) {
-                            Toast.makeText(getActivity(), "Cannot connect to server. Please try again later.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             break;
                         }
                         loginBtn.setEnabled(false);
@@ -221,15 +222,44 @@ public class SignUpActivity extends FragmentActivity {
                         break;
                     }
                     case R.id.forgot_pw: {
+                        LayoutInflater inf = LayoutInflater.from(getActivity());
+                        final View view = inf.inflate(R.layout.forgot_password, null);
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
-                        builder1.setMessage("Developing...");
-
-                        builder1.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                        final AlertDialog alert11 = builder1.create();
+                        final EditText etext = (EditText) view.findViewById(R.id.reset_email);
+                        alert11.setView(view);
+                        view.findViewById(R.id.cancel_reset).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                alert11.dismiss();
                             }
                         });
-                        AlertDialog alert11 = builder1.create();
+                        view.findViewById(R.id.reset_password).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String str = etext.getText().toString();
+                                if (!isEmailValid(str)) {
+                                    etext.setError(getString(R.string.invalid_email));
+                                } else {
+                                    if (!hasInternetConnection()) {
+                                        Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        try {
+                                            ParseUser.requestPasswordReset(str);
+                                            Toast.makeText(getActivity(), getString(R.string.email_sent), Toast.LENGTH_SHORT).show();
+                                        } catch (ParseException e) {
+                                            if (e.getCode() == 205) {
+                                                Toast.makeText(getActivity(), getString(R.string.no_email), Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                            }
+                                            e.printStackTrace();
+                                        }
+                                        alert11.dismiss();
+                                    }
+                                }
+                            }
+                        });
                         alert11.show();
                         break;
                     }
@@ -272,7 +302,7 @@ public class SignUpActivity extends FragmentActivity {
                 switch (v.getId()) {
                     case R.id.regis_btn: {
                         if (!hasInternetConnection()) {
-                            Toast.makeText(getActivity(), "Cannot connect to server. Please try again later.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             break;
                         }
                         registerButton.setEnabled(false);
