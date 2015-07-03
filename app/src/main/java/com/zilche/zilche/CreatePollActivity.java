@@ -243,5 +243,8 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
 
     }
 
+    public void removeOption(View v) {
+
+    }
 
 }

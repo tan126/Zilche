@@ -41,6 +41,7 @@
                     android:layout_weight=".1"
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -63,6 +64,7 @@
                     android:layout_weight=".1"
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -87,6 +89,7 @@
                     android:visibility="gone"
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -111,6 +114,7 @@
                     android:visibility="gone"
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -135,6 +139,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -159,6 +164,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -183,6 +189,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -208,6 +215,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -232,6 +240,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
             <LinearLayout
@@ -256,6 +265,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
+                    android:onClick="removeOption"
                     />
             </LinearLayout>
 
