@@ -2,7 +2,6 @@ package com.zilche.zilche;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +24,7 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
@@ -78,11 +74,7 @@ public class SignUpActivity extends FragmentActivity {
     }
 
     public void backButtonLogin(View v) {
-        Intent i = new Intent(this, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        finish();
-        startActivity(i);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        onBackPressed();
     }
 
     private class SignUpFragmentAdapter extends FragmentPagerAdapter {
@@ -222,7 +214,7 @@ public class SignUpActivity extends FragmentActivity {
                         break;
                     }
                     case R.id.forgot_pw: {
-                        LayoutInflater inf = LayoutInflater.from(getActivity());
+                        LayoutInflater inf = getActivity().getLayoutInflater();
                         final View view = inf.inflate(R.layout.forgot_password, null);
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(getActivity());
                         final AlertDialog alert11 = builder1.create();

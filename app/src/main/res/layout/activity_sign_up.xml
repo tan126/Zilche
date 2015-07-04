@@ -16,11 +16,12 @@
             android:id="@+id/menu_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
+            android:padding="10dp"
             android:src="@drawable/ic_arrow_back_white_24dp"
             android:background="@null"
             android:layout_centerVertical="true"
             android:layout_gravity="left"
+            android:clickable="true"
             android:onClick="backButtonLogin"
             />
 

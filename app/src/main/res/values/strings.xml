@@ -56,4 +56,5 @@
     <string name="connection_err">Cannot connect to server. Please try again later.</string>
     <string name="no_email">Email address is not registered.</string>
     <string name="email_sent">Instructions to reset your password has been sent to your email address.</string>
+    <string name="title_activity_category">CategoryActivity</string>
 </resources>
