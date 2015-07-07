@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,15 +56,21 @@ public class CategoryFragment extends Fragment {
 
         private Context c;
         private Integer[] thumbnails = {
-             R.drawable.all2, R.drawable.car2, R.drawable.enter2, R.drawable.fashion2, R.drawable.food2,
-                R.drawable.games2, R.drawable.it2, R.drawable.pet2, R.drawable.science2, R.drawable.sport2,
-                R.drawable.social, R.drawable.tech2, R.drawable.travel
+             R.drawable.category_all, R.drawable.category_auto, R.drawable.category_edu, R.drawable.category_enter,
+                R.drawable.category_fash, R.drawable.category_finance, R.drawable.category_food, R.drawable.category_games,
+                R.drawable.category_it, R.drawable.category_pets, R.drawable.category_sci, R.drawable.category_social,
+                R.drawable.category_sports, R.drawable.category_tech, R.drawable.category_travel
         };
         private Integer[] strings = {
-                R.string.category_all, R.string.category_auto, R.string.category_entertainment, R.string.category_fashion,
-                R.string.category_food, R.string.category_games, R.string.category_it,
-                R.string.category_pet, R.string.category_science, R.string.category_sports, R.string.category_social, R.string.category_tech,
+                R.string.category_all, R.string.category_auto, R.string.category_education, R.string.category_entertainment,
+                R.string.category_fashion, R.string.category_finance, R.string.category_food, R.string.category_games, R.string.category_it,
+                R.string.category_pet, R.string.category_science, R.string.category_social, R.string.category_sports, R.string.category_tech,
                 R.string.category_travel
+        };
+        private Integer[] bg_color = {
+                R.drawable.bg_blue, R.drawable.bg_red, R.drawable.bg_dpurple, R.drawable.bg_purple, R.drawable.bg_lime,
+                R.drawable.bg_dorange, R.drawable.bg_yellow, R.drawable.bg_grey, R.drawable.bg_green, R.drawable.bg_brown,
+                R.drawable.bg_teal, R.drawable.bg_cyan, R.drawable.bg_pink, R.drawable.bg_orange, R.drawable.bg_bgrey
         };
 
         public ImageAdapter(Context c) {
@@ -93,10 +100,11 @@ public class CategoryFragment extends Fragment {
             }
             ImageView iv = (ImageView) convertView.findViewById(R.id.imageView);
             TextView tv = (TextView) convertView.findViewById(R.id.category_text);
+            ImageView bg = (ImageView) convertView.findViewById(R.id.imageViewBg);
             tv.setText(c.getResources().getString(strings[position]));
-            tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
             iv.setImageResource(thumbnails[position]);
-            iv.setAdjustViewBounds(true);
+            bg.setImageResource(bg_color[position]);
+            bg.setAdjustViewBounds(true);
             convertView.setTag(position);
             return convertView;
         }

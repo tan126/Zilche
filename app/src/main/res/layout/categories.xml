@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageViewBg"
+    />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         />
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="AAA"
-        android:gravity="right"
-        android:paddingRight="3dp"
-        android:background="#99000000"
+        android:gravity="center"
+        android:background="#66000000"
         android:id="@+id/category_text"
-        android:textColor="#ccc"
-        android:textSize="15sp"
-        android:layout_alignBottom="@id/imageView"
-        android:layout_alignRight="@id/imageView"
+        android:textColor="#eee"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
         />
 
 </RelativeLayout>

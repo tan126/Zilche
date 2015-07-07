@@ -15,9 +15,11 @@
     <string name="signup">Sign Up</string>
     <string name="category_all">ALL</string>
     <string name="category_auto">AUTOMOBILE</string>
+    <string name="category_education">EDUCATION</string>
     <string name="category_entertainment">ENTERTAINMENT</string>
     <string name="category_food">FOOD</string>
     <string name="category_fashion">FASHION</string>
+    <string name="category_finance">FINANCE</string>
     <string name="category_games">GAMES</string>
     <string name="category_it">I.T</string>
     <string name="category_pet">PETS</string>
