@@ -70,7 +70,7 @@ public class CategoryFragment extends Fragment {
                 R.string.category_travel
         };
         private int[] bg_color = {
-                0xff42baff, 0xffff6259, 0xff835bd4, 0xffab48cf, 0xffced93b, 0xffffa321, 0xffffe53d, 0xffababab, 0xff6dcf71, 0xff997368,
+                0xff42baff, 0xffff6259, 0xff835bd4, 0xffab48cf, 0xffced93b, 0xffff8554, 0xffffe53d, 0xffababab, 0xff6dcf71, 0xff997368,
                 0xff22b3a2, 0xff24dbf0, 0xffff4284, 0xffffa321, 0xff809dab
         };
         /*private Integer[] bg_color = {

@@ -11,7 +11,7 @@ public class GridItemView extends ImageView {
     }
 
     public void onMeasure(int width, int height) {
-        super.onMeasure(width, width);
+        super.onMeasure(width, width + 15);
     }
 
 }
