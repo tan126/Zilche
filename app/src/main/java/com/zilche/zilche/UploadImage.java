@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -35,7 +36,7 @@ public class UploadImage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
+        final GridView gridview = (GridView) findViewById(R.id.gridview);
         imageAdapter = new ImageAdapter(this);
         gridview.setAdapter(imageAdapter);
 
@@ -45,7 +46,15 @@ public class UploadImage extends Activity {
                                     int position, long id) {
                 if(position == 0){
                     Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                    startActivity(intent);
+                    String ExternalStorageDirectoryPath = Environment
+                            .getExternalStorageDirectory()
+                            .getAbsolutePath();
+
+                    String targetPath = ExternalStorageDirectoryPath + "/DCIM/Camera";
+                    Uri uriSavedImage=Uri.fromFile(new File(targetPath + "/image.png"));
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+                    startActivityForResult(intent, 1);
+
 
                 }
                 else{
@@ -93,5 +102,33 @@ public class UploadImage extends Activity {
         }
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            GridView gridview = (GridView) findViewById(R.id.gridview);
+            imageAdapter = new ImageAdapter(this);
+            gridview.setAdapter(imageAdapter);
+
+            String ExternalStorageDirectoryPath = Environment
+                    .getExternalStorageDirectory()
+                    .getAbsolutePath();
+
+            String targetPath = ExternalStorageDirectoryPath + "/DCIM/Camera";
+
+            Toast.makeText(getApplicationContext(), targetPath, Toast.LENGTH_LONG).show();
+            File targetDirector = new File(targetPath);
+
+            //wrong
+            imageAdapter.add("Drawable//image");
+            File[] files = null;
+            files = targetDirector.listFiles();
+            if(files != null) {
+
+                for (File file : files) {
+                    imageAdapter.add(file.getAbsolutePath());
+                }
+            }
+        }
+    }
 
 }
