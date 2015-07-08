@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="true">
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:background="#ffffff">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/header"
@@ -33,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:text="My Poll"
-                android:textColor="#ffffff"
+                android:textColor="#fff"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"
@@ -41,8 +42,18 @@
                 />
         </RelativeLayout>
 
-        <!--ViewPager for the two tabs and then Tap Indicators???? for the sliding?
-        -->
+        <GridView
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:numColumns="1"
+            android:gravity="center"
+            android:padding="2dp"
+            android:verticalSpacing="2dp"
+            android:stretchMode="columnWidth"
+            android:id="@+id/gridv"
+            android:layout_marginTop="2dp"
+            android:background="#11100000"
+            />
 
-    </RelativeLayout>
-</ScrollView>
+    </LinearLayout>
+</RelativeLayout>

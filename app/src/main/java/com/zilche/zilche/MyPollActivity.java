@@ -1,20 +1,30 @@
 package com.zilche.zilche;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.Typeface;
 import android.view.View;
 
 public class MyPollActivity extends ActionBarActivity {
-
+    GridView gv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_poll);
+        gv = (GridView) findViewById(R.id.gridv);
+        gv.setAdapter(new PollListAdapter(this));
+
     }
 
     @Override
@@ -36,6 +46,54 @@ public class MyPollActivity extends ActionBarActivity {
     public void backButtonLogin(View v) {
         finish();
         //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    public class PollListAdapter extends BaseAdapter {
+
+        private Context c;
+        private String[] polls = {
+                "What's is the color?", "What is the number?"
+        };
+        private String[] times= {
+                "2hr ago", "1day ago"
+        };
+
+
+        public PollListAdapter(Context c) {
+            this.c = c;
+        }
+
+        @Override
+        public int getCount() {
+            return polls.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = vi.inflate(R.layout.mypolls, null);
+            }
+            TextView tv = (TextView) convertView.findViewById(R.id.poll_name);
+            tv.setText(polls[position]);
+            TextView timev = (TextView) convertView.findViewById(R.id.time);
+            timev.setText(times[position]);
+            convertView.setTag(position);
+            ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
+            iv.setImageResource(R.mipmap.ic_assessment_white_24dp);
+            iv.setColorFilter(Color.parseColor("#11110000"));
+            return convertView;
+        }
     }
 
 }

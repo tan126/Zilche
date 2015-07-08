@@ -34,6 +34,7 @@ public class FullScreenImage extends Activity
     }
     public void acceptPhotoSelection(View v) {
         //upload image to parse;
+
     }
 
     public void cancelPhotoSelection(View v) {
