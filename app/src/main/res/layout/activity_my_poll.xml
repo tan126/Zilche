@@ -48,7 +48,7 @@
             android:numColumns="1"
             android:gravity="center"
             android:padding="2dp"
-            android:verticalSpacing="2dp"
+            android:verticalSpacing="5dp"
             android:stretchMode="columnWidth"
             android:id="@+id/gridv"
             android:layout_marginTop="2dp"
