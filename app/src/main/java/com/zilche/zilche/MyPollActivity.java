@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,15 +16,48 @@ import android.widget.TextView;
 import android.graphics.Typeface;
 import android.view.View;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class MyPollActivity extends ActionBarActivity {
     GridView gv;
+    ArrayList<String> pollList;
+    ArrayList<String> timeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_poll);
         gv = (GridView) findViewById(R.id.gridv);
-        gv.setAdapter(new PollListAdapter(this));
+
+        pollList = new ArrayList<String>();
+        timeList = new ArrayList<String>();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+        query.whereEqualTo("author", ParseUser.getCurrentUser().getString("username"));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    Log.d("poll", "Retrieved " + list.size() + " polls");
+                    for (int i = 0; i < list.size(); i++) {
+                        ParseObject thisPoll = list.get(i);
+                        String tmpStr = thisPoll.getString("question");
+                        pollList.add(tmpStr);
+                        timeList.add(thisPoll.getCreatedAt().toString());
+                        gv.setAdapter(new PollListAdapter(MyPollActivity.this));
+                    }
+                } else {
+                    Log.d("Poll", "Error: " + e.getMessage());
+                }
+            }
+        });
 
     }
 
@@ -51,12 +85,15 @@ public class MyPollActivity extends ActionBarActivity {
     public class PollListAdapter extends BaseAdapter {
 
         private Context c;
-        private String[] polls = {
+
+        /*private String[] polls = {
                 "What's is the color?", "What is the number?"
-        };
-        private String[] times= {
+        };*/
+        private String[] polls = pollList.toArray(new String[pollList.size()]);
+        /*private String[] times= {
                 "2hr ago", "1day ago"
-        };
+        };*/
+        private String[] times = timeList.toArray(new String[timeList.size()]);
 
 
         public PollListAdapter(Context c) {
