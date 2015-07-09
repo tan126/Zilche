@@ -124,7 +124,7 @@ public class tmpNewPoll extends ActionBarActivity {
                         poll.add("votes", 0);
                     poll.put("author", ParseUser.getCurrentUser().toString());
                     poll.put("id", pollID + 1);
-                    poll.put("category", category_text.getText().toString());
+                    //poll.put("category", category_text.getText().toString());
                     question_text.setText("");
                     options_text.setText("");
                     category_text.setText("");
