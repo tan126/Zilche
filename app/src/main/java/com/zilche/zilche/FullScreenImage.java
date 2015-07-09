@@ -29,12 +29,13 @@ public class FullScreenImage extends Activity
         ImageView image = (ImageView) findViewById(R.id.fullImage);
 
         image.setImageBitmap(bmp);
-        //image.setScaleType(ScaleType.FIT_XY);
+        image.setScaleType(ScaleType.FIT_XY);
 
     }
     public void acceptPhotoSelection(View v) {
         //upload image to parse;
 
+        finish();
     }
 
     public void cancelPhotoSelection(View v) {

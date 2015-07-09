@@ -3,10 +3,13 @@ package com.zilche.zilche;
 
 import java.io.File;
 import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -30,12 +33,14 @@ public class UploadImage extends Activity {
 
     private ImageAdapter imageAdapter;
 
+    byte[] b;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_image);
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
+        final GridView gridview = (GridView) findViewById(R.id.gridview);
         imageAdapter = new ImageAdapter(this);
         gridview.setAdapter(imageAdapter);
 
@@ -45,7 +50,23 @@ public class UploadImage extends Activity {
                                     int position, long id) {
                 if(position == 0){
                     Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                    startActivity(intent);
+                    String ExternalStorageDirectoryPath = Environment
+                            .getExternalStorageDirectory()
+                            .getAbsolutePath();
+
+
+
+                    String targetPath = ExternalStorageDirectoryPath + "/DCIM/Camera";
+
+
+                    Calendar c = Calendar.getInstance();
+                    int seconds = c.get(Calendar.SECOND);
+
+
+                    Uri uriSavedImage=Uri.fromFile(new File(targetPath + "/img" + Integer.toString(seconds) + ".png"));
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+                    startActivityForResult(intent, 1);
+
 
                 }
                 else{
@@ -54,13 +75,14 @@ public class UploadImage extends Activity {
                     Bitmap bitmap = imageAdapter.getBitmapFromView(thisview);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    byte[] b = baos.toByteArray();
+                    b = baos.toByteArray();
 
                     Intent intent = new Intent(UploadImage.this, FullScreenImage.class);
                     intent.putExtra("picture", b);
-                    startActivity(intent);
 
 
+
+                    startActivityForResult(intent, 2);
 
                 }
 
@@ -72,9 +94,7 @@ public class UploadImage extends Activity {
 
 
 
-        String ExternalStorageDirectoryPath = Environment
-                .getExternalStorageDirectory()
-                .getAbsolutePath();
+        String ExternalStorageDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         String targetPath = ExternalStorageDirectoryPath + "/DCIM/Camera";
 
@@ -93,5 +113,38 @@ public class UploadImage extends Activity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            GridView gridview = (GridView) findViewById(R.id.gridview);
+            imageAdapter = new ImageAdapter(this);
+            gridview.setAdapter(imageAdapter);
+
+            String ExternalStorageDirectoryPath = Environment
+                    .getExternalStorageDirectory()
+                    .getAbsolutePath();
+
+            String targetPath = ExternalStorageDirectoryPath + "/DCIM/Camera";
+
+            Toast.makeText(getApplicationContext(), targetPath, Toast.LENGTH_LONG).show();
+            File targetDirector = new File(targetPath);
+
+            //wrong
+            imageAdapter.add("Drawable//image");
+            File[] files = null;
+            files = targetDirector.listFiles();
+            if(files != null) {
+
+                for (File file : files) {
+                    imageAdapter.add(file.getAbsolutePath());
+                }
+            }
+        }
+        if (requestCode == 2) {
+            //pass picture back to create poll
+            Toast.makeText(getApplicationContext(), Integer.toString(b.length), Toast.LENGTH_LONG).show();
+        }
+    }
 
 }

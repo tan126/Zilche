@@ -5,23 +5,16 @@
     android:orientation="vertical">
 
     <GridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:columnWidth="90dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2"
+        android:verticalSpacing="2dp"
+        android:horizontalSpacing="2dp"
+        android:padding="2dp"
         android:stretchMode="columnWidth"
         android:gravity="center"/>
 
-    <TextView
-        android:id="@+id/grid_item_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@+id/label"
-        android:layout_marginTop="5px"
-        android:textSize="15px" >
-    </TextView>
 
 </LinearLayout>
