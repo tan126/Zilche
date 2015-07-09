@@ -3,6 +3,8 @@ package com.zilche.zilche;
 
 import java.io.File;
 import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -52,8 +54,16 @@ public class UploadImage extends Activity {
                             .getExternalStorageDirectory()
                             .getAbsolutePath();
 
+
+
                     String targetPath = ExternalStorageDirectoryPath + "/DCIM/Camera";
-                    Uri uriSavedImage=Uri.fromFile(new File(targetPath + "/image.png"));
+
+
+                    Calendar c = Calendar.getInstance();
+                    int seconds = c.get(Calendar.SECOND);
+
+
+                    Uri uriSavedImage=Uri.fromFile(new File(targetPath + "/img" + Integer.toString(seconds) + ".png"));
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
                     startActivityForResult(intent, 1);
 
@@ -84,9 +94,7 @@ public class UploadImage extends Activity {
 
 
 
-        String ExternalStorageDirectoryPath = Environment
-                .getExternalStorageDirectory()
-                .getAbsolutePath();
+        String ExternalStorageDirectoryPath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         String targetPath = ExternalStorageDirectoryPath + "/DCIM/Camera";
 
