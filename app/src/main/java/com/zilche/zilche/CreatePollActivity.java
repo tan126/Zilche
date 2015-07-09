@@ -2,10 +2,12 @@ package com.zilche.zilche;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +29,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
 public class CreatePollActivity extends FragmentActivity implements OnPageChangeListener {
@@ -34,16 +43,30 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     FirstFragment firstFrag;
     SecondFragment secondFrag;
     ThirdFragment thirdFrag;
+    ParseObject poll;
+    ViewPager pager;
+    EditText question;
+    EditText option1;
+    EditText option2;
+    EditText option3;
+    EditText option4;
+    EditText option5;
+    EditText option6;
+    EditText option7;
+    EditText option8;
+    EditText option9;
     int numOptions = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_poll);
-        ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
+        pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         pager.addOnPageChangeListener(this);
+        onPageSelected(0);
 
+        poll = new ParseObject("Poll");
 /*        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -118,16 +141,171 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
 
     @Override
     public void onPageSelected(int position) {
-        TextView textView = (TextView) findViewById(R.id.createpollfootertext);
+        final TextView textView = (TextView) findViewById(R.id.createpollfootertext);
         switch (position) {
             case 0:
                 textView.setText("Next");
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        question = (EditText) findViewById(R.id.question);
+                        poll.put("question", question.getText().toString());
+                        pager.setCurrentItem(1);
+                    }
+                });
                 break;
             case 1:
                 textView.setText("Next");
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        poll.put("optionNum", numOptions);
+                        switch (numOptions) {
+                            case 2:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                break;
+                            case 3:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                break;
+                            case 4:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                break;
+                            case 5:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                break;
+                            case 6:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                break;
+                            case 7:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                option7 = (EditText) findViewById(R.id.option7);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                poll.add("options", option7.getText().toString());
+                                break;
+                            case 8:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                option7 = (EditText) findViewById(R.id.option7);
+                                option8 = (EditText) findViewById(R.id.option8);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                poll.add("options", option7.getText().toString());
+                                poll.add("options", option8.getText().toString());
+                                break;
+                            case 9:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                option7 = (EditText) findViewById(R.id.option7);
+                                option8 = (EditText) findViewById(R.id.option8);
+                                option9 = (EditText) findViewById(R.id.option9);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                poll.add("options", option7.getText().toString());
+                                poll.add("options", option8.getText().toString());
+                                poll.add("options", option9.getText().toString());
+                                break;
+                        }
+                        for (int i = 0; i < numOptions; i ++ )
+                            poll.add("votes", 0);
+                        pager.setCurrentItem(2);
+                    }
+                });
                 break;
             case 2:
                 textView.setText("Submit");
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        textView.setClickable(false);
+                        textView.setBackgroundColor(Color.parseColor("#11100000"));
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("poll_id");
+                        query.getInBackground("ioqSxO1iQY", new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject object, ParseException e) {
+                                if (e == null) {
+                                    // object will be poll_id
+                                    int pollID = object.getInt("value");
+                                    object.increment("value");
+                                    object.saveInBackground();
+
+                                    poll.put("author", ParseUser.getCurrentUser().getString("username"));
+                                    poll.put("id", pollID + 1);
+                                    poll.put("category", 0);
+                                    poll.saveInBackground();
+                                } else {
+                                    // something went wrong
+                                }
+                            }
+                        });
+                        Context context = getApplicationContext();
+                        CharSequence text = "New Poll Submitted";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+                        finish();
+                    }
+                });
                 break;
             default:
                 textView.setText("Next");
