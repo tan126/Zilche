@@ -4,12 +4,49 @@
     android:orientation="vertical"
     tools:context="com.zilche.zilche.CategoryActivity">
 
-    <android.support.v7.widget.Toolbar
+
+    <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#ffaa6a60"
-        android:id="@+id/toolbar_cat"
-        ></android.support.v7.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#3F51B5"
+        >
+
+        <ImageButton
+            android:id="@+id/back_button_cat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Categories"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"
+            android:id="@+id/title_cat"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sort_cat"
+            android:padding="10dp"
+            android:src="@drawable/ic_sort_white_24dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
 
     <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

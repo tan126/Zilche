@@ -60,4 +60,20 @@
     <string name="email_sent">Instructions to reset your password has been sent to your email address.</string>
     <string name="title_activity_category">CategoryActivity</string>
     <string name="title_activity_achart_engine_pie_chart">AChartEnginePieChartActivity</string>
+    <string name="category_all_2">All Posts</string>
+    <string name="category_auto_2">Automobile</string>
+    <string name="category_education_2">Education</string>
+    <string name="category_entertainment_2">Entertainment</string>
+    <string name="category_food_2">Food</string>
+    <string name="category_fashion_2">Fashion</string>
+    <string name="category_finance_2">Finance</string>
+    <string name="category_games_2">Games</string>
+    <string name="category_it_2">I.T</string>
+    <string name="category_pet_2">Pets</string>
+    <string name="category_science_2">Science</string>
+    <string name="category_social_2">Social</string>
+    <string name="category_sports_2">Sports</string>
+    <string name="category_travel_2">Travel</string>
+    <string name="category_tech_2">Technology</string>
+
 </resources>

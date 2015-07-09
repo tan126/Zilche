@@ -47,8 +47,9 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // redirect to results activity
-                Toast.makeText(getActivity().getBaseContext(), Integer.toString((int)view.getTag()),
-                        Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), CategoryActivity.class);
+                i.putExtra("category_index", position);
+                startActivity(i);
             }
         });
         return rootView;
