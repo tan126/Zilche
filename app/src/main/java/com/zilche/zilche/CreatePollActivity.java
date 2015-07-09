@@ -75,7 +75,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
 
             @Override
             public void onPageSelected(int position) {
-                TextView textView = (TextView) findViewById(R.id.createpollfootertext);
+                TextView textView = (TextView) findViewById(R.id.createpollfootertext);x
                 switch (position) {
                     case 0:
                         textView.setText("Next");
@@ -421,15 +421,19 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
 
             private Context c;
             private Integer[] thumbnails = {
-                    R.drawable.all2, R.drawable.car2, R.drawable.enter2, R.drawable.fashion2, R.drawable.food2,
-                    R.drawable.games2, R.drawable.it2, R.drawable.pet2, R.drawable.science2, R.drawable.sport2,
-                    R.drawable.social, R.drawable.tech2, R.drawable.travel
+                    R.drawable.category_all, R.drawable.category_auto, R.drawable.category_enter, R.drawable.category_fashion, R.drawable.category_food,
+                    R.drawable.category_games, R.drawable.category_it, R.drawable.category_pets, R.drawable.category_sci, R.drawable.category_sports,
+                    R.drawable.category_social, R.drawable.category_tech, R.drawable.category_travel
             };
             private Integer[] strings = {
                     R.string.category_all, R.string.category_auto, R.string.category_entertainment, R.string.category_fashion,
                     R.string.category_food, R.string.category_games, R.string.category_it,
                     R.string.category_pet, R.string.category_science, R.string.category_sports, R.string.category_social, R.string.category_tech,
                     R.string.category_travel
+            };
+            private int[] bg_color = {
+                    0xff42baff, 0xffff6259, 0xff835bd4, 0xffab48cf, 0xffced93b, 0xffff8554, 0xffffe53d, 0xffababab, 0xff6dcf71, 0xff997368,
+                    0xff22b3a2, 0xff24dbf0, 0xffff4284, 0xffffa321, 0xff809dab
             };
 
             public ImageAdapter(Context c) {
@@ -459,9 +463,11 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                 }
                 ImageView iv = (ImageView) convertView.findViewById(R.id.imageView);
                 TextView tv = (TextView) convertView.findViewById(R.id.category_text);
+                ImageView bg = (ImageView) convertView.findViewById(R.id.imageViewBg);
                 tv.setText(c.getResources().getString(strings[position]));
                 tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
                 iv.setImageResource(thumbnails[position]);
+                bg.setBackgroundColor(bg_color[position]);
                 iv.setAdjustViewBounds(true);
                 convertView.setTag(position);
                 return convertView;

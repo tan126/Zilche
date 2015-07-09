@@ -59,4 +59,5 @@
     <string name="no_email">Email address is not registered.</string>
     <string name="email_sent">Instructions to reset your password has been sent to your email address.</string>
     <string name="title_activity_category">CategoryActivity</string>
+    <string name="title_activity_achart_engine_pie_chart">AChartEnginePieChartActivity</string>
 </resources>
