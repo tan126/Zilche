@@ -31,6 +31,8 @@ public class UploadImage extends Activity {
 
     private ImageAdapter imageAdapter;
 
+    byte[] b;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,13 +65,14 @@ public class UploadImage extends Activity {
                     Bitmap bitmap = imageAdapter.getBitmapFromView(thisview);
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    byte[] b = baos.toByteArray();
+                    b = baos.toByteArray();
 
                     Intent intent = new Intent(UploadImage.this, FullScreenImage.class);
                     intent.putExtra("picture", b);
-                    startActivity(intent);
 
 
+
+                    startActivityForResult(intent, 2);
 
                 }
 
@@ -102,6 +105,7 @@ public class UploadImage extends Activity {
         }
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
@@ -128,6 +132,10 @@ public class UploadImage extends Activity {
                     imageAdapter.add(file.getAbsolutePath());
                 }
             }
+        }
+        if (requestCode == 2) {
+            //pass picture back to create poll
+            Toast.makeText(getApplicationContext(), Integer.toString(b.length), Toast.LENGTH_LONG).show();
         }
     }
 
