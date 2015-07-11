@@ -9,7 +9,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <TextView android:text="Options:"
                 android:textSize="40dp"
@@ -42,6 +43,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:onClick="removeOption"
+                    android:visibility="invisible"
                     />
             </LinearLayout>
             <LinearLayout
@@ -65,6 +67,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:onClick="removeOption"
+                    android:visibility="invisible"
                     />
             </LinearLayout>
             <LinearLayout
@@ -89,7 +92,7 @@
                     android:visibility="gone"
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption3"
                     />
             </LinearLayout>
             <LinearLayout
@@ -114,7 +117,7 @@
                     android:visibility="gone"
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption4"
                     />
             </LinearLayout>
             <LinearLayout
@@ -139,7 +142,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption5"
                     />
             </LinearLayout>
             <LinearLayout
@@ -164,7 +167,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption6"
                     />
             </LinearLayout>
             <LinearLayout
@@ -189,7 +192,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption7"
                     />
             </LinearLayout>
             <LinearLayout
@@ -215,7 +218,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption8"
                     />
             </LinearLayout>
             <LinearLayout
@@ -240,7 +243,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption9"
                     />
             </LinearLayout>
             <LinearLayout
@@ -265,7 +268,7 @@
                     android:src="@drawable/ic_remove_black_24dp"
                     android:background="@null"
                     android:visibility="gone"
-                    android:onClick="removeOption"
+                    android:onClick="removeOption10"
                     />
             </LinearLayout>
 
@@ -275,7 +278,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal">
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            >
             <ImageButton
                 android:id="@+id/addoption"
                 android:onClick="addOption"

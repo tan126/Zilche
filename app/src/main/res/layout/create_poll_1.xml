@@ -11,6 +11,7 @@
         android:src="@drawable/ic_photo_white_24dp"
         android:background="#C0C0C0"
         android:layout_gravity="center"
+        android:onClick="uploadImage"
         />
 
     <TextView android:text="Question:"

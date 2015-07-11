@@ -36,6 +36,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.w3c.dom.Text;
+
 import static android.support.v4.view.ViewPager.OnPageChangeListener;
 
 public class CreatePollActivity extends FragmentActivity implements OnPageChangeListener {
@@ -56,6 +58,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     EditText option8;
     EditText option9;
     int numOptions = 2;
+    boolean[] visiblePollOptions = {true, true, false, false, false, false, false, false ,false, false};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -490,20 +493,158 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
             Toast.makeText(getApplicationContext(), "Reached maximum of 10 options", Toast.LENGTH_SHORT).show();
             return;
         }
-        numOptions++;
-        String option = "option" + numOptions;
-        String optionR = "option" + numOptions + "remove";
-        int optionID = getResources().getIdentifier(option, "id", getPackageName());
-        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
-        EditText editText = (EditText)findViewById(optionID);
-        ImageButton imageButton = (ImageButton)findViewById(optionRID);
-        editText.setVisibility(View.VISIBLE);
-        imageButton.setVisibility(View.VISIBLE);
-
+        for (int i = 0; i < 10; i++) {
+            if (visiblePollOptions[i] == false) {
+                visiblePollOptions[i] = true;
+                numOptions++;
+                int actualOptionID = i + 1;
+                String option = "option" + actualOptionID;
+                String optionR = "option" + actualOptionID + "remove";
+                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+                EditText editText = (EditText)findViewById(optionID);
+                ImageButton imageButton = (ImageButton)findViewById(optionRID);
+                editText.setVisibility(View.VISIBLE);
+                imageButton.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
     }
 
     public void removeOption(View v) {
 
     }
 
+
+    public void uploadImage(View v) {
+
+        Intent i = new Intent(this, UploadImage.class);
+        startActivityForResult(i, 1);/*
+        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);*/
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Bundle extras = getIntent().getExtras();
+        //byte[] b = extras.getByteArray("uploadedImage");
+        String stredittext=data.getStringExtra("edittextvalue");
+        Toast.makeText(getApplicationContext(), stredittext, Toast.LENGTH_LONG).show();
+
+
+    }
+
+    public void removeOption3(View v) {
+        int optionNum = 3;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[2] = false;
+        editText.setText("");
+    }
+    public void removeOption4(View v) {
+        int optionNum = 4;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[3] = false;
+        editText.setText("");
+    }
+    public void removeOption5(View v) {
+        int optionNum = 5;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[4] = false;
+        editText.setText("");
+    }
+    public void removeOption6(View v) {
+        int optionNum = 6;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[5] = false;
+        editText.setText("");
+    }
+    public void removeOption7(View v) {
+        int optionNum = 7;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[6] = false;
+        editText.setText("");
+    }
+    public void removeOption8(View v) {
+        int optionNum = 8;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[7] = false;
+        editText.setText("");
+    }
+    public void removeOption9(View v) {
+        int optionNum = 9;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[8] = false;
+        editText.setText("");
+    }
+    public void removeOption10(View v) {
+        int optionNum = 10;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[9] = false;
+        editText.setText("");
+    }
 }
