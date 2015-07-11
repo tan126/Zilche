@@ -143,12 +143,12 @@ public class UploadImage extends Activity {
         }
         if (requestCode == 2) {
             //pass picture back to create poll
-            //Toast.makeText(getApplicationContext(), Integer.toString(b.length), Toast.LENGTH_LONG).show();
-            Intent resultIntent = new Intent();
+            Toast.makeText(getApplicationContext(), Integer.toString(b.length), Toast.LENGTH_LONG).show();
+            /*Intent resultIntent = new Intent();
             //resultIntent.putExtra("uploadedImage", b);
             resultIntent.putExtra("edittextvalue","aaa");
             setResult(Activity.RESULT_OK, resultIntent);
-            finish();
+            finish();*/
 
 
         }
