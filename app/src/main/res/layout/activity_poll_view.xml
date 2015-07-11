@@ -1,0 +1,56 @@
+<com.zilche.zilche.SlidingPaneLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sliding_pane"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_gravity="left"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:background="#E6E6E6"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/header_poll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#3F51B5"
+            android:elevation="2dp"
+            >
+
+            <ImageButton
+                android:id="@+id/back_button_poll_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:src="@drawable/ic_chevron_left_white_24dp"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:layout_gravity="left" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Categories"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:fontFamily="sans-serif-medium"
+                android:visibility="invisible"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+
+</com.zilche.zilche.SlidingPaneLayout>

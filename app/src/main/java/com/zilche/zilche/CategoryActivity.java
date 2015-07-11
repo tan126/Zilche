@@ -1,16 +1,22 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Build;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -82,4 +88,26 @@ public class CategoryActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void clicked (View v){
+        Intent i = new Intent(this, PollViewActivity.class);
+        i.putExtra("category_num", category);
+        startActivity(i);
+    }
+
+    public static class PollViewFragment extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle bundle) {
+            return inf.inflate(R.layout.activity_poll_view, container, false);
+        }
+
+    }
+
+    public void setFragment(Fragment f) {
+        FragmentManager fm = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(android.R.id.content, f);
+        ft.commit();
+    }
+
 }

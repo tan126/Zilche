@@ -75,5 +75,6 @@
     <string name="category_sports_2">Sports</string>
     <string name="category_travel_2">Travel</string>
     <string name="category_tech_2">Technology</string>
+    <string name="title_activity_poll_view">PollViewActivity</string>
 
 </resources>

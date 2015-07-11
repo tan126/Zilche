@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="#3F51B5"
+        android:elevation="2dp"
         >
 
         <ImageButton
@@ -50,5 +51,10 @@
 
     <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click me"
+        android:onClick="clicked"/>
 
 </LinearLayout>

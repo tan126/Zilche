@@ -69,6 +69,11 @@
             android:name=".CategoryActivity"
             android:label="@string/title_activity_category" >
         </activity>
+        <activity
+            android:name=".PollViewActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/title_activity_poll_view" >
+        </activity>
     </application>
 
 </manifest>
