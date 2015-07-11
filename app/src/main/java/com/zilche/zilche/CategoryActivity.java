@@ -91,7 +91,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     public void clicked (View v){
         Intent i = new Intent(this, PollViewActivity.class);
-        i.putExtra("category_num", category);
+        i.putExtra("category_index", category);
         startActivity(i);
     }
 
