@@ -31,4 +31,5 @@ dependencies {
     compile fileTree(include: 'Parse-*.jar', dir: 'libs')
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     compile files('libs/ParseFacebookUtilsV4-1.9.2.jar')
+    compile files('libs/achartengine-1.1.0.jar')
 }
