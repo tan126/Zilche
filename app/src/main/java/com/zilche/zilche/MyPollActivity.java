@@ -30,6 +30,7 @@ public class MyPollActivity extends ActionBarActivity {
     GridView gv;
     ArrayList<String> pollList;
     ArrayList<String> timeList;
+    ArrayList<String> totalList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,9 @@ public class MyPollActivity extends ActionBarActivity {
 
         pollList = new ArrayList<String>();
         timeList = new ArrayList<String>();
+        totalList = new ArrayList<String>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+        query.orderByDescending("lastUpdate");
         query.whereEqualTo("author", ParseUser.getCurrentUser().getString("username"));
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -52,15 +55,31 @@ public class MyPollActivity extends ActionBarActivity {
                         pollList.add(tmpStr);
                         //timeList.add(thisPoll.getCreatedAt().toString());
                         String tmp = "";
-                        long createTime = thisPoll.getLong("createTime");
-                        long diffMS = System.currentTimeMillis() - createTime;
-                        long diffS = diffMS / 60;
+                        int total = thisPoll.getInt("total");
+                        totalList.add("" + total + " participants");
+                        long updatedTime = thisPoll.getLong("lastUpdate");
+                        long diffMS = System.currentTimeMillis() - updatedTime;
+                        long diffS = diffMS / 1000;
                         if ( diffS > 60 ) {
                             long diffM = diffS / 60;
-                            tmp += "last updated" + diffM + "minutes ago";
+                            if ( diffM > 60 ){
+                                long diffH = diffM / 60;
+                                if ( diffH > 24 ) {
+                                    long diffD = diffH / 24;
+                                    tmp += "last updated " + diffD + " days ago";
+                                }
+                                else
+                                    tmp += "last updated " + diffH + " hours ago";;
+                            }
+                            else
+                                tmp += "last updated " + diffM + " minutes ago";
                         }
+                        else
+                            tmp += "last updated 1 minute ago";
                         timeList.add(tmp);
                         gv.setAdapter(new PollListAdapter(MyPollActivity.this));
+                        TextView title = (TextView) findViewById(R.id.title);
+                        title.setText("My Poll");
                     }
                 } else {
                     Log.d("Poll", "Error: " + e.getMessage());
@@ -103,7 +122,7 @@ public class MyPollActivity extends ActionBarActivity {
                 "2hr ago", "1day ago"
         };*/
         private String[] times = timeList.toArray(new String[timeList.size()]);
-
+        private String[] totals = totalList.toArray(new String[totalList.size()]);
 
         public PollListAdapter(Context c) {
             this.c = c;
@@ -130,10 +149,14 @@ public class MyPollActivity extends ActionBarActivity {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = vi.inflate(R.layout.mypolls, null);
             }
+            ImageView check = (ImageView) convertView.findViewById(R.id.check);
+            check.setColorFilter(Color.parseColor("#00C853"));
             TextView tv = (TextView) convertView.findViewById(R.id.poll_name);
             tv.setText(polls[position]);
             TextView timev = (TextView) convertView.findViewById(R.id.time);
             timev.setText(times[position]);
+            TextView total = (TextView) convertView.findViewById(R.id.total);
+            total.setText(totals[position]);
             convertView.setTag(position);
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
             iv.setImageResource(R.mipmap.ic_assessment_white_24dp);
