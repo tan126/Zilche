@@ -51,9 +51,15 @@ public class MyPollActivity extends ActionBarActivity {
                         String tmpStr = thisPoll.getString("question");
                         pollList.add(tmpStr);
                         //timeList.add(thisPoll.getCreatedAt().toString());
+                        String tmp = "";
                         long createTime = thisPoll.getLong("createTime");
-                        long diff = System.currentTimeMillis() - createTime;
-                        String tmp = "" + diff / 1000;
+                        long diffMS = System.currentTimeMillis() - createTime;
+                        long diffS = diffMS / 60;
+                        if ( diffS > 60 ) {
+                            long diffM = diffS / 60;
+                            long diffR = diffS % 60;
+                            //tmp += diffM + "Min " + diffR
+                        }
                         timeList.add(tmp);
                         gv.setAdapter(new PollListAdapter(MyPollActivity.this));
                     }
