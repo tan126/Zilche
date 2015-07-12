@@ -45,14 +45,13 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+
+        ImageView imageView = (ImageView) convertView;
         if (convertView == null) {
             imageView = new ImageView(context);
             imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setPadding(8, 8, 8, 8);
-        } else {
-            imageView = (ImageView) convertView;
+            imageView.setPadding(20, 20, 20, 20);
         }
 
         //Bitmap bm = decodeSampledBitmapFromUri(imageList.get(position), 300, 300);

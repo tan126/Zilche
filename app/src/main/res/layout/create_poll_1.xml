@@ -12,7 +12,7 @@
             android:id="@+id/pollimage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:src="@drawable/ic_photo_white_24dp"
+            android:src="@drawable/ic_insert_photo_white_48dp"
             android:background="#C0C0C0"
             android:layout_gravity="center"
             android:onClick="uploadImage"

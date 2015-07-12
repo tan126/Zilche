@@ -30,7 +30,9 @@ public class ImageLoader extends AsyncTask<Object, String, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
-        imageView.setImageBitmap(bitmap);
+        if(bitmap != null)
+            imageView.setImageBitmap(bitmap);
+        cancel(true);
     }
 
     public Bitmap decodeSampledBitmapFromUri(String path, int reqWidth, int reqHeight) {
