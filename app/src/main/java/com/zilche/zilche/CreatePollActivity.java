@@ -57,6 +57,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     EditText option7;
     EditText option8;
     EditText option9;
+    EditText option10;
     int numOptions = 2;
     boolean[] visiblePollOptions = {true, true, false, false, false, false, false, false ,false, false};
 
@@ -163,7 +164,18 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                     @Override
                     public void onClick(View v) {
                         poll.put("optionNum", numOptions);
-                        switch (numOptions) {
+                        for (int i = 0; i < 10; i++) {
+                            if (visiblePollOptions[i] == true) {
+                                int actualOptionID = i + 1;
+                                String option = "option" + actualOptionID;
+                                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                                EditText optionText = (EditText)findViewById(optionID);
+                                poll.add("options", optionText.getText().toString());
+                                poll.add("votes", 0);
+                            }
+
+                        }
+                        /*switch (numOptions) {
                             case 2:
                                 option1 = (EditText) findViewById(R.id.option1);
                                 option2 = (EditText) findViewById(R.id.option2);
@@ -270,7 +282,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                                 break;
                         }
                         for (int i = 0; i < numOptions; i ++ )
-                            poll.add("votes", 0);
+                            poll.add("votes", 0);*/
                         pager.setCurrentItem(2);
                     }
                 });
