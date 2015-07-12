@@ -57,8 +57,7 @@ public class MyPollActivity extends ActionBarActivity {
                         long diffS = diffMS / 60;
                         if ( diffS > 60 ) {
                             long diffM = diffS / 60;
-                            long diffR = diffS % 60;
-                            //tmp += diffM + "Min " + diffR
+                            tmp += "last updated" + diffM + "minutes ago";
                         }
                         timeList.add(tmp);
                         gv.setAdapter(new PollListAdapter(MyPollActivity.this));
