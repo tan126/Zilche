@@ -307,6 +307,8 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                                     poll.put("author", ParseUser.getCurrentUser().getString("username"));
                                     poll.put("id", pollID + 1);
                                     poll.put("category", 0);
+                                    poll.put("createTime", System.currentTimeMillis());
+                                    poll.put("total", 0);
                                     poll.saveInBackground();
                                 } else {
                                     // something went wrong

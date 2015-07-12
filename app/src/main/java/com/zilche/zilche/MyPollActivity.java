@@ -45,12 +45,16 @@ public class MyPollActivity extends ActionBarActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    Log.d("poll", "Retrieved " + list.size() + " polls");
+                    //Log.d("poll", "Retrieved " + list.size() + " polls");
                     for (int i = 0; i < list.size(); i++) {
                         ParseObject thisPoll = list.get(i);
                         String tmpStr = thisPoll.getString("question");
                         pollList.add(tmpStr);
-                        timeList.add(thisPoll.getCreatedAt().toString());
+                        //timeList.add(thisPoll.getCreatedAt().toString());
+                        long createTime = thisPoll.getLong("createTime");
+                        long diff = System.currentTimeMillis() - createTime;
+                        String tmp = "" + diff / 1000;
+                        timeList.add(tmp);
                         gv.setAdapter(new PollListAdapter(MyPollActivity.this));
                     }
                 } else {
