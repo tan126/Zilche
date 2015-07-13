@@ -33,12 +33,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="My Poll"
+                android:text="Loading ..."
                 android:textColor="#fff"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"
                 android:textStyle="bold"
+                android:id="@+id/title"
                 />
         </RelativeLayout>
 
@@ -48,7 +49,7 @@
             android:numColumns="1"
             android:gravity="center"
             android:padding="2dp"
-            android:verticalSpacing="5dp"
+            android:verticalSpacing="3dp"
             android:stretchMode="columnWidth"
             android:id="@+id/gridv"
             android:layout_marginTop="2dp"
