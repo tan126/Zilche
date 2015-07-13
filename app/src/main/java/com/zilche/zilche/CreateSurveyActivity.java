@@ -45,6 +45,21 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     SecondFragment secondFrag;
     ParseObject survey;
     ViewPager pager;
+/*
+    EditText question;
+    EditText question1;
+    EditText question2;
+    EditText question3;
+    EditText question4;
+    EditText question5;
+    EditText question6;
+    EditText question7;
+    EditText question8;
+    EditText question9;
+    EditText question10;*/
+    EditText[] questions = new EditText[10];
+    int numQuestions = 2;
+    boolean[] visibleSurveyQuestions = {true, true, false, false, false, false, false, false ,false, false};
 
 
     @Override
@@ -160,7 +175,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.create_poll_2, container, false);
+            View v = inflater.inflate(R.layout.create_survey_2, container, false);
 
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragSecond);
             tv.setText(getArguments().getString("msg"));*/
@@ -179,4 +194,612 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             return f;*/
         }
     }
+
+
+    public void addQuestion(View v) {
+        if (numQuestions >= 10) {
+            Toast.makeText(getApplicationContext(), "Reached maximum of 10 questions", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        for (int i = 0; i < 10; i++) {
+            if (visibleSurveyQuestions[i] == false) {
+                visibleSurveyQuestions[i] = true;
+                numQuestions++;
+                int actualQuestionID = i + 1;
+                String question = "question" + actualQuestionID;
+                String questionR = "question" + actualQuestionID + "remove";
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+                EditText editText = (EditText)findViewById(questionID);
+                ImageButton imageButton = (ImageButton)findViewById(questionRID);
+                editText.setVisibility(View.VISIBLE);
+                imageButton.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+    }
+
+    public void removeQuestion(View v) {
+        int questionNum = 0;
+        String question = "question" + questionNum;
+        String questionR = "question" + questionNum + "remove";
+        int questionID = getResources().getIdentifier(question, "id", getPackageName());
+        int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(questionID);
+        ImageButton imageButton = (ImageButton)findViewById(questionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        questionNum--;
+        visibleSurveyQuestions[2] = false;
+        editText.setText("");
+    }
+
+
+
+    public void removeOption3(View v) {
+        int questionNum = 3;
+        numQuestions--;
+        boolean shifted = false;
+
+        for (int i = 3; i < 10; i++) {
+
+            if (visibleSurveyQuestions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int questionToShift = i + 1; // question ids from xml 1-10 range
+                int previousQuestionNum = i; // question ids from xml 1-10 range
+                String question = "question" + previousQuestionNum;
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                EditText editText = (EditText) findViewById(questionID);
+                String questionShift = "question" + questionToShift;
+                String questionRShift = "question" + questionToShift + "remove";
+                int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(questionIDShift);
+                editText.setText(editTextShift.getText().toString());
+
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visibleSurveyQuestions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visibleSurveyQuestions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+
+            }
+        }
+        if (shifted == false) {
+
+            String question = "question" + questionNum;
+            String questionR = "question" + questionNum + "remove";
+            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(questionID);
+            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            visibleSurveyQuestions[questionNum - 1] = false;
+            editText.setText("");
+
+        }
+    }
+    public void removeQuestion4(View v) {
+
+        int questionNum = 4;
+        numQuestions--;
+        boolean shifted = false;
+
+        for (int i = 4; i < 10; i++) {
+
+            if (visibleSurveyQuestions[i] == true) {
+
+                int questionToShift = i + 1; // question ids from xml 1-10 range
+                int previousQuestionNum = i; // question ids from xml 1-10 range
+                String question = "question" + previousQuestionNum;
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                EditText editText = (EditText) findViewById(questionID);
+                String questionShift = "question" + questionToShift;
+                String questionRShift = "question" + questionToShift + "remove";
+                int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(questionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visibleSurveyQuestions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visibleSurveyQuestions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String question = "question" + questionNum;
+            String questionR = "question" + questionNum + "remove";
+            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(questionID);
+            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visibleSurveyQuestions[questionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
+    }
+    public void removeQuestion5(View v) {
+
+        int questionNum = 5;
+        numQuestions--;
+        boolean shifted = false;
+
+        for (int i = 5; i < 10; i++) {
+
+            if (visibleSurveyQuestions[i] == true) {
+                //System.out.println("VISIBLE POLL question IS TRUE");
+                int questionToShift = i + 1; // question ids from xml 1-10 range
+                int previousQuestionNum = i; // option ids from xml 1-10 range
+                String question = "question" + previousQuestionNum;
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                EditText editText = (EditText) findViewById(questionID);
+                String questionShift = "question" + questionToShift;
+                String questionRShift = "question" + questionToShift + "remove";
+                int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(questionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visibleSurveyQuestions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visibleSurveyQuestions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String question = "question" + questionNum;
+            String questionR = "question" + questionNum + "remove";
+            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(questionID);
+            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visibleSurveyQuestions[questionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
+    }
+    public void removeQuestion6(View v) {
+
+        int questionNum = 6;
+        numQuestions--;
+        boolean shifted = false;
+
+        for (int i = 6; i < 10; i++) {
+
+            if (visibleSurveyQuestions[i] == true) {
+                //System.out.println("VISIBLE POLL QUESTION IS TRUE");
+                int questionToShift = i + 1; // question ids from xml 1-10 range
+                int previousQuestionNum = i; // question ids from xml 1-10 range
+                String question = "question" + previousQuestionNum;
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                EditText editText = (EditText) findViewById(questionID);
+                String questionShift = "question" + questionToShift;
+                String questionRShift = "question" + questionToShift + "remove";
+                int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(questionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visibleSurveyQuestions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visibleSurveyQuestions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String question = "question" + questionNum;
+            String questionR = "question" + questionNum + "remove";
+            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(questionID);
+            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visibleSurveyQuestions[questionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
+    }
+    public void removeQuestion7(View v) {
+
+        int questionNum = 7;
+        numQuestions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 7; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visibleSurveyQuestions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int questionToShift = i + 1; // question ids from xml 1-10 range
+                int previousQuestionNum = i; // question ids from xml 1-10 range
+                String question = "question" + previousQuestionNum;
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                EditText editText = (EditText) findViewById(questionID);
+                String questionShift = "question" + questionToShift;
+                String questionRShift = "question" + questionToShift + "remove";
+                int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(questionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visibleSurveyQuestions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visibleSurveyQuestions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String question = "question" + questionNum;
+            String questionR = "question" + questionNum + "remove";
+            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(questionID);
+            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visibleSurveyQuestions[questionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
+    }
+    public void removeQuestion8(View v) {
+        /*int optionNum = 8;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[7] = false;
+        editText.setText("");*/
+        int questionNum = 8;
+        numQuestions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 8; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visibleSurveyQuestions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int questionToShift = i + 1; // option ids from xml 1-10 range
+                int previousQuestionNum = i; // option ids from xml 1-10 range
+                String question = "question" + previousQuestionNum;
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                EditText editText = (EditText) findViewById(questionID);
+                String questionShift = "question" + questionToShift;
+                String questionRShift = "question" + questionToShift + "remove";
+                int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(questionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visibleSurveyQuestions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visibleSurveyQuestions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String question = "question" + questionNum;
+            String questionR = "question" + questionNum + "remove";
+            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(questionID);
+            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visibleSurveyQuestions[questionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
+    }
+    public void removeQuestion9(View v) {
+        /*int optionNum = 9;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[8] = false;
+        editText.setText("");*/
+        int questionNum = 9;
+        numQuestions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 9; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visibleSurveyQuestions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int questionToShift = i + 1; // option ids from xml 1-10 range
+                int previousQuestionNum = i; // option ids from xml 1-10 range
+                String question = "question" + previousQuestionNum;
+                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                EditText editText = (EditText) findViewById(questionID);
+                String questionShift = "question" + questionToShift;
+                String questionRShift = "question" + questionToShift + "remove";
+                int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(questionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visibleSurveyQuestions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visibleSurveyQuestions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String question = "question" + questionNum;
+            String questionR = "question" + questionNum + "remove";
+            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(questionID);
+            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visibleSurveyQuestions[questionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
+    }
+    public void removeQuestion10(View v) {
+        int questionNum = 10;
+        String question = "question" + questionNum;
+        String questionR = "question" + questionNum + "remove";
+        int questionID = getResources().getIdentifier(question, "id", getPackageName());
+        int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(questionID);
+        ImageButton imageButton = (ImageButton)findViewById(questionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numQuestions--;
+        visibleSurveyQuestions[9] = false;
+        editText.setText("");
+    }
 }
+
+
+
+
+
+
+
+
+

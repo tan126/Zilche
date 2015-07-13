@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView android:text="Questions:"
+                android:textSize="40dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:id="@+id/questionsheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question1"
+                    android:layout_below="@id/questionsheader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 1 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal"
+                    android:layout_weight=".9"
+
+                    />
+                <ImageButton
+                    android:id="@+id/question1remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:onClick="removeQuestion"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question2"
+                    android:layout_below="@id/question1"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 2 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal" />
+                <ImageButton
+                    android:id="@+id/question2remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:onClick="removeQuestion"
+                    android:visibility="invisible"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question3"
+                    android:layout_below="@id/question2"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 3 here..."
+                    android:gravity="top|left"
+                    android:scrollbars="horizontal"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question3remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:onClick="removeQuestion3"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question4"
+                    android:layout_below="@id/question3"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 4 here..."
+                    android:gravity="top|left"
+                    android:scrollbars="horizontal"
+                    android:singleLine="true"
+                    android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question4remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:onClick="removeQuestion4"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question5"
+                    android:layout_below="@id/question4"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 5 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal"
+                    android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question5remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:onClick="removeQuestion5"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question6"
+                    android:layout_below="@id/question5"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 6 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal"
+                    android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question6remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:onClick="removeQuestion6"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question7"
+                    android:layout_below="@id/question6"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 7 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal"
+                    android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question7remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:onClick="removeQuestion7"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question8"
+                    android:layout_below="@id/question7"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 8 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/question8remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:onClick="removeQuestion8"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question9"
+                    android:layout_below="@id/question8"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 9 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal"
+                    android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question9remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:onClick="removeQuestion9"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/question10"
+                    android:layout_below="@id/question9"
+                    android:layout_width="0dp"
+                    android:layout_weight=".9"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Question 10 here..."
+                    android:gravity="top|left"
+                    android:singleLine="true"
+                    android:scrollbars="horizontal"
+                    android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question10remove"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:background="@null"
+                    android:visibility="gone"
+                    android:onClick="removeQuestion10"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            >
+            <ImageButton
+                android:id="@+id/addquestion"
+                android:onClick="addQuestion"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@mipmap/ic_add_white_24dp"
+                android:background="@drawable/round_button"
+                android:layout_gravity="center"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
+</ScrollView>
