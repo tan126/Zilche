@@ -32,6 +32,7 @@ public class MyPollActivity extends ActionBarActivity {
     ArrayList<String> timeList;
     ArrayList<String> totalList;
     ArrayList<String> authorList;
+    ArrayList<String> hotnessList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class MyPollActivity extends ActionBarActivity {
         timeList = new ArrayList<String>();
         totalList = new ArrayList<String>();
         authorList = new ArrayList<String>();
+        hotnessList = new ArrayList<String>();
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
         query.orderByDescending("lastUpdate");
         query.whereEqualTo("author", ParseUser.getCurrentUser().getString("username"));
@@ -59,6 +61,14 @@ public class MyPollActivity extends ActionBarActivity {
                         String tmp = "";
                         int total = thisPoll.getInt("total");
                         totalList.add("" + total + " participants");
+                        if ( total < 50 )
+                            hotnessList.add("g");
+                        else if ( total < 100 )
+                            hotnessList.add("y");
+                        else if ( total >= 100 )
+                            hotnessList.add("r");
+                        else
+                            hotnessList.add("g");
                         long updatedTime = thisPoll.getLong("lastUpdate");
                         long diffMS = System.currentTimeMillis() - updatedTime;
                         long diffS = diffMS / 1000;
@@ -125,6 +135,7 @@ public class MyPollActivity extends ActionBarActivity {
         };*/
         private String[] times = timeList.toArray(new String[timeList.size()]);
         private String[] totals = totalList.toArray(new String[totalList.size()]);
+        private String [] hots = hotnessList.toArray(new String[hotnessList.size()]);
 
         public PollListAdapter(Context c) {
             this.c = c;
@@ -153,15 +164,29 @@ public class MyPollActivity extends ActionBarActivity {
             }
             ImageView check = (ImageView) convertView.findViewById(R.id.check);
             check.setColorFilter(Color.parseColor("#00C853"));
+
+            TextView total = (TextView) convertView.findViewById(R.id.total);
+
+            Log.d("aaa:", hots[position]);
+            if ( hots[position] == "y" ) {
+                check.setColorFilter(Color.parseColor("#FF9800"));
+                total.setTextColor(Color.parseColor("#FF9800"));
+            }
+            else if ( hots[position] == "r" ) {
+                check.setImageResource(R.drawable.ic_whatshot_white_18dp);
+                check.setColorFilter(Color.parseColor("#F44336"));
+                total.setTextColor(Color.parseColor("#F44336"));
+            }
+
             TextView tv = (TextView) convertView.findViewById(R.id.poll_name);
             tv.setText(polls[position]);
             TextView timev = (TextView) convertView.findViewById(R.id.time);
             timev.setText(times[position]);
-            TextView total = (TextView) convertView.findViewById(R.id.total);
+
             total.setText(totals[position]);
             convertView.setTag(position);
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
-            iv.setImageResource(R.mipmap.ic_assessment_white_24dp);
+            iv.setImageResource(R.drawable.ic_assessment_white_48dp);
             iv.setColorFilter(Color.parseColor("#11110000"));
             return convertView;
         }

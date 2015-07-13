@@ -30,6 +30,7 @@ public class NewestFragment extends Fragment{
     ArrayList<String> timeList;
     ArrayList<String> totalList;
     ArrayList<String> authorList;
+    ArrayList<String> hotnessList;
 
     public NewestFragment() {
         // Required empty public constructor
@@ -52,6 +53,7 @@ public class NewestFragment extends Fragment{
         timeList = new ArrayList<String>();
         totalList = new ArrayList<String>();
         authorList = new ArrayList<String>();
+        hotnessList = new ArrayList<String>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
         query.orderByDescending("lastUpdate");
@@ -68,7 +70,15 @@ public class NewestFragment extends Fragment{
                         String tmp = "";
                         int total = thisPoll.getInt("total");
                         totalList.add("" + total + " participants");
-                        long updatedTime = thisPoll.getLong("lastUpdate");
+                        if ( total < 50 )
+                            hotnessList.add("g");
+                        else if ( total < 100 )
+                            hotnessList.add("y");
+                        else if ( total >= 100 )
+                            hotnessList.add("r");
+                        else
+                            hotnessList.add("g");
+                        long updatedTime = thisPoll.getLong("createTime");
                         long diffMS = System.currentTimeMillis() - updatedTime;
                         long diffS = diffMS / 1000;
                         if ( diffS > 60 ) {
@@ -114,6 +124,7 @@ public class NewestFragment extends Fragment{
         };*/
         private String[] times = timeList.toArray(new String[timeList.size()]);
         private String[] totals = totalList.toArray(new String[totalList.size()]);
+        private String [] hots = hotnessList.toArray(new String[hotnessList.size()]);
 
         public PollListAdapter(Context c) {
             this.c = c;
@@ -149,6 +160,15 @@ public class NewestFragment extends Fragment{
             TextView total = (TextView) convertView.findViewById(R.id.total);
             total.setText(totals[position]);
             convertView.setTag(position);
+            if ( hots[position] == "y" ) {
+                check.setColorFilter(Color.parseColor("#FF9800"));
+                total.setTextColor(Color.parseColor("#FF9800"));
+            }
+            else if ( hots[position] == "r" ) {
+                check.setImageResource(R.drawable.ic_whatshot_white_18dp);
+                check.setColorFilter(Color.parseColor("#F44336"));
+                total.setTextColor(Color.parseColor("#F44336"));
+            }
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
             iv.setImageResource(R.drawable.ic_assessment_white_48dp);
             iv.setColorFilter(Color.parseColor("#11110000"));
