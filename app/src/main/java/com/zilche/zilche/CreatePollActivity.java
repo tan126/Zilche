@@ -165,7 +165,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                     @Override
                     public void onClick(View v) {
                         poll.put("optionNum", numOptions);
-                        for (int i = 0; i < 10; i++) {
+                        /*for (int i = 0; i < 10; i++) { // old adding to poll
                             if (visiblePollOptions[i] == true) {
                                 int actualOptionID = i + 1;
                                 String option = "option" + actualOptionID;
@@ -175,6 +175,14 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                                 poll.add("votes", 0);
                             }
 
+                        }*/
+                        for (int i = 0; i < numOptions; i++) {
+                            int actualOptionID = i + 1;
+                            String option = "option" + actualOptionID;
+                            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                            EditText optionText = (EditText)findViewById(optionID);
+                            poll.add("options", optionText.getText().toString());
+                            poll.add("votes", 0);
                         }
                         /*switch (numOptions) {
                             case 2:
