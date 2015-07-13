@@ -58,6 +58,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     EditText option8;
     EditText option9;
     EditText option10;
+    EditText[] options = new EditText[10];
     int numOptions = 2;
     boolean[] visiblePollOptions = {true, true, false, false, false, false, false, false ,false, false};
 
@@ -528,7 +529,18 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     }
 
     public void removeOption(View v) {
-
+        int optionNum = 0;
+        String option = "option" + optionNum;
+        String optionR = "option" + optionNum + "remove";
+        int optionID = getResources().getIdentifier(option, "id", getPackageName());
+        int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+        EditText editText = (EditText)findViewById(optionID);
+        ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        numOptions--;
+        visiblePollOptions[2] = false;
+        editText.setText("");
     }
 
 
@@ -552,7 +564,8 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     }
 
     public void removeOption3(View v) {
-        int optionNum = 3;
+        //System.out.println("REMOVING OPTION 3");
+        /*int optionNum = 3;
         String option = "option" + optionNum;
         String optionR = "option" + optionNum + "remove";
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
@@ -563,10 +576,88 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         imageButton.setVisibility(View.GONE);
         numOptions--;
         visiblePollOptions[2] = false;
-        editText.setText("");
+        editText.setText("");*/
+        int optionNum = 3;
+        numOptions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 3; i < 10; i++) {
+//            if (numOptions == 9) {
+
+  //          }
+             if (visiblePollOptions[i] == true) {
+                 //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                 int optionToShift = i + 1; // option ids from xml 1-10 range
+                 int previousOptionNum = i; // option ids from xml 1-10 range
+                 String option = "option" + previousOptionNum;
+                 int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                 EditText editText = (EditText) findViewById(optionID);
+                 String optionShift = "option" + optionToShift;
+                 String optionRShift = "option" + optionToShift + "remove";
+                 int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
+                 int optionRIDShift = getResources().getIdentifier(optionRShift, "id", getPackageName());
+                 EditText editTextShift = (EditText) findViewById(optionIDShift);
+                 editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                 //if (i < 9) {
+                 if (i == 9) {
+                     ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                     editTextShift.setVisibility(View.GONE);
+                     imageButtonShift.setVisibility(View.GONE);
+                     visiblePollOptions[i] = false;
+                     editTextShift.setText("");
+                     shifted = true;
+                     break;
+                 }
+                 else {
+                     if (visiblePollOptions[i + 1] == false) {
+                         ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                         editTextShift.setVisibility(View.GONE);
+                         imageButtonShift.setVisibility(View.GONE);
+                         visiblePollOptions[i] = false;
+                         editTextShift.setText("");
+                         shifted = true;
+                         break;
+                     }
+                 }
+                 //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String option = "option" + optionNum;
+            String optionR = "option" + optionNum + "remove";
+            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+            int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(optionID);
+            ImageButton imageButton = (ImageButton) findViewById(optionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visiblePollOptions[optionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
     }
     public void removeOption4(View v) {
-        int optionNum = 4;
+        /*int optionNum = 4;
         String option = "option" + optionNum;
         String optionR = "option" + optionNum + "remove";
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
@@ -577,10 +668,88 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         imageButton.setVisibility(View.GONE);
         numOptions--;
         visiblePollOptions[3] = false;
-        editText.setText("");
+        editText.setText("");*/
+        int optionNum = 4;
+        numOptions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 4; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visiblePollOptions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int optionToShift = i + 1; // option ids from xml 1-10 range
+                int previousOptionNum = i; // option ids from xml 1-10 range
+                String option = "option" + previousOptionNum;
+                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                EditText editText = (EditText) findViewById(optionID);
+                String optionShift = "option" + optionToShift;
+                String optionRShift = "option" + optionToShift + "remove";
+                int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
+                int optionRIDShift = getResources().getIdentifier(optionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(optionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visiblePollOptions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visiblePollOptions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visiblePollOptions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String option = "option" + optionNum;
+            String optionR = "option" + optionNum + "remove";
+            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+            int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(optionID);
+            ImageButton imageButton = (ImageButton) findViewById(optionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visiblePollOptions[optionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
     }
     public void removeOption5(View v) {
-        int optionNum = 5;
+        /*int optionNum = 5;
         String option = "option" + optionNum;
         String optionR = "option" + optionNum + "remove";
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
@@ -591,10 +760,88 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         imageButton.setVisibility(View.GONE);
         numOptions--;
         visiblePollOptions[4] = false;
-        editText.setText("");
+        editText.setText("");*/
+        int optionNum = 5;
+        numOptions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 5; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visiblePollOptions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int optionToShift = i + 1; // option ids from xml 1-10 range
+                int previousOptionNum = i; // option ids from xml 1-10 range
+                String option = "option" + previousOptionNum;
+                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                EditText editText = (EditText) findViewById(optionID);
+                String optionShift = "option" + optionToShift;
+                String optionRShift = "option" + optionToShift + "remove";
+                int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
+                int optionRIDShift = getResources().getIdentifier(optionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(optionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visiblePollOptions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visiblePollOptions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visiblePollOptions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String option = "option" + optionNum;
+            String optionR = "option" + optionNum + "remove";
+            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+            int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(optionID);
+            ImageButton imageButton = (ImageButton) findViewById(optionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visiblePollOptions[optionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
     }
     public void removeOption6(View v) {
-        int optionNum = 6;
+        /*int optionNum = 6;
         String option = "option" + optionNum;
         String optionR = "option" + optionNum + "remove";
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
@@ -605,10 +852,88 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         imageButton.setVisibility(View.GONE);
         numOptions--;
         visiblePollOptions[5] = false;
-        editText.setText("");
+        editText.setText("");*/
+        int optionNum = 6;
+        numOptions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 6; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visiblePollOptions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int optionToShift = i + 1; // option ids from xml 1-10 range
+                int previousOptionNum = i; // option ids from xml 1-10 range
+                String option = "option" + previousOptionNum;
+                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                EditText editText = (EditText) findViewById(optionID);
+                String optionShift = "option" + optionToShift;
+                String optionRShift = "option" + optionToShift + "remove";
+                int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
+                int optionRIDShift = getResources().getIdentifier(optionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(optionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visiblePollOptions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visiblePollOptions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visiblePollOptions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String option = "option" + optionNum;
+            String optionR = "option" + optionNum + "remove";
+            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+            int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(optionID);
+            ImageButton imageButton = (ImageButton) findViewById(optionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visiblePollOptions[optionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
     }
     public void removeOption7(View v) {
-        int optionNum = 7;
+        /*int optionNum = 7;
         String option = "option" + optionNum;
         String optionR = "option" + optionNum + "remove";
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
@@ -619,10 +944,88 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         imageButton.setVisibility(View.GONE);
         numOptions--;
         visiblePollOptions[6] = false;
-        editText.setText("");
+        editText.setText("");*/
+        int optionNum = 7;
+        numOptions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 7; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visiblePollOptions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int optionToShift = i + 1; // option ids from xml 1-10 range
+                int previousOptionNum = i; // option ids from xml 1-10 range
+                String option = "option" + previousOptionNum;
+                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                EditText editText = (EditText) findViewById(optionID);
+                String optionShift = "option" + optionToShift;
+                String optionRShift = "option" + optionToShift + "remove";
+                int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
+                int optionRIDShift = getResources().getIdentifier(optionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(optionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visiblePollOptions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visiblePollOptions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visiblePollOptions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String option = "option" + optionNum;
+            String optionR = "option" + optionNum + "remove";
+            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+            int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(optionID);
+            ImageButton imageButton = (ImageButton) findViewById(optionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visiblePollOptions[optionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
     }
     public void removeOption8(View v) {
-        int optionNum = 8;
+        /*int optionNum = 8;
         String option = "option" + optionNum;
         String optionR = "option" + optionNum + "remove";
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
@@ -633,10 +1036,88 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         imageButton.setVisibility(View.GONE);
         numOptions--;
         visiblePollOptions[7] = false;
-        editText.setText("");
+        editText.setText("");*/
+        int optionNum = 8;
+        numOptions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 8; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visiblePollOptions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int optionToShift = i + 1; // option ids from xml 1-10 range
+                int previousOptionNum = i; // option ids from xml 1-10 range
+                String option = "option" + previousOptionNum;
+                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                EditText editText = (EditText) findViewById(optionID);
+                String optionShift = "option" + optionToShift;
+                String optionRShift = "option" + optionToShift + "remove";
+                int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
+                int optionRIDShift = getResources().getIdentifier(optionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(optionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visiblePollOptions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visiblePollOptions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visiblePollOptions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String option = "option" + optionNum;
+            String optionR = "option" + optionNum + "remove";
+            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+            int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(optionID);
+            ImageButton imageButton = (ImageButton) findViewById(optionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visiblePollOptions[optionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
     }
     public void removeOption9(View v) {
-        int optionNum = 9;
+        /*int optionNum = 9;
         String option = "option" + optionNum;
         String optionR = "option" + optionNum + "remove";
         int optionID = getResources().getIdentifier(option, "id", getPackageName());
@@ -647,7 +1128,85 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         imageButton.setVisibility(View.GONE);
         numOptions--;
         visiblePollOptions[8] = false;
-        editText.setText("");
+        editText.setText("");*/
+        int optionNum = 9;
+        numOptions--;
+        boolean shifted = false;
+        //boolean needShifting = false;
+        //ImageButton imageButton = (ImageButton)findViewById(optionRID);
+        /*for (int i = 3; i < 10; i++) {
+            if (visiblePollOptions[i] == true) {
+                needShifting = true;
+            }
+        }*/
+        for (int i = 9; i < 10; i++) {
+//            if (numOptions == 9) {
+
+            //          }
+            if (visiblePollOptions[i] == true) {
+                //System.out.println("VISIBLE POLL OPTION IS TRUE");
+                int optionToShift = i + 1; // option ids from xml 1-10 range
+                int previousOptionNum = i; // option ids from xml 1-10 range
+                String option = "option" + previousOptionNum;
+                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                EditText editText = (EditText) findViewById(optionID);
+                String optionShift = "option" + optionToShift;
+                String optionRShift = "option" + optionToShift + "remove";
+                int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
+                int optionRIDShift = getResources().getIdentifier(optionRShift, "id", getPackageName());
+                EditText editTextShift = (EditText) findViewById(optionIDShift);
+                editText.setText(editTextShift.getText().toString());
+                 /*if (i == 9) {
+                     shifted = true;
+                 }*/
+                //if (i < 9) {
+                if (i == 9) {
+                    ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                    editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    visiblePollOptions[i] = false;
+                    editTextShift.setText("");
+                    shifted = true;
+                    break;
+                }
+                else {
+                    if (visiblePollOptions[i + 1] == false) {
+                        ImageButton imageButtonShift = (ImageButton) findViewById(optionRIDShift);
+                        editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visiblePollOptions[i] = false;
+                        editTextShift.setText("");
+                        shifted = true;
+                        break;
+                    }
+                }
+                //}
+                 /*else if (i == 9) {
+                     if (visiblePollOptions)
+
+                 }*/
+            }
+        }
+        if (shifted == false/* && needShifting == false*/) {
+            //System.out.println("3 IS THE LAST OPTION");
+            /*if (shifted == true) {
+                break;
+            }*/
+            //else {
+            String option = "option" + optionNum;
+            String optionR = "option" + optionNum + "remove";
+            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+            int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+            EditText editText = (EditText) findViewById(optionID);
+            ImageButton imageButton = (ImageButton) findViewById(optionRID);
+            editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            //numOptions--;
+            visiblePollOptions[optionNum - 1] = false;
+            editText.setText("");
+            //break;
+            //}
+        }
     }
     public void removeOption10(View v) {
         int optionNum = 10;
