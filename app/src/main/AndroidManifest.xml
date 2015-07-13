@@ -67,14 +67,18 @@
 
         <activity
             android:name=".CategoryActivity"
-            android:launchMode="singleInstance"
-            android:label="@string/title_activity_category" >
+            android:label="@string/title_activity_category"
+            android:launchMode="singleInstance" >
         </activity>
         <activity
             android:name=".PollViewActivity"
+            android:label="@string/title_activity_poll_view"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/title_activity_poll_view" >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".PieChart"
+            android:label="@string/title_activity_pie_chart" >
         </activity>
     </application>
 
