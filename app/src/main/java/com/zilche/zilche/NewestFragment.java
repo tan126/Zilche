@@ -1,61 +1,70 @@
 package com.zilche.zilche;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.graphics.Typeface;
-import android.view.View;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class MyPollActivity extends ActionBarActivity {
+public class NewestFragment extends Fragment{
+
     GridView gv;
     ArrayList<String> pollList;
     ArrayList<String> timeList;
     ArrayList<String> totalList;
     ArrayList<String> authorList;
 
+    public NewestFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_poll);
-        gv = (GridView) findViewById(R.id.gridv);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView =  inflater.inflate(R.layout.fragment_newest, container, false);
+
+        gv = (GridView) rootView.findViewById(R.id.gridv);
 
         pollList = new ArrayList<String>();
         timeList = new ArrayList<String>();
         totalList = new ArrayList<String>();
         authorList = new ArrayList<String>();
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
         query.orderByDescending("lastUpdate");
-        query.whereEqualTo("author", ParseUser.getCurrentUser().getString("username"));
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    //Log.d("poll", "Retrieved " + list.size() + " polls");
                     for (int i = 0; i < list.size(); i++) {
                         ParseObject thisPoll = list.get(i);
                         String tmpStr = thisPoll.getString("question");
+                        String name = thisPoll.getString("nickname");
                         pollList.add(tmpStr);
-                        //timeList.add(thisPoll.getCreatedAt().toString());
                         String tmp = "";
                         int total = thisPoll.getInt("total");
                         totalList.add("" + total + " participants");
@@ -68,48 +77,28 @@ public class MyPollActivity extends ActionBarActivity {
                                 long diffH = diffM / 60;
                                 if ( diffH > 24 ) {
                                     long diffD = diffH / 24;
-                                    tmp += "last updated " + diffD + " days ago";
+                                    tmp += "submitted " + diffD + " days ago";
                                 }
                                 else
-                                    tmp += "last updated " + diffH + " hours ago";;
+                                    tmp += "submitted " + diffH + " hours ago";;
                             }
                             else
-                                tmp += "last updated " + diffM + " minutes ago";
+                                tmp += "submitted " + diffM + " minutes ago";
                         }
                         else
-                            tmp += "last updated 1 minute ago";
+                            tmp += "submitted 1 minute ago";
+                        tmp += " by " + name;
                         timeList.add(tmp);
-                        gv.setAdapter(new PollListAdapter(MyPollActivity.this));
-                        TextView title = (TextView) findViewById(R.id.title);
-                        title.setText("My Poll");
+                        gv.setAdapter(new PollListAdapter(getActivity()));
                     }
-                } else {
-                    Log.d("Poll", "Error: " + e.getMessage());
+                }
+                else {
+                    Log.d("Newest Poll", "Error: " + e.getMessage());
                 }
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void backButtonLogin(View v) {
-        finish();
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        return rootView;
     }
 
     public class PollListAdapter extends BaseAdapter {
@@ -148,8 +137,8 @@ public class MyPollActivity extends ActionBarActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = vi.inflate(R.layout.mypolls, null);
+                LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = vi.inflate(R.layout.newestpolls, null);
             }
             ImageView check = (ImageView) convertView.findViewById(R.id.check);
             check.setColorFilter(Color.parseColor("#00C853"));
@@ -161,10 +150,11 @@ public class MyPollActivity extends ActionBarActivity {
             total.setText(totals[position]);
             convertView.setTag(position);
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
-            iv.setImageResource(R.mipmap.ic_assessment_white_24dp);
+            iv.setImageResource(R.drawable.ic_assessment_white_48dp);
             iv.setColorFilter(Color.parseColor("#11110000"));
             return convertView;
         }
     }
+
 
 }

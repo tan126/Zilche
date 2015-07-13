@@ -270,6 +270,9 @@ public class MainActivity extends AppCompatActivity {
             if(position == 0){
                 fragment = new CategoryFragment();
             }
+            else if (position == 1){
+                fragment = new NewestFragment();
+            }
             else {
                 fragment = new placeHolder();
             }
