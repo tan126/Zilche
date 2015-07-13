@@ -170,6 +170,7 @@ public class NewestFragment extends Fragment{
             }
             else {
                 check.setColorFilter(Color.parseColor("#00C853"));
+                total.setTextColor(Color.parseColor("#00C853"));
             }
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
             iv.setImageResource(R.drawable.ic_assessment_white_48dp);
