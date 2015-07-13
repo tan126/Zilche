@@ -77,5 +77,6 @@
     <string name="category_tech_2">Technology</string>
     <string name="title_activity_poll_view">PollViewActivity</string>
     <string name="title_activity_pie_chart">PieChart</string>
+    <string name="title_activity_bar_chart">BarChart</string>
 39
 </resources>

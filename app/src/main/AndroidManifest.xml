@@ -80,6 +80,10 @@
             android:name=".PieChart"
             android:label="@string/title_activity_pie_chart" >
         </activity>
+        <activity
+            android:name=".BarChart"
+            android:label="@string/title_activity_bar_chart" >
+        </activity>
     </application>
 
 </manifest>
