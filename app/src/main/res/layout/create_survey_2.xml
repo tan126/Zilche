@@ -32,8 +32,24 @@
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
 
+                    />
+                <ImageButton
+                    android:id="@+id/question1image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question1options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:background="@null"
                     />
                 <ImageButton
                     android:id="@+id/question1remove"
@@ -53,12 +69,28 @@
                     android:id="@+id/question2"
                     android:layout_below="@id/question1"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 2 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal" />
+                <ImageButton
+                    android:id="@+id/question2image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question2options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question2remove"
                     android:layout_width="0dp"
@@ -77,13 +109,32 @@
                     android:id="@+id/question3"
                     android:layout_below="@id/question2"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 3 here..."
                     android:gravity="top|left"
                     android:scrollbars="horizontal"
                     android:singleLine="true"
                     android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question3image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question3options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:background="@null"
+                    />
+
                 <ImageButton
                     android:id="@+id/question3remove"
                     android:layout_width="0dp"
@@ -102,13 +153,31 @@
                     android:id="@+id/question4"
                     android:layout_below="@id/question3"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 4 here..."
                     android:gravity="top|left"
                     android:scrollbars="horizontal"
                     android:singleLine="true"
                     android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question4image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question4options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question4remove"
                     android:layout_width="0dp"
@@ -127,13 +196,31 @@
                     android:id="@+id/question5"
                     android:layout_below="@id/question4"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 5 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
                     android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question5image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question5options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question5remove"
                     android:layout_width="0dp"
@@ -152,13 +239,31 @@
                     android:id="@+id/question6"
                     android:layout_below="@id/question5"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 6 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
                     android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question6image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question6options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question6remove"
                     android:layout_width="0dp"
@@ -177,13 +282,31 @@
                     android:id="@+id/question7"
                     android:layout_below="@id/question6"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 7 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
                     android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question7image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question7options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question7remove"
                     android:layout_width="0dp"
@@ -202,14 +325,31 @@
                     android:id="@+id/question8"
                     android:layout_below="@id/question7"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 8 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
                     android:visibility="gone" />
-
+                <ImageButton
+                    android:id="@+id/question8image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question8options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question8remove"
                     android:layout_width="0dp"
@@ -228,13 +368,31 @@
                     android:id="@+id/question9"
                     android:layout_below="@id/question8"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 9 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
                     android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question9image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question9options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question9remove"
                     android:layout_width="0dp"
@@ -253,13 +411,31 @@
                     android:id="@+id/question10"
                     android:layout_below="@id/question9"
                     android:layout_width="0dp"
-                    android:layout_weight=".9"
+                    android:layout_weight=".7"
                     android:layout_height="wrap_content"
                     android:hint="Enter Question 10 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
                     android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/question10image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_insert_photo_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
+                <ImageButton
+                    android:id="@+id/question10options"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".1"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:visibility="gone"
+                    android:background="@null"
+                    />
                 <ImageButton
                     android:id="@+id/question10remove"
                     android:layout_width="0dp"

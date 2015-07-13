@@ -207,12 +207,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 numQuestions++;
                 int actualQuestionID = i + 1;
                 String question = "question" + actualQuestionID;
+                String questionI = "question" + actualQuestionID + "image";
+                String questionO = "question" + actualQuestionID + "options";
                 String questionR = "question" + actualQuestionID + "remove";
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+                int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
                 int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
                 EditText editText = (EditText)findViewById(questionID);
-                ImageButton imageButton = (ImageButton)findViewById(questionRID);
                 editText.setVisibility(View.VISIBLE);
+                ImageButton imageButton = (ImageButton)findViewById(questionIID);
+                imageButton.setVisibility(View.VISIBLE);
+                imageButton = (ImageButton)findViewById(questionOID);
+                imageButton.setVisibility(View.VISIBLE);
+                imageButton = (ImageButton)findViewById(questionRID);
                 imageButton.setVisibility(View.VISIBLE);
                 break;
             }
@@ -222,12 +230,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void removeQuestion(View v) {
         int questionNum = 0;
         String question = "question" + questionNum;
+        String questionI = "question" + questionNum + "image";
+        String questionO = "question" + questionNum + "options";
         String questionR = "question" + questionNum + "remove";
         int questionID = getResources().getIdentifier(question, "id", getPackageName());
+        int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+        int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
         int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
         EditText editText = (EditText)findViewById(questionID);
-        ImageButton imageButton = (ImageButton)findViewById(questionRID);
         editText.setVisibility(View.GONE);
+        ImageButton imageButton = (ImageButton)findViewById(questionIID);
+        imageButton.setVisibility(View.GONE);
+        imageButton = (ImageButton)findViewById(questionOID);
+        imageButton.setVisibility(View.GONE);
+        imageButton = (ImageButton)findViewById(questionRID);
         imageButton.setVisibility(View.GONE);
         questionNum--;
         visibleSurveyQuestions[2] = false;
@@ -236,7 +252,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
 
 
-    public void removeOption3(View v) {
+    public void removeQuestion3(View v) {
         int questionNum = 3;
         numQuestions--;
         boolean shifted = false;
@@ -251,8 +267,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
                 EditText editText = (EditText) findViewById(questionID);
                 String questionShift = "question" + questionToShift;
+                String questionIShift = "question" + questionToShift + "image";
+                String questionOShift = "question" + questionToShift + "options";
                 String questionRShift = "question" + questionToShift + "remove";
                 int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionIIDShift = getResources().getIdentifier(questionIShift, "id", getPackageName());
+                int questionOIDShift = getResources().getIdentifier(questionOShift, "id", getPackageName());
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
@@ -268,8 +288,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 }
                 else {
                     if (visibleSurveyQuestions[i + 1] == false) {
-                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                         imageButtonShift.setVisibility(View.GONE);
                         visibleSurveyQuestions[i] = false;
                         editTextShift.setText("");
@@ -283,13 +307,22 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         if (shifted == false) {
 
             String question = "question" + questionNum;
+            String questionI = "question" + questionNum + "image";
+            String questionO = "question" + questionNum + "options";
             String questionR = "question" + questionNum + "remove";
             int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+            int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
             int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
             EditText editText = (EditText) findViewById(questionID);
-            ImageButton imageButton = (ImageButton) findViewById(questionRID);
             editText.setVisibility(View.GONE);
+            ImageButton imageButton = (ImageButton) findViewById(questionIID);
             imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionOID);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionRID);
+            imageButton.setVisibility(View.GONE);
+
             visibleSurveyQuestions[questionNum - 1] = false;
             editText.setText("");
 
@@ -311,8 +344,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
                 EditText editText = (EditText) findViewById(questionID);
                 String questionShift = "question" + questionToShift;
+                String questionIShift = "question" + questionToShift + "image";
+                String questionOShift = "question" + questionToShift + "options";
                 String questionRShift = "question" + questionToShift + "remove";
                 int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionIIDShift = getResources().getIdentifier(questionIShift, "id", getPackageName());
+                int questionOIDShift = getResources().getIdentifier(questionOShift, "id", getPackageName());
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
@@ -321,8 +358,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                  }*/
                 //if (i < 9) {
                 if (i == 9) {
-                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                     editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                     imageButtonShift.setVisibility(View.GONE);
                     visibleSurveyQuestions[i] = false;
                     editTextShift.setText("");
@@ -331,7 +372,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 }
                 else {
                     if (visibleSurveyQuestions[i + 1] == false) {
-                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
                         editTextShift.setVisibility(View.GONE);
                         imageButtonShift.setVisibility(View.GONE);
                         visibleSurveyQuestions[i] = false;
@@ -354,12 +400,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             }*/
             //else {
             String question = "question" + questionNum;
+            String questionI = "question" + questionNum + "image";
+            String questionO = "question" + questionNum + "options";
             String questionR = "question" + questionNum + "remove";
             int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+            int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
             int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
             EditText editText = (EditText) findViewById(questionID);
-            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            ImageButton imageButton = (ImageButton) findViewById(questionIID);
             editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionOID);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionRID);
             imageButton.setVisibility(View.GONE);
             //numOptions--;
             visibleSurveyQuestions[questionNum - 1] = false;
@@ -384,8 +438,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
                 EditText editText = (EditText) findViewById(questionID);
                 String questionShift = "question" + questionToShift;
+                String questionIShift = "question" + questionToShift + "image";
+                String questionOShift = "question" + questionToShift + "options";
                 String questionRShift = "question" + questionToShift + "remove";
                 int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionIIDShift = getResources().getIdentifier(questionIShift, "id", getPackageName());
+                int questionOIDShift = getResources().getIdentifier(questionOShift, "id", getPackageName());
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
@@ -394,8 +452,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                  }*/
                 //if (i < 9) {
                 if (i == 9) {
-                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                     editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                     imageButtonShift.setVisibility(View.GONE);
                     visibleSurveyQuestions[i] = false;
                     editTextShift.setText("");
@@ -404,9 +466,14 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 }
                 else {
                     if (visibleSurveyQuestions[i + 1] == false) {
-                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
                         imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        visibleSurveyQuestions[i] = false;
                         visibleSurveyQuestions[i] = false;
                         editTextShift.setText("");
                         shifted = true;
@@ -427,12 +494,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             }*/
             //else {
             String question = "question" + questionNum;
+            String questionI = "question" + questionNum + "image";
+            String questionO = "question" + questionNum + "options";
             String questionR = "question" + questionNum + "remove";
             int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+            int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
             int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
             EditText editText = (EditText) findViewById(questionID);
-            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            ImageButton imageButton = (ImageButton) findViewById(questionIID);
             editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionOID);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionRID);
             imageButton.setVisibility(View.GONE);
             //numOptions--;
             visibleSurveyQuestions[questionNum - 1] = false;
@@ -457,8 +532,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
                 EditText editText = (EditText) findViewById(questionID);
                 String questionShift = "question" + questionToShift;
+                String questionIShift = "question" + questionToShift + "image";
+                String questionOShift = "question" + questionToShift + "options";
                 String questionRShift = "question" + questionToShift + "remove";
                 int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionIIDShift = getResources().getIdentifier(questionIShift, "id", getPackageName());
+                int questionOIDShift = getResources().getIdentifier(questionOShift, "id", getPackageName());
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
@@ -467,8 +546,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                  }*/
                 //if (i < 9) {
                 if (i == 9) {
-                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                     editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                     imageButtonShift.setVisibility(View.GONE);
                     visibleSurveyQuestions[i] = false;
                     editTextShift.setText("");
@@ -477,8 +560,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 }
                 else {
                     if (visibleSurveyQuestions[i + 1] == false) {
-                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                         imageButtonShift.setVisibility(View.GONE);
                         visibleSurveyQuestions[i] = false;
                         editTextShift.setText("");
@@ -500,12 +587,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             }*/
             //else {
             String question = "question" + questionNum;
+            String questionI = "question" + questionNum + "image";
+            String questionO = "question" + questionNum + "options";
             String questionR = "question" + questionNum + "remove";
             int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+            int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
             int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
             EditText editText = (EditText) findViewById(questionID);
-            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            ImageButton imageButton = (ImageButton) findViewById(questionIID);
             editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionOID);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionRID);
             imageButton.setVisibility(View.GONE);
             //numOptions--;
             visibleSurveyQuestions[questionNum - 1] = false;
@@ -538,8 +633,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
                 EditText editText = (EditText) findViewById(questionID);
                 String questionShift = "question" + questionToShift;
+                String questionIShift = "question" + questionToShift + "image";
+                String questionOShift = "question" + questionToShift + "options";
                 String questionRShift = "question" + questionToShift + "remove";
                 int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionIIDShift = getResources().getIdentifier(questionIShift, "id", getPackageName());
+                int questionOIDShift = getResources().getIdentifier(questionOShift, "id", getPackageName());
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
@@ -548,8 +647,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                  }*/
                 //if (i < 9) {
                 if (i == 9) {
-                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                     editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                     imageButtonShift.setVisibility(View.GONE);
                     visibleSurveyQuestions[i] = false;
                     editTextShift.setText("");
@@ -558,8 +661,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 }
                 else {
                     if (visibleSurveyQuestions[i + 1] == false) {
-                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                         imageButtonShift.setVisibility(View.GONE);
                         visibleSurveyQuestions[i] = false;
                         editTextShift.setText("");
@@ -581,12 +688,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             }*/
             //else {
             String question = "question" + questionNum;
+            String questionI = "question" + questionNum + "image";
+            String questionO = "question" + questionNum + "options";
             String questionR = "question" + questionNum + "remove";
             int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+            int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
             int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
             EditText editText = (EditText) findViewById(questionID);
-            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            ImageButton imageButton = (ImageButton) findViewById(questionIID);
             editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionOID);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionRID);
             imageButton.setVisibility(View.GONE);
             //numOptions--;
             visibleSurveyQuestions[questionNum - 1] = false;
@@ -630,8 +745,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
                 EditText editText = (EditText) findViewById(questionID);
                 String questionShift = "question" + questionToShift;
+                String questionIShift = "question" + questionToShift + "image";
+                String questionOShift = "question" + questionToShift + "options";
                 String questionRShift = "question" + questionToShift + "remove";
                 int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionIIDShift = getResources().getIdentifier(questionIShift, "id", getPackageName());
+                int questionOIDShift = getResources().getIdentifier(questionOShift, "id", getPackageName());
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
@@ -640,8 +759,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                  }*/
                 //if (i < 9) {
                 if (i == 9) {
-                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                     editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                     imageButtonShift.setVisibility(View.GONE);
                     visibleSurveyQuestions[i] = false;
                     editTextShift.setText("");
@@ -650,8 +773,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 }
                 else {
                     if (visibleSurveyQuestions[i + 1] == false) {
-                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                         imageButtonShift.setVisibility(View.GONE);
                         visibleSurveyQuestions[i] = false;
                         editTextShift.setText("");
@@ -673,12 +800,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             }*/
             //else {
             String question = "question" + questionNum;
+            String questionI = "question" + questionNum + "image";
+            String questionO = "question" + questionNum + "options";
             String questionR = "question" + questionNum + "remove";
             int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+            int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
             int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
             EditText editText = (EditText) findViewById(questionID);
-            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            ImageButton imageButton = (ImageButton) findViewById(questionIID);
             editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionOID);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionRID);
             imageButton.setVisibility(View.GONE);
             //numOptions--;
             visibleSurveyQuestions[questionNum - 1] = false;
@@ -722,8 +857,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionID = getResources().getIdentifier(question, "id", getPackageName());
                 EditText editText = (EditText) findViewById(questionID);
                 String questionShift = "question" + questionToShift;
+                String questionIShift = "question" + questionToShift + "image";
+                String questionOShift = "question" + questionToShift + "options";
                 String questionRShift = "question" + questionToShift + "remove";
                 int questionIDShift = getResources().getIdentifier(questionShift, "id", getPackageName());
+                int questionIIDShift = getResources().getIdentifier(questionIShift, "id", getPackageName());
+                int questionOIDShift = getResources().getIdentifier(questionOShift, "id", getPackageName());
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
@@ -732,8 +871,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                  }*/
                 //if (i < 9) {
                 if (i == 9) {
-                    ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                    ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                     editTextShift.setVisibility(View.GONE);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                    imageButtonShift.setVisibility(View.GONE);
+                    imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                     imageButtonShift.setVisibility(View.GONE);
                     visibleSurveyQuestions[i] = false;
                     editTextShift.setText("");
@@ -742,8 +885,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 }
                 else {
                     if (visibleSurveyQuestions[i + 1] == false) {
-                        ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
+                        ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionOIDShift);
+                        imageButtonShift.setVisibility(View.GONE);
+                        imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                         imageButtonShift.setVisibility(View.GONE);
                         visibleSurveyQuestions[i] = false;
                         editTextShift.setText("");
@@ -765,12 +912,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             }*/
             //else {
             String question = "question" + questionNum;
+            String questionI = "question" + questionNum + "image";
+            String questionO = "question" + questionNum + "options";
             String questionR = "question" + questionNum + "remove";
             int questionID = getResources().getIdentifier(question, "id", getPackageName());
+            int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+            int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
             int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
             EditText editText = (EditText) findViewById(questionID);
-            ImageButton imageButton = (ImageButton) findViewById(questionRID);
+            ImageButton imageButton = (ImageButton) findViewById(questionIID);
             editText.setVisibility(View.GONE);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionOID);
+            imageButton.setVisibility(View.GONE);
+            imageButton = (ImageButton) findViewById(questionRID);
             imageButton.setVisibility(View.GONE);
             //numOptions--;
             visibleSurveyQuestions[questionNum - 1] = false;
@@ -782,12 +937,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void removeQuestion10(View v) {
         int questionNum = 10;
         String question = "question" + questionNum;
+        String questionI = "question" + questionNum + "image";
+        String questionO = "question" + questionNum + "options";
         String questionR = "question" + questionNum + "remove";
         int questionID = getResources().getIdentifier(question, "id", getPackageName());
+        int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
+        int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
         int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
         EditText editText = (EditText)findViewById(questionID);
-        ImageButton imageButton = (ImageButton)findViewById(questionRID);
+        ImageButton imageButton = (ImageButton)findViewById(questionIID);
         editText.setVisibility(View.GONE);
+        imageButton.setVisibility(View.GONE);
+        imageButton = (ImageButton)findViewById(questionOID);
+        imageButton.setVisibility(View.GONE);
+        imageButton = (ImageButton)findViewById(questionRID);
         imageButton.setVisibility(View.GONE);
         numQuestions--;
         visibleSurveyQuestions[9] = false;
