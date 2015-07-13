@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -63,16 +62,8 @@ public class ImageAdapter extends BaseAdapter {
         }
         else
             new ImageLoader().execute(imageView, imageList.get(position), 300, 300);
-        /*
-        imageView.setImageBitmap(bm);
 
-        // wrong
-        if(position == 0) {
-            Resources res = imageView.getContext().getResources();
-            int id = R.drawable.ic_camera_alt_black_48dp;
-            Bitmap b = BitmapFactory.decodeResource(res, id);
-            imageView.setImageBitmap(b);
-        }*/
+
         return imageView;
     }
 /*

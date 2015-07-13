@@ -84,6 +84,10 @@
             android:name=".BarChart"
             android:label="@string/title_activity_bar_chart" >
         </activity>
+        <activity
+            android:name=".CreateSurveyActivity"
+            android:label="@string/title_activity_create_survey">
+        </activity>
     </application>
 
 </manifest>

@@ -78,5 +78,7 @@
     <string name="title_activity_poll_view">PollViewActivity</string>
     <string name="title_activity_pie_chart">PieChart</string>
     <string name="title_activity_bar_chart">BarChart</string>
+    <string name="title_activity_create_survey">CreateSurvey</string>
+
 39
 </resources>
