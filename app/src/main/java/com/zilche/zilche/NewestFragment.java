@@ -152,7 +152,6 @@ public class NewestFragment extends Fragment{
                 convertView = vi.inflate(R.layout.newestpolls, null);
             }
             ImageView check = (ImageView) convertView.findViewById(R.id.check);
-            check.setColorFilter(Color.parseColor("#00C853"));
             TextView tv = (TextView) convertView.findViewById(R.id.poll_name);
             tv.setText(polls[position]);
             TextView timev = (TextView) convertView.findViewById(R.id.time);
@@ -168,6 +167,9 @@ public class NewestFragment extends Fragment{
                 check.setImageResource(R.drawable.ic_whatshot_white_18dp);
                 check.setColorFilter(Color.parseColor("#F44336"));
                 total.setTextColor(Color.parseColor("#F44336"));
+            }
+            else {
+                check.setColorFilter(Color.parseColor("#00C853"));
             }
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
             iv.setImageResource(R.drawable.ic_assessment_white_48dp);

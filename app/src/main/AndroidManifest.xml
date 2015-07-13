@@ -86,7 +86,7 @@
         </activity>
         <activity
             android:name=".CreateSurveyActivity"
-            android:label="@string/title_activity_create_survey">
+            android:label="@string/title_activity_create_survey" >
         </activity>
     </application>
 

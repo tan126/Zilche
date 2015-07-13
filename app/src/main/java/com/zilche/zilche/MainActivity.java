@@ -273,6 +273,9 @@ public class MainActivity extends AppCompatActivity {
             else if (position == 1){
                 fragment = new NewestFragment();
             }
+            else if (position == 2){
+                fragment = new PopularFragment();
+            }
             else {
                 fragment = new placeHolder();
             }
