@@ -65,6 +65,7 @@
             android:text="Draw Pie Chart"
             android:textColor="#ffffff"
             android:textSize="20sp"
+            android:background="@drawable/custombutton"
             android:gravity="center"/>
 
 
