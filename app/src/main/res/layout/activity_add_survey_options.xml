@@ -1,12 +1,381 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.zilche.zilche.AddSurveyOptions">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="com.zilche.zilche.CreateSurveyActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#3F51B5"
+        android:gravity="center"
+        >
+
+        <ImageButton
+            android:id="@+id/menu_list"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_keyboard_backspace_white_24dp"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_gravity="left"
+            android:onClick="cancelCreateSurveyOptions"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Enter Options"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:gravity="center"/>
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/header" >
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView android:text="Options:"
+                    android:textSize="40dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:id="@+id/optionsheader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option1"
+                        android:layout_below="@id/optionsheader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 1 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal"
+                        android:layout_weight=".9"
+
+                        />
+
+                    <ImageButton
+                        android:id="@+id/option1remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:onClick="removeOption"
+                        android:visibility="invisible"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option2"
+                        android:layout_below="@id/option1"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 2 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal" />
+
+                    <ImageButton
+                        android:id="@+id/option2remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:onClick="removeOption"
+                        android:visibility="invisible"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option3"
+                        android:layout_below="@id/option2"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 3 here..."
+                        android:gravity="top|left"
+                        android:scrollbars="horizontal"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+
+                    <ImageButton
+                        android:id="@+id/option3remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:visibility="gone"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:onClick="removeOption3"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option4"
+                        android:layout_below="@id/option3"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 4 here..."
+                        android:gravity="top|left"
+                        android:scrollbars="horizontal"
+                        android:singleLine="true"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/option4remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:visibility="gone"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:onClick="removeOption4"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option5"
+                        android:layout_below="@id/option4"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 5 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/option5remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:visibility="gone"
+                        android:onClick="removeOption5"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option6"
+                        android:layout_below="@id/option5"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 6 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/option6remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:visibility="gone"
+                        android:onClick="removeOption6"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option7"
+                        android:layout_below="@id/option6"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 7 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/option7remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:visibility="gone"
+                        android:onClick="removeOption7"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option8"
+                        android:layout_below="@id/option7"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 8 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/option8remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:visibility="gone"
+                        android:onClick="removeOption8"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option9"
+                        android:layout_below="@id/option8"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 9 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/option9remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:visibility="gone"
+                        android:onClick="removeOption9"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/option10"
+                        android:layout_below="@id/option9"
+                        android:layout_width="0dp"
+                        android:layout_weight=".9"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter option 10 here..."
+                        android:gravity="top|left"
+                        android:singleLine="true"
+                        android:scrollbars="horizontal"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:id="@+id/option10remove"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".1"
+                        android:src="@drawable/ic_remove_black_24dp"
+                        android:background="@null"
+                        android:visibility="gone"
+                        android:onClick="removeOption10"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="center_horizontal"
+                >
+                <ImageButton
+                    android:id="@+id/addoption"
+                    android:onClick="addOption"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@mipmap/ic_add_white_24dp"
+                    android:background="@drawable/round_button"
+                    android:layout_gravity="center"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+    <RelativeLayout
+            android:id="@+id/footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#3F51B5"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:id="@+id/finalizeOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Done"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
+                android:gravity="center"/>
+
+    </RelativeLayout>
+
+
+
 
 </RelativeLayout>
+
+
