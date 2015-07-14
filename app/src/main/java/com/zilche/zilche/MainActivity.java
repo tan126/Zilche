@@ -119,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
-                newSurvey();
+                Intent t = new Intent(MainActivity.this, CreateSurveyActivity.class);
+                startActivity(t);
+                //newSurvey();
             }
         });
 

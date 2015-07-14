@@ -67,7 +67,7 @@
 
         <activity
             android:name=".CategoryActivity"
-            android:label="@string/title_activity_category">
+            android:label="@string/title_activity_category" >
         </activity>
         <activity
             android:name=".PollViewActivity"
@@ -86,6 +86,10 @@
         <activity
             android:name=".CreateSurveyActivity"
             android:label="@string/title_activity_create_survey" >
+        </activity>
+        <activity
+            android:name=".AddSurveyOptions"
+            android:label="@string/title_activity_add_survey_options" >
         </activity>
     </application>
 

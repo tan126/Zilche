@@ -45,19 +45,23 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     SecondFragment secondFrag;
     ParseObject survey;
     ViewPager pager;
-/*
-    EditText question;
-    EditText question1;
-    EditText question2;
-    EditText question3;
-    EditText question4;
-    EditText question5;
-    EditText question6;
-    EditText question7;
-    EditText question8;
-    EditText question9;
-    EditText question10;*/
-    EditText[] questions = new EditText[10];
+
+    //String[] questions = new String[10];
+
+    String[] options1 = new String[10];
+    String[] options2 = new String[10];
+    String[] options3 = new String[10];
+    String[] options4 = new String[10];
+    String[] options5 = new String[10];
+    String[] options6 = new String[10];
+    String[] options7 = new String[10];
+    String[] options8 = new String[10];
+    String[] options9 = new String[10];
+    String[] options10 = new String[10];
+    //String[][] options = new String[][]{options1, options2, options3, options4, options5, options6, options7, options8, options9, options10};
+
+
+
     int numQuestions = 2;
     boolean[] visibleSurveyQuestions = {true, true, false, false, false, false, false, false ,false, false};
 
@@ -956,6 +960,98 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         visibleSurveyQuestions[9] = false;
         editText.setText("");
     }
+
+    public void optionsQuestion1(View v) {
+        //int questionNum = 1;
+
+
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 1);
+        intent.putExtra("optionsForQuestion1", options1);
+
+        startActivityForResult(intent, 1);
+
+    }
+
+    public void optionsQuestion2(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 2);
+        intent.putExtra("optionsForQuestion2", options2);
+
+        startActivityForResult(intent, 2);
+    }
+
+    public void optionsQuestion3(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 3);
+        intent.putExtra("optionsForQuestion3", options3);
+
+        startActivityForResult(intent, 3);
+
+    }
+
+    public void optionsQuestion4(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 4);
+        intent.putExtra("optionsForQuestion4", options4);
+
+        startActivityForResult(intent, 4);
+    }
+
+    public void optionsQuestion5(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 5);
+        intent.putExtra("optionsForQuestion5", options5);
+
+        startActivityForResult(intent, 5);
+
+    }
+
+    public void optionsQuestion6(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 6);
+        intent.putExtra("optionsForQuestion6", options6);
+
+        startActivityForResult(intent, 6);
+
+    }
+
+    public void optionsQuestion7(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 7);
+        intent.putExtra("optionsForQuestion7", options7);
+
+        startActivityForResult(intent, 7);
+
+    }
+
+    public void optionsQuestion8(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 8);
+        intent.putExtra("optionsForQuestion8", options8);
+
+        startActivityForResult(intent, 8);
+
+    }
+
+    public void optionsQuestion9(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 9);
+        intent.putExtra("optionsForQuestion9", options9);
+
+        startActivityForResult(intent, 9);
+
+    }
+
+    public void optionsQuestion10(View v) {
+        Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
+        intent.putExtra("questionNum", 10);
+        intent.putExtra("optionsForQuestion10", options10);
+
+        startActivityForResult(intent, 10);
+
+    }
+
 }
 
 
