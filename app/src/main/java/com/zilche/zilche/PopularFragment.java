@@ -2,6 +2,7 @@ package com.zilche.zilche;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -248,6 +249,15 @@ public class PopularFragment extends Fragment{
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
             iv.setImageResource(R.drawable.ic_assessment_white_48dp);
             iv.setColorFilter(Color.parseColor("#11110000"));
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO intent to poll view
+                    //Question stored in poll_name
+                }
+            });
+
             return convertView;
         }
     }

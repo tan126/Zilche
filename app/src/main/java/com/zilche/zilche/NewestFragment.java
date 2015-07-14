@@ -246,6 +246,15 @@ public class NewestFragment extends Fragment{
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
             iv.setImageResource(R.drawable.ic_assessment_white_48dp);
             iv.setColorFilter(Color.parseColor("#11110000"));
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO intent to poll view
+                    //Question stored in poll_name
+                }
+            });
+
             return convertView;
         }
     }
