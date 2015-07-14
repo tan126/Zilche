@@ -10,8 +10,9 @@
         android:layout_height="match_parent"/>
 
     <LinearLayout
-        android:background="#E6E6E6"
+        android:background="#fff"
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="match_parent">
 
         <RelativeLayout
@@ -39,6 +40,7 @@
                 android:layout_margin="10dp"
                 android:text="Categories"
                 android:textColor="#fff"
+                android:id="@+id/placeHolder"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:fontFamily="sans-serif-medium"
@@ -58,6 +60,113 @@
 
         </RelativeLayout>
 
+        <ScrollView
+            android:id="@+id/scroll_view_poll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:background="#ddd"
+                    />
+
+                <com.zilche.zilche.GridItemView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:id="@+id/image_poll_view"
+                    android:background="#a00"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:background="#ddd"
+                    />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/linlay_view_poll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:text="Does everyone agree that Aaron Kar Ee Ho is a faggot?"
+                        android:textColor="#444"
+                        android:fontFamily="sans-serif"
+                        android:layout_margin="8dp"
+                        android:scrollHorizontally="false"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/title_poll_view"
+                        />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="2 days ago"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="7dp"
+                        android:background="#ddd"
+                        />
+
+                    <RadioGroup
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:id="@+id/radio_group_poll_view">
+
+                    </RadioGroup>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="7dp"
+                        android:background="#ddd"
+                        />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/login_fb_btn"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="40dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:text="Submit"
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="16sp"
+                        android:background="@drawable/login_button2"
+                        android:textColor="#fff"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="Your identity will be kept anonymous to the users."/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 

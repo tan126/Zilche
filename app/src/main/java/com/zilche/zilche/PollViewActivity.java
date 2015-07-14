@@ -1,22 +1,24 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import com.zilche.zilche.SlidingPaneLayout;
-
+import android.graphics.Point;
 import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
+import android.os.Handler;
+import android.util.TypedValue;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 
@@ -71,31 +73,38 @@ public class PollViewActivity extends Activity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(noti_color[category]);
         }
-        RelativeLayout lay = (RelativeLayout) findViewById(R.id.header_poll_view);
+        final RelativeLayout lay = (RelativeLayout) findViewById(R.id.header_poll_view);
         lay.setBackgroundColor(title_color[category]);
+        populatePoll();
+        final ScrollView sv = (ScrollView)findViewById(R.id.scroll_view_poll);
+        final LinearLayout ll = (LinearLayout) findViewById(R.id.linlay_view_poll);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 79,
+                getResources().getDisplayMetrics()));
+        ll.setMinimumHeight(height);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_poll_view, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    private void populatePoll() {
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radio_group_poll_view);
+        LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        radioGroup.setLayoutParams(layParams);
+        for (int i = 0; i < 3; i++) {
+            RadioButton rb = new RadioButton(this);
+            rb.setLayoutParams(layParams);
+            rb.setText("Yes!    ");
+            rb.setTextColor(0xff666666);
+            rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            rb.setPadding(30, 10, 30, 10);
+            rb.setGravity(Gravity.CENTER_VERTICAL);
+            View v = new View(this);
+            v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
+                    getResources().getDisplayMetrics())));
+            v.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            radioGroup.addView(rb);
+            radioGroup.addView(v);
         }
-
-        return super.onOptionsItemSelected(item);
     }
-
 
 }

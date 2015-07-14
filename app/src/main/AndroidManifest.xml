@@ -67,8 +67,7 @@
 
         <activity
             android:name=".CategoryActivity"
-            android:label="@string/title_activity_category"
-            android:launchMode="singleInstance" >
+            android:label="@string/title_activity_category">
         </activity>
         <activity
             android:name=".PollViewActivity"
