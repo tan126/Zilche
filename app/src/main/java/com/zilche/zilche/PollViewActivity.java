@@ -1,6 +1,7 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -96,8 +97,9 @@ public class PollViewActivity extends Activity {
             rb.setText("No");
             rb.setTextColor(0xff666666);
             rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            rb.setPadding(30, 10, 30, 10);
+            rb.setPadding(30, 30, 30, 30);
             rb.setGravity(Gravity.CENTER_VERTICAL);
+            rb.setButtonDrawable(R.drawable.apptheme_btn_check_holo_light);
             View v = new View(this);
             v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
                     getResources().getDisplayMetrics())));
