@@ -5,7 +5,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,8 @@ public class NewestFragment extends Fragment{
     ArrayList<String> totalList;
     ArrayList<String> authorList;
     ArrayList<String> hotnessList;
+    SwipeRefreshLayout swipeLayout;
+    ParseQuery<ParseObject> query;
 
     public NewestFragment() {
         // Required empty public constructor
@@ -46,6 +50,71 @@ public class NewestFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_newest, container, false);
+        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pollList = new ArrayList<String>();
+                timeList = new ArrayList<String>();
+                totalList = new ArrayList<String>();
+                authorList = new ArrayList<String>();
+                hotnessList = new ArrayList<String>();
+                        query = ParseQuery.getQuery("Poll");
+                        query.orderByDescending("lastUpdate");
+
+                        query.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e) {
+                                if (e == null) {
+                                    for (int i = 0; i < list.size(); i++) {
+                                        ParseObject thisPoll = list.get(i);
+                                        String tmpStr = thisPoll.getString("question");
+                                        String name = thisPoll.getString("nickname");
+                                        pollList.add(tmpStr);
+                                        String tmp = "";
+                                        int total = thisPoll.getInt("total");
+                                        totalList.add("" + total + " participants");
+                                        if (total < 50)
+                                            hotnessList.add("g");
+                                        else if (total < 100)
+                                            hotnessList.add("y");
+                                        else if (total >= 100)
+                                            hotnessList.add("r");
+                                        else
+                                            hotnessList.add("g");
+                                        long updatedTime = thisPoll.getLong("createTime");
+                                        long diffMS = System.currentTimeMillis() - updatedTime;
+                                        long diffS = diffMS / 1000;
+                                        if (diffS > 60) {
+                                            long diffM = diffS / 60;
+                                            if (diffM > 60) {
+                                                long diffH = diffM / 60;
+                                                if (diffH > 24) {
+                                                    long diffD = diffH / 24;
+                                                    tmp += "submitted " + diffD + " days ago";
+                                                } else
+                                                    tmp += "submitted " + diffH + " hours ago";
+                                                ;
+                                            } else
+                                                tmp += "submitted " + diffM + " minutes ago";
+                                        } else
+                                            tmp += "submitted 1 minute ago";
+                                        tmp += " by " + name;
+                                        timeList.add(tmp);
+                                        gv.setAdapter(new PollListAdapter(getActivity()));
+                                        swipeLayout.setRefreshing(false);
+                                    }
+                                } else {
+                                    Log.d("Newest Poll", "Error: " + e.getMessage());
+                                }
+                            }
+                        });
+            }
+        });
+        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         gv = (GridView) rootView.findViewById(R.id.gridv);
 
@@ -55,7 +124,7 @@ public class NewestFragment extends Fragment{
         authorList = new ArrayList<String>();
         hotnessList = new ArrayList<String>();
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+        query = ParseQuery.getQuery("Poll");
         query.orderByDescending("lastUpdate");
 
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -160,6 +229,7 @@ public class NewestFragment extends Fragment{
             total.setText(totals[position]);
             convertView.setTag(position);
             if ( hots[position] == "y" ) {
+                check.setImageResource(R.drawable.ic_check_circle_white_18dp);
                 check.setColorFilter(Color.parseColor("#FF9800"));
                 total.setTextColor(Color.parseColor("#FF9800"));
             }
@@ -169,6 +239,7 @@ public class NewestFragment extends Fragment{
                 total.setTextColor(Color.parseColor("#F44336"));
             }
             else {
+                check.setImageResource(R.drawable.ic_check_circle_white_18dp);
                 check.setColorFilter(Color.parseColor("#00C853"));
                 total.setTextColor(Color.parseColor("#00C853"));
             }
