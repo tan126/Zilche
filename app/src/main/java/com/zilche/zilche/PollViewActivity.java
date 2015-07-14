@@ -93,7 +93,7 @@ public class PollViewActivity extends Activity {
         for (int i = 0; i < 3; i++) {
             RadioButton rb = new RadioButton(this);
             rb.setLayoutParams(layParams);
-            rb.setText("Yes!    ");
+            rb.setText("No");
             rb.setTextColor(0xff666666);
             rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             rb.setPadding(30, 10, 30, 10);
