@@ -967,6 +967,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         intent.putExtra("questionNum", 1);
         intent.putExtra("optionsForQuestion1", options1);
 
+        int questionID = getResources().getIdentifier("question1", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
+
+
         startActivityForResult(intent, 1);
 
     }
@@ -976,6 +982,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         intent.putExtra("questionNum", 2);
         intent.putExtra("optionsForQuestion2", options2);
 
+        int questionID = getResources().getIdentifier("question2", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
+
         startActivityForResult(intent, 2);
     }
 
@@ -983,6 +994,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         intent.putExtra("questionNum", 3);
         intent.putExtra("optionsForQuestion3", options3);
+
+        int questionID = getResources().getIdentifier("question3", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
 
         startActivityForResult(intent, 3);
 
@@ -993,6 +1009,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         intent.putExtra("questionNum", 4);
         intent.putExtra("optionsForQuestion4", options4);
 
+        int questionID = getResources().getIdentifier("question4", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
+
         startActivityForResult(intent, 4);
     }
 
@@ -1000,6 +1021,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         intent.putExtra("questionNum", 5);
         intent.putExtra("optionsForQuestion5", options5);
+
+        int questionID = getResources().getIdentifier("question5", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
 
         startActivityForResult(intent, 5);
 
@@ -1010,6 +1036,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         intent.putExtra("questionNum", 6);
         intent.putExtra("optionsForQuestion6", options6);
 
+        int questionID = getResources().getIdentifier("question6", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
+
         startActivityForResult(intent, 6);
 
     }
@@ -1018,6 +1049,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         intent.putExtra("questionNum", 7);
         intent.putExtra("optionsForQuestion7", options7);
+
+        int questionID = getResources().getIdentifier("question7", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
 
         startActivityForResult(intent, 7);
 
@@ -1028,6 +1064,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         intent.putExtra("questionNum", 8);
         intent.putExtra("optionsForQuestion8", options8);
 
+        int questionID = getResources().getIdentifier("question8", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
+
         startActivityForResult(intent, 8);
 
     }
@@ -1036,6 +1077,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         intent.putExtra("questionNum", 9);
         intent.putExtra("optionsForQuestion9", options9);
+
+        int questionID = getResources().getIdentifier("question9", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
 
         startActivityForResult(intent, 9);
 
@@ -1046,6 +1092,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         intent.putExtra("questionNum", 10);
         intent.putExtra("optionsForQuestion10", options10);
 
+        int questionID = getResources().getIdentifier("question10", "id", getPackageName());
+        EditText inputTxt = (EditText) findViewById(questionID);
+        String question = inputTxt.getText().toString();
+        intent.putExtra("question", question);
+
         startActivityForResult(intent, 10);
 
     }
@@ -1055,6 +1106,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
+                Bundle extras = getIntent().getExtras();
+                options1 = data.getStringArrayExtra("resultOptions");
+                //System.out.println(options1[1]);
+                //System.out.println(options1[2]);
+                //System.out.println(options1[3]);
                 Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
             }
         }

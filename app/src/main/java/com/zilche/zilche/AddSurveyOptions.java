@@ -23,7 +23,7 @@ public class AddSurveyOptions extends ActionBarActivity {
     int numOptions = 2;
     boolean[] visiblePollOptions = {true, true, false, false, false, false, false, false ,false, false};
     int questionNum;
-    String[] options = new String[11];
+    String[] options = new String[10];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +31,47 @@ public class AddSurveyOptions extends ActionBarActivity {
         setContentView(R.layout.activity_add_survey_options);
 
         Bundle extras = getIntent().getExtras();
+
+        TextView newtext = (TextView) findViewById(R.id.optionsheader);
+        String question = extras.getString("question");
+        if(!question.equals(""))
+            newtext.setText(question);
+
+
         questionNum = extras.getInt("questionNum");
         String key = "optionsForQuestion" + Integer.toString(questionNum);
         System.out.println(key);
         options = getIntent().getStringArrayExtra(key);
+
+        for(int i = 0; i < 10; i++){
+            if(options[i] != null){
+                String optionIDName = "option" + Integer.toString(i+1);
+                int questionID = getResources().getIdentifier(optionIDName, "id", getPackageName());
+                TextView writtenOption = (TextView) findViewById(questionID);
+                writtenOption.setText(options[i]);
+                //numQuestions++;
+                if(i > 1) {
+                    if (options[i].isEmpty()) {
+                        break;
+                    }
+                    visiblePollOptions[i] = true;
+                    int actualQuestionID = i + 1;
+                    String option = "option" + actualQuestionID;
+                    String optionR = "option" + actualQuestionID + "remove";
+                    int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                    int optionRID = getResources().getIdentifier(optionR, "id", getPackageName());
+                    EditText editText = (EditText) findViewById(optionID);
+                    editText.setVisibility(View.VISIBLE);
+                    ImageButton imageButton = (ImageButton) findViewById(optionRID);
+                    imageButton.setVisibility(View.VISIBLE);
+                }
+
+
+            }
+            else
+                break;
+
+        }
 
 
 
