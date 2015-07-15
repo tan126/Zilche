@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="com.zilche.zilche.CreateSurveyActivity">
+    tools:context="com.zilche.zilche.AddSurveyOptions">
 
     <RelativeLayout
         android:id="@+id/header"
@@ -359,6 +359,8 @@
             android:layout_alignParentBottom="true"
             android:background="#3F51B5"
             android:gravity="center"
+            android:clickable="true"
+            android:onClick="finalize"
             >
 
             <TextView

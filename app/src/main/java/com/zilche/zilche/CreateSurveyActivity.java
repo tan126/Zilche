@@ -61,9 +61,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     //String[][] options = new String[][]{options1, options2, options3, options4, options5, options6, options7, options8, options9, options10};
 
 
-
     int numQuestions = 2;
-    boolean[] visibleSurveyQuestions = {true, true, false, false, false, false, false, false ,false, false};
+    boolean[] visibleSurveyQuestions = {true, true, false, false, false, false, false, false, false, false};
 
 
     @Override
@@ -135,7 +134,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         @Override
         public Fragment getItem(int pos) {
-            switch(pos) {
+            switch (pos) {
                 case 0:
                     return firstFrag;
                 case 1:
@@ -218,13 +217,13 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
                 int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
                 int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
-                EditText editText = (EditText)findViewById(questionID);
+                EditText editText = (EditText) findViewById(questionID);
                 editText.setVisibility(View.VISIBLE);
-                ImageButton imageButton = (ImageButton)findViewById(questionIID);
+                ImageButton imageButton = (ImageButton) findViewById(questionIID);
                 imageButton.setVisibility(View.VISIBLE);
-                imageButton = (ImageButton)findViewById(questionOID);
+                imageButton = (ImageButton) findViewById(questionOID);
                 imageButton.setVisibility(View.VISIBLE);
-                imageButton = (ImageButton)findViewById(questionRID);
+                imageButton = (ImageButton) findViewById(questionRID);
                 imageButton.setVisibility(View.VISIBLE);
                 break;
             }
@@ -241,19 +240,18 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
         int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
         int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
-        EditText editText = (EditText)findViewById(questionID);
+        EditText editText = (EditText) findViewById(questionID);
         editText.setVisibility(View.GONE);
-        ImageButton imageButton = (ImageButton)findViewById(questionIID);
+        ImageButton imageButton = (ImageButton) findViewById(questionIID);
         imageButton.setVisibility(View.GONE);
-        imageButton = (ImageButton)findViewById(questionOID);
+        imageButton = (ImageButton) findViewById(questionOID);
         imageButton.setVisibility(View.GONE);
-        imageButton = (ImageButton)findViewById(questionRID);
+        imageButton = (ImageButton) findViewById(questionRID);
         imageButton.setVisibility(View.GONE);
         questionNum--;
         visibleSurveyQuestions[2] = false;
         editText.setText("");
     }
-
 
 
     public void removeQuestion3(View v) {
@@ -289,8 +287,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     editTextShift.setText("");
                     shifted = true;
                     break;
-                }
-                else {
+                } else {
                     if (visibleSurveyQuestions[i + 1] == false) {
                         ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
@@ -332,6 +329,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         }
     }
+
     public void removeQuestion4(View v) {
 
         int questionNum = 4;
@@ -373,8 +371,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     editTextShift.setText("");
                     shifted = true;
                     break;
-                }
-                else {
+                } else {
                     if (visibleSurveyQuestions[i + 1] == false) {
                         ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         imageButtonShift.setVisibility(View.GONE);
@@ -426,6 +423,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             //}
         }
     }
+
     public void removeQuestion5(View v) {
 
         int questionNum = 5;
@@ -467,8 +465,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     editTextShift.setText("");
                     shifted = true;
                     break;
-                }
-                else {
+                } else {
                     if (visibleSurveyQuestions[i + 1] == false) {
                         ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
@@ -520,6 +517,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             //}
         }
     }
+
     public void removeQuestion6(View v) {
 
         int questionNum = 6;
@@ -561,8 +559,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     editTextShift.setText("");
                     shifted = true;
                     break;
-                }
-                else {
+                } else {
                     if (visibleSurveyQuestions[i + 1] == false) {
                         ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
@@ -613,6 +610,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             //}
         }
     }
+
     public void removeQuestion7(View v) {
 
         int questionNum = 7;
@@ -662,8 +660,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     editTextShift.setText("");
                     shifted = true;
                     break;
-                }
-                else {
+                } else {
                     if (visibleSurveyQuestions[i + 1] == false) {
                         ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
@@ -714,6 +711,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             //}
         }
     }
+
     public void removeQuestion8(View v) {
         /*int optionNum = 8;
         String option = "option" + optionNum;
@@ -774,8 +772,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     editTextShift.setText("");
                     shifted = true;
                     break;
-                }
-                else {
+                } else {
                     if (visibleSurveyQuestions[i + 1] == false) {
                         ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
@@ -826,6 +823,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             //}
         }
     }
+
     public void removeQuestion9(View v) {
         /*int optionNum = 9;
         String option = "option" + optionNum;
@@ -886,8 +884,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     editTextShift.setText("");
                     shifted = true;
                     break;
-                }
-                else {
+                } else {
                     if (visibleSurveyQuestions[i + 1] == false) {
                         ImageButton imageButtonShift = (ImageButton) findViewById(questionIIDShift);
                         editTextShift.setVisibility(View.GONE);
@@ -938,6 +935,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             //}
         }
     }
+
     public void removeQuestion10(View v) {
         int questionNum = 10;
         String question = "question" + questionNum;
@@ -948,13 +946,13 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         int questionIID = getResources().getIdentifier(questionI, "id", getPackageName());
         int questionOID = getResources().getIdentifier(questionO, "id", getPackageName());
         int questionRID = getResources().getIdentifier(questionR, "id", getPackageName());
-        EditText editText = (EditText)findViewById(questionID);
-        ImageButton imageButton = (ImageButton)findViewById(questionIID);
+        EditText editText = (EditText) findViewById(questionID);
+        ImageButton imageButton = (ImageButton) findViewById(questionIID);
         editText.setVisibility(View.GONE);
         imageButton.setVisibility(View.GONE);
-        imageButton = (ImageButton)findViewById(questionOID);
+        imageButton = (ImageButton) findViewById(questionOID);
         imageButton.setVisibility(View.GONE);
-        imageButton = (ImageButton)findViewById(questionRID);
+        imageButton = (ImageButton) findViewById(questionRID);
         imageButton.setVisibility(View.GONE);
         numQuestions--;
         visibleSurveyQuestions[9] = false;
@@ -1052,6 +1050,61 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == 3) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "3", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == 4) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
+        if (requestCode == 5) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
+        if (requestCode == 6) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
+        if (requestCode == 7) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
+        if (requestCode == 8) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
+        if (requestCode == 9) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
+        if (requestCode == 10) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
+
+    }
 }
 
 

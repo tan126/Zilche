@@ -50,6 +50,7 @@
                     android:layout_weight=".1"
                     android:src="@drawable/ic_list_black_24dp"
                     android:background="@null"
+                    android:onClick="optionsQuestion1"
                     />
                 <ImageButton
                     android:id="@+id/question1remove"
@@ -90,6 +91,7 @@
                     android:layout_weight=".1"
                     android:src="@drawable/ic_list_black_24dp"
                     android:background="@null"
+                    android:onClick="optionsQuestion2"
                     />
                 <ImageButton
                     android:id="@+id/question2remove"
@@ -133,6 +135,7 @@
                     android:visibility="gone"
                     android:src="@drawable/ic_list_black_24dp"
                     android:background="@null"
+                    android:onClick="optionsQuestion3"
                     />
 
                 <ImageButton
@@ -177,6 +180,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
+                    android:onClick="optionsQuestion4"
                     />
                 <ImageButton
                     android:id="@+id/question4remove"
@@ -220,6 +224,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
+                    android:onClick="optionsQuestion1"
                     />
                 <ImageButton
                     android:id="@+id/question5remove"
@@ -263,6 +268,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
+                    android:onClick="optionsQuestion6"
                     />
                 <ImageButton
                     android:id="@+id/question6remove"
@@ -306,6 +312,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
+                    android:onClick="optionsQuestion7"
                     />
                 <ImageButton
                     android:id="@+id/question7remove"
@@ -349,6 +356,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
+                    android:onClick="optionsQuestion8"
                     />
                 <ImageButton
                     android:id="@+id/question8remove"
@@ -392,6 +400,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
+                    android:onClick="optionsQuestion9"
                     />
                 <ImageButton
                     android:id="@+id/question9remove"
@@ -435,6 +444,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
+                    android:onClick="optionsQuestion10"
                     />
                 <ImageButton
                     android:id="@+id/question10remove"
