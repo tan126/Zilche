@@ -224,7 +224,7 @@
                     android:src="@drawable/ic_list_black_24dp"
                     android:visibility="gone"
                     android:background="@null"
-                    android:onClick="optionsQuestion1"
+                    android:onClick="optionsQuestion5"
                     />
                 <ImageButton
                     android:id="@+id/question5remove"

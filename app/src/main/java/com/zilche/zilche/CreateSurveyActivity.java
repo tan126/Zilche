@@ -1,5 +1,6 @@
 package com.zilche.zilche;
 
+import java.util.Arrays;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -58,6 +59,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     String[] options8 = new String[10];
     String[] options9 = new String[10];
     String[] options10 = new String[10];
+
+    String[][] questionOptions = new String[][] { options1, options2, options3, options4, options5, options6, options7, options8, options9, options10};
     //String[][] options = new String[][]{options1, options2, options3, options4, options5, options6, options7, options8, options9, options10};
 
 
@@ -279,12 +282,20 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
 
+                //questionToShift
+                questionOptions[i-1] = questionOptions[i];
+                //Arrays.fill(questionOptions[i-1], questionOptions[i]);
+                //Arrays.fill(questionOptions[i], null);
+                //Arrays.fill( questionOptions[previousQuestionNum], null );
+
+
                 if (i == 9) {
                     ImageButton imageButtonShift = (ImageButton) findViewById(questionRIDShift);
                     editTextShift.setVisibility(View.GONE);
                     imageButtonShift.setVisibility(View.GONE);
                     visibleSurveyQuestions[i] = false;
                     editTextShift.setText("");
+                    //Arrays.fill(questionOptions[questionToShift], null);
                     shifted = true;
                     break;
                 } else {
@@ -298,6 +309,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                         imageButtonShift.setVisibility(View.GONE);
                         visibleSurveyQuestions[i] = false;
                         editTextShift.setText("");
+                        //Arrays.fill(questionOptions[questionToShift], null);
                         shifted = true;
                         break;
                     }
@@ -964,8 +976,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
 
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 1);
-        intent.putExtra("optionsForQuestion1", options1);
+        //intent.putExtra("questionNum", 1);
+        intent.putExtra("optionsForQuestion", options1);
 
         int questionID = getResources().getIdentifier("question1", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -979,8 +991,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion2(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 2);
-        intent.putExtra("optionsForQuestion2", options2);
+        //intent.putExtra("questionNum", 2);
+        intent.putExtra("optionsForQuestion", options2);
 
         int questionID = getResources().getIdentifier("question2", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -992,8 +1004,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion3(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 3);
-        intent.putExtra("optionsForQuestion3", options3);
+        //intent.putExtra("questionNum", 3);
+        intent.putExtra("optionsForQuestion", options3);
 
         int questionID = getResources().getIdentifier("question3", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1006,8 +1018,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion4(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 4);
-        intent.putExtra("optionsForQuestion4", options4);
+        //intent.putExtra("questionNum", 4);
+        intent.putExtra("optionsForQuestion", options4);
 
         int questionID = getResources().getIdentifier("question4", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1019,8 +1031,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion5(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 5);
-        intent.putExtra("optionsForQuestion5", options5);
+        //intent.putExtra("questionNum", 5);
+        intent.putExtra("optionsForQuestion", options5);
 
         int questionID = getResources().getIdentifier("question5", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1033,8 +1045,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion6(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 6);
-        intent.putExtra("optionsForQuestion6", options6);
+        //intent.putExtra("questionNum", 6);
+        intent.putExtra("optionsForQuestion", options6);
 
         int questionID = getResources().getIdentifier("question6", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1047,8 +1059,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion7(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 7);
-        intent.putExtra("optionsForQuestion7", options7);
+        //intent.putExtra("questionNum", 7);
+        intent.putExtra("optionsForQuestion", options7);
 
         int questionID = getResources().getIdentifier("question7", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1061,8 +1073,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion8(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 8);
-        intent.putExtra("optionsForQuestion8", options8);
+        //intent.putExtra("questionNum", 8);
+        intent.putExtra("optionsForQuestion", options8);
 
         int questionID = getResources().getIdentifier("question8", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1075,8 +1087,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion9(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 9);
-        intent.putExtra("optionsForQuestion9", options9);
+        //intent.putExtra("questionNum", 9);
+        intent.putExtra("optionsForQuestion", options9);
 
         int questionID = getResources().getIdentifier("question9", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1089,8 +1101,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     public void optionsQuestion10(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
-        intent.putExtra("questionNum", 10);
-        intent.putExtra("optionsForQuestion10", options10);
+        //intent.putExtra("questionNum", 10);
+        intent.putExtra("optionsForQuestion", options10);
 
         int questionID = getResources().getIdentifier("question10", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1106,57 +1118,79 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                Bundle extras = getIntent().getExtras();
+                //Bundle extras = getIntent().getExtras();
                 options1 = data.getStringArrayExtra("resultOptions");
                 //System.out.println(options1[1]);
                 //System.out.println(options1[2]);
                 //System.out.println(options1[3]);
-                Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "1", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 2) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
+
+                //Bundle extras = getIntent().getExtras();
+                options2 = data.getStringArrayExtra("resultOptions");
+                //Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 3) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "3", Toast.LENGTH_SHORT).show();
+
+                //Bundle extras = getIntent().getExtras();
+                options3 = data.getStringArrayExtra("resultOptions");
+               // Toast.makeText(getApplicationContext(), "3", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 4) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_SHORT).show();
+
+                //Bundle extras = getIntent().getExtras();
+                options4 = data.getStringArrayExtra("resultOptions");
+               // Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 5) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "5", Toast.LENGTH_SHORT).show();
+
+                //Bundle extras = getIntent().getExtras();
+                options5 = data.getStringArrayExtra("resultOptions");
+                //Toast.makeText(getApplicationContext(), "5", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 6) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "6", Toast.LENGTH_SHORT).show();
+
+                //Bundle extras = getIntent().getExtras();
+                options6 = data.getStringArrayExtra("resultOptions");
+                //Toast.makeText(getApplicationContext(), "6", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 7) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "7", Toast.LENGTH_SHORT).show();
+
+                options7 = data.getStringArrayExtra("resultOptions");
+                //Toast.makeText(getApplicationContext(), "7", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 8) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "8", Toast.LENGTH_SHORT).show();
+
+                options8 = data.getStringArrayExtra("resultOptions");
+                //Toast.makeText(getApplicationContext(), "8", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 9) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "9", Toast.LENGTH_SHORT).show();
+
+                options9 = data.getStringArrayExtra("resultOptions");
+                //Toast.makeText(getApplicationContext(), "9", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 10) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(getApplicationContext(), "10", Toast.LENGTH_SHORT).show();
+                options10 = data.getStringArrayExtra("resultOptions");
+                //Toast.makeText(getApplicationContext(), "10", Toast.LENGTH_SHORT).show();
             }
         }
 

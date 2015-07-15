@@ -22,7 +22,7 @@ public class AddSurveyOptions extends ActionBarActivity {
 
     int numOptions = 2;
     boolean[] visiblePollOptions = {true, true, false, false, false, false, false, false ,false, false};
-    int questionNum;
+    //int questionNum;
     String[] options = new String[10];
 
     @Override
@@ -38,10 +38,10 @@ public class AddSurveyOptions extends ActionBarActivity {
             newtext.setText(question);
 
 
-        questionNum = extras.getInt("questionNum");
-        String key = "optionsForQuestion" + Integer.toString(questionNum);
-        System.out.println(key);
-        options = getIntent().getStringArrayExtra(key);
+        //questionNum = extras.getInt("questionNum");
+        //String key = "optionsForQuestion" + Integer.toString(questionNum);
+        //System.out.println(key);
+        options = getIntent().getStringArrayExtra("optionsForQuestion");
 
         for(int i = 0; i < 10; i++){
             if(options[i] != null){
@@ -82,7 +82,7 @@ public class AddSurveyOptions extends ActionBarActivity {
 
     public void finalize(View v){
 
-
+/*
         int optionID = getResources().getIdentifier("option1", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(optionID);
         options[0] = inputTxt.getText().toString();
@@ -122,6 +122,19 @@ public class AddSurveyOptions extends ActionBarActivity {
         optionID = getResources().getIdentifier("option10", "id", getPackageName());
         inputTxt = (EditText) findViewById(optionID);
         options[9] = inputTxt.getText().toString();
+        */
+
+        String optionname;
+        int optionID;
+        EditText inputTxt;
+
+        for(int i = 0; i < numOptions; i++){
+            optionname = "option" + Integer.toString(i+1);
+            optionID = getResources().getIdentifier(optionname, "id", getPackageName());
+            inputTxt = (EditText) findViewById(optionID);
+            options[i] = inputTxt.getText().toString();
+        }
+
 
         Intent result = new Intent();
         result.putExtra("resultOptions", options);
