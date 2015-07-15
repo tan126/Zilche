@@ -59,6 +59,9 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     EditText option9;
     EditText option10;
     EditText[] options = new EditText[10];
+    boolean validQuestion = false;
+    int totalOptionsAdded = 0;
+    boolean validOptions = false;
     int numOptions = 2;
     boolean[] visiblePollOptions = {true, true, false, false, false, false, false, false ,false, false};
 
@@ -154,8 +157,19 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                     @Override
                     public void onClick(View v) {
                         question = (EditText) findViewById(R.id.question);
-                        poll.put("question", question.getText().toString());
-                        pager.setCurrentItem(1);
+                        if (question.getText().toString().trim().length() == 0) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You must input a question";
+                            validQuestion = false;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                        else {
+                            validQuestion = true;
+                            poll.put("question", question.getText().toString());
+                            pager.setCurrentItem(1);
+                        }
                     }
                 });
                 break;
@@ -180,9 +194,30 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                             int actualOptionID = i + 1;
                             String option = "option" + actualOptionID;
                             int optionID = getResources().getIdentifier(option, "id", getPackageName());
-                            EditText optionText = (EditText)findViewById(optionID);
-                            poll.add("options", optionText.getText().toString());
-                            poll.add("votes", 0);
+                            EditText optionText = (EditText) findViewById(optionID);
+                            if (optionText.getText().toString().trim().length() == 0) {
+                                Context context = getApplicationContext();
+                                CharSequence text = "Please make sure you have added at least two options";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                totalOptionsAdded = 0;
+                                break;
+                            }
+                            else {
+                                validOptions = true;
+                                totalOptionsAdded++;
+                            }
+                        }
+                        if (validOptions == true && totalOptionsAdded >= 2) {
+                            for (int i = 0; i < numOptions; i++) {
+                                int actualOptionID = i + 1;
+                                String option = "option" + actualOptionID;
+                                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                                EditText optionText = (EditText) findViewById(optionID);
+                                poll.add("options", optionText.getText().toString());
+                                poll.add("votes", 0);
+                            }
                         }
                         /*switch (numOptions) {
                             case 2:
@@ -301,37 +336,51 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        textView.setClickable(false);
-                        textView.setBackgroundColor(Color.parseColor("#11100000"));
-                        ParseQuery<ParseObject> query = ParseQuery.getQuery("poll_id");
-                        query.getInBackground("ioqSxO1iQY", new GetCallback<ParseObject>() {
-                            @Override
-                            public void done(ParseObject object, ParseException e) {
-                                if (e == null) {
-                                    // object will be poll_id
-                                    int pollID = object.getInt("value");
-                                    object.increment("value");
-                                    object.saveInBackground();
+                        if (validQuestion == false) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "Please make sure you have added a question";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        } else if (totalOptionsAdded < 2) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "Please make sure you have added at least two options";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        } else {
+                            textView.setClickable(false);
+                            textView.setBackgroundColor(Color.parseColor("#11100000"));
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery("poll_id");
+                            query.getInBackground("ioqSxO1iQY", new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(ParseObject object, ParseException e) {
+                                    if (e == null) {
+                                        // object will be poll_id
+                                        int pollID = object.getInt("value");
+                                        object.increment("value");
+                                        object.saveInBackground();
 
-                                    poll.put("author", ParseUser.getCurrentUser().getString("username"));
-                                    poll.put("id", pollID + 1);
-                                    poll.put("category", 0);
-                                    poll.put("createTime", System.currentTimeMillis());
-                                    poll.put("total", 0);
-                                    poll.put("nickname", ParseUser.getCurrentUser().getString("name"));
-                                    poll.put("lastUpdate", System.currentTimeMillis());
-                                    poll.saveInBackground();
-                                } else {
-                                    // something went wrong
+                                        poll.put("author", ParseUser.getCurrentUser().getString("username"));
+                                        poll.put("id", pollID + 1);
+                                        poll.put("category", 0);
+                                        poll.put("createTime", System.currentTimeMillis());
+                                        poll.put("total", 0);
+                                        poll.put("nickname", ParseUser.getCurrentUser().getString("name"));
+                                        poll.put("lastUpdate", System.currentTimeMillis());
+                                        poll.saveInBackground();
+                                    } else {
+                                        // something went wrong
+                                    }
                                 }
-                            }
-                        });
-                        Context context = getApplicationContext();
-                        CharSequence text = "New Poll Submitted";
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                        finish();
+                            });
+                            Context context = getApplicationContext();
+                            CharSequence text = "New Poll Submitted";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            finish();
+                        }
                     }
                 });
                 break;
