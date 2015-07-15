@@ -22,6 +22,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class NewestFragment extends Fragment{
     ArrayList<String> totalList;
     ArrayList<String> authorList;
     ArrayList<String> hotnessList;
+    ArrayList<Poll> pollOnjectList;
     SwipeRefreshLayout swipeLayout;
     ParseQuery<ParseObject> query;
 
@@ -59,6 +63,8 @@ public class NewestFragment extends Fragment{
                 totalList = new ArrayList<String>();
                 authorList = new ArrayList<String>();
                 hotnessList = new ArrayList<String>();
+                pollOnjectList = new ArrayList<Poll>();
+
                         query = ParseQuery.getQuery("Poll");
                         query.orderByDescending("lastUpdate");
 
@@ -68,8 +74,11 @@ public class NewestFragment extends Fragment{
                                 if (e == null) {
                                     for (int i = 0; i < list.size(); i++) {
                                         ParseObject thisPoll = list.get(i);
-                                        String tmpStr = thisPoll.getString("question");
-                                        String name = thisPoll.getString("nickname");
+                                        //String tmpStr = thisPoll.getString("question");
+                                        //String name = thisPoll.getString("nickname");
+                                        Poll tmpPoll = parsePollObject(thisPoll);
+                                        String tmpStr = tmpPoll.getQuestion();
+                                        String name = tmpPoll.getAuthor();
                                         pollList.add(tmpStr);
                                         String tmp = "";
                                         int total = thisPoll.getInt("total");
@@ -101,6 +110,13 @@ public class NewestFragment extends Fragment{
                                             tmp += "submitted 1 minute ago";
                                         tmp += " by " + name;
                                         timeList.add(tmp);
+
+
+
+                                        //question: tmpStr
+                                        //options:
+
+
                                         gv.setAdapter(new PollListAdapter(getActivity()));
                                         swipeLayout.setRefreshing(false);
                                     }
@@ -123,6 +139,7 @@ public class NewestFragment extends Fragment{
         totalList = new ArrayList<String>();
         authorList = new ArrayList<String>();
         hotnessList = new ArrayList<String>();
+        pollOnjectList = new ArrayList<Poll>();
 
         query = ParseQuery.getQuery("Poll");
         query.orderByDescending("lastUpdate");
@@ -133,8 +150,11 @@ public class NewestFragment extends Fragment{
                 if (e == null) {
                     for (int i = 0; i < list.size(); i++) {
                         ParseObject thisPoll = list.get(i);
-                        String tmpStr = thisPoll.getString("question");
-                        String name = thisPoll.getString("nickname");
+                        //String tmpStr = thisPoll.getString("question");
+                        //String name = thisPoll.getString("nickname");
+                        Poll tmpPoll = parsePollObject(thisPoll);
+                        String tmpStr = tmpPoll.getQuestion();
+                        String name = tmpPoll.getAuthor();
                         pollList.add(tmpStr);
                         String tmp = "";
                         int total = thisPoll.getInt("total");
@@ -178,6 +198,34 @@ public class NewestFragment extends Fragment{
         });
 
         return rootView;
+    }
+
+    private Poll parsePollObject(ParseObject thisPoll){
+        String question = thisPoll.getString("question");
+        int options_count = thisPoll.getInt("optionNum");
+        JSONArray tmpOptions = thisPoll.getJSONArray("options");
+        String[] options = new String[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            try{
+                options[i] = tmpOptions.getString(i);
+            } catch ( JSONException e ){
+                Log.d("JSON", "Array index out of bound");
+            }
+        }
+        JSONArray tmpVotes = thisPoll.getJSONArray("votes");
+        int[] votes = new int[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            try{
+                votes[i] = tmpVotes.getInt(i);
+            } catch ( JSONException e ){
+                Log.d("JSON", "Array index out of bound");
+            }
+        }
+        String date_added = "1900-0-0";
+        String author = thisPoll.getString("nickname");
+        int categorty = thisPoll.getInt("category");
+        Poll newPoll = new Poll(question, options, votes, date_added, author, options_count, categorty);
+        return newPoll;
     }
 
     public class PollListAdapter extends BaseAdapter {
