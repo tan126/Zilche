@@ -167,6 +167,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                         }
                         else {
                             validQuestion = true;
+                            poll.remove("question");
                             poll.put("question", question.getText().toString());
                             pager.setCurrentItem(1);
                         }
@@ -179,7 +180,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                     @Override
                     public void onClick(View v) {
                         poll.put("optionNum", numOptions);
-                        //poll.remove("options");
+                        poll.remove("options");
                         /*for (int i = 0; i < 10; i++) { // old adding to poll
                             if (visiblePollOptions[i] == true) {
                                 int actualOptionID = i + 1;
