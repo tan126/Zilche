@@ -91,7 +91,10 @@ public class CategoryActivity extends AppCompatActivity {
 
     public void clicked (View v){
         Intent i = new Intent(this, PollViewActivity.class);
-        i.putExtra("category_index", category);
+        Poll poll = new Poll("What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4 ,5},
+                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 2);
+        poll.setCategory_title(getString(strings[2]));
+        i.putExtra("poll", poll);
         startActivity(i);
     }
 
