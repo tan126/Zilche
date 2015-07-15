@@ -179,6 +179,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                     @Override
                     public void onClick(View v) {
                         poll.put("optionNum", numOptions);
+                        //poll.remove("options");
                         /*for (int i = 0; i < 10; i++) { // old adding to poll
                             if (visiblePollOptions[i] == true) {
                                 int actualOptionID = i + 1;
