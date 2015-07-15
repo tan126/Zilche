@@ -45,20 +45,9 @@ public class AddSurveyOptions extends ActionBarActivity {
 
     public void finalize(View v){
 
-        // get EditText by id
-/*
-        String optionShift = "option" + optionToShift;
-        int optionIDShift = getResources().getIdentifier(optionShift, "id", getPackageName());
-        EditText editTextShift = (EditText) findViewById(optionIDShift);
-        editText.setText(editTextShift.getText().toString());
-        */
-
-
 
         int optionID = getResources().getIdentifier("option1", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(optionID);
-
-        System.out.println(inputTxt.getText().toString());
         options[0] = inputTxt.getText().toString();
 
         optionID = getResources().getIdentifier("option2", "id", getPackageName());

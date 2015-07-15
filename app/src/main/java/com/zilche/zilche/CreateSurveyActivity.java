@@ -1070,37 +1070,37 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         }
         if (requestCode == 4) {
             if (resultCode == RESULT_OK) {
-
+                Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 5) {
             if (resultCode == RESULT_OK) {
-
+                Toast.makeText(getApplicationContext(), "5", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 6) {
             if (resultCode == RESULT_OK) {
-
+                Toast.makeText(getApplicationContext(), "6", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 7) {
             if (resultCode == RESULT_OK) {
-
+                Toast.makeText(getApplicationContext(), "7", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 8) {
             if (resultCode == RESULT_OK) {
-
+                Toast.makeText(getApplicationContext(), "8", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 9) {
             if (resultCode == RESULT_OK) {
-
+                Toast.makeText(getApplicationContext(), "9", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 10) {
             if (resultCode == RESULT_OK) {
-
+                Toast.makeText(getApplicationContext(), "10", Toast.LENGTH_SHORT).show();
             }
         }
 
