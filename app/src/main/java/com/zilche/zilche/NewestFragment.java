@@ -40,6 +40,7 @@ public class NewestFragment extends Fragment{
     ArrayList<Poll> pollOnjectList;
     SwipeRefreshLayout swipeLayout;
     ParseQuery<ParseObject> query;
+    int isRefreshing;
 
     public NewestFragment() {
         // Required empty public constructor
@@ -56,9 +57,12 @@ public class NewestFragment extends Fragment{
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_newest, container, false);
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
+        isRefreshing = 0;
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                isRefreshing = 1;
+
                 pollList = new ArrayList<String>();
                 timeList = new ArrayList<String>();
                 totalList = new ArrayList<String>();
@@ -117,6 +121,7 @@ public class NewestFragment extends Fragment{
                                         //options:
                                         gv.setAdapter(new PollListAdapter(getActivity()));
                                         swipeLayout.setRefreshing(false);
+                                        isRefreshing = 0;
                                     }
                                 } else {
                                     Log.d("Newest Poll", "Error: " + e.getMessage());
@@ -317,7 +322,8 @@ public class NewestFragment extends Fragment{
                 @Override
                 public void onClick(View v) {
                     //TODO intent to poll view
-                    //Question stored in poll_name
+                    if (isRefreshing == 1)
+                        return;
                     Intent i = new Intent(getActivity(), PollViewActivity.class);
                     i.putExtra("poll", pollOnjectList.get(position));
                     startActivity(i);

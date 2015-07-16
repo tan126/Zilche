@@ -22,6 +22,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +37,9 @@ public class PopularFragment extends Fragment{
     ArrayList<String> authorList;
     ArrayList<String> hotnessList;
     SwipeRefreshLayout swipeLayout;
+    ArrayList<Poll> pollOnjectList;
     ParseQuery<ParseObject> query;
+    int isRefreshing;
 
     public PopularFragment() {
         // Required empty public constructor
@@ -51,15 +56,19 @@ public class PopularFragment extends Fragment{
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_newest, container, false);
 
+        isRefreshing = 0;
         swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                isRefreshing = 1;
+
                 pollList = new ArrayList<String>();
                 timeList = new ArrayList<String>();
                 totalList = new ArrayList<String>();
                 authorList = new ArrayList<String>();
                 hotnessList = new ArrayList<String>();
+                pollOnjectList = new ArrayList<Poll>();
 
                 query = ParseQuery.getQuery("Poll");
                 query.orderByDescending("total");
@@ -70,8 +79,11 @@ public class PopularFragment extends Fragment{
                         if (e == null) {
                             for (int i = 0; i < list.size(); i++) {
                                 ParseObject thisPoll = list.get(i);
-                                String tmpStr = thisPoll.getString("question");
-                                String name = thisPoll.getString("nickname");
+                                //String tmpStr = thisPoll.getString("question");
+                                //String name = thisPoll.getString("nickname");
+                                Poll tmpPoll = parsePollObject(thisPoll);
+                                String tmpStr = tmpPoll.getQuestion();
+                                String name = tmpPoll.getAuthor();
                                 pollList.add(tmpStr);
                                 String tmp = "";
                                 int total = thisPoll.getInt("total");
@@ -93,18 +105,23 @@ public class PopularFragment extends Fragment{
                                         long diffH = diffM / 60;
                                         if (diffH > 24) {
                                             long diffD = diffH / 24;
-                                            tmp += "submitted " + diffD + " days ago";
+                                            tmp +=  diffD + " days ago";
                                         } else
-                                            tmp += "submitted " + diffH + " hours ago";
+                                            tmp +=  diffH + " hours ago";
                                         ;
                                     } else
-                                        tmp += "submitted " + diffM + " minutes ago";
+                                        tmp +=  + diffM + " minutes ago";
                                 } else
-                                    tmp += "submitted 1 minute ago";
-                                tmp += " by " + name;
+                                    tmp += "1 minute ago";
+                                //tmp += " by " + name;
+                                pollOnjectList.add(parsePollObject(thisPoll));
                                 timeList.add(tmp);
+
+                                //question: tmpStr
+                                //options:
                                 gv.setAdapter(new PollListAdapter(getActivity()));
                                 swipeLayout.setRefreshing(false);
+                                isRefreshing = 0;
                             }
                         } else {
                             Log.d("Newest Poll", "Error: " + e.getMessage());
@@ -126,6 +143,7 @@ public class PopularFragment extends Fragment{
         totalList = new ArrayList<String>();
         authorList = new ArrayList<String>();
         hotnessList = new ArrayList<String>();
+        pollOnjectList = new ArrayList<Poll>();
 
         query = ParseQuery.getQuery("Poll");
         query.orderByDescending("total");
@@ -136,8 +154,11 @@ public class PopularFragment extends Fragment{
                 if (e == null) {
                     for (int i = 0; i < list.size(); i++) {
                         ParseObject thisPoll = list.get(i);
-                        String tmpStr = thisPoll.getString("question");
-                        String name = thisPoll.getString("nickname");
+                        //String tmpStr = thisPoll.getString("question");
+                        //String name = thisPoll.getString("nickname");
+                        Poll tmpPoll = parsePollObject(thisPoll);
+                        String tmpStr = tmpPoll.getQuestion();
+                        String name = tmpPoll.getAuthor();
                         pollList.add(tmpStr);
                         String tmp = "";
                         int total = thisPoll.getInt("total");
@@ -159,18 +180,19 @@ public class PopularFragment extends Fragment{
                                 long diffH = diffM / 60;
                                 if ( diffH > 24 ) {
                                     long diffD = diffH / 24;
-                                    tmp += "submitted " + diffD + " days ago";
+                                    tmp +=  diffD + " days ago";
                                 }
                                 else
-                                    tmp += "submitted " + diffH + " hours ago";;
+                                    tmp +=  + diffH + " hours ago";;
                             }
                             else
-                                tmp += "submitted " + diffM + " minutes ago";
+                                tmp += + diffM + " minutes ago";
                         }
                         else
-                            tmp += "submitted 1 minute ago";
-                        tmp += " by " + name;
+                            tmp += " 1 minute ago";
+                        //tmp += " by " + name;
                         timeList.add(tmp);
+                        pollOnjectList.add(parsePollObject(thisPoll));
                         gv.setAdapter(new PollListAdapter(getActivity()));
                     }
                 }
@@ -181,6 +203,54 @@ public class PopularFragment extends Fragment{
         });
 
         return rootView;
+    }
+
+    private Poll parsePollObject(ParseObject thisPoll){
+        String question = thisPoll.getString("question");
+        int options_count = thisPoll.getInt("optionNum");
+        JSONArray tmpOptions = thisPoll.getJSONArray("options");
+        String[] options = new String[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            try{
+                options[i] = tmpOptions.getString(i);
+            } catch ( JSONException e ){
+                Log.d("JSON", "Array index out of bound");
+            }
+        }
+        JSONArray tmpVotes = thisPoll.getJSONArray("votes");
+        int[] votes = new int[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            try{
+                votes[i] = tmpVotes.getInt(i);
+            } catch ( JSONException e ){
+                Log.d("JSON", "Array index out of bound");
+            }
+        }
+        String tmp = "";
+        long updatedTime = thisPoll.getLong("createTime");
+        long diffMS = System.currentTimeMillis() - updatedTime;
+        long diffS = diffMS / 1000;
+        if ( diffS > 60 ) {
+            long diffM = diffS / 60;
+            if ( diffM > 60 ){
+                long diffH = diffM / 60;
+                if ( diffH > 24 ) {
+                    long diffD = diffH / 24;
+                    tmp +=  diffD + " days ago";
+                }
+                else
+                    tmp +=  + diffH + " hours ago";;
+            }
+            else
+                tmp += + diffM + " minutes ago";
+        }
+        else
+            tmp += " 1 minute ago";
+        String date_added = tmp;
+        String author = thisPoll.getString("nickname");
+        int categorty = thisPoll.getInt("category");
+        Poll newPoll = new Poll(question, options, votes, date_added, author, options_count, categorty);
+        return newPoll;
     }
 
     public class PollListAdapter extends BaseAdapter {
@@ -218,7 +288,7 @@ public class PopularFragment extends Fragment{
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = vi.inflate(R.layout.newestpolls, null);
@@ -246,15 +316,20 @@ public class PopularFragment extends Fragment{
                 check.setColorFilter(Color.parseColor("#00C853"));
                 total.setTextColor(Color.parseColor("#00C853"));
             }
-            ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
-            iv.setImageResource(R.drawable.ic_assessment_white_48dp);
-            iv.setColorFilter(Color.parseColor("#11110000"));
+            //ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
+            //iv.setImageResource(R.drawable.ic_assessment_white_48dp);
+            //iv.setColorFilter(Color.parseColor("#11110000"));
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO intent to poll view
-                    //Question stored in poll_name
+                    if (isRefreshing == 1)
+                        return;
+                    Intent i = new Intent(getActivity(), PollViewActivity.class);
+                    i.putExtra("poll", pollOnjectList.get(position));
+                    startActivity(i);
+                    getActivity().overridePendingTransition(R.anim.right_to_left, 0);
                 }
             });
 
