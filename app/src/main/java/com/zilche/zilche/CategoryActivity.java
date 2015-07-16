@@ -11,6 +11,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +25,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class CategoryActivity extends AppCompatActivity {
@@ -42,6 +48,7 @@ public class CategoryActivity extends AppCompatActivity {
             0xff1976D2, 0xffD32F2F, 0xff512DA8, 0xff7B1FA2, 0xffAFB42B, 0xffE64A19, 0xffFBC02D, 0xff616161, 0xff388E3C, 0xff5D4037,
             0xff00796B, 0xff0097A7, 0xffC2185B, 0xffF57C00, 0xff455A64
     };
+    private List<Poll> pollList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +63,7 @@ public class CategoryActivity extends AppCompatActivity {
         ((ImageButton)findViewById(R.id.back_button_cat)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               onBackPressed();
+                onBackPressed();
             }
         });
 
@@ -65,28 +72,25 @@ public class CategoryActivity extends AppCompatActivity {
         }
         RelativeLayout lay = (RelativeLayout) findViewById(R.id.header);
         lay.setBackgroundColor(title_color[category]);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_category, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        RecyclerView rv = (RecyclerView) findViewById(R.id.rv_cat);
+        rv.setHasFixedSize(true);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        Poll p = new Poll("What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
+                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 2);
+        p.setCategory_title("Education");
+        pollList = new LinkedList<>();
+        pollList.add(p);
+        Poll p2 = new Poll("Should I go to work tomorrow?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
+                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 0);
+        p.setCategory_title("Other");
+        pollList.add(new Poll("What is 1 + 5?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
+                "3 minutes ago", "Aaron Kar Ee Ha", 4, 2));
+        pollList.add(p2);
+        pollList.add(p2);
+        pollList.add(p2);
+        pollList.add(p2);
+        RVadapter rva = new RVadapter(pollList);
+        rv.setAdapter(rva);
     }
 
     public void clicked (View v){
@@ -98,19 +102,55 @@ public class CategoryActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    public static class PollViewFragment extends Fragment {
-        @Override
-        public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle bundle) {
-            return inf.inflate(R.layout.activity_poll_view, container, false);
+    public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
+
+        List<Poll> polls;
+
+        public class PollViewHolder extends RecyclerView.ViewHolder{
+
+            CardView cv;
+            TextView question;
+            TextView date;
+            TextView category;
+
+            public PollViewHolder(View itemView) {
+                super(itemView);
+                cv = (CardView) itemView.findViewById(R.id.cv);
+                question = (TextView) itemView.findViewById(R.id.question);
+                date = (TextView) itemView.findViewById(R.id.date);
+                category = (TextView) itemView.findViewById(R.id.category);
+            }
         }
 
+        public RVadapter(List<Poll> pollList) {
+            polls = pollList;
+        }
+
+        @Override
+        public RVadapter.PollViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.items, viewGroup, false);
+            PollViewHolder pvh = new PollViewHolder(v);
+            return pvh;
+        }
+
+        @Override
+        public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
+            pollViewHolder.category.setText(strings[polls.get(i).getCategory()]);
+            pollViewHolder.date.setText(polls.get(i).getDate_added());
+            pollViewHolder.question.setText(polls.get(i).getQuestion());
+        }
+
+        @Override
+        public void onAttachedToRecyclerView(RecyclerView rv) {
+            super.onAttachedToRecyclerView(rv);
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return polls.size();
+        }
     }
 
-    public void setFragment(Fragment f) {
-        FragmentManager fm = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(android.R.id.content, f);
-        ft.commit();
-    }
 
 }

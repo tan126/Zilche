@@ -118,6 +118,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:maxLength="23"
+                            android:ellipsize="end"
                             android:id="@+id/author_poll_view"
                             android:textColor="#666"
                             android:textSize="14sp"

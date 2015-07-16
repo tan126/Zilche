@@ -122,4 +122,12 @@ public class Poll implements Parcelable{
         }
     };
 
+    public int totalVotes() {
+        int ret = 0;
+        for (int i = 0; i < votes.length; i++) {
+            ret += votes[i];
+        }
+        return ret;
+    }
+
 }

@@ -4,7 +4,6 @@
     android:orientation="vertical"
     tools:context="com.zilche.zilche.CategoryActivity">
 
-
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -49,14 +48,11 @@
 
     </RelativeLayout>
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Click me"
-        android:onClick="clicked"/>
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_cat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
 
 
 </LinearLayout>
