@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -21,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PollViewActivity extends Activity {
 
@@ -41,6 +43,7 @@ public class PollViewActivity extends Activity {
     private int category = 0;
     private TextView category_title;
     private SlidingPaneLayout spl;
+    private Button submit_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,13 +55,14 @@ public class PollViewActivity extends Activity {
         dateAdded = (TextView) findViewById(R.id.date_poll_view);
         radioGroup = (RadioGroup) findViewById(R.id.radio_group_poll_view);
         category_title = (TextView) findViewById(R.id.category_poll_view);
+        submit_btn = (Button) findViewById(R.id.submit_poll_view);
 
         Bundle extras = getIntent().getExtras();
         Poll poll = extras.getParcelable("poll");
 
         question.setText(poll.getQuestion());
         dateAdded.setText(poll.getDate_added());
-        author.setText("- " + poll.getAuthor());
+        author.setText(" " + poll.getAuthor());
         category = poll.getCategory();
         imageView.setVisibility(View.GONE);
         category_title.setText(poll.getCategory_title());
@@ -94,7 +98,6 @@ public class PollViewActivity extends Activity {
         }
         final RelativeLayout lay = (RelativeLayout) findViewById(R.id.header_poll_view);
         lay.setBackgroundColor(title_color[category]);
-        populatePoll(poll);
         final ScrollView sv = (ScrollView)findViewById(R.id.scroll_view_poll);
         final LinearLayout ll = (LinearLayout) findViewById(R.id.linlay_view_poll);
         Display display = getWindowManager().getDefaultDisplay();
@@ -103,6 +106,18 @@ public class PollViewActivity extends Activity {
         int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77,
                 getResources().getDisplayMetrics()));
         ll.setMinimumHeight(height);
+        populatePoll(poll);
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int checked = radioGroup.getCheckedRadioButtonId();
+                if (checked == -1) {
+                    // failed
+                } else {
+                    Toast.makeText(PollViewActivity.this, Integer.toString(checked), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void populatePoll(Poll poll) {
@@ -120,6 +135,7 @@ public class PollViewActivity extends Activity {
             rb.setPadding(30, 30, 30, 30);
             rb.setGravity(Gravity.CENTER_VERTICAL);
             rb.setButtonDrawable(R.drawable.apptheme_btn_check_holo_light);
+            rb.setId(i);
             View v = new View(this);
             v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
                     getResources().getDisplayMetrics())));
