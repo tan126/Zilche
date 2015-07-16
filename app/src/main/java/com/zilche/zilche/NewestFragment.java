@@ -219,7 +219,27 @@ public class NewestFragment extends Fragment{
                 Log.d("JSON", "Array index out of bound");
             }
         }
-        String date_added = "1900-0-0";
+        String tmp = "";
+        long updatedTime = thisPoll.getLong("createTime");
+        long diffMS = System.currentTimeMillis() - updatedTime;
+        long diffS = diffMS / 1000;
+        if ( diffS > 60 ) {
+            long diffM = diffS / 60;
+            if ( diffM > 60 ){
+                long diffH = diffM / 60;
+                if ( diffH > 24 ) {
+                    long diffD = diffH / 24;
+                    tmp +=  diffD + " days ago";
+                }
+                else
+                    tmp +=  + diffH + " hours ago";;
+            }
+            else
+                tmp += + diffM + " minutes ago";
+        }
+        else
+            tmp += " 1 minute ago";
+        String date_added = tmp;
         String author = thisPoll.getString("nickname");
         int categorty = thisPoll.getInt("category");
         Poll newPoll = new Poll(question, options, votes, date_added, author, options_count, categorty);
