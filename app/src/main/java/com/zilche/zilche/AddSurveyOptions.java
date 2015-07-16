@@ -82,7 +82,7 @@ public class AddSurveyOptions extends ActionBarActivity {
 
     public void finalize(View v){
 
-/*
+
         int optionID = getResources().getIdentifier("option1", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(optionID);
         options[0] = inputTxt.getText().toString();
@@ -122,8 +122,8 @@ public class AddSurveyOptions extends ActionBarActivity {
         optionID = getResources().getIdentifier("option10", "id", getPackageName());
         inputTxt = (EditText) findViewById(optionID);
         options[9] = inputTxt.getText().toString();
-        */
 
+/*
         String optionname;
         int optionID;
         EditText inputTxt;
@@ -135,7 +135,7 @@ public class AddSurveyOptions extends ActionBarActivity {
             options[i] = inputTxt.getText().toString();
         }
 
-
+*/
         Intent result = new Intent();
         result.putExtra("resultOptions", options);
         setResult(Activity.RESULT_OK, result);

@@ -48,7 +48,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     ViewPager pager;
 
     //String[] questions = new String[10];
-
+/*
     String[] options1 = new String[10];
     String[] options2 = new String[10];
     String[] options3 = new String[10];
@@ -58,9 +58,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     String[] options7 = new String[10];
     String[] options8 = new String[10];
     String[] options9 = new String[10];
-    String[] options10 = new String[10];
+    String[] options10 = new String[10];*/
 
-    String[][] questionOptions = new String[][] { options1, options2, options3, options4, options5, options6, options7, options8, options9, options10};
+
+    String[][] questionOptions = new String[10][10];
+
     //String[][] options = new String[][]{options1, options2, options3, options4, options5, options6, options7, options8, options9, options10};
 
 
@@ -265,7 +267,6 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         for (int i = 3; i < 10; i++) {
 
             if (visibleSurveyQuestions[i] == true) {
-                //System.out.println("VISIBLE POLL OPTION IS TRUE");
                 int questionToShift = i + 1; // question ids from xml 1-10 range
                 int previousQuestionNum = i; // question ids from xml 1-10 range
                 String question = "question" + previousQuestionNum;
@@ -282,8 +283,17 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
 
+                //System.out.println("test: " + Integer.toString(questionToShift));
+
+                for (int j = 0; j < 10; j++)
+                    questionOptions[previousQuestionNum -1 ][j] = questionOptions[previousQuestionNum][j];
+                Arrays.fill(questionOptions[previousQuestionNum], null);
+
+
+
                 //questionToShift
-                questionOptions[i-1] = questionOptions[i];
+                //questionOptions[i-1] = questionOptions[i];
+
                 //Arrays.fill(questionOptions[i-1], questionOptions[i]);
                 //Arrays.fill(questionOptions[i], null);
                 //Arrays.fill( questionOptions[previousQuestionNum], null );
@@ -340,6 +350,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             editText.setText("");
 
         }
+
     }
 
     public void removeQuestion4(View v) {
@@ -367,6 +378,12 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
+
+
+                for (int j = 0; j < 10; j++)
+                    questionOptions[previousQuestionNum -1 ][j] = questionOptions[previousQuestionNum][j];
+                Arrays.fill(questionOptions[previousQuestionNum], null);
+
                  /*if (i == 9) {
                      shifted = true;
                  }*/
@@ -461,6 +478,10 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
+
+                for (int j = 0; j < 10; j++)
+                    questionOptions[previousQuestionNum -1 ][j] = questionOptions[previousQuestionNum][j];
+                Arrays.fill(questionOptions[previousQuestionNum], null);
                  /*if (i == 9) {
                      shifted = true;
                  }*/
@@ -555,6 +576,10 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
+
+                for (int j = 0; j < 10; j++)
+                    questionOptions[previousQuestionNum -1 ][j] = questionOptions[previousQuestionNum][j];
+                Arrays.fill(questionOptions[previousQuestionNum], null);
                  /*if (i == 9) {
                      shifted = true;
                  }*/
@@ -656,6 +681,10 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
+
+                for (int j = 0; j < 10; j++)
+                    questionOptions[previousQuestionNum -1 ][j] = questionOptions[previousQuestionNum][j];
+                Arrays.fill(questionOptions[previousQuestionNum], null);
                  /*if (i == 9) {
                      shifted = true;
                  }*/
@@ -768,6 +797,10 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
+
+                for (int j = 0; j < 10; j++)
+                    questionOptions[previousQuestionNum -1 ][j] = questionOptions[previousQuestionNum][j];
+                Arrays.fill(questionOptions[previousQuestionNum], null);
                  /*if (i == 9) {
                      shifted = true;
                  }*/
@@ -880,6 +913,10 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                 int questionRIDShift = getResources().getIdentifier(questionRShift, "id", getPackageName());
                 EditText editTextShift = (EditText) findViewById(questionIDShift);
                 editText.setText(editTextShift.getText().toString());
+
+                for (int j = 0; j < 10; j++)
+                    questionOptions[previousQuestionNum -1 ][j] = questionOptions[previousQuestionNum][j];
+                Arrays.fill(questionOptions[previousQuestionNum], null);
                  /*if (i == 9) {
                      shifted = true;
                  }*/
@@ -969,6 +1006,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         numQuestions--;
         visibleSurveyQuestions[9] = false;
         editText.setText("");
+        Arrays.fill(questionOptions[9], null);
     }
 
     public void optionsQuestion1(View v) {
@@ -977,13 +1015,14 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 1);
-        intent.putExtra("optionsForQuestion", options1);
+        intent.putExtra("optionsForQuestion", questionOptions[0]);
 
         int questionID = getResources().getIdentifier("question1", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
         String question = inputTxt.getText().toString();
         intent.putExtra("question", question);
 
+        //intent.putExtra("question", "Question 1:");
 
         startActivityForResult(intent, 1);
 
@@ -992,12 +1031,14 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion2(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 2);
-        intent.putExtra("optionsForQuestion", options2);
+        intent.putExtra("optionsForQuestion", questionOptions[1]);
 
         int questionID = getResources().getIdentifier("question2", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
         String question = inputTxt.getText().toString();
         intent.putExtra("question", question);
+
+        //intent.putExtra("question", "Question 2:");
 
         startActivityForResult(intent, 2);
     }
@@ -1005,12 +1046,14 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion3(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 3);
-        intent.putExtra("optionsForQuestion", options3);
+        intent.putExtra("optionsForQuestion", questionOptions[2]);
 
         int questionID = getResources().getIdentifier("question3", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
         String question = inputTxt.getText().toString();
         intent.putExtra("question", question);
+
+        //intent.putExtra("question", "Question 3:");
 
         startActivityForResult(intent, 3);
 
@@ -1019,12 +1062,15 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion4(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 4);
-        intent.putExtra("optionsForQuestion", options4);
+        intent.putExtra("optionsForQuestion", questionOptions[3]);
 
         int questionID = getResources().getIdentifier("question4", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
         String question = inputTxt.getText().toString();
-        intent.putExtra("question", question);
+         intent.putExtra("question", question);
+
+        //intent.putExtra("question", "Question 4:");
+
 
         startActivityForResult(intent, 4);
     }
@@ -1032,12 +1078,14 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion5(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 5);
-        intent.putExtra("optionsForQuestion", options5);
+        intent.putExtra("optionsForQuestion", questionOptions[4]);
 
         int questionID = getResources().getIdentifier("question5", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
         String question = inputTxt.getText().toString();
-        intent.putExtra("question", question);
+         intent.putExtra("question", question);
+
+        //intent.putExtra("question", "Question 5:");
 
         startActivityForResult(intent, 5);
 
@@ -1046,7 +1094,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion6(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 6);
-        intent.putExtra("optionsForQuestion", options6);
+        intent.putExtra("optionsForQuestion", questionOptions[5]);
 
         int questionID = getResources().getIdentifier("question6", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1060,7 +1108,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion7(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 7);
-        intent.putExtra("optionsForQuestion", options7);
+        intent.putExtra("optionsForQuestion", questionOptions[6]);
 
         int questionID = getResources().getIdentifier("question7", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1074,7 +1122,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion8(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 8);
-        intent.putExtra("optionsForQuestion", options8);
+        intent.putExtra("optionsForQuestion", questionOptions[7]);
 
         int questionID = getResources().getIdentifier("question8", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1088,7 +1136,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion9(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 9);
-        intent.putExtra("optionsForQuestion", options9);
+        intent.putExtra("optionsForQuestion", questionOptions[8]);
 
         int questionID = getResources().getIdentifier("question9", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1102,7 +1150,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     public void optionsQuestion10(View v) {
         Intent intent = new Intent(CreateSurveyActivity.this, AddSurveyOptions.class);
         //intent.putExtra("questionNum", 10);
-        intent.putExtra("optionsForQuestion", options10);
+        intent.putExtra("optionsForQuestion", questionOptions[9]);
 
         int questionID = getResources().getIdentifier("question10", "id", getPackageName());
         EditText inputTxt = (EditText) findViewById(questionID);
@@ -1119,7 +1167,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 //Bundle extras = getIntent().getExtras();
-                options1 = data.getStringArrayExtra("resultOptions");
+                questionOptions[0] = data.getStringArrayExtra("resultOptions");
                 //System.out.println(options1[1]);
                 //System.out.println(options1[2]);
                 //System.out.println(options1[3]);
@@ -1130,7 +1178,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             if (resultCode == RESULT_OK) {
 
                 //Bundle extras = getIntent().getExtras();
-                options2 = data.getStringArrayExtra("resultOptions");
+                questionOptions[1] = data.getStringArrayExtra("resultOptions");
                 //Toast.makeText(getApplicationContext(), "2", Toast.LENGTH_SHORT).show();
             }
         }
@@ -1138,7 +1186,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             if (resultCode == RESULT_OK) {
 
                 //Bundle extras = getIntent().getExtras();
-                options3 = data.getStringArrayExtra("resultOptions");
+                questionOptions[2] = data.getStringArrayExtra("resultOptions");
                // Toast.makeText(getApplicationContext(), "3", Toast.LENGTH_SHORT).show();
             }
         }
@@ -1146,7 +1194,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             if (resultCode == RESULT_OK) {
 
                 //Bundle extras = getIntent().getExtras();
-                options4 = data.getStringArrayExtra("resultOptions");
+                questionOptions[3] = data.getStringArrayExtra("resultOptions");
                // Toast.makeText(getApplicationContext(), "4", Toast.LENGTH_SHORT).show();
             }
         }
@@ -1154,7 +1202,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             if (resultCode == RESULT_OK) {
 
                 //Bundle extras = getIntent().getExtras();
-                options5 = data.getStringArrayExtra("resultOptions");
+                questionOptions[4] = data.getStringArrayExtra("resultOptions");
                 //Toast.makeText(getApplicationContext(), "5", Toast.LENGTH_SHORT).show();
             }
         }
@@ -1162,34 +1210,34 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
             if (resultCode == RESULT_OK) {
 
                 //Bundle extras = getIntent().getExtras();
-                options6 = data.getStringArrayExtra("resultOptions");
+                questionOptions[5] = data.getStringArrayExtra("resultOptions");
                 //Toast.makeText(getApplicationContext(), "6", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 7) {
             if (resultCode == RESULT_OK) {
 
-                options7 = data.getStringArrayExtra("resultOptions");
+                questionOptions[6] = data.getStringArrayExtra("resultOptions");
                 //Toast.makeText(getApplicationContext(), "7", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 8) {
             if (resultCode == RESULT_OK) {
 
-                options8 = data.getStringArrayExtra("resultOptions");
+                questionOptions[7] = data.getStringArrayExtra("resultOptions");
                 //Toast.makeText(getApplicationContext(), "8", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 9) {
             if (resultCode == RESULT_OK) {
 
-                options9 = data.getStringArrayExtra("resultOptions");
+                questionOptions[8] = data.getStringArrayExtra("resultOptions");
                 //Toast.makeText(getApplicationContext(), "9", Toast.LENGTH_SHORT).show();
             }
         }
         if (requestCode == 10) {
             if (resultCode == RESULT_OK) {
-                options10 = data.getStringArrayExtra("resultOptions");
+                questionOptions[9] = data.getStringArrayExtra("resultOptions");
                 //Toast.makeText(getApplicationContext(), "10", Toast.LENGTH_SHORT).show();
             }
         }
