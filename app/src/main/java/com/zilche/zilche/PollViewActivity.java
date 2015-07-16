@@ -58,7 +58,7 @@ public class PollViewActivity extends Activity {
 
         question.setText(poll.getQuestion());
         dateAdded.setText(poll.getDate_added());
-        author.setText("-- " + poll.getAuthor());
+        author.setText("- " + poll.getAuthor());
         category = poll.getCategory();
         imageView.setVisibility(View.GONE);
         category_title.setText(poll.getCategory_title());
@@ -72,9 +72,8 @@ public class PollViewActivity extends Activity {
 
             @Override
             public void onPanelOpened(View panel) {
-                getWindow().setStatusBarColor(0);
                 PollViewActivity.this.finish();
-                PollViewActivity.this.overridePendingTransition(0, 0);
+                PollViewActivity.this.overridePendingTransition(0, R.anim.toolbar_dissapear);
             }
 
             @Override
@@ -85,7 +84,7 @@ public class PollViewActivity extends Activity {
         ((ImageButton)findViewById(R.id.back_button_poll_view)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spl.openPane();
+                onBackPressed();
             }
         });
 
@@ -128,6 +127,12 @@ public class PollViewActivity extends Activity {
             radioGroup.addView(rb);
             radioGroup.addView(v);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.left_to_right);
     }
 
 }

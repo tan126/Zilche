@@ -2,6 +2,7 @@ package com.zilche.zilche;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -109,6 +110,7 @@ public class NewestFragment extends Fragment{
                                         } else
                                             tmp += "1 minute ago";
                                         //tmp += " by " + name;
+                                        pollOnjectList.add(parsePollObject(thisPoll));
                                         timeList.add(tmp);
 
                                         //question: tmpStr
@@ -184,6 +186,7 @@ public class NewestFragment extends Fragment{
                             tmp += " 1 minute ago";
                         //tmp += " by " + name;
                         timeList.add(tmp);
+                        pollOnjectList.add(parsePollObject(thisPoll));
                         gv.setAdapter(new PollListAdapter(getActivity()));
                     }
                 }
@@ -258,7 +261,7 @@ public class NewestFragment extends Fragment{
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = vi.inflate(R.layout.newestpolls, null);
@@ -295,7 +298,10 @@ public class NewestFragment extends Fragment{
                 public void onClick(View v) {
                     //TODO intent to poll view
                     //Question stored in poll_name
-
+                    Intent i = new Intent(getActivity(), PollViewActivity.class);
+                    i.putExtra("poll", pollOnjectList.get(position));
+                    startActivity(i);
+                    getActivity().overridePendingTransition(R.anim.right_to_left, 0);
                 }
             });
 

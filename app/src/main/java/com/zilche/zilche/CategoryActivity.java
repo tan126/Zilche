@@ -82,7 +82,7 @@ public class CategoryActivity extends AppCompatActivity {
         pollList.add(p);
         Poll p2 = new Poll("Should I go to work tomorrow?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
                 "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 0);
-        p.setCategory_title("Other");
+        //p2.setCategory_title("Other");
         pollList.add(new Poll("What is 1 + 5?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
                 "3 minutes ago", "Aaron Kar Ee Ha", 4, 2));
         pollList.add(p2);
@@ -105,6 +105,16 @@ public class CategoryActivity extends AppCompatActivity {
     public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
 
         List<Poll> polls;
+        View.OnClickListener onclick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = (int) v.getTag();
+                Intent i = new Intent(CategoryActivity.this, PollViewActivity.class);
+                i.putExtra("poll", polls.get(pos));
+                startActivity(i);
+                overridePendingTransition(R.anim.right_to_left, 0);
+            }
+        };
 
         public class PollViewHolder extends RecyclerView.ViewHolder{
 
@@ -119,6 +129,7 @@ public class CategoryActivity extends AppCompatActivity {
                 question = (TextView) itemView.findViewById(R.id.question);
                 date = (TextView) itemView.findViewById(R.id.date);
                 category = (TextView) itemView.findViewById(R.id.category);
+                cv.setOnClickListener(onclick);
             }
         }
 
@@ -138,6 +149,7 @@ public class CategoryActivity extends AppCompatActivity {
             pollViewHolder.category.setText(strings[polls.get(i).getCategory()]);
             pollViewHolder.date.setText(polls.get(i).getDate_added());
             pollViewHolder.question.setText(polls.get(i).getQuestion());
+            pollViewHolder.cv.setTag(i);
         }
 
         @Override
