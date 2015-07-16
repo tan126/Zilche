@@ -111,12 +111,8 @@ public class NewestFragment extends Fragment{
                                         //tmp += " by " + name;
                                         timeList.add(tmp);
 
-
-
                                         //question: tmpStr
                                         //options:
-
-
                                         gv.setAdapter(new PollListAdapter(getActivity()));
                                         swipeLayout.setRefreshing(false);
                                     }
@@ -196,7 +192,6 @@ public class NewestFragment extends Fragment{
                 }
             }
         });
-
         return rootView;
     }
 
