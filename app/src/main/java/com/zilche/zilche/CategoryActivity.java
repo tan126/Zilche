@@ -15,9 +15,11 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -93,15 +95,6 @@ public class CategoryActivity extends AppCompatActivity {
         rv.setAdapter(rva);
     }
 
-    public void clicked (View v){
-        Intent i = new Intent(this, PollViewActivity.class);
-        Poll poll = new Poll("What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4 ,5},
-                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 2);
-        poll.setCategory_title(getString(strings[2]));
-        i.putExtra("poll", poll);
-        startActivity(i);
-    }
-
     public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
 
         List<Poll> polls;
@@ -146,9 +139,14 @@ public class CategoryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
-            pollViewHolder.category.setText(strings[polls.get(i).getCategory()]);
-            pollViewHolder.date.setText(polls.get(i).getDate_added());
-            pollViewHolder.question.setText(polls.get(i).getQuestion());
+            Poll p = polls.get(i);
+            if (p.getCategory() == 0) {
+                pollViewHolder.category.setText(getString(R.string.other));
+            } else {
+                pollViewHolder.category.setText(strings[p.getCategory()]);
+            }
+            pollViewHolder.date.setText(p.getDate_added());
+            pollViewHolder.question.setText(p.getQuestion());
             pollViewHolder.cv.setTag(i);
         }
 
