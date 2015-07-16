@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -62,6 +63,16 @@ public class NewestFragment extends Fragment{
             @Override
             public void onRefresh() {
                 isRefreshing = 1;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ( isRefreshing == 1 ) {
+                            Toast.makeText(getActivity(), "Connection Failed", Toast.LENGTH_SHORT).show();
+                            swipeLayout.setRefreshing(false);
+                        }
+                    }
+                }, 10000);
 
                 pollList = new ArrayList<String>();
                 timeList = new ArrayList<String>();
@@ -70,64 +81,64 @@ public class NewestFragment extends Fragment{
                 hotnessList = new ArrayList<String>();
                 pollOnjectList = new ArrayList<Poll>();
 
-                        query = ParseQuery.getQuery("Poll");
-                        query.orderByDescending("lastUpdate");
+                query = ParseQuery.getQuery("Poll");
+                query.orderByDescending("lastUpdate");
 
-                        query.findInBackground(new FindCallback<ParseObject>() {
-                            @Override
-                            public void done(List<ParseObject> list, ParseException e) {
-                                if (e == null) {
-                                    for (int i = 0; i < list.size(); i++) {
-                                        ParseObject thisPoll = list.get(i);
-                                        //String tmpStr = thisPoll.getString("question");
-                                        //String name = thisPoll.getString("nickname");
-                                        Poll tmpPoll = parsePollObject(thisPoll);
-                                        String tmpStr = tmpPoll.getQuestion();
-                                        String name = tmpPoll.getAuthor();
-                                        pollList.add(tmpStr);
-                                        String tmp = "";
-                                        int total = thisPoll.getInt("total");
-                                        totalList.add("" + total + " participants");
-                                        if (total < 50)
-                                            hotnessList.add("g");
-                                        else if (total < 100)
-                                            hotnessList.add("y");
-                                        else if (total >= 100)
-                                            hotnessList.add("r");
-                                        else
-                                            hotnessList.add("g");
-                                        long updatedTime = thisPoll.getLong("createTime");
-                                        long diffMS = System.currentTimeMillis() - updatedTime;
-                                        long diffS = diffMS / 1000;
-                                        if (diffS > 60) {
-                                            long diffM = diffS / 60;
-                                            if (diffM > 60) {
-                                                long diffH = diffM / 60;
-                                                if (diffH > 24) {
-                                                    long diffD = diffH / 24;
-                                                    tmp +=  diffD + " days ago";
-                                                } else
-                                                    tmp +=  diffH + " hours ago";
-                                                ;
-                                            } else
-                                                tmp +=  + diffM + " minutes ago";
+                query.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> list, ParseException e) {
+                        if (e == null) {
+                            for (int i = 0; i < list.size(); i++) {
+                                ParseObject thisPoll = list.get(i);
+                                //String tmpStr = thisPoll.getString("question");
+                                //String name = thisPoll.getString("nickname");
+                                Poll tmpPoll = parsePollObject(thisPoll);
+                                String tmpStr = tmpPoll.getQuestion();
+                                String name = tmpPoll.getAuthor();
+                                pollList.add(tmpStr);
+                                String tmp = "";
+                                int total = thisPoll.getInt("total");
+                                totalList.add("" + total + " participants");
+                                if (total < 50)
+                                    hotnessList.add("g");
+                                else if (total < 100)
+                                    hotnessList.add("y");
+                                else if (total >= 100)
+                                    hotnessList.add("r");
+                                else
+                                    hotnessList.add("g");
+                                long updatedTime = thisPoll.getLong("createTime");
+                                long diffMS = System.currentTimeMillis() - updatedTime;
+                                long diffS = diffMS / 1000;
+                                if (diffS > 60) {
+                                    long diffM = diffS / 60;
+                                    if (diffM > 60) {
+                                        long diffH = diffM / 60;
+                                        if (diffH > 24) {
+                                            long diffD = diffH / 24;
+                                            tmp +=  diffD + " days ago";
                                         } else
-                                            tmp += "1 minute ago";
-                                        //tmp += " by " + name;
-                                        pollOnjectList.add(parsePollObject(thisPoll));
-                                        timeList.add(tmp);
+                                            tmp +=  diffH + " hours ago";
+                                        ;
+                                    } else
+                                        tmp +=  + diffM + " minutes ago";
+                                } else
+                                    tmp += "1 minute ago";
+                                //tmp += " by " + name;
+                                pollOnjectList.add(parsePollObject(thisPoll));
+                                timeList.add(tmp);
 
-                                        //question: tmpStr
-                                        //options:
-                                        gv.setAdapter(new PollListAdapter(getActivity()));
-                                        swipeLayout.setRefreshing(false);
-                                        isRefreshing = 0;
-                                    }
-                                } else {
-                                    Log.d("Newest Poll", "Error: " + e.getMessage());
-                                }
+                                //question: tmpStr
+                                //options:
+                                gv.setAdapter(new PollListAdapter(getActivity()));
+                                swipeLayout.setRefreshing(false);
+                                isRefreshing = 0;
                             }
-                        });
+                        } else {
+                            Log.d("Newest Poll", "Error: " + e.getMessage());
+                        }
+                    }
+                });
             }
         });
         swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
@@ -204,6 +215,7 @@ public class NewestFragment extends Fragment{
     }
 
     private Poll parsePollObject(ParseObject thisPoll){
+        String id = thisPoll.getObjectId();
         String question = thisPoll.getString("question");
         int options_count = thisPoll.getInt("optionNum");
         JSONArray tmpOptions = thisPoll.getJSONArray("options");
@@ -247,7 +259,7 @@ public class NewestFragment extends Fragment{
         String date_added = tmp;
         String author = thisPoll.getString("nickname");
         int categorty = thisPoll.getInt("category");
-        Poll newPoll = new Poll(question, options, votes, date_added, author, options_count, categorty);
+        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
         return newPoll;
     }
 

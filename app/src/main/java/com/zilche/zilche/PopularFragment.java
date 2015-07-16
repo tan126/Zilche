@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -62,6 +64,16 @@ public class PopularFragment extends Fragment{
             @Override
             public void onRefresh() {
                 isRefreshing = 1;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ( isRefreshing == 1 ) {
+                            Toast.makeText(getActivity(), "Connection Failed", Toast.LENGTH_SHORT).show();
+                            swipeLayout.setRefreshing(false);
+                        }
+                    }
+                }, 10000);
 
                 pollList = new ArrayList<String>();
                 timeList = new ArrayList<String>();
@@ -206,6 +218,7 @@ public class PopularFragment extends Fragment{
     }
 
     private Poll parsePollObject(ParseObject thisPoll){
+        String id = thisPoll.getString("id");
         String question = thisPoll.getString("question");
         int options_count = thisPoll.getInt("optionNum");
         JSONArray tmpOptions = thisPoll.getJSONArray("options");
@@ -249,7 +262,7 @@ public class PopularFragment extends Fragment{
         String date_added = tmp;
         String author = thisPoll.getString("nickname");
         int categorty = thisPoll.getInt("category");
-        Poll newPoll = new Poll(question, options, votes, date_added, author, options_count, categorty);
+        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
         return newPoll;
     }
 

@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -23,6 +24,17 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.List;
 
 public class PollViewActivity extends Activity {
 
@@ -44,6 +56,8 @@ public class PollViewActivity extends Activity {
     private TextView category_title;
     private SlidingPaneLayout spl;
     private Button submit_btn;
+    private String id;
+    public int checked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +72,7 @@ public class PollViewActivity extends Activity {
         submit_btn = (Button) findViewById(R.id.submit_poll_view);
 
         Bundle extras = getIntent().getExtras();
-        Poll poll = extras.getParcelable("poll");
+        final Poll poll = extras.getParcelable("poll");
 
         question.setText(poll.getQuestion());
         dateAdded.setText(poll.getDate_added());
@@ -66,6 +80,7 @@ public class PollViewActivity extends Activity {
         category = poll.getCategory();
         imageView.setVisibility(View.GONE);
         category_title.setText(poll.getCategory_title());
+        id = poll.getId();
 
         spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
@@ -110,11 +125,38 @@ public class PollViewActivity extends Activity {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int checked = radioGroup.getCheckedRadioButtonId();
+                checked = radioGroup.getCheckedRadioButtonId();
                 if (checked == -1) {
                     // failed
                 } else {
-                    Toast.makeText(PollViewActivity.this, Integer.toString(checked), Toast.LENGTH_SHORT).show();
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+                    //Toast.makeText(PollViewActivity.this, id, Toast.LENGTH_SHORT).show();
+                    query.getInBackground(id, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject object, ParseException e) {
+                            if (e == null) {
+                                int options_count = poll.getCount();
+                                JSONArray votesObject = object.getJSONArray("votes");
+                                //int[] votes = new int[options_count];
+
+                                try {
+                                    votesObject.put(checked, votesObject.getInt(checked) + 1);
+                                    object.remove("votes");
+                                    for (int i = 0; i < votesObject.length(); i++) {
+                                        object.add("votes", votesObject.getInt(i));
+                                    }
+                                } catch (JSONException e2) {
+                                    Log.d("JSON", "Array index out of bound");
+                                }
+                                object.increment("total");
+                                object.saveInBackground();
+                                //Toast.makeText(PollViewActivity.this, Integer.toString(checked), Toast.LENGTH_SHORT).show();
+                            } else {
+                                //something went wrong
+                            }
+                        }
+                    });
+
                 }
             }
         });
@@ -137,7 +179,7 @@ public class PollViewActivity extends Activity {
             rb.setButtonDrawable(R.drawable.apptheme_btn_check_holo_light);
             rb.setId(i);
             View v = new View(this);
-            v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
+            v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
                     getResources().getDisplayMetrics())));
             v.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
             radioGroup.addView(rb);

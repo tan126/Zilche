@@ -15,11 +15,9 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -77,15 +75,15 @@ public class CategoryActivity extends AppCompatActivity {
         RecyclerView rv = (RecyclerView) findViewById(R.id.rv_cat);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        Poll p = new Poll("What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
+        Poll p = new Poll("id", "What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
                 "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 2);
         p.setCategory_title("Education");
         pollList = new LinkedList<>();
         pollList.add(p);
-        Poll p2 = new Poll("Should I go to work tomorrow?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
+        Poll p2 = new Poll("id", "Should I go to work tomorrow?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
                 "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 0);
         //p2.setCategory_title("Other");
-        pollList.add(new Poll("What is 1 + 5?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
+        pollList.add(new Poll("id", "What is 1 + 5?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
                 "3 minutes ago", "Aaron Kar Ee Ha", 4, 2));
         pollList.add(p2);
         pollList.add(p2);
@@ -93,6 +91,15 @@ public class CategoryActivity extends AppCompatActivity {
         pollList.add(p2);
         RVadapter rva = new RVadapter(pollList);
         rv.setAdapter(rva);
+    }
+
+    public void clicked (View v){
+        Intent i = new Intent(this, PollViewActivity.class);
+        Poll poll = new Poll("id", "What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4 ,5},
+                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 2);
+        poll.setCategory_title(getString(strings[2]));
+        i.putExtra("poll", poll);
+        startActivity(i);
     }
 
     public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
@@ -139,14 +146,9 @@ public class CategoryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
-            Poll p = polls.get(i);
-            if (p.getCategory() == 0) {
-                pollViewHolder.category.setText(getString(R.string.other));
-            } else {
-                pollViewHolder.category.setText(strings[p.getCategory()]);
-            }
-            pollViewHolder.date.setText(p.getDate_added());
-            pollViewHolder.question.setText(p.getQuestion());
+            pollViewHolder.category.setText(strings[polls.get(i).getCategory()]);
+            pollViewHolder.date.setText(polls.get(i).getDate_added());
+            pollViewHolder.question.setText(polls.get(i).getQuestion());
             pollViewHolder.cv.setTag(i);
         }
 

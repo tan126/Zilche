@@ -13,8 +13,9 @@ public class Poll implements Parcelable{
     private int options_count;
     private int category;
     private String category_title;
+    private String id;
 
-    public Poll(String question, String[] options, int[] votes,
+    public Poll(String id, String question, String[] options, int[] votes,
                 String date, String author, int options_count,
                 int category) {
         this.question = question;
@@ -24,6 +25,11 @@ public class Poll implements Parcelable{
         this.author = author;
         this.votes = votes;
         this.category = category;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getCount() {
@@ -97,6 +103,7 @@ public class Poll implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(question);
         dest.writeStringArray(options);
         dest.writeIntArray(votes);
@@ -110,7 +117,7 @@ public class Poll implements Parcelable{
     public static final Parcelable.Creator<Poll> CREATOR = new Creator<Poll>() {
         @Override
         public Poll createFromParcel(Parcel source) {
-            Poll poll = new Poll(source.readString(), source.createStringArray(), source.createIntArray(),
+            Poll poll = new Poll(source.readString(), source.readString(), source.createStringArray(), source.createIntArray(),
                     source.readString(), source.readString(), source.readInt(), source.readInt());
             poll.setCategory_title(source.readString());
             return poll;
