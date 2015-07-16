@@ -10,13 +10,41 @@
         android:layout_height="3dp"
         android:background="#ffF44336"
         /-->
-
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:paddingTop="15dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingTop="5dp"
+            android:paddingLeft="20dp"
+            android:id="@+id/assignment"
+            android:src="@drawable/ic_assessment_grey_18dp"
+            android:background="#fff"
+            android:layout_gravity="center_vertical"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:id="@+id/category"
+            android:textColor="#000"
+            android:background="#fff"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Education"
+            />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         >
-        <ImageView
+        <!--ImageView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:paddingTop="8dp"
@@ -24,11 +52,11 @@
             android:id="@+id/assignment"
             android:background="#fff"
             android:layout_gravity="center_vertical"
-            />
+            /-->
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="3dp"
+            android:paddingTop="5dp"
             android:background="#fff"
             android:orientation="vertical"
             >
@@ -40,50 +68,50 @@
                 android:id="@+id/poll_name"
                 android:textColor="#000"
                 android:background="#fff"
-                android:textSize="20sp"
-                android:paddingTop="15dp"
+                android:textSize="18sp"
                 android:maxLines="2"
                 android:lines="2"
-                android:fontFamily="sans-serif-thin"
+                android:fontFamily="sans-serif-medium"
                 android:paddingLeft="20dp"
                 android:layout_gravity="center_vertical"
                 />
 
-            <LinearLayout
-                android:layout_width="fill_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingTop="5dp"
+                android:paddingRight="20dp"
                 >
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_check_circle_white_18dp"
                     android:id="@+id/check"
+                    android:layout_alignParentLeft="true"
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:layout_toRightOf="@id/check"
                     android:textColor="#00c853"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="12sp"
                     android:id="@+id/total"
                     />
-            </LinearLayout>
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="5dp"
-                android:id="@+id/time"
-                android:textColor="#000"
-                android:background="#fff"
-                android:textSize="12sp"
-                android:fontFamily="sans-serif-thin"
-                android:paddingRight="5dp"
-                android:layout_marginTop="0dp"
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/time"
+                    android:textColor="#000"
+                    android:background="#fff"
+                    android:textSize="12sp"
+                    android:fontFamily="sans-serif-medium"
+                    />
+            </RelativeLayout>
+
         </LinearLayout>
 
 

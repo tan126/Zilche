@@ -100,15 +100,15 @@ public class NewestFragment extends Fragment{
                                                 long diffH = diffM / 60;
                                                 if (diffH > 24) {
                                                     long diffD = diffH / 24;
-                                                    tmp += "submitted " + diffD + " days ago";
+                                                    tmp +=  diffD + " days ago";
                                                 } else
-                                                    tmp += "submitted " + diffH + " hours ago";
+                                                    tmp +=  diffH + " hours ago";
                                                 ;
                                             } else
-                                                tmp += "submitted " + diffM + " minutes ago";
+                                                tmp +=  + diffM + " minutes ago";
                                         } else
-                                            tmp += "submitted 1 minute ago";
-                                        tmp += " by " + name;
+                                            tmp += "1 minute ago";
+                                        //tmp += " by " + name;
                                         timeList.add(tmp);
 
 
@@ -176,17 +176,17 @@ public class NewestFragment extends Fragment{
                                 long diffH = diffM / 60;
                                 if ( diffH > 24 ) {
                                     long diffD = diffH / 24;
-                                    tmp += "submitted " + diffD + " days ago";
+                                    tmp +=  diffD + " days ago";
                                 }
                                 else
-                                    tmp += "submitted " + diffH + " hours ago";;
+                                    tmp +=  + diffH + " hours ago";;
                             }
                             else
-                                tmp += "submitted " + diffM + " minutes ago";
+                                tmp += + diffM + " minutes ago";
                         }
                         else
-                            tmp += "submitted 1 minute ago";
-                        tmp += " by " + name;
+                            tmp += " 1 minute ago";
+                        //tmp += " by " + name;
                         timeList.add(tmp);
                         gv.setAdapter(new PollListAdapter(getActivity()));
                     }
@@ -291,15 +291,16 @@ public class NewestFragment extends Fragment{
                 check.setColorFilter(Color.parseColor("#00C853"));
                 total.setTextColor(Color.parseColor("#00C853"));
             }
-            ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
-            iv.setImageResource(R.drawable.ic_assessment_white_48dp);
-            iv.setColorFilter(Color.parseColor("#11110000"));
+            //ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
+            //iv.setImageResource(R.drawable.ic_assessment_white_48dp);
+            //iv.setColorFilter(Color.parseColor("#11110000"));
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //TODO intent to poll view
                     //Question stored in poll_name
+
                 }
             });
 
