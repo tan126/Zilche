@@ -519,21 +519,23 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
         public class ImageAdapter extends BaseAdapter {
 
             private Context c;
-            private Integer[] thumbnails = {
-                    R.drawable.category_all, R.drawable.category_auto, R.drawable.category_enter, R.drawable.category_fashion, R.drawable.category_food,
-                    R.drawable.category_games, R.drawable.category_it, R.drawable.category_pets, R.drawable.category_sci, R.drawable.category_sports,
-                    R.drawable.category_social, R.drawable.category_tech, R.drawable.category_travel
+            private int[] thumbnails = {
+                    R.drawable.category_all, R.drawable.category_auto, R.drawable.category_edu, R.drawable.category_enter,
+                    R.drawable.category_fash, R.drawable.category_finance, R.drawable.category_food, R.drawable.category_games,
+                    R.drawable.category_it, R.drawable.category_pets, R.drawable.category_sci, R.drawable.category_social,
+                    R.drawable.category_sports, R.drawable.category_tech, R.drawable.category_travel
             };
-            private Integer[] strings = {
-                    R.string.category_all, R.string.category_auto, R.string.category_entertainment, R.string.category_fashion,
-                    R.string.category_food, R.string.category_games, R.string.category_it,
-                    R.string.category_pet, R.string.category_science, R.string.category_sports, R.string.category_social, R.string.category_tech,
+            private int[] strings = {
+                    R.string.category_all, R.string.category_auto, R.string.category_education, R.string.category_entertainment,
+                    R.string.category_fashion, R.string.category_finance, R.string.category_food, R.string.category_games, R.string.category_it,
+                    R.string.category_pet, R.string.category_science, R.string.category_social, R.string.category_sports, R.string.category_tech,
                     R.string.category_travel
             };
             private int[] bg_color = {
                     0xff42baff, 0xffff6259, 0xff835bd4, 0xffab48cf, 0xffced93b, 0xffff8554, 0xffffe53d, 0xffababab, 0xff6dcf71, 0xff997368,
                     0xff22b3a2, 0xff24dbf0, 0xffff4284, 0xffffa321, 0xff809dab
             };
+
 
             public ImageAdapter(Context c) {
                 this.c = c;

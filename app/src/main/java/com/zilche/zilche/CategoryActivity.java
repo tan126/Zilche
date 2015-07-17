@@ -233,7 +233,7 @@ public class CategoryActivity extends AppCompatActivity {
         String author = thisPoll.getString("nickname");
         int categorty = thisPoll.getInt("category");
         Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
-        newPoll.setCategory_title(getString(strings[category]));
+        newPoll.setCategory_title(getString(strings[categorty]));
         return newPoll;
     }
 
