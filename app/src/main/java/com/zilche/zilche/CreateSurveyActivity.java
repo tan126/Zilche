@@ -82,6 +82,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         pager.addOnPageChangeListener(this);
         onPageSelected(0);
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                questionOptions[i][j] = "";
+            }
+        }
 
         survey = new ParseObject("Survey");
 
@@ -344,14 +349,13 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                                             Toast.makeText(CreateSurveyActivity.this, "Please make sure you have added at least two questions", Toast.LENGTH_SHORT).show();
                                             return;
                                         }
-                                        for (int i = 0; i < 10; i++) {
-                                            for (int j = 0; j < 10; j++) {
-                                                //if (questionOptions)
-                                            }
-                                        }
                                         int surveyID = object.getInt("value");
                                         object.increment("value");
                                         object.saveInBackground();
+                                        for (int i = 1; i < 11; i++) {
+                                            String columnOption = "question" + i + "options";
+                                            survey.put(columnOption, Arrays.asList(questionOptions[i - 1]));
+                                        }
                                         survey.put("title", firstFrag.getTitle());
                                         survey.put("author", ParseUser.getCurrentUser().getString("username"));
                                         survey.put("id", surveyID + 1);
