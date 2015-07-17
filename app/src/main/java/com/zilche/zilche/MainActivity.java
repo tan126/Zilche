@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Intent a = new Intent(this, CreatePollActivity2.class);
+        //startActivity(a);
+
         int SELECTED_POSITION = 0;
         plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
         adapter = new SlideViewAdapter(getSupportFragmentManager());

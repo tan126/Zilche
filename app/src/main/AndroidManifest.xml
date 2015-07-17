@@ -91,6 +91,10 @@
             android:name=".AddSurveyOptions"
             android:label="@string/title_activity_add_survey_options" >
         </activity>
+        <activity
+            android:name=".CreatePollActivity2"
+            android:label="@string/title_activity_create_poll_activity2" >
+        </activity>
     </application>
 
 </manifest>

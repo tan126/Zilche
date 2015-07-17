@@ -218,8 +218,8 @@ public class PollViewActivity extends Activity {
                                 });
                             } else {
                                 //something went wrong
+                                submit_btn.setEnabled(true);
                             }
-                            submit_btn.setEnabled(true);
                         }
                     });
 
