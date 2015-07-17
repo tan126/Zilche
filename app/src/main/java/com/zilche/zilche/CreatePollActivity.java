@@ -156,7 +156,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        question = (EditText) findViewById(R.id.question);
+                        /*question = (EditText) findViewById(R.id.question);
                         if (question.getText().toString().trim().length() == 0) {
                             Context context = getApplicationContext();
                             CharSequence text = "You must input a question";
@@ -170,7 +170,8 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                             poll.remove("question");
                             poll.put("question", question.getText().toString());
                             pager.setCurrentItem(1);
-                        }
+                        }*/
+                        pager.setCurrentItem(1);
                     }
                 });
                 break;
@@ -344,14 +345,15 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
-                        } else*/ if (totalOptionsAdded < 2) {
+                        } else*/
+                        if (totalOptionsAdded < 2) {
                             Context context = getApplicationContext();
                             CharSequence text = "Please make sure you have added at least two options";
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
                         } else {
-                            Toast.makeText(CreatePollActivity.this, firstFrag.getQuestion(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(CreatePollActivity.this, firstFrag.getQuestion(), Toast.LENGTH_SHORT).show();
                             textView.setClickable(false);
                             textView.setBackgroundColor(Color.parseColor("#11100000"));
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("poll_id");
@@ -360,10 +362,15 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                                 public void done(ParseObject object, ParseException e) {
                                     if (e == null) {
                                         // object will be poll_id
+                                        if ( firstFrag.getQuestion().trim().length() == 0 ) {
+                                            Toast.makeText(CreatePollActivity.this, "Please make sure you have added at least two options", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
                                         int pollID = object.getInt("value");
                                         object.increment("value");
                                         object.saveInBackground();
-
+                                        poll.put("question", firstFrag.getQuestion() );
                                         poll.put("author", ParseUser.getCurrentUser().getString("username"));
                                         poll.put("id", pollID + 1);
                                         poll.put("category", 0);
@@ -472,6 +479,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
 
             return f;*/
         }
+
     }
 
     public static class ThirdFragment extends Fragment {
