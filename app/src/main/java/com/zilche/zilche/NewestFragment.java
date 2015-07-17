@@ -70,6 +70,7 @@ public class NewestFragment extends Fragment{
                         if ( isRefreshing == 1 ) {
                             Toast.makeText(getActivity(), "Connection Failed", Toast.LENGTH_SHORT).show();
                             swipeLayout.setRefreshing(false);
+                            isRefreshing = 0;
                         }
                     }
                 }, 10000);
