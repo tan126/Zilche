@@ -30,6 +30,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,6 +59,7 @@ public class PollViewActivity extends Activity {
     private Button submit_btn;
     private String id;
     public int checked;
+    private LinearLayout lin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,7 @@ public class PollViewActivity extends Activity {
         radioGroup = (RadioGroup) findViewById(R.id.radio_group_poll_view);
         category_title = (TextView) findViewById(R.id.category_poll_view);
         submit_btn = (Button) findViewById(R.id.submit_poll_view);
+        lin = (LinearLayout) findViewById(R.id.result_poll_view);
 
         Bundle extras = getIntent().getExtras();
         final Poll poll = extras.getParcelable("poll");
@@ -135,10 +138,17 @@ public class PollViewActivity extends Activity {
                         @Override
                         public void done(ParseObject object, ParseException e) {
                             if (e == null) {
-                                int options_count = poll.getCount();
+                                final int options_count = poll.getCount();
                                 JSONArray votesObject = object.getJSONArray("votes");
-                                //int[] votes = new int[options_count];
-
+                                final int[] votes = new int[options_count];
+                                for( int i = 0; i < options_count; i ++ ) {
+                                    try{
+                                        votes[i] = votesObject.getInt(i);
+                                    } catch ( JSONException e2 ){
+                                        Log.d("JSON", "Array index out of bound");
+                                    }
+                                }
+                                votes[checked]++;
                                 try {
                                     votesObject.put(checked, votesObject.getInt(checked) + 1);
                                     object.remove("votes");
@@ -149,8 +159,61 @@ public class PollViewActivity extends Activity {
                                     Log.d("JSON", "Array index out of bound");
                                 }
                                 object.increment("total");
-                                object.saveInBackground();
-                                //Toast.makeText(PollViewActivity.this, Integer.toString(checked), Toast.LENGTH_SHORT).show();
+                                object.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        radioGroup.setVisibility(View.GONE);
+                                        submit_btn.setVisibility(View.GONE);
+                                        LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        par.setMargins(30, 30, 30, 30);
+                                        LinearLayout.LayoutParams par2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                                ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        par2.setMargins(10, 30, 10, 30);
+                                        String[] options = poll.getOptions();
+                                        int total = 0;
+                                        for (int i = 0; i < options_count; i++)
+                                            total += votes[i];
+                                        int percent = 100;
+                                        for (int i = 0; i < options_count; i++) {
+                                            LinearLayout ll = new LinearLayout(getApplicationContext());
+                                            ll.setLayoutParams(layParams);
+                                            TextView percentage = new TextView(getApplicationContext());
+                                            percentage.setLayoutParams(par);
+                                            percentage.setMinWidth(5);
+                                            percentage.setTextColor(0xff666666);
+                                            percentage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                            percentage.setGravity(Gravity.CENTER_VERTICAL);
+                                            //percentage.setPadding(5, 5, 30, 30);
+                                            int aatmp = 0;
+                                            if (i == options_count - 1)
+                                                percentage.setText(Integer.toString(percent) + "%");
+                                            else {
+                                                aatmp = (int) ((double) (votes[i]) / total * 100);
+                                                percentage.setText(Integer.toString(aatmp) + "%");
+                                            }
+                                            percent -= aatmp;
+                                            TextView options_tv = new TextView(getApplicationContext());
+                                            options_tv.setLayoutParams(par);
+                                            options_tv.setTextColor(0xff666666);
+                                            options_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                                            options_tv.setGravity(Gravity.CENTER_VERTICAL);
+                                            //options_tv.setPadding(30, 30, 30, 30);
+                                            options_tv.setText(options[i]);
+                                            ll.addView(percentage);
+                                            ll.addView(options_tv);
+                                            View v = new View(getApplicationContext());
+                                            v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
+                                                    getResources().getDisplayMetrics())));
+                                            v.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+                                            lin.addView(ll);
+                                            lin.addView(v);
+                                        }
+                                        lin.setVisibility(View.VISIBLE);
+                                    }
+                                });
                             } else {
                                 //something went wrong
                             }
