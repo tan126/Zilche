@@ -338,19 +338,20 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (validQuestion == false) {
+                        /*if (validQuestion == false) {
                             Context context = getApplicationContext();
                             CharSequence text = "Please make sure you have added a question";
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
-                        } else if (totalOptionsAdded < 2) {
+                        } else*/ if (totalOptionsAdded < 2) {
                             Context context = getApplicationContext();
                             CharSequence text = "Please make sure you have added at least two options";
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
                         } else {
+                            Toast.makeText(CreatePollActivity.this, firstFrag.getQuestion(), Toast.LENGTH_SHORT).show();
                             textView.setClickable(false);
                             textView.setBackgroundColor(Color.parseColor("#11100000"));
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("poll_id");
@@ -423,13 +424,13 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     }
 
     public static class FirstFragment extends Fragment {
-
+        TextView question;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.create_poll_1, container, false);
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
             tv.setText(getArguments().getString("msg"));*/
-
+            question = (TextView) v.findViewById(R.id.question);
             return v;
         }
 
@@ -442,6 +443,10 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
             f.setArguments(b);
 
             return f;*/
+        }
+
+        public String getQuestion() {
+            return question.getText().toString();
         }
     }
 
