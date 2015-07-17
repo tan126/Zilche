@@ -5,11 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#ffF44336"
-        />
 
     <LinearLayout
         android:layout_width="fill_parent"

@@ -28,6 +28,9 @@ public class Poll implements Parcelable{
         this.id = id;
     }
 
+    public Poll() {}
+
+
     public String getId() {
         return id;
     }

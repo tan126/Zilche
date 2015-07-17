@@ -15,20 +15,32 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.LinkedList;
 import java.util.List;
-
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -49,6 +61,8 @@ public class CategoryActivity extends AppCompatActivity {
             0xff00796B, 0xff0097A7, 0xffC2185B, 0xffF57C00, 0xff455A64
     };
     private List<Poll> pollList;
+    private ProgressBar spinner;
+    private RecyclerView rv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +74,7 @@ public class CategoryActivity extends AppCompatActivity {
             category = extras.getInt("category_index");
         }
         title.setText(strings[category]);
+        spinner = (ProgressBar) findViewById(R.id.progress_bar);
         ((ImageButton)findViewById(R.id.back_button_cat)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,34 +87,34 @@ public class CategoryActivity extends AppCompatActivity {
         }
         RelativeLayout lay = (RelativeLayout) findViewById(R.id.header);
         lay.setBackgroundColor(title_color[category]);
-        RecyclerView rv = (RecyclerView) findViewById(R.id.rv_cat);
+        rv = (RecyclerView) findViewById(R.id.rv_cat);
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new LinearLayoutManager(this));
-        Poll p = new Poll("id", "What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
-                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 2);
-        p.setCategory_title("Education");
         pollList = new LinkedList<>();
-        pollList.add(p);
-        Poll p2 = new Poll("id", "Should I go to work tomorrow?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
-                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 0);
-        //p2.setCategory_title("Other");
-        pollList.add(new Poll("id", "What is 1 + 5?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4, 5},
-                "3 minutes ago", "Aaron Kar Ee Ha", 4, 2));
-        pollList.add(p2);
-        pollList.add(p2);
-        pollList.add(p2);
-        pollList.add(p2);
+        populateList();
         RVadapter rva = new RVadapter(pollList);
         rv.setAdapter(rva);
     }
 
-    public void clicked (View v){
-        Intent i = new Intent(this, PollViewActivity.class);
-        Poll poll = new Poll("id", "What is 1 + 2?", new String[]{"1", "3", "4", "5"}, new int[]{1, 3, 4 ,5},
-                "3 minutes ago", "Aaron Kar Ee Hooooooooooooooooooo", 4, 2);
-        poll.setCategory_title(getString(strings[2]));
-        i.putExtra("poll", poll);
-        startActivity(i);
+    public void populateList() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Poll");
+        query.whereEqualTo("category", category);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    if (list != null && list.size() != 0) {
+                        for (int i = 0; i < list.size(); i++) {
+                            pollList.add(parsePollObject(list.get(i)));
+                        }
+                        rv.swapAdapter(new RVadapter(pollList), false);
+                        spinner.setVisibility(View.GONE);
+                    }
+                } else {
+                    Toast.makeText(CategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
@@ -146,9 +161,14 @@ public class CategoryActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
-            pollViewHolder.category.setText(strings[polls.get(i).getCategory()]);
-            pollViewHolder.date.setText(polls.get(i).getDate_added());
-            pollViewHolder.question.setText(polls.get(i).getQuestion());
+            Poll p = polls.get(i);
+            if (p.getCategory() == 0) {
+                pollViewHolder.category.setText(getString(R.string.other));
+            } else {
+                pollViewHolder.category.setText(strings[p.getCategory()]);
+            }
+            pollViewHolder.date.setText(p.getDate_added());
+            pollViewHolder.question.setText(p.getQuestion());
             pollViewHolder.cv.setTag(i);
         }
 
@@ -164,5 +184,54 @@ public class CategoryActivity extends AppCompatActivity {
         }
     }
 
+
+    private Poll parsePollObject(ParseObject thisPoll){
+        String id = thisPoll.getObjectId();
+        String question = thisPoll.getString("question");
+        int options_count = thisPoll.getInt("optionNum");
+        JSONArray tmpOptions = thisPoll.getJSONArray("options");
+        String[] options = new String[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            try{
+                options[i] = tmpOptions.getString(i);
+            } catch ( JSONException e ){
+                Log.d("JSON", "Array index out of bound");
+            }
+        }
+        JSONArray tmpVotes = thisPoll.getJSONArray("votes");
+        int[] votes = new int[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            try{
+                votes[i] = tmpVotes.getInt(i);
+            } catch ( JSONException e ){
+                Log.d("JSON", "Array index out of bound");
+            }
+        }
+        String tmp = "";
+        long updatedTime = thisPoll.getLong("createTime");
+        long diffMS = System.currentTimeMillis() - updatedTime;
+        long diffS = diffMS / 1000;
+        if ( diffS > 60 ) {
+            long diffM = diffS / 60;
+            if ( diffM > 60 ){
+                long diffH = diffM / 60;
+                if ( diffH > 24 ) {
+                    long diffD = diffH / 24;
+                    tmp +=  diffD + " days ago";
+                }
+                else
+                    tmp +=  + diffH + " hours ago";;
+            }
+            else
+                tmp += + diffM + " minutes ago";
+        }
+        else
+            tmp += " 1 minute ago";
+        String date_added = tmp;
+        String author = thisPoll.getString("nickname");
+        int categorty = thisPoll.getInt("category");
+        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
+        return newPoll;
+    }
 
 }
