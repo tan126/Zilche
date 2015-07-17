@@ -128,9 +128,11 @@ public class PollViewActivity extends Activity {
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                submit_btn.setEnabled(false);
                 checked = radioGroup.getCheckedRadioButtonId();
                 if (checked == -1) {
                     // failed
+                    submit_btn.setEnabled(true);
                 } else {
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
                     //Toast.makeText(PollViewActivity.this, id, Toast.LENGTH_SHORT).show();
@@ -182,10 +184,10 @@ public class PollViewActivity extends Activity {
                                             ll.setLayoutParams(layParams);
                                             TextView percentage = new TextView(getApplicationContext());
                                             percentage.setLayoutParams(par);
-                                            percentage.setMinWidth(5);
+                                            percentage.setMinWidth(60);
                                             percentage.setTextColor(0xff666666);
                                             percentage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                            percentage.setGravity(Gravity.CENTER_VERTICAL);
+                                            percentage.setGravity(Gravity.CENTER);
                                             //percentage.setPadding(5, 5, 30, 30);
                                             int aatmp = 0;
                                             if (i == options_count - 1)
@@ -217,6 +219,7 @@ public class PollViewActivity extends Activity {
                             } else {
                                 //something went wrong
                             }
+                            submit_btn.setEnabled(true);
                         }
                     });
 
