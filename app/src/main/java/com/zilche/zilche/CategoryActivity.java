@@ -108,11 +108,11 @@ public class CategoryActivity extends AppCompatActivity {
                             pollList.add(parsePollObject(list.get(i)));
                         }
                         rv.swapAdapter(new RVadapter(pollList), false);
-                        spinner.setVisibility(View.GONE);
                     }
                 } else {
                     Toast.makeText(CategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+                spinner.setVisibility(View.GONE);
             }
         });
     }
@@ -231,6 +231,7 @@ public class CategoryActivity extends AppCompatActivity {
         String author = thisPoll.getString("nickname");
         int categorty = thisPoll.getInt("category");
         Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
+        newPoll.setCategory_title(getString(strings[category]));
         return newPoll;
     }
 
