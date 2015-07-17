@@ -98,7 +98,8 @@ public class CategoryActivity extends AppCompatActivity {
 
     public void populateList() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Poll");
-        query.whereEqualTo("category", category);
+        if (category != 0)
+            query.whereEqualTo("category", category);
         query.orderByDescending("lastUpdate");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
