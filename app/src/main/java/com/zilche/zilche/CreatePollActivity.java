@@ -63,6 +63,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
     int totalOptionsAdded = 0;
     boolean validOptions = false;
     int numOptions = 2;
+    static int category = -1;
     boolean[] visiblePollOptions = {true, true, false, false, false, false, false, false ,false, false};
 
     @Override
@@ -352,7 +353,13 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                             int duration = Toast.LENGTH_SHORT;
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
-                        } else {
+                        } else if (category == -1) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "Please make sure you have selected a category";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }else {
                             //Toast.makeText(CreatePollActivity.this, firstFrag.getQuestion(), Toast.LENGTH_SHORT).show();
                             textView.setClickable(false);
                             textView.setBackgroundColor(Color.parseColor("#11100000"));
@@ -370,6 +377,7 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                                         int pollID = object.getInt("value");
                                         object.increment("value");
                                         object.saveInBackground();
+                                        poll.put("category", category);
                                         poll.put("question", firstFrag.getQuestion() );
                                         poll.put("author", ParseUser.getCurrentUser().getString("username"));
                                         poll.put("id", pollID + 1);
@@ -503,8 +511,9 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // redirect to results activity
-                    Toast.makeText(getActivity().getBaseContext(), Integer.toString((int) view.getTag()),
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity().getBaseContext(), Integer.toString((int) view.getTag()),
+                            //Toast.LENGTH_SHORT).show();
+                    category = (int) view.getTag();
                 }
             });
             return rootView;
