@@ -44,8 +44,10 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     FirstFragment firstFrag;
     SecondFragment secondFrag;
+    ThirdFragment thirdFrag;
     ParseObject survey;
     ViewPager pager;
+
 
     //String[] questions = new String[10];
 /*
@@ -61,6 +63,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
     String[] options10 = new String[10];*/
 
 
+    int totalQuestionsAdded = 0;
+    boolean validQuestions = false;
     String[][] questionOptions = new String[10][10];
 
     //String[][] options = new String[][]{options1, options2, options3, options4, options5, options6, options7, options8, options9, options10};
@@ -84,6 +88,7 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         firstFrag = new FirstFragment();
         secondFrag = new SecondFragment();
+        thirdFrag = new ThirdFragment();
     }
 
     @Override
@@ -123,7 +128,257 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
     @Override
     public void onPageSelected(int position) {
+        final TextView textView = (TextView) findViewById(R.id.createsurveyfootertext);
+        switch (position) {
+            case 0:
+                textView.setText("Next");
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /*question = (EditText) findViewById(R.id.question);
+                        if (question.getText().toString().trim().length() == 0) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "You must input a question";
+                            validQuestion = false;
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        }
+                        else {
+                            validQuestion = true;
+                            poll.remove("question");
+                            poll.put("question", question.getText().toString());
+                            pager.setCurrentItem(1);
+                        }*/
+                        pager.setCurrentItem(1);
+                    }
+                });
+                break;
+            case 1: // storing the questions of the survey
+                textView.setText("Next");
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        survey.put("questionNum", numQuestions);
+                        survey.remove("question");
+                        /*for (int i = 0; i < 10; i++) { // old adding to poll
+                            if (visiblePollOptions[i] == true) {
+                                int actualOptionID = i + 1;
+                                String option = "option" + actualOptionID;
+                                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                                EditText optionText = (EditText)findViewById(optionID);
+                                poll.add("options", optionText.getText().toString());
+                                poll.add("votes", 0);
+                            }
 
+                        }*/
+                        for (int i = 0; i < numQuestions; i++) {
+                            int actualQuestionID = i + 1;
+                            String question = "question" + actualQuestionID;
+                            int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                            EditText questionText = (EditText) findViewById(questionID);
+                            if (questionText.getText().toString().trim().length() == 0) {
+                                Context context = getApplicationContext();
+                                CharSequence text = "Please make sure you have added at least two questions";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                totalQuestionsAdded = 0;
+                                break;
+                            } else {
+                                validQuestions = true;
+                                totalQuestionsAdded++;
+                            }
+                        }
+                        if (validQuestions == true && totalQuestionsAdded >= 2) {
+                            for (int i = 0; i < numQuestions; i++) {
+                                int actualQuestionID = i + 1;
+                                String question = "question" + actualQuestionID;
+                                int questionID = getResources().getIdentifier(question, "id", getPackageName());
+                                EditText questionText = (EditText) findViewById(questionID);
+                                survey.add("questions", questionText.getText().toString());
+                                //survey.add("votes", 0);
+                            }
+                        }
+                        /*switch (numOptions) {
+                            case 2:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                break;
+                            case 3:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                break;
+                            case 4:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                break;
+                            case 5:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                break;
+                            case 6:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                break;
+                            case 7:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                option7 = (EditText) findViewById(R.id.option7);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                poll.add("options", option7.getText().toString());
+                                break;
+                            case 8:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                option7 = (EditText) findViewById(R.id.option7);
+                                option8 = (EditText) findViewById(R.id.option8);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                poll.add("options", option7.getText().toString());
+                                poll.add("options", option8.getText().toString());
+                                break;
+                            case 9:
+                                option1 = (EditText) findViewById(R.id.option1);
+                                option2 = (EditText) findViewById(R.id.option2);
+                                option3 = (EditText) findViewById(R.id.option3);
+                                option4 = (EditText) findViewById(R.id.option4);
+                                option5 = (EditText) findViewById(R.id.option5);
+                                option6 = (EditText) findViewById(R.id.option6);
+                                option7 = (EditText) findViewById(R.id.option7);
+                                option8 = (EditText) findViewById(R.id.option8);
+                                option9 = (EditText) findViewById(R.id.option9);
+                                poll.add("options", option1.getText().toString());
+                                poll.add("options", option2.getText().toString());
+                                poll.add("options", option3.getText().toString());
+                                poll.add("options", option4.getText().toString());
+                                poll.add("options", option5.getText().toString());
+                                poll.add("options", option6.getText().toString());
+                                poll.add("options", option7.getText().toString());
+                                poll.add("options", option8.getText().toString());
+                                poll.add("options", option9.getText().toString());
+                                break;
+                        }
+                        for (int i = 0; i < numOptions; i ++ )
+                            poll.add("votes", 0);*/
+                        pager.setCurrentItem(2);
+                    }
+                });
+                break;
+            case 2:
+                textView.setText("Submit");
+                textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        /*if (validQuestion == false) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "Please make sure you have added a question";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        } else*/
+                        if (totalQuestionsAdded < 2) {
+                            Context context = getApplicationContext();
+                            CharSequence text = "Please make sure you have added at least two questions";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                        } else {
+                            //Toast.makeText(CreatePollActivity.this, firstFrag.getQuestion(), Toast.LENGTH_SHORT).show();
+                            textView.setClickable(false);
+                            textView.setBackgroundColor(Color.parseColor("#11100000"));
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery("survey_id");
+                            query.getInBackground("KpTUEunDWx", new GetCallback<ParseObject>() {
+                                @Override
+                                public void done(ParseObject object, ParseException e) {
+                                    if (e == null) {
+                                        // object will be poll_id
+                                        if (firstFrag.getTitle().trim().length() == 0) {
+                                            Toast.makeText(CreateSurveyActivity.this, "Please make sure you have added at least two questions", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        for (int i = 0; i < 10; i++) {
+                                            for (int j = 0; j < 10; j++) {
+                                                //if (questionOptions)
+                                            }
+                                        }
+                                        int surveyID = object.getInt("value");
+                                        object.increment("value");
+                                        object.saveInBackground();
+                                        survey.put("title", firstFrag.getTitle());
+                                        survey.put("author", ParseUser.getCurrentUser().getString("username"));
+                                        survey.put("id", surveyID + 1);
+                                        survey.put("category", 0);
+                                        survey.put("createTime", System.currentTimeMillis());
+                                        survey.put("total", 0);
+                                        survey.put("nickname", ParseUser.getCurrentUser().getString("name"));
+                                        survey.put("lastUpdate", System.currentTimeMillis());
+                                        survey.saveInBackground();
+                                    } else {
+                                        // something went wrong
+                                    }
+                                }
+                            });
+                            Context context = getApplicationContext();
+                            CharSequence text = "New Survey Submitted";
+                            int duration = Toast.LENGTH_SHORT;
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+                            finish();
+                        }
+                    }
+                });
+                break;
+            default:
+                textView.setText("Next");
+        }
     }
 
     @Override
@@ -144,6 +399,8 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
                     return firstFrag;
                 case 1:
                     return secondFrag;
+                case 2:
+                    return thirdFrag;
                 default:
                     return firstFrag;
             }
@@ -151,18 +408,19 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 
 
     public static class FirstFragment extends Fragment {
-
+        TextView title;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.create_survey_1, container, false);
 /*            TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
             tv.setText(getArguments().getString("msg"));*/
+            title = (TextView) v.findViewById(R.id.title);
 
             return v;
         }
@@ -177,6 +435,11 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
 
             return f;*/
         }
+
+        public String getTitle() {
+            return title.getText().toString();
+        }
+
     }
 
     public static class SecondFragment extends Fragment {
@@ -194,6 +457,101 @@ public class CreateSurveyActivity extends FragmentActivity implements OnPageChan
         public SecondFragment() {
 
 /*            SecondFragment f = new SecondFragment();
+            Bundle b = new Bundle();
+            b.putString("msg", text);
+
+            f.setArguments(b);
+
+            return f;*/
+        }
+    }
+
+    public static class ThirdFragment extends Fragment {
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            //View v = inflater.inflate(R.layout.create_poll_3, container, false);
+
+/*            TextView tv = (TextView) v.findViewById(R.id.tvFragThird);
+            tv.setText(getArguments().getString("msg"));*/
+
+            //return v;
+            View rootView = inflater.inflate(R.layout.create_poll_3, container, false);
+            GridView grid = (GridView) rootView.findViewById(R.id.poll_categories_grid);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            float px10 = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getActivity().getResources().getDisplayMetrics());
+            grid.setColumnWidth((int)((displayMetrics.widthPixels - px10 * 3) / 3));
+            grid.setAdapter(new ImageAdapter(getActivity()));
+            grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // redirect to results activity
+                    Toast.makeText(getActivity().getBaseContext(), Integer.toString((int) view.getTag()),
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+            return rootView;
+        }
+        public class ImageAdapter extends BaseAdapter {
+
+            private Context c;
+            private Integer[] thumbnails = {
+                    R.drawable.category_all, R.drawable.category_auto, R.drawable.category_enter, R.drawable.category_fashion, R.drawable.category_food,
+                    R.drawable.category_games, R.drawable.category_it, R.drawable.category_pets, R.drawable.category_sci, R.drawable.category_sports,
+                    R.drawable.category_social, R.drawable.category_tech, R.drawable.category_travel
+            };
+            private Integer[] strings = {
+                    R.string.category_all, R.string.category_auto, R.string.category_entertainment, R.string.category_fashion,
+                    R.string.category_food, R.string.category_games, R.string.category_it,
+                    R.string.category_pet, R.string.category_science, R.string.category_sports, R.string.category_social, R.string.category_tech,
+                    R.string.category_travel
+            };
+            private int[] bg_color = {
+                    0xff42baff, 0xffff6259, 0xff835bd4, 0xffab48cf, 0xffced93b, 0xffff8554, 0xffffe53d, 0xffababab, 0xff6dcf71, 0xff997368,
+                    0xff22b3a2, 0xff24dbf0, 0xffff4284, 0xffffa321, 0xff809dab
+            };
+
+            public ImageAdapter(Context c) {
+                this.c = c;
+            }
+
+            @Override
+            public int getCount() {
+                return strings.length;
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return position;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    convertView = vi.inflate(R.layout.categories, null);
+                }
+                ImageView iv = (ImageView) convertView.findViewById(R.id.imageView);
+                TextView tv = (TextView) convertView.findViewById(R.id.category_text);
+                ImageView bg = (ImageView) convertView.findViewById(R.id.imageViewBg);
+                tv.setText(c.getResources().getString(strings[position]));
+                tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
+                iv.setImageResource(thumbnails[position]);
+                bg.setBackgroundColor(bg_color[position]);
+                iv.setAdjustViewBounds(true);
+                convertView.setTag(position);
+                return convertView;
+            }
+        }
+        public ThirdFragment() {
+
+/*            ThirdFragment f = new ThirdFragment();
             Bundle b = new Bundle();
             b.putString("msg", text);
 
