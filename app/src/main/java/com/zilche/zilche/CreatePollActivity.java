@@ -373,7 +373,6 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                                             Toast.makeText(CreatePollActivity.this, "Please make sure you have added at least two options", Toast.LENGTH_SHORT).show();
                                             return;
                                         }
-
                                         int pollID = object.getInt("value");
                                         object.increment("value");
                                         object.saveInBackground();
@@ -381,7 +380,6 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                                         poll.put("question", firstFrag.getQuestion() );
                                         poll.put("author", ParseUser.getCurrentUser().getString("username"));
                                         poll.put("id", pollID + 1);
-                                        poll.put("category", 0);
                                         poll.put("createTime", System.currentTimeMillis());
                                         poll.put("total", 0);
                                         poll.put("nickname", ParseUser.getCurrentUser().getString("name"));
@@ -511,8 +509,8 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // redirect to results activity
-                    //Toast.makeText(getActivity().getBaseContext(), Integer.toString((int) view.getTag()),
-                            //Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getBaseContext(), Integer.toString((int) view.getTag()),
+                            Toast.LENGTH_SHORT).show();
                     category = (int) view.getTag();
                 }
             });
