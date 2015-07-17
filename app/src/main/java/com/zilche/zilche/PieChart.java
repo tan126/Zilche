@@ -4,14 +4,26 @@ import org.achartengine.ChartFactory;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.renderer.DefaultRenderer;
 import org.achartengine.renderer.SimpleSeriesRenderer;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PieChart extends Activity {
     private View mChart;
@@ -42,6 +54,29 @@ public class PieChart extends Activity {
     private void openChart() {
 
         // Pie Chart Section Names
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+        query.getInBackground("uL5xQy4TnI", new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject object, ParseException e) {
+                        int count = object.getInt("optionNum");
+                        String[] options = new String[count];
+                        double[] percent = new double[count];
+                        JSONArray tmpOptions = object.getJSONArray("options");
+                        for(int i = 0; i < count; i++){
+                            try{
+                                options[i] = tmpOptions.getString(i);
+                            } catch ( JSONException e1 ){
+                                Log.d("JSON", "Array index out of bound");
+                            }
+                        }
+
+
+                    }
+
+                    ;
+                });
+
+
         String[] code = new String[] { "Froyo", "Gingerbread",
                 "IceCream Sandwich", "Jelly Bean", "KitKat" };
 
