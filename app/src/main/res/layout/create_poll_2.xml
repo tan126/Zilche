@@ -33,7 +33,7 @@
                     android:singleLine="true"
                     android:scrollbars="horizontal"
                     android:layout_weight=".9"
-
+                    android:inputType="textCapSentences"
                     />
                 <ImageButton
                     android:id="@+id/option1remove"
@@ -58,7 +58,9 @@
                     android:hint="Enter option 2 here..."
                     android:gravity="top|left"
                     android:singleLine="true"
-                    android:scrollbars="horizontal" />
+                    android:scrollbars="horizontal"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option2remove"
                     android:layout_width="0dp"
@@ -83,7 +85,9 @@
                     android:gravity="top|left"
                     android:scrollbars="horizontal"
                     android:singleLine="true"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option3remove"
                     android:layout_width="0dp"
@@ -108,7 +112,9 @@
                     android:gravity="top|left"
                     android:scrollbars="horizontal"
                     android:singleLine="true"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option4remove"
                     android:layout_width="0dp"
@@ -133,7 +139,9 @@
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option5remove"
                     android:layout_width="0dp"
@@ -158,7 +166,9 @@
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option6remove"
                     android:layout_width="0dp"
@@ -183,7 +193,9 @@
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option7remove"
                     android:layout_width="0dp"
@@ -208,7 +220,9 @@
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
 
                 <ImageButton
                     android:id="@+id/option8remove"
@@ -234,7 +248,9 @@
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option9remove"
                     android:layout_width="0dp"
@@ -259,7 +275,9 @@
                     android:gravity="top|left"
                     android:singleLine="true"
                     android:scrollbars="horizontal"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:inputType="textCapSentences"
+                    />
                 <ImageButton
                     android:id="@+id/option10remove"
                     android:layout_width="0dp"
