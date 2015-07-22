@@ -347,6 +347,38 @@ public class CreatePollActivity extends FragmentActivity implements OnPageChange
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
                         } else*/
+                        poll.put("optionNum", numOptions);
+                        poll.remove("options");
+                        for (int i = 0; i < numOptions; i++) {
+                            int actualOptionID = i + 1;
+                            String option = "option" + actualOptionID;
+                            int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                            EditText optionText = (EditText) findViewById(optionID);
+                            if (optionText.getText().toString().trim().length() == 0) {
+                                Context context = getApplicationContext();
+                                CharSequence text = "Please make sure you have added at least two options";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                                totalOptionsAdded = 0;
+                                break;
+                            }
+                            else {
+                                validOptions = true;
+                                totalOptionsAdded++;
+                            }
+                        }
+                        if (validOptions == true && totalOptionsAdded >= 2) {
+                            for (int i = 0; i < numOptions; i++) {
+                                int actualOptionID = i + 1;
+                                String option = "option" + actualOptionID;
+                                int optionID = getResources().getIdentifier(option, "id", getPackageName());
+                                EditText optionText = (EditText) findViewById(optionID);
+                                poll.add("options", optionText.getText().toString());
+                                poll.add("votes", 0);
+                            }
+                        }
+
                         if (totalOptionsAdded < 2) {
                             Context context = getApplicationContext();
                             CharSequence text = "Please make sure you have added at least two options";

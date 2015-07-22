@@ -10,11 +10,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.Typeface;
 import android.view.View;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -34,11 +37,17 @@ public class MyPollActivity extends ActionBarActivity {
     ArrayList<String> authorList;
     ArrayList<String> hotnessList;
 
+
+    ArrayList<Long> pollIdList;
+    ImageButton removePollButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_poll);
         gv = (GridView) findViewById(R.id.gridv);
+
+        pollIdList = new ArrayList<Long>();
 
         pollList = new ArrayList<String>();
         timeList = new ArrayList<String>();
@@ -57,6 +66,9 @@ public class MyPollActivity extends ActionBarActivity {
                         ParseObject thisPoll = list.get(i);
                         String tmpStr = thisPoll.getString("question");
                         pollList.add(tmpStr);
+
+                        Long tmpLong = thisPoll.getLong("id");
+                        pollIdList.add(tmpLong);
                         //timeList.add(thisPoll.getCreatedAt().toString());
                         String tmp = "";
                         int total = thisPoll.getInt("total");
@@ -137,6 +149,8 @@ public class MyPollActivity extends ActionBarActivity {
         private String[] totals = totalList.toArray(new String[totalList.size()]);
         private String [] hots = hotnessList.toArray(new String[hotnessList.size()]);
 
+        private Long[] pollIDs = pollIdList.toArray(new Long[pollIdList.size()]);
+
         public PollListAdapter(Context c) {
             this.c = c;
         }
@@ -157,11 +171,17 @@ public class MyPollActivity extends ActionBarActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
+
+
             if (convertView == null) {
                 LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = vi.inflate(R.layout.mypolls, null);
             }
+
+            removePollButton = (ImageButton) convertView.findViewById(R.id.pollRemove);
+
             ImageView check = (ImageView) convertView.findViewById(R.id.check);
 
             TextView total = (TextView) convertView.findViewById(R.id.total);
@@ -190,8 +210,37 @@ public class MyPollActivity extends ActionBarActivity {
             ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
             iv.setImageResource(R.drawable.ic_assessment_white_48dp);
             iv.setColorFilter(Color.parseColor("#11110000"));
+
+            removePollButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View arg0) {
+                    Long pollID = pollIDs[position];
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+                    query.whereEqualTo("id", pollID);
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> parseObjects, ParseException e) {
+                            if (e == null) {
+                                for (ParseObject delete : parseObjects) {
+                                    delete.deleteInBackground();
+                                    Toast.makeText(getApplicationContext(), "deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), "error in deleting", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                }
+            });
+
+
+
             return convertView;
         }
+
+
     }
 
 }
