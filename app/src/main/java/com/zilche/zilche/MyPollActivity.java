@@ -45,6 +45,11 @@ public class MyPollActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_poll);
+        getList();
+    }
+
+    public void getList(){
+
         gv = (GridView) findViewById(R.id.gridv);
 
         pollIdList = new ArrayList<Long>();
@@ -231,8 +236,9 @@ public class MyPollActivity extends ActionBarActivity {
                             }
                         }
                     });
-
+                    getList();
                 }
+
             });
 
 

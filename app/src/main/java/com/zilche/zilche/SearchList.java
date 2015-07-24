@@ -14,16 +14,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class SearchList extends AppCompatActivity {
@@ -34,7 +37,7 @@ public class SearchList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_list);
-        SearchView mySearchView = (SearchView) findViewById(R.id.my_search_bar);
+        final SearchView mySearchView = (SearchView) findViewById(R.id.my_search_bar);
         mySearchView.setFocusable(true);
         mySearchView.setIconified(false);
         ImageButton backButton = (ImageButton) findViewById(R.id.back_button);
@@ -50,7 +53,36 @@ public class SearchList extends AppCompatActivity {
         ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).
                 toggleSoftInput(InputMethodManager.SHOW_FORCED,
                         InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        mySearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                // Perform search here!
+                performSearch(query);
+
+                // Clear the text in search bar but (don't trigger a new search!)
+                mySearchView.setQuery("", false);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+
+
     }
+
+    public void performSearch(String query){
+
+        Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
