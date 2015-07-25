@@ -37,6 +37,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -117,6 +118,8 @@ public class SearchList extends AppCompatActivity {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
         query.orderByDescending("lastUpdate");
 
+
+        query.whereMatches("question", "("+queryStr+")", "i");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
