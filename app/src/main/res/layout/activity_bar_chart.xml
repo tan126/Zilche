@@ -16,14 +16,13 @@
         >
 
         <ImageButton
-            android:id="@+id/barchart"
+            android:id="@+id/cancel"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/ic_close_white_24dp"
             android:background="@null"
             android:layout_centerVertical="true"
             android:layout_gravity="left"
-            android:onClick="cancelBarChart"
             />
 
         <TextView
@@ -49,12 +48,11 @@
     </LinearLayout>
 
 
-    <RelativeLayout
+    <!--RelativeLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#3F51B5"
         android:gravity="center">
 
         <Button
@@ -69,7 +67,7 @@
             android:gravity="center"/>
 
 
-    </RelativeLayout>
+    </RelativeLayout-->
 
 
 

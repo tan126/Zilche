@@ -1,6 +1,7 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Point;
 import android.os.Build;
@@ -57,6 +58,7 @@ public class PollViewActivity extends Activity {
     private TextView category_title;
     private SlidingPaneLayout spl;
     private Button submit_btn;
+    private Button showGraph_btn;
     private String id;
     public int checked;
     private LinearLayout lin;
@@ -73,15 +75,26 @@ public class PollViewActivity extends Activity {
         category_title = (TextView) findViewById(R.id.category_poll_view);
         submit_btn = (Button) findViewById(R.id.submit_poll_view);
         lin = (LinearLayout) findViewById(R.id.result_poll_view);
+        showGraph_btn = (Button) findViewById(R.id.showGraph);
 
         Bundle extras = getIntent().getExtras();
         final Poll poll = extras.getParcelable("poll");
+
+        showGraph_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gpIntent = new Intent(PollViewActivity.this, BarChart.class);
+                gpIntent.putExtra("poll", poll);
+                startActivity(gpIntent);
+            }
+        });
 
         question.setText(poll.getQuestion());
         dateAdded.setText(poll.getDate_added());
         author.setText(" " + poll.getAuthor());
         category = poll.getCategory();
         imageView.setVisibility(View.GONE);
+        showGraph_btn.setVisibility(View.GONE);
         category_title.setText(poll.getCategory_title());
         id = poll.getId();
 
@@ -151,6 +164,7 @@ public class PollViewActivity extends Activity {
                                     }
                                 }
                                 votes[checked]++;
+                                poll.setVotes(votes);
                                 try {
                                     votesObject.put(checked, votesObject.getInt(checked) + 1);
                                     object.remove("votes");
@@ -166,6 +180,7 @@ public class PollViewActivity extends Activity {
                                     public void done(ParseException e) {
                                         radioGroup.setVisibility(View.GONE);
                                         submit_btn.setVisibility(View.GONE);
+                                        showGraph_btn.setVisibility(View.VISIBLE);
                                         LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                                 ViewGroup.LayoutParams.WRAP_CONTENT);
                                         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,

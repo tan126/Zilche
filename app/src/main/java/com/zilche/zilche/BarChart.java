@@ -12,9 +12,11 @@ import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class BarChart extends Activity {
@@ -24,6 +26,11 @@ public class BarChart extends Activity {
             "Jan", "Feb" , "Mar", "Apr", "May", "Jun",
             "Jul", "Aug" , "Sep", "Oct", "Nov", "Dec"
     };
+    private Poll poll;
+    private String[] options;
+    private int[] votes;
+    private int optNum;
+    private int maxVote;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,65 +40,90 @@ public class BarChart extends Activity {
         // Getting reference to the button btn_chart
         Button btnChart = (Button) findViewById(R.id.btn_chart);
 
+        ImageButton cancel = (ImageButton) findViewById(R.id.cancel);
+        cancel.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         // Defining click event listener for the button btn_chart
-        OnClickListener clickListener = new OnClickListener() {
+        /*OnClickListener clickListener = new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 // Draw the Income vs Expense Chart
                 openChart();
             }
-        };
+        };*/
+
+        Bundle extras = getIntent().getExtras();
+        final Poll poll = extras.getParcelable("poll");
+        options = poll.getOptions();
+        votes = poll.getVotes();
+        optNum = poll.getCount();
 
         // Setting event click listener for the button btn_chart of the MainActivity layout
-        btnChart.setOnClickListener(clickListener);
+        //btnChart.setOnClickListener(clickListener);
+        Log.d("kkk", ""+votes[0]);
+        openChart();
 
     }
 
+
     private void openChart(){
-        int[] x = { 0,1,2,3,4,5,6,7, 8, 9, 10, 11 };
-        int[] income = { 2000,2500,2700,3000,2800,3500,3700,3800, 0,0,0,0};
-        int[] expense = {2200, 2700, 2900, 2800, 2600, 3000, 3300, 3400, 0, 0, 0, 0 };
+        //int[] x = { 0,1,2,3,4,5,6,7, 8, 9, 10, 11 };
+        //int[] income = { 2000,2500,2700,3000,2800,3500,3700,3800, 0,0,0,0};
+        //int[] expense = {2200, 2700, 2900, 2800, 2600, 3000, 3300, 3400, 0, 0, 0, 0 };
 
         // Creating an XYSeries for Income
-        XYSeries incomeSeries = new XYSeries("Income");
+        //XYSeries incomeSeries = new XYSeries("Income");
         // Creating an XYSeries for Expense
-        XYSeries expenseSeries = new XYSeries("Expense");
+        //XYSeries expenseSeries = new XYSeries("Expense");
+        XYSeries votesSeries = new XYSeries("Votes");
         // Adding data to Income and Expense Series
-        for(int i=0;i<x.length;i++){
+        /*for(int i=0;i<x.length;i++){
             incomeSeries.add(i,income[i]);
             expenseSeries.add(i,expense[i]);
+        }*/
+
+        maxVote = 0;
+        for(int i = 0; i < optNum; i++ ){
+            votesSeries.add(i, votes[i]);
+            if(votes[i] > maxVote)
+                maxVote = votes[i];
         }
 
         // Creating a dataset to hold each series
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
         // Adding Income Series to the dataset
-        dataset.addSeries(incomeSeries);
+        //dataset.addSeries(incomeSeries);
         // Adding Expense Series to dataset
-        dataset.addSeries(expenseSeries);
+        dataset.addSeries(votesSeries);
 
         // Creating XYSeriesRenderer to customize incomeSeries
-        XYSeriesRenderer incomeRenderer = new XYSeriesRenderer();
-        incomeRenderer.setColor(Color.CYAN); //color of the graph set to cyan
-        incomeRenderer.setFillPoints(true);
-        incomeRenderer.setLineWidth(2);
-        incomeRenderer.setDisplayChartValues(true);
-        incomeRenderer.setDisplayChartValuesDistance(10); //setting chart value distance
+        XYSeriesRenderer votesRenderer = new XYSeriesRenderer();
+        votesRenderer.setColor(Color.parseColor("#3F51B5")); //color of the graph set to cyan
+        votesRenderer.setFillPoints(true);
+        votesRenderer.setLineWidth(2);
+        votesRenderer.setDisplayChartValues(true);
+        votesRenderer.setDisplayChartValuesDistance(4*optNum); //setting chart value distance
 
         // Creating XYSeriesRenderer to customize expenseSeries
-        XYSeriesRenderer expenseRenderer = new XYSeriesRenderer();
+        /*XYSeriesRenderer expenseRenderer = new XYSeriesRenderer();
         expenseRenderer.setColor(Color.GREEN);
         expenseRenderer.setFillPoints(true);
         expenseRenderer.setLineWidth(2);
-        expenseRenderer.setDisplayChartValues(true);
+        expenseRenderer.setDisplayChartValues(true);*/
 
         // Creating a XYMultipleSeriesRenderer to customize the whole chart
         XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
         multiRenderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
-        multiRenderer.setXLabels(0);
-        multiRenderer.setChartTitle("Income vs Expense Chart");
-        multiRenderer.setXTitle("Year 2014");
-        multiRenderer.setYTitle("Amount in Dollars");
+        multiRenderer.setXLabels(optNum);
+        multiRenderer.setChartTitle("Votes Chart");
+        multiRenderer.setXTitle("Options");
+        multiRenderer.setYTitle("Votes");
 
         /***
          * Customizing graphs
@@ -138,11 +170,12 @@ public class BarChart extends Activity {
         multiRenderer.setYLabels(10);
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
         // if you use dynamic values then get the max y value and set here
-        multiRenderer.setYAxisMax(4000);
+        multiRenderer.setYAxisMax(maxVote);
+        multiRenderer.setYAxisMin(0);
         //setting used to move the graph on xaxiz to .5 to the right
-        multiRenderer.setXAxisMin(-0.5);
+        multiRenderer.setXAxisMin(-1);
 //setting max values to be display in x axis
-        multiRenderer.setXAxisMax(11);
+        multiRenderer.setXAxisMax(optNum);
         //setting bar size or space between two bars
         multiRenderer.setBarSpacing(0.5);
         //Setting background color of the graph to transparent
@@ -154,15 +187,15 @@ public class BarChart extends Activity {
         //setting the margin size for the graph in the order top, left, bottom, right
         multiRenderer.setMargins(new int[]{30, 30, 30, 30});
 
-        for(int i=0; i< x.length;i++){
-            multiRenderer.addXTextLabel(i, mMonth[i]);
+        for(int i=0; i< optNum;i++){
+            multiRenderer.addXTextLabel(i, options[i]);
         }
 
         // Adding incomeRenderer and expenseRenderer to multipleRenderer
         // Note: The order of adding dataseries to dataset and renderers to multipleRenderer
         // should be same
-        multiRenderer.addSeriesRenderer(incomeRenderer);
-        multiRenderer.addSeriesRenderer(expenseRenderer);
+        multiRenderer.addSeriesRenderer(votesRenderer);
+        //multiRenderer.addSeriesRenderer(expenseRenderer);
 
         //this part is used to display graph on the xml
         LinearLayout chartContainer = (LinearLayout) findViewById(R.id.chart);
