@@ -331,7 +331,9 @@ public class CreatePollActivity2 extends AppCompatActivity {
             LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
             params2.setMargins(px, px, 2, 2);
             et.setLayoutParams(params2);
-            et.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+            et.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_CLASS_TEXT);
+            et.setSingleLine(false);
+
             LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params3.gravity = Gravity.CENTER_VERTICAL;
             ImageButton ib = new ImageButton(getActivity());

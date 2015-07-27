@@ -61,7 +61,7 @@
                 android:layout_marginTop="36dp"
                 android:hint="Enter your question here"
                 android:textSize="19sp"
-                android:inputType="textCapSentences"
+                android:inputType="textCapSentences|textMultiLine"
                 android:textColor="#555"
                 android:fontFamily="sans-serif-medium"
                 android:maxLength="150"
