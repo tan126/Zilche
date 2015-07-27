@@ -7,6 +7,8 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -38,7 +40,7 @@ import org.json.JSONException;
 
 import java.util.List;
 
-public class PollViewActivity extends Activity {
+public class PollViewActivity extends ActionBarActivity {
 
     private int[] title_color = {
             0xff2196F3, 0xffF44336, 0xff673AB7, 0xff9C27B0, 0xffCDDC39, 0xffFF5722, 0xffFDD835, 0xff9E9E9E, 0xff4CAF50, 0xff795548,
@@ -250,14 +252,16 @@ public class PollViewActivity extends Activity {
         LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         radioGroup.setLayoutParams(layParams);
         for (int i = 0; i < option_count; i++) {
-            RadioButton rb = new RadioButton(this);
+            //RadioButton rb = new RadioButton(this);
+            //rb.setLayoutParams(layParams);
+            RadioButton rb = (RadioButton) View.inflate(this, R.layout.radiobutton, null);
             rb.setLayoutParams(layParams);
             rb.setText(options[i]);
             rb.setTextColor(0xff666666);
             rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             rb.setPadding(30, 30, 30, 30);
             rb.setGravity(Gravity.CENTER_VERTICAL);
-            rb.setButtonDrawable(R.drawable.apptheme_btn_check_holo_light);
+            //rb.setButtonDrawable(R.drawable.apptheme_btn_check_holo_light);
             rb.setId(i);
             View v = new View(this);
             v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,

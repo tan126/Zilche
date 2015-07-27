@@ -10,9 +10,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:background="#3F51B5"
-        android:elevation="2dp"
         >
 
         <ImageButton
@@ -23,6 +21,7 @@
             android:src="@drawable/ic_close_white_24dp"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
+            android:onClick="back_clicked"
             android:layout_gravity="left" />
 
         <TextView
@@ -43,16 +42,22 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager_createpoll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#bbb"
+        android:layout_gravity="bottom"
+        />
 
     <com.zilche.zilche.SlidingTabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:paddingBottom="1dp"
-        android:background="#3F51B5"
+        android:background="#ccc"
         android:id="@+id/pager_tab_strip" />
 
 </LinearLayout>

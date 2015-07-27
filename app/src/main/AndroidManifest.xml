@@ -73,7 +73,7 @@
             android:name=".PollViewActivity"
             android:label="@string/title_activity_poll_view"
             android:launchMode="singleTop"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@style/transparent" >
         </activity>
         <activity
             android:name=".PieChart"
@@ -94,6 +94,7 @@
         </activity>
         <activity
             android:name=".CreatePollActivity2"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/title_activity_create_poll_activity2" >
         </activity>
     </application>
