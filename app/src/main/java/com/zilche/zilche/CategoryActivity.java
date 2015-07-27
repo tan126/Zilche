@@ -1,30 +1,16 @@
 package com.zilche.zilche;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -97,7 +83,7 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     public void populateList() {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Poll");
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         if (category != 0)
             query.whereEqualTo("category", category);
         query.orderByDescending("lastUpdate");
@@ -203,11 +189,7 @@ public class CategoryActivity extends AppCompatActivity {
         JSONArray tmpVotes = thisPoll.getJSONArray("votes");
         int[] votes = new int[options_count];
         for( int i = 0; i < options_count; i ++ ) {
-            try{
-                votes[i] = tmpVotes.getInt(i);
-            } catch ( JSONException e ){
-                Log.d("JSON", "Array index out of bound");
-            }
+            votes[i] = thisPoll.getInt("votes" + Integer.toString(i));
         }
         String tmp = "";
         long updatedTime = thisPoll.getLong("createTime");
@@ -233,7 +215,10 @@ public class CategoryActivity extends AppCompatActivity {
         String author = thisPoll.getString("nickname");
         int categorty = thisPoll.getInt("category");
         Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
-        newPoll.setCategory_title(getString(strings[categorty]));
+        if (categorty == 0)
+            newPoll.setCategory_title(getString(R.string.other));
+        else
+            newPoll.setCategory_title(getString(strings[categorty]));
         return newPoll;
     }
 

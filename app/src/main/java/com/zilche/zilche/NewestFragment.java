@@ -82,7 +82,7 @@ public class NewestFragment extends Fragment{
                 hotnessList = new ArrayList<String>();
                 pollOnjectList = new ArrayList<Poll>();
 
-                query = ParseQuery.getQuery("Poll");
+                query = ParseQuery.getQuery("poll");
                 query.orderByDescending("lastUpdate");
 
                 query.findInBackground(new FindCallback<ParseObject>() {
@@ -156,7 +156,7 @@ public class NewestFragment extends Fragment{
         hotnessList = new ArrayList<String>();
         pollOnjectList = new ArrayList<Poll>();
 
-        query = ParseQuery.getQuery("Poll");
+        query = ParseQuery.getQuery("poll");
         query.orderByDescending("lastUpdate");
 
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -231,11 +231,7 @@ public class NewestFragment extends Fragment{
         JSONArray tmpVotes = thisPoll.getJSONArray("votes");
         int[] votes = new int[options_count];
         for( int i = 0; i < options_count; i ++ ) {
-            try{
-                votes[i] = tmpVotes.getInt(i);
-            } catch ( JSONException e ){
-                Log.d("JSON", "Array index out of bound");
-            }
+            votes[i] = thisPoll.getInt("votes" + Integer.toString(i));
         }
         String tmp = "";
         long updatedTime = thisPoll.getLong("createTime");

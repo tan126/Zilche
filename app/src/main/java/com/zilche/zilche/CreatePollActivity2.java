@@ -16,6 +16,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,6 +44,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -420,6 +424,58 @@ public class CreatePollActivity2 extends AppCompatActivity {
             super.onCreate(savedInstanceState);
         }
 
+        private Poll parsePollObject(ParseObject thisPoll){
+            String id = thisPoll.getObjectId();
+            String question = thisPoll.getString("question");
+            int options_count = thisPoll.getInt("optionNum");
+            JSONArray tmpOptions = thisPoll.getJSONArray("options");
+            String[] options = new String[options_count];
+            for( int i = 0; i < options_count; i ++ ) {
+                try{
+                    options[i] = tmpOptions.getString(i);
+                } catch ( JSONException e ){
+                    Log.d("JSON", "Array index out of bound");
+                }
+            }
+            int[] votes = new int[options_count];
+            for( int i = 0; i < options_count; i ++ ) {
+                votes[i] = thisPoll.getInt("votes" + Integer.toString(i));
+            }
+            String tmp = "";
+            long updatedTime = thisPoll.getLong("createTime");
+            long diffMS = System.currentTimeMillis() - updatedTime;
+            long diffS = diffMS / 1000;
+            if ( diffS > 60 ) {
+                long diffM = diffS / 60;
+                if ( diffM > 60 ){
+                    long diffH = diffM / 60;
+                    if ( diffH > 24 ) {
+                        long diffD = diffH / 24;
+                        tmp +=  diffD + " days ago";
+                    }
+                    else
+                        tmp +=  + diffH + " hours ago";;
+                }
+                else
+                    tmp += + diffM + " minutes ago";
+            }
+            else
+                tmp += " 1 minute ago";
+            String date_added = tmp;
+            String author = thisPoll.getString("nickname");
+            int categorty = thisPoll.getInt("category");
+            Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
+            String cate;
+            if (categorty ==  0) {
+                categorty = 8;
+            } else if (categorty < 9) {
+                categorty++;
+            }
+            newPoll.setCategory_title(getString(strings[categorty]));
+            return newPoll;
+        }
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -430,17 +486,17 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     CreatePollActivity2 activity = (CreatePollActivity2) getActivity();
-                    ParseObject parseObject = activity.makeObject();
+                    final ParseObject parseObject = activity.makeObject();
                     if (parseObject == null) return;
                     parseObject.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Poll poll = new Poll();
-                                //Intent i = new Intent(getActivity(), PollViewActivity.class);
-                                //i.putExtra("poll", poll);
-                                //startActivity(i);
-                                //getActivity().finish();
+                                Poll poll = parsePollObject(parseObject);
+                                Intent i = new Intent(getActivity(), PollViewActivity.class);
+                                i.putExtra("poll", poll);
+                                startActivity(i);
+                                getActivity().finish();
                             } else {
                                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                             }

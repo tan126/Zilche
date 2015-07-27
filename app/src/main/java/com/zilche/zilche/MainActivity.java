@@ -109,8 +109,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
-                Intent t = new Intent(MainActivity.this, CreatePollActivity.class);
+                Intent t = new Intent(MainActivity.this, CreatePollActivity2.class);
                 startActivity(t);
+                plusButton.collapse();
             }
         });
 
@@ -341,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void newPoll(View v) {
 
-        Intent i = new Intent(this, CreatePollActivity.class);
+        Intent i = new Intent(this, CreatePollActivity2.class);
         startActivity(i);
         plusButton.collapse();
         /*
