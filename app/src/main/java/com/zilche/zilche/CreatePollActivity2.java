@@ -308,6 +308,10 @@ public class CreatePollActivity2 extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (layouts.size() >= 10) {
+                        Toast.makeText(getActivity(), "You reached the maximum of 10 options", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     fab.setVisibility(View.GONE);
                     addOption();
                     AlphaAnimation anim1 = new AlphaAnimation(0, 1);
