@@ -32,6 +32,7 @@ import com.parse.SaveCallback;
 
 import java.util.HashMap;
 
+// todo: change button to floating button
 public class PollViewActivity extends ActionBarActivity {
 
     private int[] title_color = {
@@ -56,7 +57,9 @@ public class PollViewActivity extends ActionBarActivity {
     private String id;
     private int checked;
     private LinearLayout lin;
+    private TextView[] percentages;
     private HashMap<String, Integer> map;
+    private int c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +135,8 @@ public class PollViewActivity extends ActionBarActivity {
         int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77, getResources().getDisplayMetrics()));
         ll.setMinimumHeight(height);
         if (map.get(poll.getId()) != null) {
+            c = map.get(poll.getId());
+            generateResult(poll.getVotes(), poll.getOptions());
             ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
             query.getInBackground(id, new GetCallback<ParseObject>() {
                 @Override
@@ -142,11 +147,11 @@ public class PollViewActivity extends ActionBarActivity {
                         for (int i = 0; i < poll.getCount(); i++) {
                             votes[i] = object.getInt("votes" + Integer.toString(i));
                         }
-                        generateResult(votes, poll.getOptions());
-                    } else {
-                        Toast.makeText(PollViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        updateResult(votes);
                     }
-                };
+                }
+
+                ;
             });
             return;
         }
@@ -175,8 +180,9 @@ public class PollViewActivity extends ActionBarActivity {
                                             for (int i = 0; i < poll.getCount(); i++) {
                                                 votes[i] = object.getInt("votes" + Integer.toString(i));
                                             }
+                                            c = checked;
                                             generateResult(votes, poll.getOptions());
-                                            saveRecord(object.getObjectId());
+                                            saveRecord(object.getObjectId(), checked);
                                         } else {
                                             submit_btn.setEnabled(true);
                                             Toast.makeText(PollViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -193,15 +199,16 @@ public class PollViewActivity extends ActionBarActivity {
 
     }
 
-    private void saveRecord(String id) {
+    private void saveRecord(String id, final int c) {
         ParseObject po = new ParseObject("Records");
         po.put("Key", id);
         po.put("user", ParseUser.getCurrentUser().getObjectId());
+        po.put("choice", c);
         final String id2 = id;
         po.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) map.put(id2, 1);
+                if (e == null) map.put(id2, c);
             }
         });
     }
@@ -246,16 +253,21 @@ public class PollViewActivity extends ActionBarActivity {
         for (int i = 0; i < options.length; i++)
             total += votes[i];
         int percent = 100;
+        percentages = new TextView[options.length];
         for (int i = 0; i < options.length; i++) {
             LinearLayout ll1 = new LinearLayout(getApplicationContext());
             ll1.setLayoutParams(layParams);
             TextView percentage = new TextView(getApplicationContext());
+            percentages[i] = percentage;
             percentage.setLayoutParams(par2);
             percentage.setTextColor(0xff666666);
             percentage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             percentage.setEms(4);
             percentage.setTypeface(null, Typeface.BOLD);
             percentage.setGravity(Gravity.CENTER);
+            if (i == c) {
+                percentage.setTextColor(0xFFEF5350);
+            }
             int aatmp = 0;
             if (i == options.length - 1)
                 percentage.setText(Integer.toString(percent) + "%");
@@ -280,6 +292,24 @@ public class PollViewActivity extends ActionBarActivity {
             lin.addView(v1);
         }
         lin.setVisibility(View.VISIBLE);
+    }
+
+    private void updateResult(int[] result) {
+        int percent = 100;
+        int total = 0;
+        for (int i = 0; i < result.length; i++) {
+            total += result[i];
+        }
+        for (int i = 0; i < result.length; i++) {
+            int aatmp = 0;
+            if (i == result.length - 1)
+                percentages[i].setText(Integer.toString(percent) + "%");
+            else {
+                aatmp = (int) ((double) (result[i]) / total * 100);
+                percentages[i].setText(Integer.toString(aatmp) + "%");
+            }
+            percent -= aatmp;
+        }
     }
 
     @Override
