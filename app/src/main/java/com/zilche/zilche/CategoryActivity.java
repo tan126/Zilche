@@ -180,6 +180,7 @@ public class CategoryActivity extends AppCompatActivity {
                 int pos = (int) v.getTag();
                 Intent i = new Intent(CategoryActivity.this, PollViewActivity.class);
                 i.putExtra("poll", polls.get(pos));
+                System.out.println("here " + polls.get(pos).getAnon());
                 startActivity(i);
                 overridePendingTransition(R.anim.right_to_left, 0);
             }
@@ -292,6 +293,7 @@ public class CategoryActivity extends AppCompatActivity {
             newPoll.setCategory_title(getString(R.string.other));
         else
             newPoll.setCategory_title(getString(strings[categorty]));
+        newPoll.setAnon(thisPoll.getInt("anon"));
         return newPoll;
     }
 

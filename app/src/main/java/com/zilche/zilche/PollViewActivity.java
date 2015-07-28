@@ -88,7 +88,10 @@ public class PollViewActivity extends ActionBarActivity {
 
         question.setText(poll.getQuestion());
         dateAdded.setText(poll.getDate_added());
-        author.setText(" " + poll.getAuthor());
+        if (poll.getAnon() == 1)
+            author.setText(" Anonymous");
+        else
+            author.setText(" " + poll.getAuthor());
         category = poll.getCategory();
         imageView.setVisibility(View.GONE);
         showGraph_btn.setVisibility(View.GONE);

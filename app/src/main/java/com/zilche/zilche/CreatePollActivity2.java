@@ -468,9 +468,10 @@ public class CreatePollActivity2 extends AppCompatActivity {
             if (categorty ==  0) {
                 categorty = 8;
             } else if (categorty < 9) {
-                categorty++;
+                categorty--;
             }
             newPoll.setCategory_title(getString(strings[categorty]));
+            newPoll.setAnon(thisPoll.getInt("anon"));
             return newPoll;
         }
 

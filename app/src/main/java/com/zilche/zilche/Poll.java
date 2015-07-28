@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class Poll implements Parcelable{
 
+    private int anon;
     private String question;
     private String[] options;
     private int[] votes;
@@ -118,6 +119,7 @@ public class Poll implements Parcelable{
         dest.writeInt(options_count);
         dest.writeInt(category);
         dest.writeString(category_title);
+        dest.writeInt(anon);
     }
 
     public static final Parcelable.Creator<Poll> CREATOR = new Creator<Poll>() {
@@ -126,6 +128,7 @@ public class Poll implements Parcelable{
             Poll poll = new Poll(source.readString(), source.readString(), source.createStringArray(), source.createIntArray(),
                     source.readString(), source.readString(), source.readInt(), source.readInt());
             poll.setCategory_title(source.readString());
+            poll.setAnon(source.readInt());
             return poll;
         }
 
@@ -141,6 +144,14 @@ public class Poll implements Parcelable{
             ret += votes[i];
         }
         return ret;
+    }
+
+    public void setAnon(int c) {
+        anon = c;
+    }
+
+    public int getAnon() {
+        return anon;
     }
 
 }
