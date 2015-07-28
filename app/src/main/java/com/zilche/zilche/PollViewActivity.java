@@ -149,34 +149,21 @@ public class PollViewActivity extends ActionBarActivity {
                     // failed
                     submit_btn.setEnabled(true);
                 } else {
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
                     //Toast.makeText(PollViewActivity.this, id, Toast.LENGTH_SHORT).show();
                     query.getInBackground(id, new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject object, ParseException e) {
                             if (e == null) {
                                 final int options_count = poll.getCount();
-                                JSONArray votesObject = object.getJSONArray("votes");
                                 final int[] votes = new int[options_count];
                                 for( int i = 0; i < options_count; i ++ ) {
-                                    try{
-                                        votes[i] = votesObject.getInt(i);
-                                    } catch ( JSONException e2 ){
-                                        Log.d("JSON", "Array index out of bound");
-                                    }
+                                    votes[i] = object.getInt("votes" + Integer.toString(i));
                                 }
                                 votes[checked]++;
                                 poll.setVotes(votes);
-                                try {
-                                    votesObject.put(checked, votesObject.getInt(checked) + 1);
-                                    object.remove("votes");
-                                    for (int i = 0; i < votesObject.length(); i++) {
-                                        object.add("votes", votesObject.getInt(i));
-                                    }
-                                } catch (JSONException e2) {
-                                    Log.d("JSON", "Array index out of bound");
-                                }
                                 object.increment("total");
+                                object.increment("votes" + Integer.toString(checked));
                                 object.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
