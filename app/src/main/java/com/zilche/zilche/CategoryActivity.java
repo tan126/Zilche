@@ -3,6 +3,8 @@ package com.zilche.zilche;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -46,9 +48,11 @@ public class CategoryActivity extends AppCompatActivity {
             0xff1976D2, 0xffD32F2F, 0xff512DA8, 0xff7B1FA2, 0xffAFB42B, 0xffE64A19, 0xffFBC02D, 0xff616161, 0xff388E3C, 0xff5D4037,
             0xff00796B, 0xff0097A7, 0xffC2185B, 0xffF57C00, 0xff455A64
     };
-    private List<Poll> pollList;
+    private LinkedList<Poll> pollList;
     private ProgressBar spinner;
     private RecyclerView rv;
+    private SwipeRefreshLayout srl;
+    private int isRefreshing = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,29 @@ public class CategoryActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(noti_color[category]);
         }
+        srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                isRefreshing = 1;
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ( isRefreshing == 1 ) {
+                            Toast.makeText(CategoryActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
+                            srl.setRefreshing(false);
+                            isRefreshing = 0;
+                        }
+                    }
+                }, 10000);
+                get_updated();
+            }
+        });
+        srl.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         RelativeLayout lay = (RelativeLayout) findViewById(R.id.header);
         lay.setBackgroundColor(title_color[category]);
         rv = (RecyclerView) findViewById(R.id.rv_cat);
@@ -101,6 +128,35 @@ public class CategoryActivity extends AppCompatActivity {
                     Toast.makeText(CategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 spinner.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void get_updated() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
+        LinkedList<Poll> newpoll = new LinkedList<Poll>();
+        if (category != 0)
+            query.whereEqualTo("category", category);
+        query.orderByDescending("lastUpdate");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    int tmp = 0;
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getObjectId().compareTo(pollList.get(tmp).getId()) != 0) {
+                            pollList.addFirst(parsePollObject(list.get(i)));
+                        } else {
+                            pollList.set(tmp, parsePollObject(list.get(i)));
+                        }
+                        tmp++;
+                    }
+                    rv.getAdapter().notifyDataSetChanged();
+                    srl.setRefreshing(false);
+                    isRefreshing = 0;
+                } else {
+                    Toast.makeText(CategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -465,7 +465,6 @@ public class CreatePollActivity2 extends AppCompatActivity {
             String author = thisPoll.getString("nickname");
             int categorty = thisPoll.getInt("category");
             Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
-            String cate;
             if (categorty ==  0) {
                 categorty = 8;
             } else if (categorty < 9) {
@@ -495,10 +494,11 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                 Poll poll = parsePollObject(parseObject);
                                 Intent i = new Intent(getActivity(), PollViewActivity.class);
                                 i.putExtra("poll", poll);
+                                Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
                                 startActivity(i);
                                 getActivity().finish();
                             } else {
-                                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
