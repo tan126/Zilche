@@ -2,19 +2,15 @@ package com.zilche.zilche;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -24,21 +20,17 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.List;
+import java.util.HashMap;
 
 public class PollViewActivity extends ActionBarActivity {
 
@@ -62,8 +54,9 @@ public class PollViewActivity extends ActionBarActivity {
     private Button submit_btn;
     private Button showGraph_btn;
     private String id;
-    public int checked;
+    private int checked;
     private LinearLayout lin;
+    private HashMap<String, Integer> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +74,8 @@ public class PollViewActivity extends ActionBarActivity {
 
         Bundle extras = getIntent().getExtras();
         final Poll poll = extras.getParcelable("poll");
+        Zilche app = (Zilche) getApplication();
+        map = app.getMap();
 
         showGraph_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,9 +98,7 @@ public class PollViewActivity extends ActionBarActivity {
         spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
             @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-
-            }
+            public void onPanelSlide(View panel, float slideOffset) {}
 
             @Override
             public void onPanelOpened(View panel) {
@@ -114,9 +107,7 @@ public class PollViewActivity extends ActionBarActivity {
             }
 
             @Override
-            public void onPanelClosed(View panel) {
-
-            }
+            public void onPanelClosed(View panel) {}
         });
         ((ImageButton)findViewById(R.id.back_button_poll_view)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,14 +122,31 @@ public class PollViewActivity extends ActionBarActivity {
         }
         final RelativeLayout lay = (RelativeLayout) findViewById(R.id.header_poll_view);
         lay.setBackgroundColor(title_color[category]);
-        final ScrollView sv = (ScrollView)findViewById(R.id.scroll_view_poll);
         final LinearLayout ll = (LinearLayout) findViewById(R.id.linlay_view_poll);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77,
-                getResources().getDisplayMetrics()));
+        int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77, getResources().getDisplayMetrics()));
         ll.setMinimumHeight(height);
+        if (map.get(poll.getId()) != null) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
+            query.getInBackground(id, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    if (e == null) {
+                        final ParseObject object = parseObject;
+                        final int[] votes = new int[poll.getCount()];
+                        for (int i = 0; i < poll.getCount(); i++) {
+                            votes[i] = object.getInt("votes" + Integer.toString(i));
+                        }
+                        generateResult(votes, poll.getOptions());
+                    } else {
+                        Toast.makeText(PollViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                };
+            });
+            return;
+        }
         populatePoll(poll);
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,88 +154,51 @@ public class PollViewActivity extends ActionBarActivity {
                 submit_btn.setEnabled(false);
                 checked = radioGroup.getCheckedRadioButtonId();
                 if (checked == -1) {
-                    // failed
                     submit_btn.setEnabled(true);
                 } else {
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
-                    //Toast.makeText(PollViewActivity.this, id, Toast.LENGTH_SHORT).show();
                     query.getInBackground(id, new GetCallback<ParseObject>() {
                         @Override
-                        public void done(ParseObject object, ParseException e) {
+                        public void done(ParseObject parseObject, ParseException e) {
                             if (e == null) {
-                                final int options_count = poll.getCount();
-                                final int[] votes = new int[options_count];
-                                for( int i = 0; i < options_count; i ++ ) {
-                                    votes[i] = object.getInt("votes" + Integer.toString(i));
-                                }
-                                votes[checked]++;
-                                poll.setVotes(votes);
+                                final ParseObject object = parseObject;
                                 object.increment("total");
                                 object.increment("votes" + Integer.toString(checked));
                                 object.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
-                                        radioGroup.setVisibility(View.GONE);
-                                        submit_btn.setVisibility(View.GONE);
-                                        showGraph_btn.setVisibility(View.VISIBLE);
-                                        LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                                ViewGroup.LayoutParams.WRAP_CONTENT);
-                                        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                ViewGroup.LayoutParams.WRAP_CONTENT);
-                                        par.setMargins(30, 30, 30, 30);
-                                        LinearLayout.LayoutParams par2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                                ViewGroup.LayoutParams.WRAP_CONTENT);
-                                        par2.setMargins(10, 30, 10, 30);
-                                        String[] options = poll.getOptions();
-                                        int total = 0;
-                                        for (int i = 0; i < options_count; i++)
-                                            total += votes[i];
-                                        int percent = 100;
-                                        for (int i = 0; i < options_count; i++) {
-                                            LinearLayout ll = new LinearLayout(getApplicationContext());
-                                            ll.setLayoutParams(layParams);
-                                            TextView percentage = new TextView(getApplicationContext());
-                                            percentage.setLayoutParams(par);
-                                            percentage.setMinWidth(60);
-                                            percentage.setTextColor(0xff666666);
-                                            percentage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                            percentage.setGravity(Gravity.CENTER);
-                                            //percentage.setPadding(5, 5, 30, 30);
-                                            int aatmp = 0;
-                                            if (i == options_count - 1)
-                                                percentage.setText(Integer.toString(percent) + "%");
-                                            else {
-                                                aatmp = (int) ((double) (votes[i]) / total * 100);
-                                                percentage.setText(Integer.toString(aatmp) + "%");
+                                        if (e == null) {
+                                            final int[] votes = new int[poll.getCount()];
+                                            for (int i = 0; i < poll.getCount(); i++) {
+                                                votes[i] = object.getInt("votes" + Integer.toString(i));
                                             }
-                                            percent -= aatmp;
-                                            TextView options_tv = new TextView(getApplicationContext());
-                                            options_tv.setLayoutParams(par);
-                                            options_tv.setTextColor(0xff666666);
-                                            options_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-                                            options_tv.setGravity(Gravity.CENTER_VERTICAL);
-                                            //options_tv.setPadding(30, 30, 30, 30);
-                                            options_tv.setText(options[i]);
-                                            ll.addView(percentage);
-                                            ll.addView(options_tv);
-                                            View v = new View(getApplicationContext());
-                                            v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
-                                                    getResources().getDisplayMetrics())));
-                                            v.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-                                            lin.addView(ll);
-                                            lin.addView(v);
+                                            generateResult(votes, poll.getOptions());
+                                            saveRecord(object.getObjectId());
+                                        } else {
+                                            submit_btn.setEnabled(true);
+                                            Toast.makeText(PollViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
-                                        lin.setVisibility(View.VISIBLE);
                                     }
                                 });
-                            } else {
-                                //something went wrong
-                                submit_btn.setEnabled(true);
                             }
-                        }
+                        };
                     });
+                };
+            }
+        });
 
-                }
+
+    }
+
+    private void saveRecord(String id) {
+        ParseObject po = new ParseObject("Records");
+        po.put("Key", id);
+        po.put("user", ParseUser.getCurrentUser().getObjectId());
+        final String id2 = id;
+        po.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) map.put(id2, 1);
             }
         });
     }
@@ -239,8 +210,6 @@ public class PollViewActivity extends ActionBarActivity {
         LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         radioGroup.setLayoutParams(layParams);
         for (int i = 0; i < option_count; i++) {
-            //RadioButton rb = new RadioButton(this);
-            //rb.setLayoutParams(layParams);
             RadioButton rb = (RadioButton) View.inflate(this, R.layout.radiobutton, null);
             rb.setLayoutParams(layParams);
             rb.setText(options[i]);
@@ -248,7 +217,6 @@ public class PollViewActivity extends ActionBarActivity {
             rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             rb.setPadding(30, 30, 30, 30);
             rb.setGravity(Gravity.CENTER_VERTICAL);
-            //rb.setButtonDrawable(R.drawable.apptheme_btn_check_holo_light);
             rb.setId(i);
             View v = new View(this);
             v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
@@ -257,6 +225,58 @@ public class PollViewActivity extends ActionBarActivity {
             radioGroup.addView(rb);
             radioGroup.addView(v);
         }
+    }
+
+    private void generateResult(int[] votes, String[] options) {
+        radioGroup.setVisibility(View.GONE);
+        submit_btn.setVisibility(View.GONE);
+        showGraph_btn.setVisibility(View.VISIBLE);
+        LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        par.setMargins(0, 30, 20, 30);
+        LinearLayout.LayoutParams par2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        par2.setMargins(0, 30, 0, 30);
+        int total = 0;
+        for (int i = 0; i < options.length; i++)
+            total += votes[i];
+        int percent = 100;
+        for (int i = 0; i < options.length; i++) {
+            LinearLayout ll1 = new LinearLayout(getApplicationContext());
+            ll1.setLayoutParams(layParams);
+            TextView percentage = new TextView(getApplicationContext());
+            percentage.setLayoutParams(par2);
+            percentage.setTextColor(0xff666666);
+            percentage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            percentage.setEms(4);
+            percentage.setTypeface(null, Typeface.BOLD);
+            percentage.setGravity(Gravity.CENTER);
+            int aatmp = 0;
+            if (i == options.length - 1)
+                percentage.setText(Integer.toString(percent) + "%");
+            else {
+                aatmp = (int) ((double) (votes[i]) / total * 100);
+                percentage.setText(Integer.toString(aatmp) + "%");
+            }
+            percent -= aatmp;
+            TextView options_tv = new TextView(getApplicationContext());
+            options_tv.setLayoutParams(par);
+            options_tv.setTextColor(0xff666666);
+            options_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            options_tv.setGravity(Gravity.CENTER_VERTICAL);
+            options_tv.setText(options[i]);
+            ll1.addView(percentage);
+            ll1.addView(options_tv);
+            View v1 = new View(getApplicationContext());
+            v1.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
+                    getResources().getDisplayMetrics())));
+            v1.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            lin.addView(ll1);
+            lin.addView(v1);
+        }
+        lin.setVisibility(View.VISIBLE);
     }
 
     @Override

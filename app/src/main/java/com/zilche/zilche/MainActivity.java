@@ -36,8 +36,14 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,11 +54,13 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionsMenu plusButton;
     private ImageView filter_bg;
     boolean loginFlag;
+    HashMap<String, Integer> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Zilche app = (Zilche) getApplication();
 
         int SELECTED_POSITION = 0;
         plusButton = (FloatingActionsMenu) findViewById(R.id.multiple_actions);
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPageTransformer(false, new FadePageTransformer());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
+        map = app.getMap();
 
         ImageView v = (ImageView) findViewById(R.id.loginArea);
         v.setClickable(true);
@@ -75,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             v.setClickable(false);
             loginFlag = true;
             plusButton.setVisibility(View.VISIBLE);
-
+            getUserRecord(0);
         } else {
             // show the signup or login screen
             SELECTED_POSITION = 1;
@@ -354,5 +363,24 @@ public class MainActivity extends AppCompatActivity {
     public void newSurvey() {
         Intent i = new Intent(this, tmpNewPoll.class);
         startActivity(i);
+    }
+
+    public void getUserRecord(int skip) {
+        final int s = skip;
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Records");
+        query.setLimit(1000);
+        query.setSkip(1000 * s);
+        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                for (ParseObject o : list) {
+                    map.put(o.getString("Key"), 1);
+                }
+                if (list.size() == 1000) {
+                    getUserRecord(s + 1);
+                }
+            }
+        });
     }
 }

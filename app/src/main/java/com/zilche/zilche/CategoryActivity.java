@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import com.parse.ParseQuery;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,11 +55,14 @@ public class CategoryActivity extends AppCompatActivity {
     private RecyclerView rv;
     private SwipeRefreshLayout srl;
     private int isRefreshing = 0;
+    private HashMap<String, Integer> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+        Zilche app = (Zilche) getApplication();
+        map = app.getMap();
         Bundle extras = getIntent().getExtras();
         title = (TextView) findViewById(R.id.title_cat);
         if (extras != null) {
@@ -84,7 +89,7 @@ public class CategoryActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if ( isRefreshing == 1 ) {
+                        if (isRefreshing == 1) {
                             Toast.makeText(CategoryActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
                             srl.setRefreshing(false);
                             isRefreshing = 0;
@@ -134,7 +139,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void get_updated() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
-        LinkedList<Poll> newpoll = new LinkedList<Poll>();
         if (category != 0)
             query.whereEqualTo("category", category);
         query.orderByDescending("lastUpdate");
@@ -161,6 +165,12 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        rv.getAdapter().notifyDataSetChanged();
+    }
+
     public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
 
         List<Poll> polls;
@@ -181,6 +191,7 @@ public class CategoryActivity extends AppCompatActivity {
             TextView question;
             TextView date;
             TextView category;
+            ImageView iv;
 
             public PollViewHolder(View itemView) {
                 super(itemView);
@@ -189,6 +200,7 @@ public class CategoryActivity extends AppCompatActivity {
                 date = (TextView) itemView.findViewById(R.id.date);
                 category = (TextView) itemView.findViewById(R.id.category);
                 cv.setOnClickListener(onclick);
+                iv = (ImageView) itemView.findViewById(R.id.done);
             }
         }
 
@@ -214,6 +226,11 @@ public class CategoryActivity extends AppCompatActivity {
             pollViewHolder.date.setText(p.getDate_added());
             pollViewHolder.question.setText(p.getQuestion());
             pollViewHolder.cv.setTag(i);
+            if (map.get(p.getId()) != null) {
+                pollViewHolder.iv.setVisibility(View.VISIBLE);
+            } else {
+                pollViewHolder.iv.setVisibility(View.GONE);
+            }
         }
 
         @Override

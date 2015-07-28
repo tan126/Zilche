@@ -6,7 +6,11 @@ import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
 
+import java.util.HashMap;
+
 public class Zilche extends Application {
+
+    HashMap<String, Integer> map = new HashMap<String, Integer>();
 
     @Override
     public void onCreate() {
@@ -17,4 +21,9 @@ public class Zilche extends Application {
         ParseFacebookUtils.initialize(getApplicationContext());
     }
 
+    public HashMap<String, Integer> getMap() {
+        return map;
+    }
+
 }
+
