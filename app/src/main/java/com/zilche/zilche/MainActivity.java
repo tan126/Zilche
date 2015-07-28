@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 for (ParseObject o : list) {
-                    map.put(o.getString("Key"), 1);
+                    map.put(o.getString("Key"), o.getInt("choice"));
                 }
                 if (list.size() == 1000) {
                     getUserRecord(s + 1);
