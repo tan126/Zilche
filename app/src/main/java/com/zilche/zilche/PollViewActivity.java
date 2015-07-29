@@ -1,12 +1,10 @@
 package com.zilche.zilche;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Display;
@@ -49,6 +47,7 @@ public class PollViewActivity extends ActionBarActivity {
     private TextView dateAdded;
     private RadioGroup radioGroup;
     private int option_count;
+    private TextView total;
     private int category = 0;
     private TextView category_title;
     private SlidingPaneLayout spl;
@@ -74,6 +73,7 @@ public class PollViewActivity extends ActionBarActivity {
         submit_btn = (Button) findViewById(R.id.submit_poll_view);
         lin = (LinearLayout) findViewById(R.id.result_poll_view);
         showGraph_btn = (Button) findViewById(R.id.showGraph);
+        total = (TextView) findViewById(R.id.total);
 
         Bundle extras = getIntent().getExtras();
         final Poll poll = extras.getParcelable("poll");
@@ -91,6 +91,11 @@ public class PollViewActivity extends ActionBarActivity {
 
         question.setText(poll.getQuestion());
         dateAdded.setText(poll.getDate_added());
+        int t = 0;
+        for (int i = 0; i < poll.getCount(); i++) {
+            t += poll.getVotes()[i];
+        }
+        total.setText(Integer.toString(t));
         if (poll.getAnon() == 1)
             author.setText(" Anonymous");
         else
@@ -147,6 +152,7 @@ public class PollViewActivity extends ActionBarActivity {
                         for (int i = 0; i < poll.getCount(); i++) {
                             votes[i] = object.getInt("votes" + Integer.toString(i));
                         }
+                        poll.setVotes(votes);
                         updateResult(votes);
                     }
                 }
@@ -170,6 +176,7 @@ public class PollViewActivity extends ActionBarActivity {
                         public void done(ParseObject parseObject, ParseException e) {
                             if (e == null) {
                                 final ParseObject object = parseObject;
+                                poll.getVotes()[checked]++;
                                 object.increment("total");
                                 object.increment("votes" + Integer.toString(checked));
                                 object.saveInBackground(new SaveCallback() {
@@ -231,7 +238,7 @@ public class PollViewActivity extends ActionBarActivity {
             View v = new View(this);
             v.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
                     getResources().getDisplayMetrics())));
-            v.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            v.setBackgroundColor(0xffcccccc);
             radioGroup.addView(rb);
             radioGroup.addView(v);
         }
@@ -252,6 +259,7 @@ public class PollViewActivity extends ActionBarActivity {
         int total = 0;
         for (int i = 0; i < options.length; i++)
             total += votes[i];
+        this.total.setText(Integer.toString(total));
         int percent = 100;
         percentages = new TextView[options.length];
         for (int i = 0; i < options.length; i++) {
@@ -287,7 +295,7 @@ public class PollViewActivity extends ActionBarActivity {
             View v1 = new View(getApplicationContext());
             v1.setLayoutParams(new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1,
                     getResources().getDisplayMetrics())));
-            v1.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+            v1.setBackgroundColor(0xffcccccc);
             lin.addView(ll1);
             lin.addView(v1);
         }
@@ -300,6 +308,7 @@ public class PollViewActivity extends ActionBarActivity {
         for (int i = 0; i < result.length; i++) {
             total += result[i];
         }
+        this.total.setText(Integer.toString(total));
         for (int i = 0; i < result.length; i++) {
             int aatmp = 0;
             if (i == result.length - 1)

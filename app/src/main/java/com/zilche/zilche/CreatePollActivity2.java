@@ -485,6 +485,8 @@ public class CreatePollActivity2 extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    fab.setEnabled(false);
+                    fab.setClickable(false);
                     CreatePollActivity2 activity = (CreatePollActivity2) getActivity();
                     final ParseObject parseObject = activity.makeObject();
                     if (parseObject == null) return;
@@ -499,6 +501,8 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                 startActivity(i);
                                 getActivity().finish();
                             } else {
+                                fab.setEnabled(true);
+                                fab.setClickable(true);
                                 Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
                             }
                         }
