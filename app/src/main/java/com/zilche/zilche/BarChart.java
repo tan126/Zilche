@@ -9,6 +9,7 @@ import org.achartengine.renderer.XYSeriesRenderer;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -22,15 +23,13 @@ import android.widget.LinearLayout;
 public class BarChart extends Activity {
 
     private View mChart;
-    private String[] mMonth = new String[] {
-            "Jan", "Feb" , "Mar", "Apr", "May", "Jun",
-            "Jul", "Aug" , "Sep", "Oct", "Nov", "Dec"
-    };
     private Poll poll;
     private String[] options;
     private int[] votes;
     private int optNum;
     private int maxVote;
+    public int ylable;
+    private String question;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,13 +59,22 @@ public class BarChart extends Activity {
 
         Bundle extras = getIntent().getExtras();
         final Poll poll = extras.getParcelable("poll");
-        options = poll.getOptions();
+        String tmpOptions[] = poll.getOptions();
+        for(int i = 0; i < tmpOptions.length; i ++){
+            String [] extract = tmpOptions[i].split(" ");
+            if (extract.length > 1)
+                tmpOptions[i] = extract[0] + "...";
+            else
+                tmpOptions[i] = extract[0];
+        }
+        options = tmpOptions;
         votes = poll.getVotes();
         optNum = poll.getCount();
+        question = poll.getQuestion();
 
         // Setting event click listener for the button btn_chart of the MainActivity layout
         //btnChart.setOnClickListener(clickListener);
-        Log.d("kkk", ""+votes[0]);
+        //Log.d("kkk", ""+votes[0]);
         openChart();
 
     }
@@ -94,6 +102,11 @@ public class BarChart extends Activity {
             if(votes[i] > maxVote)
                 maxVote = votes[i];
         }
+        ylable = 1;
+        if (maxVote >= 5)
+            ylable = 5;
+        else
+            ylable = maxVote;
 
         // Creating a dataset to hold each series
         XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
@@ -104,11 +117,13 @@ public class BarChart extends Activity {
 
         // Creating XYSeriesRenderer to customize incomeSeries
         XYSeriesRenderer votesRenderer = new XYSeriesRenderer();
-        votesRenderer.setColor(Color.parseColor("#3F51B5")); //color of the graph set to cyan
+        votesRenderer.setColor(Color.parseColor("#76A7FA")); //color of the graph set to cyan
         votesRenderer.setFillPoints(true);
-        votesRenderer.setLineWidth(2);
+        votesRenderer.setLineWidth(0);
         votesRenderer.setDisplayChartValues(true);
-        votesRenderer.setDisplayChartValuesDistance(4*optNum); //setting chart value distance
+        votesRenderer.setChartValuesTextSize(28);
+        //votesRenderer.setDisplayChartValuesDistance(10); //setting chart value distance
+        votesRenderer.setChartValuesTextAlign(Align.CENTER);
 
         // Creating XYSeriesRenderer to customize expenseSeries
         /*XYSeriesRenderer expenseRenderer = new XYSeriesRenderer();
@@ -119,17 +134,24 @@ public class BarChart extends Activity {
 
         // Creating a XYMultipleSeriesRenderer to customize the whole chart
         XYMultipleSeriesRenderer multiRenderer = new XYMultipleSeriesRenderer();
-        multiRenderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
-        multiRenderer.setXLabels(optNum);
-        multiRenderer.setChartTitle("Votes Chart");
-        multiRenderer.setXTitle("Options");
-        multiRenderer.setYTitle("Votes");
+        //multiRenderer.setOrientation(XYMultipleSeriesRenderer.Orientation.HORIZONTAL);
+        multiRenderer.setXLabels(0);
+        //multiRenderer.setYLabels(0);
+        multiRenderer.setChartTitle(question);
+        //multiRenderer.setXTitle("Options");
+        //multiRenderer.setYTitle("Votes");
+        multiRenderer.setYLabelsColor(0, Color.TRANSPARENT);
+        multiRenderer.setGridColor(Color.GRAY);
+        multiRenderer.setShowAxes(false);
+        multiRenderer.setLabelsColor(Color.BLACK);
+        multiRenderer.setXLabelsColor(Color.BLACK);
+
 
         /***
          * Customizing graphs
          */
 //setting text size of the title
-        multiRenderer.setChartTitleTextSize(28);
+        multiRenderer.setChartTitleTextSize(32);
         //setting text size of the axis title
         multiRenderer.setAxisTitleTextSize(24);
         //setting text size of the graph lable
@@ -145,11 +167,11 @@ public class BarChart extends Activity {
         //setting lines to display on y axis
         multiRenderer.setShowGridY(false);
         //setting lines to display on x axis
-        multiRenderer.setShowGridX(false);
+        multiRenderer.setShowGridX(true);
         //setting legend to fit the screen size
         multiRenderer.setFitLegend(true);
         //setting displaying line on grid
-        multiRenderer.setShowGrid(false);
+        //multiRenderer.setShowGrid(true);
         //setting zoom to false
         multiRenderer.setZoomEnabled(false);
         //setting external zoom functions to false
@@ -160,6 +182,7 @@ public class BarChart extends Activity {
         multiRenderer.setInScroll(false);
         //setting to set legend height of the graph
         multiRenderer.setLegendHeight(30);
+        //multiRenderer.setShowLegend(false);
         //setting x axis label align
         multiRenderer.setXLabelsAlign(Align.CENTER);
         //setting y axis label to align
@@ -167,7 +190,7 @@ public class BarChart extends Activity {
         //setting text style
         multiRenderer.setTextTypeface("sans_serif", Typeface.NORMAL);
         //setting no of values to display in y axis
-        multiRenderer.setYLabels(10);
+        multiRenderer.setYLabels(ylable);
         // setting y axis max value, Since i'm using static values inside the graph so i'm setting y max value to 4000.
         // if you use dynamic values then get the max y value and set here
         multiRenderer.setYAxisMax(maxVote);
@@ -182,10 +205,11 @@ public class BarChart extends Activity {
         multiRenderer.setBackgroundColor(Color.TRANSPARENT);
         //Setting margin color of the graph to transparent
         multiRenderer.setMarginsColor(getResources().getColor(R.color.transparent_background));
+        //multiRenderer.setMarginsColor(Color.GRAY);
         multiRenderer.setApplyBackgroundColor(true);
 
         //setting the margin size for the graph in the order top, left, bottom, right
-        multiRenderer.setMargins(new int[]{30, 30, 30, 30});
+        multiRenderer.setMargins(new int[]{120, 80, 120, 80});
 
         for(int i=0; i< optNum;i++){
             multiRenderer.addXTextLabel(i, options[i]);

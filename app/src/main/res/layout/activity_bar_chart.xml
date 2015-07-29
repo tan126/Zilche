@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Bar chart"
+            android:text="Graph"
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:gravity="center"/>
@@ -39,8 +39,9 @@
 
     <LinearLayout
         android:id="@+id/chart"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="16dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/header"
@@ -48,14 +49,16 @@
     </LinearLayout>
 
 
-    <!--RelativeLayout
+    <RelativeLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="16dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="#3F51B5"
+        >
 
-        <Button
+        <!--Button
             android:id="@+id/btn_chart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,10 +67,10 @@
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:background="@drawable/custombutton"
-            android:gravity="center"/>
+            android:gravity="center"/-->
 
 
-    </RelativeLayout-->
+    </RelativeLayout>
 
 
 
