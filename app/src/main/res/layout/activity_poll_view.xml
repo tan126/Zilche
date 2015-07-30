@@ -167,12 +167,16 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:gravity="right|center_horizontal"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="right"
                             android:id="@+id/total"
                             android:textAlignment="gravity"
                             android:fontFamily="sans-serif-medium"
                             android:layout_weight="1"
-                            android:padding="2dp"
+                            android:paddingTop="5dp"
+                            android:paddingLeft="2dp"
+                            android:paddingBottom="5dp"
+                            android:paddingRight="2dp"
                             android:textSize="14sp"/>
 
                         <ImageView
@@ -181,9 +185,9 @@
                             android:src="@drawable/ic_person_grey_18dp"
                             android:layout_gravity="right|center_horizontal"
                             android:paddingRight="8dp"
-                            android:paddingTop="3dp"
+                            android:paddingTop="6dp"
                             android:paddingLeft="2dp"
-                            android:paddingBottom="3dp"
+                            android:paddingBottom="6dp"
                             />
 
                     </LinearLayout>
@@ -192,7 +196,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#ddd"
+                        android:background="#eee"
                         />
 
                     <RadioGroup
@@ -209,7 +213,6 @@
                         android:visibility="gone"
                         android:orientation="vertical"
                         android:id="@+id/result_poll_view"
-                        android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
