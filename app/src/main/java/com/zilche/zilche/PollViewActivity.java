@@ -101,7 +101,7 @@ public class PollViewActivity extends ActionBarActivity {
         else
             author.setText(" " + poll.getAuthor());
         category = poll.getCategory();
-        imageView.setVisibility(View.GONE);
+        //imageView.setVisibility(View.GONE);
         showGraph_btn.setVisibility(View.GONE);
         category_title.setText(poll.getCategory_title());
         id = poll.getId();

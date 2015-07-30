@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static class FadePageTransformer implements ViewPager.PageTransformer {
-        private static final float MIN_SCALE = 0.99f;
+        private static final float MIN_SCALE = 0.80f;
         private static final float MIN_ALPHA = 0.5f;
 
         public void transformPage(View view, float position) {

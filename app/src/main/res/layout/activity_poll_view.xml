@@ -70,14 +70,24 @@
                 android:orientation="vertical"
                 >
 
-                <com.zilche.zilche.GridItemView
+                <LinearLayout
+                    android:background="#ddd"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:id="@+id/image_poll_view"
-                    android:background="#a00"
-                    android:visibility="visible"
-                    />
+                    android:layout_height="wrap_content">
+
+                    <com.zilche.zilche.GridItemView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginBottom="3dp"
+                        android:id="@+id/image_poll_view"
+                        android:background="#a00"
+                        android:visibility="visible"
+                        />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -142,7 +152,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="7dp"
+                        android:layout_height="5dp"
                         android:background="#ddd"
                         />
 
@@ -157,8 +167,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="right"
+                            android:gravity="right|center_horizontal"
                             android:id="@+id/total"
                             android:textAlignment="gravity"
                             android:fontFamily="sans-serif-medium"
@@ -169,7 +178,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_done_all_grey_18dp"
+                            android:src="@drawable/ic_person_grey_18dp"
                             android:layout_gravity="right|center_horizontal"
                             android:paddingRight="8dp"
                             android:paddingTop="3dp"
@@ -183,13 +192,12 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#eee"
+                        android:background="#ddd"
                         />
 
                     <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginLeft="10dp"
                         android:background="#fff"
                         android:layout_marginRight="10dp"
@@ -209,7 +217,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="7dp"
+                        android:layout_height="5dp"
                         android:background="#ddd"
                         />
 
