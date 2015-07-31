@@ -71,9 +71,9 @@ public class SearchList extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
                         toggleSoftInput(InputMethodManager.SHOW_FORCED,
-                               0);
+                                0);
                 finish();
             }
         });
@@ -88,7 +88,7 @@ public class SearchList extends AppCompatActivity {
 
                 // Perform search here!
                 performSearch(query);
-
+                mySearchView.clearFocus();
                 // Clear the text in search bar but (don't trigger a new search!)
                 mySearchView.setQuery("", false);
 
@@ -115,11 +115,11 @@ public class SearchList extends AppCompatActivity {
         hotnessList = new ArrayList<String>();
         pollOnjectList = new ArrayList<Poll>();
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
         query.orderByDescending("lastUpdate");
 
 
-        query.whereMatches("question", "("+queryStr+")", "i");
+        query.whereMatches("question", "(" + queryStr+")", "i");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -135,45 +135,41 @@ public class SearchList extends AppCompatActivity {
                         String tmp = "";
                         int total = thisPoll.getInt("total");
                         totalList.add("" + total + " participants");
-                        if ( total < 50 )
+                        if (total < 50)
                             hotnessList.add("g");
-                        else if ( total < 100 )
+                        else if (total < 100)
                             hotnessList.add("y");
-                        else if ( total >= 100 )
+                        else if (total >= 100)
                             hotnessList.add("r");
                         else
                             hotnessList.add("g");
                         long updatedTime = thisPoll.getLong("createTime");
                         long diffMS = System.currentTimeMillis() - updatedTime;
                         long diffS = diffMS / 1000;
-                        if ( diffS > 60 ) {
+                        if (diffS > 60) {
                             long diffM = diffS / 60;
-                            if ( diffM > 60 ){
+                            if (diffM > 60) {
                                 long diffH = diffM / 60;
-                                if ( diffH > 24 ) {
+                                if (diffH > 24) {
                                     long diffD = diffH / 24;
-                                    tmp +=  diffD + " days ago";
-                                }
-                                else
-                                    tmp +=  + diffH + " hours ago";;
-                            }
-                            else
-                                tmp += + diffM + " minutes ago";
-                        }
-                        else
+                                    tmp += diffD + " days ago";
+                                } else
+                                    tmp += +diffH + " hours ago";
+                                ;
+                            } else
+                                tmp += +diffM + " minutes ago";
+                        } else
                             tmp += " 1 minute ago";
                         //tmp += " by " + name;
                         timeList.add(tmp);
                         pollOnjectList.add(parsePollObject(thisPoll));
                         gv.setAdapter(new PollListAdapter(SearchList.this));
                     }
-                }
-                else {
+                } else {
                     Log.d("Newest Poll", "Error: " + e.getMessage());
                 }
             }
         });
-
     }
 
 
@@ -278,7 +274,51 @@ public class SearchList extends AppCompatActivity {
             return convertView;
         }
     }
-
+    private Poll parsePollObject(ParseObject thisPoll){
+        String id = thisPoll.getObjectId();
+        String question = thisPoll.getString("question");
+        int options_count = thisPoll.getInt("optionNum");
+        JSONArray tmpOptions = thisPoll.getJSONArray("options");
+        String[] options = new String[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            try{
+                options[i] = tmpOptions.getString(i);
+            } catch ( JSONException e ){
+                Log.d("JSON", "Array index out of bound");
+            }
+        }
+        JSONArray tmpVotes = thisPoll.getJSONArray("votes");
+        int[] votes = new int[options_count];
+        for( int i = 0; i < options_count; i ++ ) {
+            votes[i] = thisPoll.getInt("votes" + Integer.toString(i));
+        }
+        String tmp = "";
+        long updatedTime = thisPoll.getLong("createTime");
+        long diffMS = System.currentTimeMillis() - updatedTime;
+        long diffS = diffMS / 1000;
+        if ( diffS > 60 ) {
+            long diffM = diffS / 60;
+            if ( diffM > 60 ){
+                long diffH = diffM / 60;
+                if ( diffH > 24 ) {
+                    long diffD = diffH / 24;
+                    tmp +=  diffD + " days ago";
+                }
+                else
+                    tmp +=  + diffH + " hours ago";;
+            }
+            else
+                tmp += + diffM + " minutes ago";
+        }
+        else
+            tmp += " 1 minute ago";
+        String date_added = tmp;
+        String author = thisPoll.getString("nickname");
+        int category = thisPoll.getInt("category");
+        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, category);
+        newPoll.setAnon(thisPoll.getInt("anon"));
+        return newPoll;
+    }/*
     private Poll parsePollObject(ParseObject thisPoll){
         String id = thisPoll.getObjectId();
         String question = thisPoll.getString("question");
@@ -326,6 +366,6 @@ public class SearchList extends AppCompatActivity {
         int categorty = thisPoll.getInt("category");
         Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
         return newPoll;
-    }
+    }*/
 
 }
