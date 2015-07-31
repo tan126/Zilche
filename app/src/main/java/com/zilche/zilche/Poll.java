@@ -1,7 +1,11 @@
 package com.zilche.zilche;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.parse.Parse;
+import com.parse.ParseFile;
 
 public class Poll implements Parcelable{
 
@@ -15,6 +19,33 @@ public class Poll implements Parcelable{
     private int category;
     private String category_title;
     private String id;
+    private int hasImage;
+    private byte[] image;
+    private ParseFile file;
+
+    public ParseFile getFile() {
+        return file;
+    }
+
+    public void setFile(ParseFile pf) {
+        file = pf;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public int hasImage() {
+        return hasImage;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public void setHasImage(int i) {
+        hasImage = i;
+    }
 
     public Poll(String id, String question, String[] options, int[] votes,
                 String date, String author, int options_count,
@@ -120,6 +151,8 @@ public class Poll implements Parcelable{
         dest.writeInt(category);
         dest.writeString(category_title);
         dest.writeInt(anon);
+        dest.writeInt(hasImage);
+        dest.writeByteArray(image);
     }
 
     public static final Parcelable.Creator<Poll> CREATOR = new Creator<Poll>() {
@@ -129,6 +162,8 @@ public class Poll implements Parcelable{
                     source.readString(), source.readString(), source.readInt(), source.readInt());
             poll.setCategory_title(source.readString());
             poll.setAnon(source.readInt());
+            poll.setHasImage(source.readInt());
+            poll.setImage(source.createByteArray());
             return poll;
         }
 

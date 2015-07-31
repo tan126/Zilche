@@ -1,46 +1,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.zilche.zilche.FullScreenImage">
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="#444"
         android:layout_height="match_parent">
 
 
-    <ImageButton
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="100dp"
-        android:src="@drawable/ic_clear_black_48dp"
-        android:background="@null"
-        android:layout_gravity="bottom"
-        android:onClick="cancelPhotoSelection"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/linlay"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="bottom"
+            android:background="#66000000"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/acceptButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_done_black_48dp"
-        android:background="@null"
-        android:layout_centerVertical="true"
-        android:layout_gravity="bottom"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="100dp"
-        android:onClick="acceptPhotoSelection"
-        />
+            <ImageButton
+                android:id="@+id/cancelButton"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_clear_white_36dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:onClick="cancelPhotoSelection"/>
+
+            <ImageButton
+                android:id="@+id/acceptButton"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_delete_white_36dp"
+                android:onClick="acceptPhotoSelection"
+                android:background="?android:attr/selectableItemBackground"
+                />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/fullImage"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="6dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@id/cancelButton"
+            android:layout_above="@id/linlay"
             />
 
 

@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -264,10 +265,28 @@ public class SearchList extends AppCompatActivity {
                     //TODO intent to poll view
                     if (isRefreshing == 1)
                         return;
-                    Intent i = new Intent(SearchList.this, PollViewActivity.class);
-                    i.putExtra("poll", pollOnjectList.get(position));
-                    startActivity(i);
-                    SearchList.this.overridePendingTransition(R.anim.right_to_left, 0);
+                    final Poll p = pollOnjectList.get(position);
+                    if (p.hasImage() == 1) {
+                        p.getFile().getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] bytes, ParseException e) {
+                                if (e == null) {
+                                    p.setImage(bytes);
+                                    Intent i = new Intent(SearchList.this, PollViewActivity.class);
+                                    i.putExtra("poll", pollOnjectList.get(position));
+                                    startActivity(i);
+                                    SearchList.this.overridePendingTransition(R.anim.right_to_left, 0);
+                                } else {
+                                    Toast.makeText(SearchList.this, "Connection Failed. Try again later.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } else {
+                        Intent i = new Intent(SearchList.this, PollViewActivity.class);
+                        i.putExtra("poll", pollOnjectList.get(position));
+                        startActivity(i);
+                        SearchList.this.overridePendingTransition(R.anim.right_to_left, 0);
+                    }
                 }
             });
 
@@ -317,6 +336,10 @@ public class SearchList extends AppCompatActivity {
         int category = thisPoll.getInt("category");
         Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, category);
         newPoll.setAnon(thisPoll.getInt("anon"));
+        newPoll.setHasImage(thisPoll.getInt("haveImage"));
+        if (thisPoll.getInt("haveImage") == 1) {
+            newPoll.setFile(thisPoll.getParseFile("image"));
+        }
         return newPoll;
     }/*
     private Poll parsePollObject(ParseObject thisPoll){

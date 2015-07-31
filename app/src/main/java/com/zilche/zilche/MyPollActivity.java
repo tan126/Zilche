@@ -201,7 +201,6 @@ public class MyPollActivity extends ActionBarActivity {
 
             TextView total = (TextView) convertView.findViewById(R.id.total);
 
-            Log.d("aaa:", hots[position]);
             if ( hots[position] == "y" ) {
                 check.setColorFilter(Color.parseColor("#FF9800"));
                 total.setTextColor(Color.parseColor("#FF9800"));

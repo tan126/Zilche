@@ -77,14 +77,15 @@
 
                     <com.zilche.zilche.GridItemView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginBottom="3dp"
                         android:id="@+id/image_poll_view"
                         android:background="#a00"
-                        android:visibility="visible"
+                        android:visibility="gone"
+                        android:scaleType="center"
                         />
 
                 </LinearLayout>
@@ -167,15 +168,15 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="0"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_gravity="center_vertical"
                             android:gravity="right"
                             android:id="@+id/total"
                             android:textAlignment="gravity"
                             android:fontFamily="sans-serif-medium"
                             android:layout_weight="1"
-                            android:paddingTop="5dp"
+                            android:paddingTop="10dp"
                             android:paddingLeft="2dp"
-                            android:paddingBottom="5dp"
+                            android:paddingBottom="10dp"
                             android:paddingRight="2dp"
                             android:textSize="14sp"/>
 
@@ -183,11 +184,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_person_grey_18dp"
-                            android:layout_gravity="right|center_horizontal"
+                            android:layout_gravity="right|center_vertical"
                             android:paddingRight="8dp"
-                            android:paddingTop="6dp"
+                            android:paddingTop="10dp"
                             android:paddingLeft="2dp"
-                            android:paddingBottom="6dp"
+                            android:paddingBottom="10dp"
                             />
 
                     </LinearLayout>
@@ -196,7 +197,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#eee"
+                        android:background="#bbb"
                         />
 
                     <RadioGroup
@@ -228,7 +229,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/submit_poll_view"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="40dp"
                         android:layout_marginBottom="40dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -242,7 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/showGraph"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="40dp"
                         android:layout_marginBottom="40dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"

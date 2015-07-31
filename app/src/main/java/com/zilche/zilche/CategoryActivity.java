@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -177,11 +178,28 @@ public class CategoryActivity extends AppCompatActivity {
         View.OnClickListener onclick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pos = (int) v.getTag();
-                Intent i = new Intent(CategoryActivity.this, PollViewActivity.class);
-                i.putExtra("poll", polls.get(pos));
-                startActivity(i);
-                overridePendingTransition(R.anim.right_to_left, 0);
+                final int pos = (int) v.getTag();
+                if (pollList.get(pos).hasImage() == 1) {
+                    pollList.get(pos).getFile().getDataInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, ParseException e) {
+                            if (e == null) {
+                                pollList.get(pos).setImage(bytes);
+                                Intent i = new Intent(CategoryActivity.this, PollViewActivity.class);
+                                i.putExtra("poll", polls.get(pos));
+                                startActivity(i);
+                                overridePendingTransition(R.anim.right_to_left, 0);
+                            } else {
+                                Toast.makeText(CategoryActivity.this, "Connection Failed. Try again later.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    Intent i = new Intent(CategoryActivity.this, PollViewActivity.class);
+                    i.putExtra("poll", polls.get(pos));
+                    startActivity(i);
+                    overridePendingTransition(R.anim.right_to_left, 0);
+                }
             }
         };
 
@@ -293,6 +311,9 @@ public class CategoryActivity extends AppCompatActivity {
         else
             newPoll.setCategory_title(getString(strings[categorty]));
         newPoll.setAnon(thisPoll.getInt("anon"));
+        newPoll.setHasImage(thisPoll.getInt("haveImage"));
+        if (thisPoll.getInt("haveImage") == 1)
+            newPoll.setFile(thisPoll.getParseFile("image"));
         return newPoll;
     }
 

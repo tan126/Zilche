@@ -1,8 +1,11 @@
 package com.zilche.zilche;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,17 +26,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 
-// todo: change button to floating button
 public class PollViewActivity extends ActionBarActivity {
 
     private int[] title_color = {
@@ -105,7 +112,14 @@ public class PollViewActivity extends ActionBarActivity {
         else
             author.setText(" " + poll.getAuthor());
         category = poll.getCategory();
-        //imageView.setVisibility(View.GONE);
+
+        if (poll.hasImage() == 1) {
+             if (poll.getImage() != null) {
+                 Bitmap b = BitmapFactory.decodeByteArray(poll.getImage(), 0, poll.getImage().length);
+                 imageView.setImageBitmap(b);
+                 imageView.setVisibility(View.VISIBLE);
+             }
+        }
         showGraph_btn.setVisibility(View.GONE);
         category_title.setText(poll.getCategory_title());
         id = poll.getId();

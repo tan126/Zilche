@@ -1,8 +1,16 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.design.widget.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,6 +20,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputType;
@@ -41,6 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -48,6 +58,8 @@ import com.parse.SaveCallback;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.ByteArrayOutputStream;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -62,6 +74,9 @@ public class CreatePollActivity2 extends AppCompatActivity {
     private FirstFragment frag1 = new FirstFragment();
     private SecondFragment frag2 = new SecondFragment();
     private ThirdFragment frag3 = new ThirdFragment();
+    final static private int REQUEST_CAMERA = 111;
+    final static private int SELECT_FILE = 222;
+    final static private int REMOVE_FILE = 333;
 
     public void back_clicked(View v) {
         exit = true;
@@ -95,6 +110,20 @@ public class CreatePollActivity2 extends AppCompatActivity {
             poll.put("votes" + Integer.toString(i), 0);
         }
         return poll;
+    }
+
+    public ParseFile createImage() {
+        if (frag1.imageBound()) {
+            ParseFile file = new ParseFile("image.jpg", frag1.getImage());
+            return file;
+        }
+        return null;
+    }
+
+    public byte[] getImage() {
+        if (frag1.imageBound)
+            return frag1.getImage();
+        return null;
     }
 
     @Override
@@ -166,7 +195,6 @@ public class CreatePollActivity2 extends AppCompatActivity {
         stl.setViewPager(vp);
     }
 
-
     private class CustomAdapter extends FragmentPagerAdapter {
 
         public CustomAdapter(FragmentManager fm) {
@@ -192,10 +220,58 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
     public static class FirstFragment extends Fragment {
 
+        private boolean imageBound = false;
         private TextView question;
         private SwitchCompat switchBtn;
         private TextView wordCount;
         private FloatingActionButton fab;
+        private byte[] image;
+        private View.OnClickListener onclick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] items = {"Take Photo", "Choose from library", "Cancel"};
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Select Image (Optional)");
+                builder.setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, REQUEST_CAMERA);
+                        } else if (which == 1) {
+                            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                            intent.setType("image/*");
+                            startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                        } else {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        };
+        private View.OnClickListener onclick2 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageBound) {
+                    if (image == null) {
+                        Toast.makeText(getActivity(), "Image is still loading.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent i = new Intent(getActivity(), FullScreenImage.class);
+                        i.putExtra("picture", image);
+                        startActivityForResult(i, REMOVE_FILE);
+                    }
+                }
+            }
+        };
+
+        public byte[] getImage() {
+            return image;
+        }
+
+        public boolean imageBound() {
+            return imageBound;
+        }
 
         public String getQuestion() {
             String ret;
@@ -223,12 +299,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.create_poll_new1, container, false);
             question = (TextView) rootView.findViewById(R.id.question);
             fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //todo
-                }
-            });
+            fab.setOnClickListener(onclick);
             switchBtn = (SwitchCompat) rootView.findViewById(R.id.switch_btn);
             wordCount = (TextView) rootView.findViewById(R.id.text_count);
             question.addTextChangedListener(new TextWatcher() {
@@ -253,6 +324,35 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 }
             });
             return rootView;
+        }
+
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == RESULT_OK) {
+                if (requestCode == REQUEST_CAMERA) {
+                    Bitmap image = (Bitmap) data.getExtras().get("data");
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    image.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                    this.image = bytes.toByteArray();
+                    imageBound = true;
+                    fab.setOnClickListener(onclick2);
+                    fab.setImageResource(R.drawable.ic_done_white_24dp);
+                } else if (requestCode == SELECT_FILE) {
+                    CreatePollActivity2 act = (CreatePollActivity2) getActivity();
+                    image = act.decodeImageInBackground(fab, data.getData());
+                    imageBound = true;
+                    fab.setOnClickListener(onclick2);
+                    fab.setImageResource(R.drawable.ic_done_white_24dp);
+                } else if (requestCode == REMOVE_FILE) {
+                    fab.setImageResource(R.drawable.ic_camera_alt_white_24dp);
+                    fab.setOnClickListener(onclick);
+                    image = null;
+                    imageBound = false;
+                }
+            }
         }
 
     }
@@ -472,6 +572,12 @@ public class CreatePollActivity2 extends AppCompatActivity {
             }
             newPoll.setCategory_title(getString(strings[categorty]));
             newPoll.setAnon(thisPoll.getInt("anon"));
+            newPoll.setHasImage(thisPoll.getInt("haveImage"));
+            newPoll.setFile(thisPoll.getParseFile("image"));
+            CreatePollActivity2 a = (CreatePollActivity2) getActivity();
+            byte[] image = a.getImage();
+            if (image != null)
+                newPoll.setImage(image);
             return newPoll;
         }
 
@@ -489,24 +595,60 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     fab.setClickable(false);
                     CreatePollActivity2 activity = (CreatePollActivity2) getActivity();
                     final ParseObject parseObject = activity.makeObject();
+                    final ParseFile file = activity.createImage();
                     if (parseObject == null) return;
-                    parseObject.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                Poll poll = parsePollObject(parseObject);
-                                Intent i = new Intent(getActivity(), PollViewActivity.class);
-                                i.putExtra("poll", poll);
-                                Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
-                                startActivity(i);
-                                getActivity().finish();
-                            } else {
-                                fab.setEnabled(true);
-                                fab.setClickable(true);
-                                Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
+                    if (file == null) {
+                        parseObject.put("haveImage", 0);
+                        parseObject.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Poll poll = parsePollObject(parseObject);
+                                    Intent i = new Intent(getActivity(), PollViewActivity.class);
+                                    i.putExtra("poll", poll);
+                                    Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
+                                    startActivity(i);
+                                    getActivity().finish();
+                                } else {
+                                    fab.setEnabled(true);
+                                    fab.setClickable(true);
+                                    Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        parseObject.put("haveImage", 1);
+                        file.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    parseObject.put("image", file);
+                                    parseObject.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                Poll poll = parsePollObject(parseObject);
+                                                Intent i = new Intent(getActivity(), PollViewActivity.class);
+                                                i.putExtra("poll", poll);
+                                                Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
+                                                startActivity(i);
+                                                getActivity().finish();
+                                            } else {
+                                                fab.setEnabled(true);
+                                                fab.setClickable(true);
+                                                Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+
+                                    });
+                                } else {
+                                    fab.setEnabled(true);
+                                    fab.setClickable(true);
+                                    Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
                 }
             });
             lv.setAdapter(new ListAdapter());
@@ -586,6 +728,50 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 // This page is way off-screen to the right.
                 view.setAlpha(0);
             }
+        }
+    }
+
+    public byte[] decodeImageInBackground(FloatingActionButton fab, Uri uri) {
+        byte[] data = null;
+        BitmapWorker worker = new BitmapWorker(data, uri);
+        return worker.doInBackground();
+    }
+
+    public class BitmapWorker extends AsyncTask<Integer, Void, byte[]> {
+
+        private byte[] data2;
+        private Uri uri;
+
+        public BitmapWorker(byte[] data, Uri d2) {
+            this.data2 = data;
+            this.uri = d2;
+        }
+
+
+        @Override
+        protected byte[] doInBackground(Integer... params) {
+            Uri selectedImgUri = uri;
+            String[] projection = {MediaStore.MediaColumns.DATA};
+            Cursor cursor = getContentResolver().query(selectedImgUri, projection, null, null, null);
+            int col = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(col);
+            Bitmap bm;
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, opt);
+            final int size = 1025;
+            int scale = 1;
+            while (opt.outWidth / scale / 2 >= size || opt.outHeight / scale / 2 >= size) {
+                scale *= 2;
+            }
+            opt.inSampleSize = scale;
+            opt.inJustDecodeBounds = false;
+            bm = BitmapFactory.decodeFile(path, opt);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+            data2 = bytes.toByteArray();
+            return data2;
         }
     }
 
