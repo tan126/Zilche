@@ -59,7 +59,7 @@ public class MyPollActivity extends ActionBarActivity {
         totalList = new ArrayList<String>();
         authorList = new ArrayList<String>();
         hotnessList = new ArrayList<String>();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
         query.orderByDescending("lastUpdate");
         query.whereEqualTo("author", ParseUser.getCurrentUser().getString("username"));
         query.findInBackground(new FindCallback<ParseObject>() {
