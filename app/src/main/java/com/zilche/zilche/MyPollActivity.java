@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.content.Intent;
+
 public class MyPollActivity extends ActionBarActivity {
     GridView gv;
     ArrayList<String> pollList;
@@ -38,7 +40,7 @@ public class MyPollActivity extends ActionBarActivity {
     ArrayList<String> hotnessList;
 
 
-    ArrayList<Long> pollIdList;
+    ArrayList<String> pollIdList;
     ImageButton removePollButton;
 
     @Override
@@ -52,7 +54,7 @@ public class MyPollActivity extends ActionBarActivity {
 
         gv = (GridView) findViewById(R.id.gridv);
 
-        pollIdList = new ArrayList<Long>();
+        pollIdList = new ArrayList<String>();
 
         pollList = new ArrayList<String>();
         timeList = new ArrayList<String>();
@@ -62,56 +64,64 @@ public class MyPollActivity extends ActionBarActivity {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
         query.orderByDescending("lastUpdate");
         query.whereEqualTo("author", ParseUser.getCurrentUser().getString("username"));
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
                     //Log.d("poll", "Retrieved " + list.size() + " polls");
-                    for (int i = 0; i < list.size(); i++) {
-                        ParseObject thisPoll = list.get(i);
-                        String tmpStr = thisPoll.getString("question");
-                        pollList.add(tmpStr);
-
-                        Long tmpLong = thisPoll.getLong("id");
-                        pollIdList.add(tmpLong);
-                        //timeList.add(thisPoll.getCreatedAt().toString());
-                        String tmp = "";
-                        int total = thisPoll.getInt("total");
-                        totalList.add("" + total + " participants");
-                        if ( total < 50 )
-                            hotnessList.add("g");
-                        else if ( total < 100 )
-                            hotnessList.add("y");
-                        else if ( total >= 100 )
-                            hotnessList.add("r");
-                        else
-                            hotnessList.add("g");
-                        long updatedTime = thisPoll.getLong("lastUpdate");
-                        long diffMS = System.currentTimeMillis() - updatedTime;
-                        long diffS = diffMS / 1000;
-                        if ( diffS > 60 ) {
-                            long diffM = diffS / 60;
-                            if ( diffM > 60 ){
-                                long diffH = diffM / 60;
-                                if ( diffH > 24 ) {
-                                    long diffD = diffH / 24;
-                                    tmp += "last updated " + diffD + " days ago";
-                                }
-                                else
-                                    tmp += "last updated " + diffH + " hours ago";;
-                            }
-                            else
-                                tmp += "last updated " + diffM + " minutes ago";
-                        }
-                        else
-                            tmp += "last updated 1 minute ago";
-                        timeList.add(tmp);
-                        gv.setAdapter(new PollListAdapter(MyPollActivity.this));
+                    if (list.size() == 0) {
+                        Toast.makeText(getApplicationContext(), "You have no polls", Toast.LENGTH_SHORT).show();
                         TextView title = (TextView) findViewById(R.id.title);
-                        title.setText("My Poll");
+                        title.setText("My Polls");
+                    } else {
+                        for (int i = 0; i < list.size(); i++) {
+                            ParseObject thisPoll = list.get(i);
+                            String tmpStr = thisPoll.getString("question");
+
+                            pollList.add(tmpStr);
+
+                            //String tmpString = thisPoll.getString("objectId");
+                            String tmpString = thisPoll.getObjectId();
+                            pollIdList.add(tmpString);
+
+                            //timeList.add(thisPoll.getCreatedAt().toString());
+                            String tmp = "";
+                            int total = thisPoll.getInt("total");
+                            totalList.add("" + total + " participants");
+                            if (total < 50)
+                                hotnessList.add("g");
+                            else if (total < 100)
+                                hotnessList.add("y");
+                            else if (total >= 100)
+                                hotnessList.add("r");
+                            else
+                                hotnessList.add("g");
+                            long updatedTime = thisPoll.getLong("lastUpdate");
+                            long diffMS = System.currentTimeMillis() - updatedTime;
+                            long diffS = diffMS / 1000;
+                            if (diffS > 60) {
+                                long diffM = diffS / 60;
+                                if (diffM > 60) {
+                                    long diffH = diffM / 60;
+                                    if (diffH > 24) {
+                                        long diffD = diffH / 24;
+                                        tmp += "last updated " + diffD + " days ago";
+                                    } else
+                                        tmp += "last updated " + diffH + " hours ago";
+                                    ;
+                                } else
+                                    tmp += "last updated " + diffM + " minutes ago";
+                            } else
+                                tmp += "last updated 1 minute ago";
+                            timeList.add(tmp);
+                            gv.setAdapter(new PollListAdapter(MyPollActivity.this));
+                            TextView title = (TextView) findViewById(R.id.title);
+                            title.setText("My Polls");
+                        }
                     }
                 } else {
-                    Log.d("Poll", "Error: " + e.getMessage());
+                    Log.d("poll", "Error: " + e.getMessage());
                 }
             }
         });
@@ -154,7 +164,7 @@ public class MyPollActivity extends ActionBarActivity {
         private String[] totals = totalList.toArray(new String[totalList.size()]);
         private String [] hots = hotnessList.toArray(new String[hotnessList.size()]);
 
-        private Long[] pollIDs = pollIdList.toArray(new Long[pollIdList.size()]);
+        private String[] pollIDs = pollIdList.toArray(new String[pollIdList.size()]);
 
         public PollListAdapter(Context c) {
             this.c = c;
@@ -220,19 +230,24 @@ public class MyPollActivity extends ActionBarActivity {
 
                 @Override
                 public void onClick(View arg0) {
-                    Long pollID = pollIDs[position];
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Poll");
-                    query.whereEqualTo("id", pollID);
-                    query.findInBackground(new FindCallback<ParseObject>() {
+                    //Toast.makeText(getApplicationContext(), "DELETING", Toast.LENGTH_SHORT).show();
+                    String pollID = pollIDs[position];
+                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("poll");
+                    query2.whereEqualTo("objectId", pollID);
+                    query2.findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> parseObjects, ParseException e) {
                             if (e == null) {
+                                System.out.println(parseObjects.get(0));
                                 for (ParseObject delete : parseObjects) {
                                     delete.deleteInBackground();
-                                    Toast.makeText(getApplicationContext(), "deleted", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "Poll deleted", Toast.LENGTH_SHORT).show();
+                                    Intent intent = getIntent();
+                                    finish();
+                                    startActivity(intent);
                                 }
                             } else {
-                                Toast.makeText(getApplicationContext(), "error in deleting", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Error in deleting", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
