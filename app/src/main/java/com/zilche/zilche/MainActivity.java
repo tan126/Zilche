@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // Load Username
         TextView pt = (TextView) findViewById(R.id.portfolio_text);
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
+        if ((currentUser != null) && (currentUser.getString("name") != null)) {
             // do stuff with the user
             String n = currentUser.getString("name");
             pt.setText("Welcome " + n);

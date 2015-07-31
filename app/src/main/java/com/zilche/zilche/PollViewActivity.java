@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
+import com.parse.LogInCallback;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -209,9 +211,22 @@ public class PollViewActivity extends ActionBarActivity {
     }
 
     private void saveRecord(String id, final int c) {
-        ParseObject po = new ParseObject("Records");
+        final ParseObject po = new ParseObject("Records");
         po.put("Key", id);
-        po.put("user", ParseUser.getCurrentUser().getObjectId());
+        if ( ParseUser.getCurrentUser() != null )
+            po.put("user", ParseUser.getCurrentUser().getObjectId());
+        else {
+            ParseAnonymousUtils.logIn(new LogInCallback() {
+                @Override
+                public void done(ParseUser parseUser, ParseException e) {
+                    if (e != null) {
+
+                    } else {
+                        po.put("user", "null");
+                    }
+                }
+            });
+        }
         po.put("choice", c);
         final String id2 = id;
         po.saveInBackground(new SaveCallback() {

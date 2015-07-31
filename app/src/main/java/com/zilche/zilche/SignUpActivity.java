@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -157,6 +158,11 @@ public class SignUpActivity extends FragmentActivity {
                             @Override
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
+
+                                    Zilche zilche = (Zilche)getActivity().getApplication();
+                                    HashMap<String, Integer> map = zilche.getMap();
+                                    map = new HashMap<String, Integer>();
+
                                     Intent i = new Intent(getActivity(), MainActivity.class);
                                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     getActivity().finish();
