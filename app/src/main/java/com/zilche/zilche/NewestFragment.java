@@ -41,6 +41,7 @@ public class NewestFragment extends Fragment{
     ArrayList<Poll> pollOnjectList;
     SwipeRefreshLayout swipeLayout;
     ParseQuery<ParseObject> query;
+    ArrayList<Integer> categoryList;
     int isRefreshing;
 
     public NewestFragment() {
@@ -81,6 +82,7 @@ public class NewestFragment extends Fragment{
                 authorList = new ArrayList<String>();
                 hotnessList = new ArrayList<String>();
                 pollOnjectList = new ArrayList<Poll>();
+                categoryList = new ArrayList<Integer>();
 
                 query = ParseQuery.getQuery("poll");
                 query.orderByDescending("lastUpdate");
@@ -127,6 +129,7 @@ public class NewestFragment extends Fragment{
                                     tmp += "1 minute ago";
                                 //tmp += " by " + name;
                                 pollOnjectList.add(parsePollObject(thisPoll));
+                                categoryList.add(tmpPoll.getCategory());
                                 timeList.add(tmp);
 
                                 //question: tmpStr
@@ -155,6 +158,7 @@ public class NewestFragment extends Fragment{
         authorList = new ArrayList<String>();
         hotnessList = new ArrayList<String>();
         pollOnjectList = new ArrayList<Poll>();
+        categoryList = new ArrayList<Integer>();
 
         query = ParseQuery.getQuery("poll");
         query.orderByDescending("lastUpdate");
@@ -203,6 +207,7 @@ public class NewestFragment extends Fragment{
                             tmp += " 1 minute ago";
                         //tmp += " by " + name;
                         timeList.add(tmp);
+                        categoryList.add(tmpPoll.getCategory());
                         pollOnjectList.add(parsePollObject(thisPoll));
                         gv.setAdapter(new PollListAdapter(getActivity()));
                     }
@@ -255,8 +260,8 @@ public class NewestFragment extends Fragment{
             tmp += " 1 minute ago";
         String date_added = tmp;
         String author = thisPoll.getString("nickname");
-        int categorty = thisPoll.getInt("category");
-        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
+        int tmpCategory = thisPoll.getInt("category");
+        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, tmpCategory);
         return newPoll;
     }
 
@@ -300,6 +305,14 @@ public class NewestFragment extends Fragment{
                 LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = vi.inflate(R.layout.newestpolls, null);
             }
+            TextView category_text = (TextView) convertView.findViewById(R.id.category);
+            int[] strings = {
+                    R.string.category_all_2, R.string.category_auto_2, R.string.category_education_2, R.string.category_entertainment_2,
+                    R.string.category_fashion_2, R.string.category_finance_2, R.string.category_food_2, R.string.category_games_2, R.string.category_it_2,
+                    R.string.category_pet_2, R.string.category_science_2, R.string.category_social_2, R.string.category_sports_2, R.string.category_tech_2,
+                    R.string.category_travel_2
+            };
+            category_text.setText(getString(strings[categoryList.get(position)]));
             ImageView check = (ImageView) convertView.findViewById(R.id.check);
             TextView tv = (TextView) convertView.findViewById(R.id.poll_name);
             tv.setText(polls[position]);
