@@ -48,6 +48,8 @@ public class PollViewActivity extends ActionBarActivity {
     private RadioGroup radioGroup;
     private int option_count;
     private TextView total;
+
+
     private int category = 0;
     private TextView category_title;
     private SlidingPaneLayout spl;
