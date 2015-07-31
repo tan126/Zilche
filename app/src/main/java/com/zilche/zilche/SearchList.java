@@ -105,7 +105,7 @@ public class SearchList extends AppCompatActivity {
 
     }
 
-    public void performSearch(String queryStr){
+    public void performSearch(String queryStr) {
 
         //Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
         gv = (GridView) findViewById(R.id.gridv);
