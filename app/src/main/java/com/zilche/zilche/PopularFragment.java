@@ -265,6 +265,7 @@ public class PopularFragment extends Fragment{
         String author = thisPoll.getString("nickname");
         int tmpCategory = thisPoll.getInt("category");
         Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, tmpCategory);
+        newPoll.setAnon(thisPoll.getInt("anon"));
         return newPoll;
     }
 
