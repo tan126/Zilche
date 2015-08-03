@@ -71,14 +71,38 @@ public class CreatePollActivity2 extends AppCompatActivity {
     private TextView title;
     private ViewPager vp;
     private boolean exit = false;
+    private ImageButton left;
+    private ImageButton right;
     private FirstFragment frag1 = new FirstFragment();
     private SecondFragment frag2 = new SecondFragment();
     private ThirdFragment frag3 = new ThirdFragment();
+    private View.OnClickListener left_click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (vp.getCurrentItem() != 0) {
+                vp.setCurrentItem(vp.getCurrentItem() - 1);
+            }
+        }
+    };
+    private View.OnClickListener right_click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (vp.getCurrentItem() != 2) {
+                vp.setCurrentItem(vp.getCurrentItem() + 1);
+            }
+        }
+    };
+    private View.OnClickListener close_click = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            back_clicked();
+        }
+    };
     final static private int REQUEST_CAMERA = 111;
     final static private int SELECT_FILE = 222;
     final static private int REMOVE_FILE = 333;
 
-    public void back_clicked(View v) {
+    public void back_clicked() {
         exit = true;
         onBackPressed();
     }
@@ -152,7 +176,10 @@ public class CreatePollActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_poll_activity2);
-
+        left = (ImageButton) findViewById(R.id.back_button_create_poll);
+        right = (ImageButton) findViewById(R.id.next);
+        left.setOnClickListener(close_click);
+        right.setOnClickListener(right_click);
         title = (TextView) findViewById(R.id. title_create_poll);
         SlidingTabLayout stl = (SlidingTabLayout) findViewById(R.id.pager_tab_strip);
         vp = (ViewPager) findViewById(R.id.viewpager_createpoll);
@@ -182,6 +209,19 @@ public class CreatePollActivity2 extends AppCompatActivity {
                         break;
                     default:
                         break;
+                }
+                if (position == 0) {
+                    left.setImageResource(R.drawable.ic_close_white_24dp);
+                    left.setOnClickListener(close_click);
+                    right.setVisibility(View.VISIBLE);
+                } else if (position == 1) {
+                    left.setImageResource(R.drawable.ic_chevron_left_white_24dp);
+                    left.setOnClickListener(left_click);
+                    right.setVisibility(View.VISIBLE);
+                } else {
+                    right.setVisibility(View.GONE);
+                    left.setImageResource(R.drawable.ic_chevron_left_white_24dp);
+                    left.setOnClickListener(left_click);
                 }
             }
 
