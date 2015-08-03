@@ -1,6 +1,7 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -631,6 +632,9 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 public void onClick(View v) {
                     fab.setEnabled(false);
                     fab.setClickable(false);
+                    final ProgressDialog dialog = new ProgressDialog(getActivity());
+                    dialog.setMessage("Creating poll");
+                    dialog.setCancelable(false);
                     CreatePollActivity2 activity = (CreatePollActivity2) getActivity();
                     final ParseObject parseObject = activity.makeObject();
                     final ParseFile file = activity.createImage();
@@ -641,6 +645,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     }
                     if (file == null) {
                         parseObject.put("haveImage", 0);
+                        dialog.show();
                         parseObject.saveInBackground(new SaveCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -651,14 +656,17 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                     Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
                                     startActivity(i);
                                     getActivity().finish();
+                                    dialog.dismiss();
                                 } else {
                                     fab.setEnabled(true);
                                     fab.setClickable(true);
+                                    dialog.dismiss();
                                     Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
                     } else {
+                        dialog.show();
                         parseObject.put("haveImage", 1);
                         file.saveInBackground(new SaveCallback() {
                             @Override
@@ -674,8 +682,10 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                                 i.putExtra("poll", poll);
                                                 Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
                                                 startActivity(i);
+                                                dialog.dismiss();
                                                 getActivity().finish();
                                             } else {
+                                                dialog.dismiss();
                                                 fab.setEnabled(true);
                                                 fab.setClickable(true);
                                                 Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
@@ -684,6 +694,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
                                     });
                                 } else {
+                                    dialog.dismiss();
                                     fab.setEnabled(true);
                                     fab.setClickable(true);
                                     Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
