@@ -34,4 +34,5 @@ dependencies {
     compile files('libs/achartengine-1.1.0.jar')
     compile 'com.android.support:cardview-v7:21.0.+'
     compile 'com.android.support:recyclerview-v7:21.0.+'
+    compile 'com.edmodo:cropper:1.0.1'
 }

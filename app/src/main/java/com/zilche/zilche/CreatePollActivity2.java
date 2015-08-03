@@ -1,26 +1,23 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.*;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputType;
@@ -29,23 +26,17 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,11 +50,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.logging.Handler;
 
 
 public class CreatePollActivity2 extends AppCompatActivity {
@@ -101,6 +89,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
     final static private int REQUEST_CAMERA = 111;
     final static private int SELECT_FILE = 222;
     final static private int REMOVE_FILE = 333;
+    final static private int CROP_IMAGE = 444;
 
     public void back_clicked() {
         exit = true;
@@ -366,6 +355,12 @@ public class CreatePollActivity2 extends AppCompatActivity {
             return rootView;
         }
 
+        public Uri getImageUri(Context con, Bitmap bm) {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            String path = MediaStore.Images.Media.insertImage(con.getContentResolver(), bm, "Title", null);
+            return Uri.parse(path);
+        };
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -374,23 +369,26 @@ public class CreatePollActivity2 extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 if (requestCode == REQUEST_CAMERA) {
                     Bitmap image = (Bitmap) data.getExtras().get("data");
-                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                    image.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-                    this.image = bytes.toByteArray();
-                    imageBound = true;
-                    fab.setOnClickListener(onclick2);
-                    fab.setImageResource(R.drawable.ic_done_white_24dp);
+                    Uri uri = getImageUri(getActivity(), image);
+                    Intent i = new Intent(getActivity(), CropImageActivity.class);
+                    i.putExtra("uri", uri);
+                    startActivityForResult(i, CROP_IMAGE);
                 } else if (requestCode == SELECT_FILE) {
-                    CreatePollActivity2 act = (CreatePollActivity2) getActivity();
-                    image = act.decodeImageInBackground(fab, data.getData());
-                    imageBound = true;
-                    fab.setOnClickListener(onclick2);
-                    fab.setImageResource(R.drawable.ic_done_white_24dp);
+                    Intent i = new Intent(getActivity(), CropImageActivity.class);
+                    i.putExtra("uri", data.getData());
+                    startActivityForResult(i, CROP_IMAGE);
                 } else if (requestCode == REMOVE_FILE) {
                     fab.setImageResource(R.drawable.ic_camera_alt_white_24dp);
                     fab.setOnClickListener(onclick);
                     image = null;
                     imageBound = false;
+                } else if (requestCode == CROP_IMAGE) {
+                    fab.setOnClickListener(onclick2);
+                    fab.setImageResource(R.drawable.ic_done_white_24dp);
+                    imageBound = true;
+                    byte[] bm = (byte[]) data.getExtras().get("data");
+                    this.image = bm;
+                    Toast.makeText(getActivity(), "Click button again to view image.", Toast.LENGTH_SHORT).show();
                 }
             }
         }

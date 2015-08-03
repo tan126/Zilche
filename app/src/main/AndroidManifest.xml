@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="ANDROID.PERMISSION.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".Zilche"
@@ -94,8 +95,12 @@
         </activity>
         <activity
             android:name=".CreatePollActivity2"
-            android:windowSoftInputMode="stateHidden"
-            android:label="@string/title_activity_create_poll_activity2" >
+            android:label="@string/title_activity_create_poll_activity2"
+            android:windowSoftInputMode="stateHidden" >
+        </activity>
+        <activity
+            android:name=".CropImageActivity"
+            android:label="@string/title_activity_crop_image" >
         </activity>
     </application>
 
