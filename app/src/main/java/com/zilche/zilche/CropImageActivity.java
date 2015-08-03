@@ -60,18 +60,9 @@ public class CropImageActivity extends ActionBarActivity {
             path = cursor.getString(col);
         }
 
-        Bitmap bm;
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, opt);
-        final int size = 1025;
-        int scale = 1;
-        while (opt.outWidth / scale / 2 >= size || opt.outHeight / scale / 2 >= size) {
-            scale *= 2;
-        }
-        opt.inSampleSize = scale;
-        opt.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(path, opt);
+        Bitmap bm = decodeFile(path);
+        if (bm == null || bm.getWidth() == 0 || bm.getHeight() == 0)
+            bm = decodeFile(path); // try again incase first pass thru failed
 
         cancel = (ImageButton) findViewById(R.id.cancelButton);
         submit = (ImageButton) findViewById(R.id.acceptButton);
@@ -126,6 +117,23 @@ public class CropImageActivity extends ActionBarActivity {
             }
         });
     }
+
+    public Bitmap decodeFile(String path) {
+        Bitmap bm;
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, opt);
+        final int size = 1025;
+        int scale = 1;
+        while (opt.outWidth / scale / 2 >= size || opt.outHeight / scale / 2 >= size) {
+            scale *= 2;
+        }
+        opt.inSampleSize = scale;
+        opt.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(path, opt);
+        return bm;
+    }
+
 
     public void reload_frame(View v) {
         iv.setFixedAspectRatio(false);
