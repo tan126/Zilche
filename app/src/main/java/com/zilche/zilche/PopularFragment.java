@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -122,9 +123,13 @@ public class PopularFragment extends Fragment{
                                         if (diffH > 24) {
                                             long diffD = diffH / 24;
                                             tmp +=  diffD + " days ago";
-                                        } else
-                                            tmp +=  diffH + " hours ago";
-                                        ;
+                                        } else {
+                                            if (diffH == 1) {
+                                                tmp += diffH + " hour ago";
+                                            } else {
+                                                tmp += diffH + " hours ago";
+                                            }
+                                        }
                                     } else
                                         tmp +=  + diffM + " minutes ago";
                                 } else
@@ -200,8 +205,13 @@ public class PopularFragment extends Fragment{
                                     long diffD = diffH / 24;
                                     tmp +=  diffD + " days ago";
                                 }
-                                else
-                                    tmp +=  + diffH + " hours ago";;
+                                else {
+                                    if (diffH == 1) {
+                                        tmp += diffH + " hour ago";
+                                    } else {
+                                        tmp +=  + diffH + " hours ago";
+                                    }
+                                }
                             }
                             else
                                 tmp += + diffM + " minutes ago";
@@ -254,11 +264,16 @@ public class PopularFragment extends Fragment{
                     long diffD = diffH / 24;
                     tmp +=  diffD + " days ago";
                 }
-                else
-                    tmp +=  + diffH + " hours ago";;
+                else {
+                    if (diffH == 1) {
+                        tmp += diffH + " hour ago";
+                    } else {
+                        tmp += diffH + " hours ago";
+                    }
+                }
             }
             else
-                tmp += + diffM + " minutes ago";
+                tmp += diffM + " minutes ago";
         }
         else
             tmp += " 1 minute ago";

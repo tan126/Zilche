@@ -154,11 +154,15 @@ public class SearchList extends AppCompatActivity {
                                 if (diffH > 24) {
                                     long diffD = diffH / 24;
                                     tmp += diffD + " days ago";
-                                } else
-                                    tmp += +diffH + " hours ago";
-                                ;
+                                } else {
+                                    if (diffH == 1) {
+                                        tmp += diffH + " hour ago";
+                                    } else {
+                                        tmp += diffH + " hours ago";
+                                    }
+                                }
                             } else
-                                tmp += +diffM + " minutes ago";
+                                tmp += diffM + " minutes ago";
                         } else
                             tmp += " 1 minute ago";
                         //tmp += " by " + name;
@@ -323,11 +327,16 @@ public class SearchList extends AppCompatActivity {
                     long diffD = diffH / 24;
                     tmp +=  diffD + " days ago";
                 }
-                else
-                    tmp +=  + diffH + " hours ago";;
+                else {
+                    if (diffH == 1) {
+                        tmp += diffH + " hour ago";
+                    } else {
+                        tmp += diffH + " hours ago";
+                    }
+                }
             }
             else
-                tmp += + diffM + " minutes ago";
+                tmp += diffM + " minutes ago";
         }
         else
             tmp += " 1 minute ago";

@@ -121,11 +121,15 @@ public class NewestFragment extends Fragment{
                                         if (diffH > 24) {
                                             long diffD = diffH / 24;
                                             tmp +=  diffD + " days ago";
-                                        } else
-                                            tmp +=  diffH + " hours ago";
-                                        ;
+                                        } else {
+                                            if (diffH == 1) {
+                                                tmp += diffH + " hour ago";
+                                            } else {
+                                                tmp += diffH + " hours ago";
+                                            }
+                                        }
                                     } else
-                                        tmp +=  + diffM + " minutes ago";
+                                        tmp += diffM + " minutes ago";
                                 } else
                                     tmp += "1 minute ago";
                                 //tmp += " by " + name;
@@ -192,17 +196,21 @@ public class NewestFragment extends Fragment{
                         long diffS = diffMS / 1000;
                         if ( diffS > 60 ) {
                             long diffM = diffS / 60;
-                            if ( diffM > 60 ){
+                            if ( diffM > 60 ) {
                                 long diffH = diffM / 60;
-                                if ( diffH > 24 ) {
+                                if (diffH > 24) {
                                     long diffD = diffH / 24;
-                                    tmp +=  diffD + " days ago";
+                                    tmp += diffD + " days ago";
+                                } else {
+                                    if (diffH == 1) {
+                                        tmp += diffH + " hour ago";
+                                    } else {
+                                        tmp += +diffH + " hours ago";
+                                    }
                                 }
-                                else
-                                    tmp +=  + diffH + " hours ago";;
                             }
                             else
-                                tmp += + diffM + " minutes ago";
+                                tmp += diffM + " minutes ago";
                         }
                         else
                             tmp += " 1 minute ago";
@@ -251,11 +259,16 @@ public class NewestFragment extends Fragment{
                     long diffD = diffH / 24;
                     tmp +=  diffD + " days ago";
                 }
-                else
-                    tmp +=  + diffH + " hours ago";;
+                else {
+                    if (diffH == 1) {
+                        tmp += diffH + " hour ago";
+                    } else {
+                        tmp += diffH + " hours ago";
+                    }
+                }
             }
             else
-                tmp += + diffM + " minutes ago";
+                tmp += diffM + " minutes ago";
         }
         else
             tmp += " 1 minute ago";

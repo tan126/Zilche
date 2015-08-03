@@ -639,8 +639,13 @@ public class CreatePollActivity2 extends AppCompatActivity {
                         long diffD = diffH / 24;
                         tmp +=  diffD + " days ago";
                     }
-                    else
-                        tmp +=  + diffH + " hours ago";;
+                    else {
+                        if (diffH == 1) {
+                            tmp += diffH + " hour ago";
+                        } else {
+                            tmp += +diffH + " hours ago";
+                        }
+                    }
                 }
                 else
                     tmp += + diffM + " minutes ago";
