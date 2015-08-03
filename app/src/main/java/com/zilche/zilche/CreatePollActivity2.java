@@ -634,7 +634,11 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     CreatePollActivity2 activity = (CreatePollActivity2) getActivity();
                     final ParseObject parseObject = activity.makeObject();
                     final ParseFile file = activity.createImage();
-                    if (parseObject == null) return;
+                    if (parseObject == null) {
+                        fab.setEnabled(true);
+                        fab.setClickable(true);
+                        return;
+                    }
                     if (file == null) {
                         parseObject.put("haveImage", 0);
                         parseObject.saveInBackground(new SaveCallback() {
