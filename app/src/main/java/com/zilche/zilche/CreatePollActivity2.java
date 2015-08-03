@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -51,6 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -138,6 +140,14 @@ public class CreatePollActivity2 extends AppCompatActivity {
         if (frag1.imageBound)
             return frag1.getImage();
         return null;
+    }
+
+    public Uri getUri() {
+        return frag1.getUri();
+    }
+
+    public String getFilePath() {
+        return frag1.getFilePath();
     }
 
     @Override
@@ -250,6 +260,9 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
     public static class FirstFragment extends Fragment {
 
+        private File file = new File(appFolderCheckandCreate(), "img" + "_temp" + ".png");
+        private String filePath = file.getPath();
+        private Uri uri;
         private boolean imageBound = false;
         private TextView question;
         private SwitchCompat switchBtn;
@@ -266,7 +279,9 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
+                            uri = Uri.fromFile(file);
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                             startActivityForResult(intent, REQUEST_CAMERA);
                         } else if (which == 1) {
                             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
@@ -294,6 +309,35 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 }
             }
         };
+
+        private String appFolderCheckandCreate(){
+
+            String appFolderPath="";
+            File externalStorage = Environment.getExternalStorageDirectory();
+
+            if (externalStorage.canWrite())
+            {
+                appFolderPath = externalStorage.getAbsolutePath() + "/Zilche";
+                File dir = new File(appFolderPath);
+
+                if (!dir.exists())
+                {
+                    dir.mkdirs();
+                }
+
+            }
+
+            return appFolderPath;
+        }
+
+
+        public Uri getUri() {
+            return uri;
+        }
+
+        public String getFilePath() {
+            return filePath;
+        }
 
         public byte[] getImage() {
             return image;
@@ -369,10 +413,13 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 if (requestCode == REQUEST_CAMERA) {
-                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    Uri uri = getImageUri(getActivity(), image);
+//                    Bitmap image = (Bitmap) data.getExtras().get("data");
+                    //Uri uri = getImageUri(getActivity(), image);
+                    CreatePollActivity2 act = (CreatePollActivity2) getActivity();
+                    Uri uri = act.getUri();
                     Intent i = new Intent(getActivity(), CropImageActivity.class);
                     i.putExtra("uri", uri);
+                    i.putExtra("filepath", act.getFilePath());
                     startActivityForResult(i, CROP_IMAGE);
                 } else if (requestCode == SELECT_FILE) {
                     Intent i = new Intent(getActivity(), CropImageActivity.class);

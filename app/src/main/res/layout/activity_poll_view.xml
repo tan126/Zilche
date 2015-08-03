@@ -78,14 +78,14 @@
                     <com.zilche.zilche.GridItemView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginBottom="3dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginBottom="4dp"
                         android:id="@+id/image_poll_view"
                         android:background="#fff"
                         android:visibility="gone"
-                        android:scaleType="fitCenter"
+                        android:scaleType="fitXY"
                         />
 
                 </LinearLayout>

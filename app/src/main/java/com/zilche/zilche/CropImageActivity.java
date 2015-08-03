@@ -48,11 +48,18 @@ public class CropImageActivity extends ActionBarActivity {
             return;
         }
 
-        String[] projection = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        int col = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        cursor.moveToFirst();
-        String path = cursor.getString(col);
+        String path;
+        if (getIntent().getExtras().get("filepath") != null) {
+            path = (String) getIntent().getExtras().get("filepath");
+            System.out.println(path);
+        } else {
+            String[] projection = {MediaStore.MediaColumns.DATA};
+            Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+            int col = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            cursor.moveToFirst();
+            path = cursor.getString(col);
+        }
+
         Bitmap bm;
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inJustDecodeBounds = true;
@@ -104,6 +111,7 @@ public class CropImageActivity extends ActionBarActivity {
                 builder.setPositiveButton("Comfirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                         ret.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
                         Intent i = new Intent();
