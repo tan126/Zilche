@@ -10,6 +10,11 @@
         android:background="#222"
         android:layout_height="match_parent">
 
+        <com.edmodo.cropper.CropImageView
+            android:id="@+id/fullImage"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,7 +22,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:layout_gravity="bottom"
-            android:background="#66000000"
+            android:background="#22000000"
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content">
 
@@ -48,18 +53,6 @@
                 android:background="?android:attr/selectableItemBackground"
                 />
         </LinearLayout>
-
-        <com.edmodo.cropper.CropImageView
-            android:id="@+id/fullImage"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="6dp"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@id/linlay"
-            />
-
 
     </RelativeLayout>
 </LinearLayout>

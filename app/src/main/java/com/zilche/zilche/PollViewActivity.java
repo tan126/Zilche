@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -37,6 +38,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -115,9 +117,11 @@ public class PollViewActivity extends ActionBarActivity {
 
         if (poll.hasImage() == 1) {
              if (poll.getImage() != null) {
-                 Bitmap b = BitmapFactory.decodeByteArray(poll.getImage(), 0, poll.getImage().length);
-                 imageView.setImageBitmap(b);
-                 imageView.setVisibility(View.VISIBLE);
+                 //Bitmap b = BitmapFactory.decodeByteArray(poll.getImage(), 0, poll.getImage().length);
+                 //imageView.setImageBitmap(b);
+                 //imageView.setVisibility(View.VISIBLE);
+                 BitmapWorker worker = new BitmapWorker(imageView, poll.getImage());
+                 worker.execute();
              }
         }
         showGraph_btn.setVisibility(View.GONE);
@@ -356,6 +360,28 @@ public class PollViewActivity extends ActionBarActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(0, R.anim.left_to_right);
+    }
+
+    public class BitmapWorker extends AsyncTask<Integer, Void, Bitmap>  {
+
+        private final WeakReference<GridItemView> imageViewReference;
+        private final WeakReference<byte[]> data;
+
+        public BitmapWorker(GridItemView iv, byte[] data) {
+            this.imageViewReference = new WeakReference<GridItemView>(iv);
+            this.data = new WeakReference<byte[]>(data);
+        }
+
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            return BitmapFactory.decodeByteArray(data.get(), 0, data.get().length);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imageViewReference.get().setImageBitmap(bitmap);
+            imageViewReference.get().setVisibility(View.VISIBLE);
+        }
     }
 
 }
