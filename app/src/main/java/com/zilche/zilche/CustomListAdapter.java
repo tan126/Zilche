@@ -55,8 +55,8 @@ public class CustomListAdapter extends ArrayAdapter<String> {
                     rowView.setClickable(true);
                 }
                 break;
-            case "My Survey":
-                extratxt.setText("Browse my surveys");
+            case "My Profile":
+                extratxt.setText("View my profile");
                 imageView.setColorFilter(Color.parseColor("#F57F17"));
                 rowView.setClickable(false);
                 if (current_position == 1) {

@@ -148,8 +148,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String menu[] = {"All Posts", "My Poll", "My Survey", "Settings", "Log Out"};
-        Integer imgID[] = {R.drawable.ic_dashboard_white_24dp, R.mipmap.ic_assignment_white_24dp, R.mipmap.ic_assessment_white_24dp,
+        String menu[] = {"All Posts", "My Poll", "My Profile", "Settings", "Log Out"};
+        Integer imgID[] = {R.drawable.ic_dashboard_white_24dp, R.mipmap.ic_assignment_white_24dp, R.mipmap.ic_assignment_ind_white_24dp,
                 R.drawable.ic_settings_white_24dp, R.drawable.ic_power_settings_new_white_24dp};
 
         CustomListAdapter myadapter=new CustomListAdapter(this, menu, imgID, SELECTED_POSITION);
