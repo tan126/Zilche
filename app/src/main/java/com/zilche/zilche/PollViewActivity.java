@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,40 +17,27 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.net.URL;
 import java.util.HashMap;
 
 public class PollViewActivity extends ActionBarActivity {
 
-    private int[] title_color = {
-            0xff2196F3, 0xffF44336, 0xff673AB7, 0xff9C27B0, 0xffCDDC39, 0xffFF5722, 0xffFDD835, 0xff9E9E9E, 0xff4CAF50, 0xff795548,
-            0xff009688, 0xff00BCD4, 0xffE91E63, 0xffFF9800, 0xff607D8B
-    };
-    private int[] noti_color = {
-            0xff1976D2, 0xffD32F2F, 0xff512DA8, 0xff7B1FA2, 0xffAFB42B, 0xffE64A19, 0xffFBC02D, 0xff616161, 0xff388E3C, 0xff5D4037,
-            0xff00796B, 0xff0097A7, 0xffC2185B, 0xffF57C00, 0xff455A64
-    };
     private GridItemView imageView;
     private TextView question;
     private TextView author;
@@ -59,8 +45,6 @@ public class PollViewActivity extends ActionBarActivity {
     private RadioGroup radioGroup;
     private int option_count;
     private TextView total;
-
-
     private int category = 0;
     private TextView category_title;
     private SlidingPaneLayout spl;
@@ -72,6 +56,9 @@ public class PollViewActivity extends ActionBarActivity {
     private TextView[] percentages;
     private HashMap<String, Integer> map;
     private int c;
+    private ScrollView sv;
+    private LinearLayout loading;
+    private Poll poll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +74,11 @@ public class PollViewActivity extends ActionBarActivity {
         lin = (LinearLayout) findViewById(R.id.result_poll_view);
         showGraph_btn = (Button) findViewById(R.id.showGraph);
         total = (TextView) findViewById(R.id.total);
+        sv = (ScrollView) findViewById(R.id.scroll_view_poll);
+        loading = (LinearLayout) findViewById(R.id.loading);
 
         Bundle extras = getIntent().getExtras();
-        final Poll poll = extras.getParcelable("poll");
+        poll = extras.getParcelable("poll");
         Zilche app = (Zilche) getApplication();
         map = app.getMap();
 
@@ -101,33 +90,14 @@ public class PollViewActivity extends ActionBarActivity {
                 startActivity(gpIntent);
             }
         });
-
-        question.setText(poll.getQuestion());
-        dateAdded.setText(poll.getDate_added());
-        int t = 0;
-        for (int i = 0; i < poll.getCount(); i++) {
-            t += poll.getVotes()[i];
-        }
-        total.setText(Integer.toString(t));
-        if (poll.getAnon() == 1)
-            author.setText(" Anonymous");
-        else
-            author.setText(" " + poll.getAuthor());
         category = poll.getCategory();
-
-        if (poll.hasImage() == 1) {
-             if (poll.getImage() != null) {
-                 //Bitmap b = BitmapFactory.decodeByteArray(poll.getImage(), 0, poll.getImage().length);
-                 //imageView.setImageBitmap(b);
-                 //imageView.setVisibility(View.VISIBLE);
-                 BitmapWorker worker = new BitmapWorker(imageView, poll.getImage());
-                 worker.execute();
-             }
-        }
         showGraph_btn.setVisibility(View.GONE);
-        category_title.setText(poll.getCategory_title());
+        if (category == 0)
+            category_title.setText("Other");
+        else
+            category_title.setText(Util.strings[category]);
         id = poll.getId();
-
+        populateView(poll);
         spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
             @Override
@@ -151,39 +121,16 @@ public class PollViewActivity extends ActionBarActivity {
 
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(noti_color[category]);
+            getWindow().setStatusBarColor(Util.noti_color[category]);
         }
         final RelativeLayout lay = (RelativeLayout) findViewById(R.id.header_poll_view);
-        lay.setBackgroundColor(title_color[category]);
+        lay.setBackgroundColor(Util.title_color[category]);
         final LinearLayout ll = (LinearLayout) findViewById(R.id.linlay_view_poll);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77, getResources().getDisplayMetrics()));
         ll.setMinimumHeight(height);
-        if (map.get(poll.getId()) != null) {
-            c = map.get(poll.getId());
-            generateResult(poll.getVotes(), poll.getOptions());
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
-            query.getInBackground(id, new GetCallback<ParseObject>() {
-                @Override
-                public void done(ParseObject parseObject, ParseException e) {
-                    if (e == null) {
-                        final ParseObject object = parseObject;
-                        final int[] votes = new int[poll.getCount()];
-                        for (int i = 0; i < poll.getCount(); i++) {
-                            votes[i] = object.getInt("votes" + Integer.toString(i));
-                        }
-                        poll.setVotes(votes);
-                        updateResult(votes);
-                    }
-                }
-
-                ;
-            });
-            return;
-        }
-        populatePoll(poll);
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,10 +202,50 @@ public class PollViewActivity extends ActionBarActivity {
         });
     }
 
+    private void populateView(final Poll poll) {
+        final String object_id = poll.getId();
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
+        query.getInBackground(object_id, new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject object, ParseException e) {
+                Poll poll2 = Util.parsePollObject(object);
+                question.setText(poll2.getQuestion());
+                dateAdded.setText(poll2.getDate_added());
+                if (poll2.getAnon() == 1) {
+                    author.setText("Anonymous");
+                } else {
+                    author.setText(poll2.getAuthor());
+                }
+                total.setText(Integer.toString(poll2.totalVotes()));
+                if (map.get(object_id) != null) {
+                    c = map.get(object_id);
+                    generateResult(poll2.getVotes(), poll2.getOptions());
+                } else {
+                    populatePoll(poll2);
+                }
+                if (poll2.hasImage() == 1) {
+                    poll2.getFile().getDataInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, ParseException e) {
+                            BitmapWorker worker = new BitmapWorker(imageView, bytes);
+                            worker.execute();
+                            imageView.setVisibility(View.VISIBLE);
+                            sv.setVisibility(View.VISIBLE);
+                            loading.setVisibility(View.GONE);
+                        }
+                    });
+                } else {
+                    imageView.setVisibility(View.GONE);
+                    sv.setVisibility(View.VISIBLE);
+                    loading.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
     private void populatePoll(Poll poll) {
         String[] options = poll.getOptions();
         option_count = poll.getCount();
-
         LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         radioGroup.setLayoutParams(layParams);
         for (int i = 0; i < option_count; i++) {
@@ -292,6 +279,7 @@ public class PollViewActivity extends ActionBarActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         par2.setMargins(0, 30, 0, 30);
         int total = 0;
+        int total_tmp = 0;
         for (int i = 0; i < options.length; i++)
             total += votes[i];
         this.total.setText(Integer.toString(total));
@@ -308,12 +296,15 @@ public class PollViewActivity extends ActionBarActivity {
             percentage.setEms(4);
             percentage.setTypeface(null, Typeface.BOLD);
             percentage.setGravity(Gravity.CENTER);
+            total_tmp += votes[i];
             if (i == c) {
                 percentage.setTextColor(0xFFEF5350);
             }
             int aatmp = 0;
-            if (i == options.length - 1)
+            if (total_tmp == total) {
                 percentage.setText(Integer.toString(percent) + "%");
+                percent -= percent;
+            }
             else {
                 aatmp = (int) ((double) (votes[i]) / total * 100);
                 percentage.setText(Integer.toString(aatmp) + "%");
@@ -335,25 +326,6 @@ public class PollViewActivity extends ActionBarActivity {
             lin.addView(v1);
         }
         lin.setVisibility(View.VISIBLE);
-    }
-
-    private void updateResult(int[] result) {
-        int percent = 100;
-        int total = 0;
-        for (int i = 0; i < result.length; i++) {
-            total += result[i];
-        }
-        this.total.setText(Integer.toString(total));
-        for (int i = 0; i < result.length; i++) {
-            int aatmp = 0;
-            if (i == result.length - 1)
-                percentages[i].setText(Integer.toString(percent) + "%");
-            else {
-                aatmp = (int) ((double) (result[i]) / total * 100);
-                percentages[i].setText(Integer.toString(aatmp) + "%");
-            }
-            percent -= aatmp;
-        }
     }
 
     @Override
