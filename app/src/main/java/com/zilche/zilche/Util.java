@@ -1,5 +1,8 @@
 package com.zilche.zilche;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.parse.ParseObject;
@@ -8,6 +11,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class Util {
+
+    public static int[] drawables = {
+            R.drawable.ic_assessment_grey_18dp, R.drawable.ic_directions_car_grey_18dp, R.drawable.ic_school_grey_18dp, R.drawable.ic_mic_grey_18dp,
+            R.drawable.ic_watch_grey_18dp, R.drawable.ic_local_atm_grey_18dp, R.drawable.ic_local_dining_grey_18dp, R.drawable.ic_games_grey_18dp,
+            R.drawable.ic_code_grey_18dp, R.drawable.pet_icon_18, R.drawable.ic_wb_incandescent_grey_18dp, R.drawable.ic_people_grey_18dp,
+            R.drawable.ic_directions_bike_grey_18dp, R.drawable.ic_laptop_windows_grey_18dp, R.drawable.ic_flight_takeoff_grey_18dp
+    };
 
     public static int[] strings = {
             R.string.category_all_2, R.string.category_auto_2, R.string.category_education_2, R.string.category_entertainment_2,
@@ -79,6 +89,12 @@ public class Util {
         if (object.getInt("haveImage") == 1)
             newPoll.setFile(object.getParseFile("image"));
         return newPoll;
+    }
+
+    public static boolean hasInternetConnection(Context c) {
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
 }

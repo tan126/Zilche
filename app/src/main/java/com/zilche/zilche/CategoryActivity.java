@@ -197,17 +197,23 @@ public class CategoryActivity extends AppCompatActivity {
             CardView cv;
             TextView question;
             TextView date;
-            TextView category;
+            TextView total_votes;
             ImageView iv;
+            ImageView has_photo;
+            ImageView category_icon;
+            TextView author;
 
             public PollViewHolder(View itemView) {
                 super(itemView);
                 cv = (CardView) itemView.findViewById(R.id.cv);
                 question = (TextView) itemView.findViewById(R.id.question);
                 date = (TextView) itemView.findViewById(R.id.date);
-                category = (TextView) itemView.findViewById(R.id.category);
+                total_votes = (TextView) itemView.findViewById(R.id.category);
                 cv.setOnClickListener(onclick);
                 iv = (ImageView) itemView.findViewById(R.id.done);
+                category_icon = (ImageView) itemView.findViewById(R.id.category_icon);
+                has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
+                author = (TextView) itemView.findViewById(R.id.author);
             }
         }
 
@@ -225,19 +231,22 @@ public class CategoryActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
             Poll p = polls.get(i);
-            if (p.getCategory() == 0) {
-                pollViewHolder.category.setText(getString(R.string.other));
-            } else {
-                pollViewHolder.category.setText(Util.strings[p.getCategory()]);
-            }
+            pollViewHolder.total_votes.setText(Integer.toString(p.totalVotes()));
+            pollViewHolder.category_icon.setImageResource(Util.drawables[p.getCategory()]);
             pollViewHolder.date.setText(p.getDate_added());
             pollViewHolder.question.setText(p.getQuestion());
             pollViewHolder.cv.setTag(i);
             if (map.get(p.getId()) != null) {
-                pollViewHolder.iv.setVisibility(View.VISIBLE);
+                pollViewHolder.iv.setImageResource(R.drawable.ic_done_green_18dp);
             } else {
-                pollViewHolder.iv.setVisibility(View.GONE);
+                pollViewHolder.iv.setImageResource(R.drawable.ic_done_grey_18dp);
             }
+            if (p.hasImage() == 1) {
+                pollViewHolder.has_photo.setVisibility(View.VISIBLE);
+            } else {
+                pollViewHolder.has_photo.setVisibility(View.GONE);
+            }
+            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
         }
 
         @Override
