@@ -5,7 +5,7 @@
     tools:context="com.zilche.zilche.FullScreenImage">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#444"
+        android:background="#222"
         android:layout_height="match_parent">
 
 
