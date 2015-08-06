@@ -1,6 +1,9 @@
 package com.zilche.zilche;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -179,11 +182,16 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final int pos = (int) v.getTag();
+                if (!hasInternetConnection()) {
+                    Toast.makeText(CategoryActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (pollList.get(pos).hasImage() == 1) {
                     pollList.get(pos).getFile().getDataInBackground(new GetDataCallback() {
                         @Override
                         public void done(byte[] bytes, ParseException e) {
                             if (e == null) {
+                                if (pollList.get(pos).getImage() != null) return;
                                 pollList.get(pos).setImage(bytes);
                                 Intent i = new Intent(CategoryActivity.this, PollViewActivity.class);
                                 i.putExtra("poll", polls.get(pos));
@@ -320,6 +328,12 @@ public class CategoryActivity extends AppCompatActivity {
         if (thisPoll.getInt("haveImage") == 1)
             newPoll.setFile(thisPoll.getParseFile("image"));
         return newPoll;
+    }
+
+    public boolean hasInternetConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
 }
