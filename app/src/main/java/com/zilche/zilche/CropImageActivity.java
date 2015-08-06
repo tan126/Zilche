@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
@@ -20,6 +25,7 @@ import android.widget.Toast;
 import com.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.ref.WeakReference;
 
 
 public class CropImageActivity extends ActionBarActivity {
@@ -51,7 +57,6 @@ public class CropImageActivity extends ActionBarActivity {
         String path;
         if (getIntent().getExtras().get("filepath") != null) {
             path = (String) getIntent().getExtras().get("filepath");
-            System.out.println(path);
         } else {
             String[] projection = {MediaStore.MediaColumns.DATA};
             Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -68,9 +73,7 @@ public class CropImageActivity extends ActionBarActivity {
         submit = (ImageButton) findViewById(R.id.acceptButton);
         iv = (CropImageView) findViewById(R.id.fullImage);
         iv.setAspectRatio(1, 1);
-
         iv.setFixedAspectRatio(true);
-
         iv.setImageBitmap(bm);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +126,7 @@ public class CropImageActivity extends ActionBarActivity {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, opt);
-        final int size = 1025;
+        final int size = 1024;
         int scale = 1;
         while (opt.outWidth / scale / 2 >= size || opt.outHeight / scale / 2 >= size) {
             scale *= 2;
@@ -138,6 +141,10 @@ public class CropImageActivity extends ActionBarActivity {
     public void reload_frame(View v) {
         iv.setFixedAspectRatio(false);
         iv.setFixedAspectRatio(true);
+    }
+
+    public void rotate_image(View v) {
+        iv.rotateImage(90);
     }
 
 }
