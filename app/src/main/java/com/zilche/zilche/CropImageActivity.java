@@ -77,6 +77,7 @@ public class CropImageActivity extends ActionBarActivity {
         iv.setFixedAspectRatio(true);
         iv.setImageBitmap(bm);
         iv.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        iv.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
