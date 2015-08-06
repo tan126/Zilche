@@ -86,6 +86,7 @@
     <string name="title_activity_add_survey_options">AddSurveyOptions</string>
     <string name="title_activity_create_poll_activity2">CreatePollActivity2</string>
     <string name="title_activity_crop_image">CropImageActivity</string>
+    <string name="title_activity_my_profile">MyProfileActivity</string>
 
 39
 </resources>

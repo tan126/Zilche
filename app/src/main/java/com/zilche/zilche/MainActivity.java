@@ -172,6 +172,18 @@ public class MainActivity extends AppCompatActivity {
                     myDrawer.closeDrawer(Gravity.LEFT);
 
                 }
+                else if (v.getText() == "My Profile"){
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        }
+                    }, 250);
+                    myDrawer.closeDrawer(Gravity.LEFT);
+                }
                 else if (v.getText() == "Log Out") {
                     ParseUser u = new ParseUser();
                     u.logOut();
