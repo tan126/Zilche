@@ -19,11 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#ddd"/>
-
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -102,16 +97,11 @@
                 android:maxLines="2"/>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
 
                 <LinearLayout
                     android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
-                    android:background="#20000000"
+                    android:background="#16000000"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
@@ -121,6 +111,7 @@
                         android:id="@+id/author"
                         android:layout_margin="4dp"
                         android:textSize="14sp"
+                        android:textColor="#333"
                         android:fontFamily="sans-serif-medium"
                         android:text="Anonymous"/>
 
@@ -132,6 +123,7 @@
 
                     <TextView
                         android:id="@+id/date"
+                        android:textColor="#333"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
@@ -141,8 +133,6 @@
                         />
 
                 </LinearLayout>
-
-            </LinearLayout>
 
         </LinearLayout>
 

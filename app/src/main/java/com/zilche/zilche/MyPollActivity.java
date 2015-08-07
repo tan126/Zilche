@@ -263,4 +263,13 @@ public class MyPollActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Zilche z = (Zilche) getApplication();
+        if (z.getMap() == null) {
+            z.updateMap();
+        }
+    }
+
 }
