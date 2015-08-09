@@ -9,16 +9,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="What's up?"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:fontFamily="sans-serif-medium"
-            android:id="@+id/messageHeader"
-            />
+
+         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="What's up?"
+                android:layout_margin="15dp"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:paddingTop="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_weight=".9"
+                android:id="@+id/messageHeader" />
+
+             <ImageButton
+                 android:id="@+id/editMessage"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="0.1"
+                 android:paddingTop="30sp"
+                 android:paddingRight="15dp"
+                 android:src="@drawable/ic_border_color_black_24dp"
+                 android:background="@null" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -30,12 +48,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. "
+            android:text="Hello world. Hello world. qqqqqqqqqqqqqqqqqqqqq. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. "
             android:textColor="#000"
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
             android:id="@+id/userMessage"
             />
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editMessageLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:hint="Enter personal message here..."
+                android:visibility="gone"
+                android:inputType="text"
+                android:singleLine="false"
+                android:imeOptions="actionDone"
+                />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -58,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="ho57@purdue.edu"
+            android:text="email"
             android:textColor="#000"
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
@@ -66,17 +102,33 @@
             />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:paddingTop="5dp"
-            android:text="Age"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:fontFamily="sans-serif-medium"
-            android:id="@+id/ageHeader"
-            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Age"
+                android:layout_margin="15dp"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:paddingTop="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_weight=".9"
+                android:id="@+id/ageHeader" />
+
+            <ImageButton
+                android:id="@+id/editAge"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:paddingTop="30sp"
+                android:paddingRight="15dp"
+                android:src="@drawable/ic_border_color_black_24dp"
+                android:background="@null" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -94,17 +146,33 @@
             android:id="@+id/userAge"
             />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:paddingTop="5dp"
-            android:text="Gender"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:fontFamily="sans-serif-medium"
-            android:id="@+id/genderHeader"
-            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:layout_margin="15dp"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:paddingTop="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_weight=".9"
+                android:id="@+id/genderHeader" />
+
+            <ImageButton
+                android:id="@+id/editGender"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:paddingTop="30sp"
+                android:paddingRight="15dp"
+                android:src="@drawable/ic_border_color_black_24dp"
+                android:background="@null" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -123,17 +191,33 @@
             />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:paddingTop="5dp"
-            android:text="Country"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:fontFamily="sans-serif-medium"
-            android:id="@+id/countryHeader"
-            />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Country"
+                android:layout_margin="15dp"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:paddingTop="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:layout_weight=".9"
+                android:id="@+id/countryHeader" />
+
+            <ImageButton
+                android:id="@+id/editCountry"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:paddingTop="30sp"
+                android:paddingRight="15dp"
+                android:src="@drawable/ic_border_color_black_24dp"
+                android:background="@null" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
@@ -149,6 +233,7 @@
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
             android:id="@+id/userCountry"
+            android:paddingBottom="30dp"
             />
 
     </LinearLayout>

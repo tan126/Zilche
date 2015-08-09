@@ -8,12 +8,16 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -65,6 +69,10 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
         usernameText = (TextView) findViewById(R.id.userName);
         ParseUser currentUser = ParseUser.getCurrentUser();
         usernameText.setText(currentUser.getString("name"));
+
+
+
+
 
         //firstFrag = new FirstFragment();
         //secondFrag = new SecondFragment();
@@ -150,9 +158,64 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
 
 
     public static class FirstFragment extends Fragment {
+
+        private TextView emailText;
+        private TextView messageText;
+        private EditText editMessageField;
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.profile_about, container, false);
+
+            final ParseUser currentUser = ParseUser.getCurrentUser();
+
+            emailText = (TextView) v.findViewById(R.id.userEmail);
+            emailText.setText(currentUser.getString("email"));
+
+            messageText = (TextView) v.findViewById(R.id.userMessage);
+            messageText.setText(currentUser.getString("message"));
+            editMessageField = (EditText) v.findViewById(R.id.editMessageLine);
+            final ImageButton editMessageButton = (ImageButton) v.findViewById(R.id.editMessage);
+            editMessageButton.setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+                public void onClick(View v) {
+                    messageText.setVisibility(View.GONE);
+
+                    if(currentUser.getString("message").toString() != null)
+                        editMessageField.setText(currentUser.getString("message").toString());
+
+                    editMessageField.setVisibility(View.VISIBLE);
+                    editMessageField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                                //Toast.makeText(getActivity(), editMessageField.getText().toString(), Toast.LENGTH_SHORT).show();
+                                currentUser.put("message", editMessageField.getText().toString());
+                                currentUser.saveInBackground();
+
+                                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                inputManager.toggleSoftInput(0, 0);
+
+                                editMessageField.setVisibility(View.GONE);
+                                messageText.setText(currentUser.getString("message"));
+                                messageText.setVisibility(View.VISIBLE);
+
+
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                }
+            });
+
+
+
+
             return v;
         }
 
