@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ import java.util.List;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    private boolean load = true;
+    private boolean load = false;
     private TextView title;
     int category = 0;
     private LinkedList<Poll> pollList;
@@ -44,6 +45,10 @@ public class CategoryActivity extends AppCompatActivity {
     private SwipeRefreshLayout srl;
     private int isRefreshing = 0;
     private HashMap<String, Integer> map;
+    private int skip = 0;
+    private int complete = 0;
+    private int visibleThreshold = 3;
+    private int previousTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +89,9 @@ public class CategoryActivity extends AppCompatActivity {
                         }
                     }
                 }, 10000);
-                get_updated();
+                complete = 0;
+                skip = 0;
+                populateList(skip);
             }
         });
         srl.setColorScheme(android.R.color.holo_blue_bright,
@@ -98,7 +105,7 @@ public class CategoryActivity extends AppCompatActivity {
         final LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         pollList = new LinkedList<>();
-        populateList();
+        populateList(skip);
         RVadapter rva = new RVadapter(pollList);
         rv.setAdapter(rva);
 
@@ -106,22 +113,37 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int pastVisibleItems = llm.getChildCount();
-                int visibleItemCount = llm.getItemCount();
-                int totalItemCount = llm.findFirstVisibleItemPosition();
+                int visibleItemCount = recyclerView.getChildCount();
+                int totalItemCount = llm.getItemCount();
+                int firstVisibleItem = llm.findFirstVisibleItemPosition();
 
-                if (load) {
-                    if ((visibleItemCount + pastVisibleItems ) >= totalItemCount) {
-                        load = false;
-                        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                //if (load) {
+                 //   if (totalItemCount > previousTotal) {
+                  //      load = false;
+                   //     previousTotal = totalItemCount;
+                    //}
+                //}
+                if (!load && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    if (complete == 0) {
+                        if (pollList.size() == 0 || pollList.getLast().getId().compareTo("-1") != 0) {
+                            Poll tmp = new Poll();
+                            tmp.setId("-1");
+                            pollList.add(tmp);
+                            rv.getAdapter().notifyDataSetChanged();
+                        }
+                        populateList(skip);
                     }
                 }
+
             }
         });
     }
 
-    public void populateList() {
+    public void populateList(final int skip2) {
+        load = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
+        query.setLimit(15);
+        query.setSkip(skip2 * 15);
         if (category != 0)
             query.whereEqualTo("category", category);
         query.orderByDescending("lastUpdate");
@@ -129,16 +151,41 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
+                    if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
+                        pollList.removeLast();
+                        rv.getAdapter().notifyDataSetChanged();
+                    }
+                    if (list.size() < 15 || list.size() == 0) {
+                        complete = 1;
+                    } else {
+                        complete = 0;
+                    }
                     if (list != null && list.size() != 0) {
+                        if (skip2 == 0) {
+                            pollList.clear();
+                            previousTotal = 0;
+                        }
                         for (int i = 0; i < list.size(); i++) {
                             pollList.add(Util.parsePollObject(list.get(i)));
                         }
-                        rv.swapAdapter(new RVadapter(pollList), false);
+
+                        rv.getAdapter().notifyDataSetChanged();
+                        srl.setRefreshing(false);
+                        isRefreshing = 0;
+                        load = false;
+                        skip++;
                     }
                 } else {
+                    if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
+                        pollList.removeLast();
+                        rv.getAdapter().notifyDataSetChanged();
+                    }
+                    load = false;
                     Toast.makeText(CategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                spinner.setVisibility(View.GONE);
+                if (spinner.getVisibility() == View.VISIBLE) {
+                    spinner.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -198,6 +245,8 @@ public class CategoryActivity extends AppCompatActivity {
 
         public class PollViewHolder extends RecyclerView.ViewHolder{
 
+            LinearLayout main;
+            ProgressBar pb;
             CardView cv;
             TextView question;
             TextView date;
@@ -218,6 +267,7 @@ public class CategoryActivity extends AppCompatActivity {
                 category_icon = (ImageView) itemView.findViewById(R.id.category_icon);
                 has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
                 author = (TextView) itemView.findViewById(R.id.author);
+                pb = (ProgressBar) itemView.findViewById(R.id.pb);
             }
         }
 
@@ -228,12 +278,21 @@ public class CategoryActivity extends AppCompatActivity {
         @Override
         public RVadapter.PollViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.items, viewGroup, false);
+            v.setTag(i);
             PollViewHolder pvh = new PollViewHolder(v);
             return pvh;
         }
 
         @Override
         public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
+            if (polls.get(i).getId().compareTo("-1") == 0) {
+                pollViewHolder.pb.setVisibility(View.VISIBLE);
+                pollViewHolder.cv.setVisibility(View.GONE);
+                return;
+            } else {
+                pollViewHolder.pb.setVisibility(View.GONE);
+                pollViewHolder.cv.setVisibility(View.VISIBLE);
+            }
             Poll p = polls.get(i);
             pollViewHolder.total_votes.setText(Integer.toString(p.totalVotes()));
             pollViewHolder.category_icon.setImageResource(Util.drawables[p.getCategory()]);
