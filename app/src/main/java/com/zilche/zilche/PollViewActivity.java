@@ -136,7 +136,7 @@ public class PollViewActivity extends ActionBarActivity {
                                 fav_button.setEnabled(true);
                                 fav_button.setClickable(true);
                             } else {
-                                app.getMap().put(poll.getId(), 1);
+                                app.getFav().put(poll.getId(), 1);
                             }
                         }
                     });
