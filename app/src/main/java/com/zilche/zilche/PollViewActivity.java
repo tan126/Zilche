@@ -24,6 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.LogInCallback;
@@ -35,6 +38,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 
 public class PollViewActivity extends ActionBarActivity {
 
@@ -59,6 +63,8 @@ public class PollViewActivity extends ActionBarActivity {
     private ScrollView sv;
     private LinearLayout loading;
     private Poll poll;
+    private ImageButton fav_button;
+    private boolean favourite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +82,79 @@ public class PollViewActivity extends ActionBarActivity {
         total = (TextView) findViewById(R.id.total);
         sv = (ScrollView) findViewById(R.id.scroll_view_poll);
         loading = (LinearLayout) findViewById(R.id.loading);
+        fav_button = (ImageButton) findViewById(R.id.fav_poll_view);
+
+        final Zilche app = (Zilche) getApplication();
+
+        fav_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fav_button.setEnabled(false);
+                fav_button.setClickable(false);
+                if (favourite) {
+                    fav_button.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                    ParseQuery<ParseObject> query = new ParseQuery<>("Favourite");
+                    query.whereEqualTo("Key", poll.getId());
+                    query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
+                    query.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            if(e == null) {
+                                list.get(0).deleteInBackground(new DeleteCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e != null) {
+                                            fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                                            fav_button.setEnabled(true);
+                                            fav_button.setClickable(true);
+                                            Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            app.getFav().remove(poll.getId());
+                                        }
+                                    }
+                                });
+                            } else {
+                                fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                                fav_button.setEnabled(true);
+                                fav_button.setClickable(true);
+                                Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                    ParseObject po = new ParseObject("Favourite");
+                    po.put("user", ParseUser.getCurrentUser().getObjectId());
+                    po.put("Key", poll.getId());
+                    po.put("Fav", 1);
+                    po.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later.", Toast.LENGTH_SHORT).show();
+                                fav_button.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                                fav_button.setEnabled(true);
+                                fav_button.setClickable(true);
+                            } else {
+                                app.getMap().put(poll.getId(), 1);
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
         poll = extras.getParcelable("poll");
-        Zilche app = (Zilche) getApplication();
+
         map = app.getMap();
+        if (app.getFav().get(poll.getId()) != null) {
+            favourite = true;
+            fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+        } else {
+            fav_button.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+            favourite = false;
+        }
 
         showGraph_btn.setOnClickListener(new View.OnClickListener() {
             @Override

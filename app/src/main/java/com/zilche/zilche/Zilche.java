@@ -17,6 +17,7 @@ import java.util.List;
 public class Zilche extends Application {
 
     HashMap<String, Integer> map = new HashMap<String, Integer>();
+    HashMap<String, Integer> fav = new HashMap<>();
 
     @Override
     public void onCreate() {
@@ -30,6 +31,8 @@ public class Zilche extends Application {
     public HashMap<String, Integer> getMap() {
         return map;
     }
+
+    public HashMap<String, Integer> getFav() {return fav; }
 
     public void updateMap() {
         map = new HashMap<>();
@@ -50,6 +53,30 @@ public class Zilche extends Application {
                 }
                 if (list.size() == 1000) {
                     updateMap(s + 1);
+                }
+            }
+        });
+    }
+
+    public void updateFav() {
+        updateFav(0);
+    }
+
+    public void updateFav(final int skip) {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Favourite");
+        query.setLimit(1000);
+        query.setSkip(1000 * skip);
+        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    for (ParseObject o : list) {
+                        fav.put(o.getString("Key"), o.getInt("Fav"));
+                    }
+                    if (list.size() == 1000) {
+                        updateFav(skip + 1);
+                    }
                 }
             }
         });

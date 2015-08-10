@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
         map = app.getMap();
-
+        app.updateFav();
         ImageView v = (ImageView) findViewById(R.id.loginArea);
         v.setClickable(true);
         // Load Username
