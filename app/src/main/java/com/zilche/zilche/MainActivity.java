@@ -111,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
         actionA.setTitle("New Poll");
-        FloatingActionButton actionB = (FloatingActionButton) findViewById(R.id.action_b);
-        actionB.setTitle("New Survey");
 
         actionA.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,15 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        actionB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
-                Intent t = new Intent(MainActivity.this, CreateSurveyActivity.class);
-                startActivity(t);
-                //newSurvey();
-            }
-        });
+
 
         final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         plusButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
@@ -372,10 +362,7 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);*/
     }
 
-    public void newSurvey() {
-        Intent i = new Intent(this, tmpNewPoll.class);
-        startActivity(i);
-    }
+
 
     public void getUserRecord(int skip) {
         final int s = skip;
