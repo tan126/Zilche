@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+
+    <Button
+        android:id="@+id/maleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Male "
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0.3"
+        android:layout_marginLeft="25dp"
+        />
+
+    <Button
+        android:id="@+id/femaleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Female "
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/maleButton"
+        android:layout_weight="0.3"
+        android:layout_marginLeft="25dp"
+        />
+    <Button
+        android:id="@+id/otherButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Other "
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/femaleButton"
+        android:layout_weight="0.3"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="25dp"
+        />
+</RelativeLayout>

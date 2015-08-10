@@ -1,6 +1,7 @@
 package com.zilche.zilche;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -162,6 +164,7 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
         private TextView emailText;
         private TextView messageText;
         private EditText editMessageField;
+        private TextView genderText;
 
 
         @Override
@@ -184,7 +187,7 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                 public void onClick(View v) {
                     messageText.setVisibility(View.GONE);
 
-                    if(currentUser.getString("message").toString() != null)
+                    if (currentUser.getString("message").toString() != null)
                         editMessageField.setText(currentUser.getString("message").toString());
 
                     editMessageField.setVisibility(View.VISIBLE);
@@ -213,6 +216,61 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                 }
             });
 
+            genderText = (TextView) v.findViewById(R.id.userGender);
+            if(currentUser.getString("gender") != null)
+                genderText.setText(currentUser.getString("gender"));
+
+            final ImageButton editGenderButton = (ImageButton) v.findViewById(R.id.editGender);
+            editGenderButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    // custom dialog
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.gender_dialog);
+                    dialog.setTitle("Select Gender");
+
+
+                    Button maleButton = (Button) dialog.findViewById(R.id.maleButton);
+                    maleButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            currentUser.put("gender", "male");
+                            currentUser.saveInBackground();
+                            genderText.setText(currentUser.getString("gender"));
+                            dialog.dismiss();
+                        }
+                    });
+
+                    Button femaleButton = (Button) dialog.findViewById(R.id.femaleButton);
+                    femaleButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            currentUser.put("gender", "female");
+                            currentUser.saveInBackground();
+                            genderText.setText(currentUser.getString("gender"));
+                            dialog.dismiss();
+                        }
+                    });
+
+                    Button otherButton = (Button) dialog.findViewById(R.id.otherButton);
+                    otherButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            currentUser.put("gender", "other");
+                            currentUser.saveInBackground();
+                            genderText.setText(currentUser.getString("gender"));
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+
+
+                }
+            });
 
 
 
