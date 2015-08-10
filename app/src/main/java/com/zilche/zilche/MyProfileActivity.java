@@ -178,41 +178,47 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
 
             messageText = (TextView) v.findViewById(R.id.userMessage);
             messageText.setText(currentUser.getString("message"));
-            editMessageField = (EditText) v.findViewById(R.id.editMessageLine);
             final ImageButton editMessageButton = (ImageButton) v.findViewById(R.id.editMessage);
             editMessageButton.setOnClickListener(new View.OnClickListener() {
 
 
                 @Override
                 public void onClick(View v) {
-                    messageText.setVisibility(View.GONE);
 
+
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.message_dialog);
+                    dialog.setTitle("Your personal message:");
+
+                    editMessageField = (EditText) dialog.findViewById(R.id.editMessageLine);
                     if (currentUser.getString("message").toString() != null)
                         editMessageField.setText(currentUser.getString("message").toString());
 
-                    editMessageField.setVisibility(View.VISIBLE);
-                    editMessageField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        public void onClick(View v) {
 
-                                //Toast.makeText(getActivity(), editMessageField.getText().toString(), Toast.LENGTH_SHORT).show();
-                                currentUser.put("message", editMessageField.getText().toString());
-                                currentUser.saveInBackground();
-
-                                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                inputManager.toggleSoftInput(0, 0);
-
-                                editMessageField.setVisibility(View.GONE);
-                                messageText.setText(currentUser.getString("message"));
-                                messageText.setVisibility(View.VISIBLE);
-
-
-                                return true;
-                            }
-                            return false;
+                            dialog.dismiss();
                         }
                     });
+
+                    Button doneButton = (Button) dialog.findViewById(R.id.doneButton);
+                    doneButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            currentUser.put("message", editMessageField.getText().toString());
+                            currentUser.saveInBackground();
+                            messageText.setText(currentUser.getString("message"));
+                            dialog.dismiss();
+                        }
+                    });
+
+
+                    dialog.show();
+
+
                 }
             });
 
@@ -228,7 +234,7 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                     // custom dialog
                     final Dialog dialog = new Dialog(getActivity());
                     dialog.setContentView(R.layout.gender_dialog);
-                    dialog.setTitle("Select Gender");
+                    dialog.setTitle("Select Gender:");
 
 
                     Button maleButton = (Button) dialog.findViewById(R.id.maleButton);

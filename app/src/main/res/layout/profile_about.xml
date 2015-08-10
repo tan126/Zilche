@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="Hello world. Hello world. qqqqqqqqqqqqqqqqqqqqq. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. Hello world. "
+            android:text="Nice to meet you!"
             android:textColor="#000"
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
@@ -56,22 +56,7 @@
             />
 
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/editMessageLine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:hint="Enter personal message here..."
-                android:visibility="gone"
-                android:inputType="text"
-                android:singleLine="false"
-                android:imeOptions="actionDone"
-                />
-        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
