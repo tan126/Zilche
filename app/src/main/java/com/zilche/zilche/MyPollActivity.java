@@ -237,7 +237,8 @@ public class MyPollActivity extends ActionBarActivity {
                         @Override
                         public void done(List<ParseObject> parseObjects, ParseException e) {
                             if (e == null) {
-                                System.out.println(parseObjects.get(0));
+//                                System.out.println(parseObjects.get(0));
+                                // Unfortunately, Zilche has stopped. ^
                                 for (ParseObject delete : parseObjects) {
                                     delete.deleteInBackground();
                                     Toast.makeText(getApplicationContext(), "Poll deleted", Toast.LENGTH_SHORT).show();
