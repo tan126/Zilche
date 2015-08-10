@@ -89,7 +89,6 @@ public class CategoryActivity extends AppCompatActivity {
                         }
                     }
                 }, 10000);
-                complete = 0;
                 skip = 0;
                 populateList(skip);
             }
@@ -116,14 +115,9 @@ public class CategoryActivity extends AppCompatActivity {
                 int visibleItemCount = recyclerView.getChildCount();
                 int totalItemCount = llm.getItemCount();
                 int firstVisibleItem = llm.findFirstVisibleItemPosition();
-
-                //if (load) {
-                 //   if (totalItemCount > previousTotal) {
-                  //      load = false;
-                   //     previousTotal = totalItemCount;
-                    //}
-                //}
-                if (!load && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                rv.canScrollVertically(1);
+                //if (!load && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                if (!load && !rv.canScrollVertically(1)) {
                     if (complete == 0) {
                         if (pollList.size() == 0 || pollList.getLast().getId().compareTo("-1") != 0) {
                             Poll tmp = new Poll();
@@ -155,7 +149,7 @@ public class CategoryActivity extends AppCompatActivity {
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
                     }
-                    if (list.size() < 15 || list.size() == 0) {
+                    if (list.size() < 15) {
                         complete = 1;
                     } else {
                         complete = 0;

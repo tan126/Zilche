@@ -26,4 +26,6 @@
 
     </style>
 
+    <style name="progress" parent="android:Widget.Holo.ProgressBar"></style>
+
 </resources>

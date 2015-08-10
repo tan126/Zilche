@@ -144,7 +144,7 @@
         android:visibility="gone"
         android:layout_gravity="center"
         android:id="@+id/pb"
-        style="?android:indeterminateProgressStyle"
+        style="@style/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
