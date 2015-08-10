@@ -11,11 +11,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +43,7 @@ public class CategoryActivity extends AppCompatActivity {
     private boolean load = false;
     private TextView title;
     int category = 0;
+    private ImageButton sort;
     private LinkedList<Poll> pollList;
     private ProgressBar spinner;
     private RecyclerView rv;
@@ -47,8 +52,8 @@ public class CategoryActivity extends AppCompatActivity {
     private HashMap<String, Integer> map;
     private int skip = 0;
     private int complete = 0;
-    private int visibleThreshold = 3;
-    private int previousTotal = 0;
+    private int visibleThreshold = 15;
+    private int sortBy = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,8 @@ public class CategoryActivity extends AppCompatActivity {
         map = app.getMap();
         Bundle extras = getIntent().getExtras();
         title = (TextView) findViewById(R.id.title_cat);
+        sort = (ImageButton) findViewById(R.id.sort_cat);
+
         if (extras != null) {
             category = extras.getInt("category_index");
         }
@@ -90,7 +97,7 @@ public class CategoryActivity extends AppCompatActivity {
                     }
                 }, 10000);
                 skip = 0;
-                populateList(skip);
+                populateList(skip, sortBy);
             }
         });
         srl.setColorScheme(android.R.color.holo_blue_bright,
@@ -104,7 +111,7 @@ public class CategoryActivity extends AppCompatActivity {
         final LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
         pollList = new LinkedList<>();
-        populateList(skip);
+        populateList(skip, sortBy);
         RVadapter rva = new RVadapter(pollList);
         rv.setAdapter(rva);
 
@@ -115,9 +122,8 @@ public class CategoryActivity extends AppCompatActivity {
                 int visibleItemCount = recyclerView.getChildCount();
                 int totalItemCount = llm.getItemCount();
                 int firstVisibleItem = llm.findFirstVisibleItemPosition();
-                rv.canScrollVertically(1);
                 //if (!load && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-                if (!load && !rv.canScrollVertically(1)) {
+                if (!load && ((pollList.size() > 0 && pollList.size() - firstVisibleItem <= visibleThreshold) || !rv.canScrollVertically(1))) {
                     if (complete == 0) {
                         if (pollList.size() == 0 || pollList.getLast().getId().compareTo("-1") != 0) {
                             Poll tmp = new Poll();
@@ -125,7 +131,7 @@ public class CategoryActivity extends AppCompatActivity {
                             pollList.add(tmp);
                             rv.getAdapter().notifyDataSetChanged();
                         }
-                        populateList(skip);
+                        populateList(skip, sortBy);
                     }
                 }
 
@@ -133,14 +139,18 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    public void populateList(final int skip2) {
+    public void populateList(final int skip2, int sortBy) {
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         query.setLimit(15);
         query.setSkip(skip2 * 15);
         if (category != 0)
             query.whereEqualTo("category", category);
-        query.orderByDescending("lastUpdate");
+        if (sortBy == 1) {
+            query.orderByDescending("lastUpdate");
+        } else {
+            query.orderByDescending("total");
+        }
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -157,7 +167,6 @@ public class CategoryActivity extends AppCompatActivity {
                     if (list != null && list.size() != 0) {
                         if (skip2 == 0) {
                             pollList.clear();
-                            previousTotal = 0;
                         }
                         for (int i = 0; i < list.size(); i++) {
                             pollList.add(Util.parsePollObject(list.get(i)));
@@ -317,5 +326,43 @@ public class CategoryActivity extends AppCompatActivity {
         }
     }
 
+    public void openMenu(View v) {
+        PopupMenu menu = new PopupMenu(this, v);
+        menu.getMenuInflater().inflate(R.menu.menu_category, menu.getMenu());
+        if (sortBy == 0) {
+            menu.getMenu().findItem(R.id.sort_date).setCheckable(false);
+            menu.getMenu().findItem(R.id.sort_popular).setCheckable(true);
+            menu.getMenu().findItem(R.id.sort_popular).setChecked(true);
+        } else {
+            menu.getMenu().findItem(R.id.sort_popular).setCheckable(false);
+            menu.getMenu().findItem(R.id.sort_date).setCheckable(true);
+            menu.getMenu().findItem(R.id.sort_date).setChecked(true);
+        }
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Toast.makeText(CategoryActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+        menu.show();
+    }
 
+    public void sortPopular(MenuItem m) {
+        sortBy = 0;
+        skip = 0;
+        pollList.clear();
+        rv.getAdapter().notifyDataSetChanged();
+        spinner.setVisibility(View.VISIBLE);
+        populateList(skip, sortBy);
+    }
+
+    public void sortDate(MenuItem m) {
+        sortBy = 1;
+        skip = 0;
+        pollList.clear();
+        rv.getAdapter().notifyDataSetChanged();
+        spinner.setVisibility(View.VISIBLE);
+        populateList(skip, sortBy);
+    }
 }
