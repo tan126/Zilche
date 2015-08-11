@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -165,7 +166,7 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
         private TextView messageText;
         private EditText editMessageField;
         private TextView genderText;
-
+        private TextView countryText;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -272,6 +273,54 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                             dialog.dismiss();
                         }
                     });
+                    dialog.show();
+
+
+                }
+            });
+
+
+            countryText = (TextView) v.findViewById(R.id.userCountry);
+            if(currentUser.getString("country") != null)
+                countryText.setText(currentUser.getString("country"));
+            final ImageButton editCountryButton = (ImageButton) v.findViewById(R.id.editCountry);
+            editCountryButton.setOnClickListener(new View.OnClickListener() {
+
+
+                @Override
+                public void onClick(View v) {
+
+
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.setContentView(R.layout.country_dialog);
+                    dialog.setTitle("Select Country:");
+                    final Spinner countrySpinner = (Spinner) dialog.findViewById(R.id.countrySpinner);
+
+                    Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    Button doneButton = (Button) dialog.findViewById(R.id.doneButton);
+                    doneButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(countrySpinner.getSelectedItem().toString().equals("Do not display")){
+                                currentUser.put("country", "Unknown");
+                            }
+                            else {
+                                currentUser.put("country", countrySpinner.getSelectedItem().toString());
+                            }
+                            currentUser.saveInBackground();
+                            countryText.setText(currentUser.getString("country"));
+                            dialog.dismiss();
+                        }
+                    });
+
                     dialog.show();
 
 

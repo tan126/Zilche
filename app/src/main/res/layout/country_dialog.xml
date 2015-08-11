@@ -3,14 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <EditText
-        android:id="@+id/editMessageLine"
-        android:layout_width="match_parent"
+    <Spinner
+        android:id="@+id/countrySpinner"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="25dp"
-        android:hint="Enter personal message here..."
-        android:visibility="visible"
-        />
+        android:entries="@array/countries"/>
 
     <Button
         android:id="@+id/cancelButton"
@@ -19,7 +17,7 @@
         android:text=" Cancel "
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
-        android:layout_below="@+id/editMessageLine"
+        android:layout_below="@+id/countrySpinner"
         android:layout_weight="0.5"
         android:layout_marginLeft="25dp"
         />
@@ -34,6 +32,6 @@
         android:layout_weight="0.5"
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="25dp"
-        android:layout_below="@+id/editMessageLine"
+        android:layout_below="@+id/countrySpinner"
         />
 </RelativeLayout>
