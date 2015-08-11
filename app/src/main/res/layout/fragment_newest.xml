@@ -1,27 +1,30 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fillViewport="true">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-                <GridView
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:numColumns="1"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:verticalSpacing="2dp"
-                    android:stretchMode="columnWidth"
-                    android:id="@+id/gridv"
-                    android:layout_marginTop="2dp"
-                    android:background="#11100000"
-                    />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_newest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyle"
+        />
+
 </RelativeLayout>

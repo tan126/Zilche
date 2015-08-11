@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPageTransformer(false, new FadePageTransformer());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
+        viewPager.setOffscreenPageLimit(3);
         map = app.getMap();
         app.updateFav();
         ImageView v = (ImageView) findViewById(R.id.loginArea);
@@ -279,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment;
+            Fragment fragment = null;
             if(position == 0){
                 fragment = new CategoryFragment();
             }
@@ -289,12 +290,6 @@ public class MainActivity extends AppCompatActivity {
             else if (position == 2){
                 fragment = new PopularFragment();
             }
-            else {
-                fragment = new placeHolder();
-            }
-            Bundle args = new Bundle();
-            args.putInt(placeHolder.ARG_OBJECT, position + 1);
-            fragment.setArguments(args);
             return fragment;
         }
 

@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,21 +34,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PopularFragment extends Fragment{
 
-    GridView gv;
-    ArrayList<String> pollList;
-    ArrayList<String> timeList;
-    ArrayList<String> totalList;
-    ArrayList<String> authorList;
-    ArrayList<String> hotnessList;
-    SwipeRefreshLayout swipeLayout;
-    ArrayList<Poll> pollOnjectList;
-    ArrayList<Integer> categoryList;
-    ParseQuery<ParseObject> query;
-    int isRefreshing;
+    private ProgressBar spinner;
+    private boolean load;
+    private LinkedList<Poll> pollList;
+    private HashMap<String, Integer> map;
+    private int skip;
+    private int isRefreshing;
+    private int complete;
+    private RecyclerView rv;
+    private SwipeRefreshLayout srl;
+    private int visibleThreshold = 15;
 
     public PopularFragment() {
         // Required empty public constructor
@@ -58,12 +63,18 @@ public class PopularFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_newest, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_newest, container, false);
+        return rootView;
+    }
 
-        isRefreshing = 0;
-        swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanced) {
+        super.onActivityCreated(savedInstanced);
+        Zilche app = (Zilche) getActivity().getApplication();
+        map = app.getMap();
+        spinner = (ProgressBar) v.findViewById(R.id.progress_bar);
+        srl = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 isRefreshing = 1;
@@ -71,333 +82,193 @@ public class PopularFragment extends Fragment{
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if ( isRefreshing == 1 ) {
+                        if (isRefreshing == 1) {
                             Toast.makeText(getActivity(), "Connection Failed", Toast.LENGTH_SHORT).show();
-                            swipeLayout.setRefreshing(false);
+                            srl.setRefreshing(false);
                             isRefreshing = 0;
                         }
                     }
                 }, 10000);
-
-                pollList = new ArrayList<String>();
-                timeList = new ArrayList<String>();
-                totalList = new ArrayList<String>();
-                authorList = new ArrayList<String>();
-                hotnessList = new ArrayList<String>();
-                pollOnjectList = new ArrayList<Poll>();
-                categoryList = new ArrayList<Integer>();
-
-                query = ParseQuery.getQuery("poll");
-                query.orderByDescending("total");
-
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    @Override
-                    public void done(List<ParseObject> list, ParseException e) {
-                        if (e == null) {
-                            for (int i = 0; i < list.size(); i++) {
-                                ParseObject thisPoll = list.get(i);
-                                //String tmpStr = thisPoll.getString("question");
-                                //String name = thisPoll.getString("nickname");
-                                Poll tmpPoll = parsePollObject(thisPoll);
-                                String tmpStr = tmpPoll.getQuestion();
-                                String name = tmpPoll.getAuthor();
-                                pollList.add(tmpStr);
-                                String tmp = "";
-                                int total = thisPoll.getInt("total");
-                                totalList.add("" + total + " participants");
-                                if (total < 50)
-                                    hotnessList.add("g");
-                                else if (total < 100)
-                                    hotnessList.add("y");
-                                else if (total >= 100)
-                                    hotnessList.add("r");
-                                else
-                                    hotnessList.add("g");
-                                long updatedTime = thisPoll.getLong("createTime");
-                                long diffMS = System.currentTimeMillis() - updatedTime;
-                                long diffS = diffMS / 1000;
-                                if (diffS > 60) {
-                                    long diffM = diffS / 60;
-                                    if (diffM > 60) {
-                                        long diffH = diffM / 60;
-                                        if (diffH > 24) {
-                                            long diffD = diffH / 24;
-                                            tmp +=  diffD + " days ago";
-                                        } else {
-                                            if (diffH == 1) {
-                                                tmp += diffH + " hour ago";
-                                            } else {
-                                                tmp += diffH + " hours ago";
-                                            }
-                                        }
-                                    } else
-                                        tmp +=  + diffM + " minutes ago";
-                                } else
-                                    tmp += "1 minute ago";
-                                //tmp += " by " + name;
-                                pollOnjectList.add(parsePollObject(thisPoll));
-                                timeList.add(tmp);
-                                categoryList.add(tmpPoll.getCategory());
-
-                                //question: tmpStr
-                                //options:
-                                gv.setAdapter(new PollListAdapter(getActivity()));
-                                swipeLayout.setRefreshing(false);
-                                isRefreshing = 0;
-                            }
-                        } else {
-                            Log.d("Newest Poll", "Error: " + e.getMessage());
-                        }
-                    }
-                });
+                skip = 0;
+                populateList(skip);
             }
         });
-        swipeLayout.setColorScheme(android.R.color.holo_blue_bright,
+        srl.setColorScheme(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+        rv = (RecyclerView) v.findViewById(R.id.rv_newest);
+        final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rv.setLayoutManager(llm);
+        rv.setHasFixedSize(true);
+        pollList = new LinkedList<>();
+        populateList(skip);
+        RVadapter rva = new RVadapter(pollList);
+        rv.setAdapter(rva);
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstVisibleItem = llm.findFirstVisibleItemPosition();
+                if (!load && ((pollList.size() > 0 && pollList.size() - firstVisibleItem <= visibleThreshold) || !rv.canScrollVertically(1))) {
+                    if (complete == 0) {
+                        if (pollList.size() == 0 || pollList.getLast().getId().compareTo("-1") != 0) {
+                            Poll tmp = new Poll();
+                            tmp.setId("-1");
+                            pollList.add(tmp);
+                            rv.getAdapter().notifyDataSetChanged();
+                        }
+                        populateList(skip);
+                    }
+                }
+            }
+        });
+    }
 
+    public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
 
-        gv = (GridView) rootView.findViewById(R.id.gridv);
+        List<Poll> polls;
+        View.OnClickListener onclick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int pos = (int) v.getTag();
+                Intent i = new Intent(getActivity(), PollViewActivity.class);
+                i.putExtra("poll", polls.get(pos));
+                startActivity(i);
+                getActivity().overridePendingTransition(R.anim.right_to_left, 0);
+            }
 
-        pollList = new ArrayList<String>();
-        timeList = new ArrayList<String>();
-        totalList = new ArrayList<String>();
-        authorList = new ArrayList<String>();
-        hotnessList = new ArrayList<String>();
-        pollOnjectList = new ArrayList<Poll>();
-        categoryList = new ArrayList<Integer>();
+        };
 
-        query = ParseQuery.getQuery("poll");
+        public class PollViewHolder extends RecyclerView.ViewHolder{
+
+            ProgressBar pb;
+            CardView cv;
+            TextView question;
+            TextView date;
+            TextView total_votes;
+            ImageView iv;
+            ImageView has_photo;
+            ImageView category_icon;
+            TextView author;
+
+            public PollViewHolder(View itemView) {
+                super(itemView);
+                cv = (CardView) itemView.findViewById(R.id.cv);
+                question = (TextView) itemView.findViewById(R.id.question);
+                date = (TextView) itemView.findViewById(R.id.date);
+                total_votes = (TextView) itemView.findViewById(R.id.category);
+                cv.setOnClickListener(onclick);
+                iv = (ImageView) itemView.findViewById(R.id.done);
+                category_icon = (ImageView) itemView.findViewById(R.id.category_icon);
+                has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
+                author = (TextView) itemView.findViewById(R.id.author);
+                pb = (ProgressBar) itemView.findViewById(R.id.pb);
+            }
+        }
+
+        public RVadapter(List<Poll> pollList) {
+            polls = pollList;
+        }
+
+        @Override
+        public RVadapter.PollViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.items, viewGroup, false);
+            v.setTag(i);
+            PollViewHolder pvh = new PollViewHolder(v);
+            return pvh;
+        }
+
+        @Override
+        public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
+            if (polls.get(i).getId().compareTo("-1") == 0) {
+                pollViewHolder.pb.setVisibility(View.VISIBLE);
+                pollViewHolder.cv.setVisibility(View.GONE);
+                return;
+            } else {
+                pollViewHolder.pb.setVisibility(View.GONE);
+                pollViewHolder.cv.setVisibility(View.VISIBLE);
+            }
+            Poll p = polls.get(i);
+            pollViewHolder.total_votes.setText(Integer.toString(p.totalVotes()));
+            pollViewHolder.category_icon.setImageResource(Util.drawables[p.getCategory()]);
+            pollViewHolder.date.setText(p.getDate_added());
+            pollViewHolder.question.setText(p.getQuestion());
+            pollViewHolder.cv.setTag(i);
+            if (map.get(p.getId()) != null) {
+                pollViewHolder.iv.setImageResource(R.drawable.ic_done_green_18dp);
+            } else {
+                pollViewHolder.iv.setImageResource(R.drawable.ic_done_grey_18dp);
+            }
+            if (p.hasImage() == 1) {
+                pollViewHolder.has_photo.setVisibility(View.VISIBLE);
+            } else {
+                pollViewHolder.has_photo.setVisibility(View.GONE);
+            }
+            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
+        }
+
+        @Override
+        public void onAttachedToRecyclerView(RecyclerView rv) {
+            super.onAttachedToRecyclerView(rv);
+        }
+
+        @Override
+        public int getItemCount() {
+            return polls.size();
+        }
+    }
+
+    public void populateList(final int skip2) {
+        load = true;
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
+        query.setLimit(15);
+        query.setSkip(skip2 * 15);
         query.orderByDescending("total");
-
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    for (int i = 0; i < list.size(); i++) {
-                        ParseObject thisPoll = list.get(i);
-                        //String tmpStr = thisPoll.getString("question");
-                        //String name = thisPoll.getString("nickname");
-                        Poll tmpPoll = parsePollObject(thisPoll);
-                        String tmpStr = tmpPoll.getQuestion();
-                        String name = tmpPoll.getAuthor();
-                        pollList.add(tmpStr);
-                        String tmp = "";
-                        int total = thisPoll.getInt("total");
-                        totalList.add("" + total + " participants");
-                        if ( total < 50 )
-                            hotnessList.add("g");
-                        else if ( total < 100 )
-                            hotnessList.add("y");
-                        else if ( total >= 100 )
-                            hotnessList.add("r");
-                        else
-                            hotnessList.add("g");
-                        long updatedTime = thisPoll.getLong("createTime");
-                        long diffMS = System.currentTimeMillis() - updatedTime;
-                        long diffS = diffMS / 1000;
-                        if ( diffS > 60 ) {
-                            long diffM = diffS / 60;
-                            if ( diffM > 60 ){
-                                long diffH = diffM / 60;
-                                if ( diffH > 24 ) {
-                                    long diffD = diffH / 24;
-                                    tmp +=  diffD + " days ago";
-                                }
-                                else {
-                                    if (diffH == 1) {
-                                        tmp += diffH + " hour ago";
-                                    } else {
-                                        tmp +=  + diffH + " hours ago";
-                                    }
-                                }
-                            }
-                            else
-                                tmp += + diffM + " minutes ago";
-                        }
-                        else
-                            tmp += " 1 minute ago";
-                        //tmp += " by " + name;
-                        timeList.add(tmp);
-                        categoryList.add(tmpPoll.getCategory());
-                        pollOnjectList.add(parsePollObject(thisPoll));
-                        gv.setAdapter(new PollListAdapter(getActivity()));
+                    if (spinner.getVisibility() == View.VISIBLE) {
+                        spinner.setVisibility(View.GONE);
                     }
+                    if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
+                        pollList.removeLast();
+                        rv.getAdapter().notifyDataSetChanged();
+                    }
+                    if (list.size() < 15) {
+                        complete = 1;
+                    } else {
+                        complete = 0;
+                    }
+                    if (list != null && list.size() != 0) {
+                        if (skip2 == 0) {
+                            pollList.clear();
+                        }
+                        for (int i = 0; i < list.size(); i++) {
+                            pollList.add(Util.parsePollObject(list.get(i)));
+                        }
+
+                        rv.getAdapter().notifyDataSetChanged();
+                        srl.setRefreshing(false);
+                        isRefreshing = 0;
+                        load = false;
+                        skip++;
+                    }
+                } else {
+                    if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
+                        pollList.removeLast();
+                        rv.getAdapter().notifyDataSetChanged();
+                    }
+                    load = false;
+                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-                else {
-                    Log.d("Newest Poll", "Error: " + e.getMessage());
+                if (spinner.getVisibility() == View.VISIBLE) {
+                    spinner.setVisibility(View.GONE);
                 }
             }
         });
-
-        return rootView;
     }
-
-    private Poll parsePollObject(ParseObject thisPoll){
-        String id = thisPoll.getObjectId();
-        String question = thisPoll.getString("question");
-        int options_count = thisPoll.getInt("optionNum");
-        JSONArray tmpOptions = thisPoll.getJSONArray("options");
-        String[] options = new String[options_count];
-        for( int i = 0; i < options_count; i ++ ) {
-            try{
-                options[i] = tmpOptions.getString(i);
-            } catch ( JSONException e ){
-                Log.d("JSON", "Array index out of bound");
-            }
-        }
-        JSONArray tmpVotes = thisPoll.getJSONArray("votes");
-        int[] votes = new int[options_count];
-        for( int i = 0; i < options_count; i ++ ) {
-            votes[i] = thisPoll.getInt("votes" + Integer.toString(i));
-        }
-        String tmp = "";
-        long updatedTime = thisPoll.getLong("createTime");
-        long diffMS = System.currentTimeMillis() - updatedTime;
-        long diffS = diffMS / 1000;
-        if ( diffS > 60 ) {
-            long diffM = diffS / 60;
-            if ( diffM > 60 ){
-                long diffH = diffM / 60;
-                if ( diffH > 24 ) {
-                    long diffD = diffH / 24;
-                    tmp +=  diffD + " days ago";
-                }
-                else {
-                    if (diffH == 1) {
-                        tmp += diffH + " hour ago";
-                    } else {
-                        tmp += diffH + " hours ago";
-                    }
-                }
-            }
-            else
-                tmp += diffM + " minutes ago";
-        }
-        else
-            tmp += " 1 minute ago";
-        String date_added = tmp;
-        String author = thisPoll.getString("nickname");
-        int tmpCategory = thisPoll.getInt("category");
-        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, tmpCategory);
-        newPoll.setAnon(thisPoll.getInt("anon"));
-        newPoll.setHasImage(thisPoll.getInt("haveImage"));
-        if (thisPoll.getInt("haveImage") == 1) {
-            newPoll.setFile(thisPoll.getParseFile("image"));
-        }
-        return newPoll;
-    }
-
-    public class PollListAdapter extends BaseAdapter {
-
-        private Context c;
-
-        /*private String[] polls = {
-                "What's is the color?", "What is the number?"
-        };*/
-        private String[] polls = pollList.toArray(new String[pollList.size()]);
-        /*private String[] times= {
-                "2hr ago", "1day ago"
-        };*/
-        private String[] times = timeList.toArray(new String[timeList.size()]);
-        private String[] totals = totalList.toArray(new String[totalList.size()]);
-        private String [] hots = hotnessList.toArray(new String[hotnessList.size()]);
-
-        public PollListAdapter(Context c) {
-            this.c = c;
-        }
-
-        @Override
-        public int getCount() {
-            return polls.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = vi.inflate(R.layout.newestpolls, null);
-            }
-            TextView category_text = (TextView) convertView.findViewById(R.id.category);
-            int[] strings = {
-                    R.string.category_all_2, R.string.category_auto_2, R.string.category_education_2, R.string.category_entertainment_2,
-                    R.string.category_fashion_2, R.string.category_finance_2, R.string.category_food_2, R.string.category_games_2, R.string.category_it_2,
-                    R.string.category_pet_2, R.string.category_science_2, R.string.category_social_2, R.string.category_sports_2, R.string.category_tech_2,
-                    R.string.category_travel_2
-            };
-            category_text.setText(getString(strings[categoryList.get(position)]));
-            ImageView check = (ImageView) convertView.findViewById(R.id.check);
-            TextView tv = (TextView) convertView.findViewById(R.id.poll_name);
-            tv.setText(polls[position]);
-            TextView timev = (TextView) convertView.findViewById(R.id.time);
-            timev.setText(times[position]);
-            TextView total = (TextView) convertView.findViewById(R.id.total);
-            total.setText(totals[position]);
-            convertView.setTag(position);
-            if ( hots[position] == "y" ) {
-                check.setImageResource(R.drawable.ic_check_circle_white_18dp);
-                check.setColorFilter(Color.parseColor("#FF9800"));
-                total.setTextColor(Color.parseColor("#FF9800"));
-            }
-            else if ( hots[position] == "r" ) {
-                check.setImageResource(R.drawable.ic_whatshot_white_18dp);
-                check.setColorFilter(Color.parseColor("#F44336"));
-                total.setTextColor(Color.parseColor("#F44336"));
-            }
-            else {
-                check.setImageResource(R.drawable.ic_check_circle_white_18dp);
-                check.setColorFilter(Color.parseColor("#00C853"));
-                total.setTextColor(Color.parseColor("#00C853"));
-            }
-            //ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
-            //iv.setImageResource(R.drawable.ic_assessment_white_48dp);
-            //iv.setColorFilter(Color.parseColor("#11110000"));
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //TODO intent to poll view
-                    if (isRefreshing == 1)
-                        return;
-                    final Poll p = pollOnjectList.get(position);
-                    if (p.hasImage() == 1) {
-                        p.getFile().getDataInBackground(new GetDataCallback() {
-                            @Override
-                            public void done(byte[] bytes, ParseException e) {
-                                if (e == null) {
-                                    p.setImage(bytes);
-                                    Intent i = new Intent(getActivity(), PollViewActivity.class);
-                                    i.putExtra("poll", pollOnjectList.get(position));
-                                    startActivity(i);
-                                    getActivity().overridePendingTransition(R.anim.right_to_left, 0);
-                                } else {
-                                    Toast.makeText(getActivity(), "Connection Failed. Try again later", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    } else {
-                        Intent i = new Intent(getActivity(), PollViewActivity.class);
-                        i.putExtra("poll", pollOnjectList.get(position));
-                        startActivity(i);
-                        getActivity().overridePendingTransition(R.anim.right_to_left, 0);
-                    }
-                }
-            });
-
-            return convertView;
-        }
-    }
-
 
 }
