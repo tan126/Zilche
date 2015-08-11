@@ -104,7 +104,8 @@ public class PollViewActivity extends ActionBarActivity {
                                     @Override
                                     public void done(ParseException e) {
                                         if (e != null) {
-                                            fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                                            //fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                                            fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
                                             fav_button.setEnabled(true);
                                             fav_button.setClickable(true);
                                             Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later", Toast.LENGTH_SHORT).show();
@@ -114,7 +115,8 @@ public class PollViewActivity extends ActionBarActivity {
                                     }
                                 });
                             } else {
-                                fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                                //fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                                fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
                                 fav_button.setEnabled(true);
                                 fav_button.setClickable(true);
                                 Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later", Toast.LENGTH_SHORT).show();
@@ -122,7 +124,8 @@ public class PollViewActivity extends ActionBarActivity {
                         }
                     });
                 } else {
-                    fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                    //fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+                    fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
                     ParseObject po = new ParseObject("Favourite");
                     po.put("user", ParseUser.getCurrentUser().getObjectId());
                     po.put("Key", poll.getId());
@@ -150,7 +153,8 @@ public class PollViewActivity extends ActionBarActivity {
         map = app.getMap();
         if (app.getFav().get(poll.getId()) != null) {
             favourite = true;
-            fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+            //fav_button.setImageResource(R.drawable.ic_favorite_red_24dp);
+            fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
         } else {
             fav_button.setImageResource(R.drawable.ic_favorite_border_white_24dp);
             favourite = false;
