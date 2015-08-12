@@ -149,14 +149,11 @@ public class SearchList extends AppCompatActivity {
 
         ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("poll");
         query2.whereContains("nickname", queryStr);
-
-        ParseQuery<ParseObject> query3 = new ParseQuery<ParseObject>("poll");
-        query3.whereEqualTo("anon", 0);
+        query2.whereEqualTo("anon", 0);
 
         List<ParseQuery<ParseObject>> list = new LinkedList<>();
         list.add(query);
         list.add(query2);
-        list.add(query3);
 
         ParseQuery<ParseObject> q = ParseQuery.or(list);
 
