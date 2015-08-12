@@ -1,72 +1,67 @@
-<android.support.v4.widget.DrawerLayout
-
-    android:layout_width="match_parent"
-    android:id="@+id/drawer_layout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical"
+    >
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="#3F51B5"
+        android:orientation="horizontal"
+        android:elevation="2dp"
+        >
 
-        <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
-            android:background="#3F51B5"
-            android:contentInsetLeft="0dp"
-            android:contentInsetStart="0dp"
-            >
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
-
-                <ImageButton
-                    android:id="@+id/back_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_back_white_24dp"
-                    android:background="@null"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="left"
-                    />
-
-                <SearchView
-                    android:id="@+id/my_search_bar"
-                    android:layout_width="fill_parent"
-                    android:queryHint="@string/search_hint"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_text"
-                    android:textSize="25dp"
-                    android:layout_centerVertical="true"
-                    android:textColor="#ff000000"
-                    android:background="#ffffffff"
-                    android:iconifiedByDefault="false"
-                    android:layout_marginLeft="17dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_toRightOf="@id/back_button"
-                    />
+            android:padding="10dp"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_gravity="center_vertical" />
 
 
-            </RelativeLayout>
-
-
-        </android.support.v7.widget.Toolbar>
-
-        <GridView
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:numColumns="1"
-            android:gravity="center"
-            android:padding="2dp"
-            android:verticalSpacing="2dp"
-            android:stretchMode="columnWidth"
-            android:id="@+id/gridv"
-            android:layout_marginTop="2dp"
-            android:background="#11100000"
+        <SearchView
+            android:id="@+id/my_search_bar"
+            android:layout_width="fill_parent"
+            android:queryHint="@string/search_hint"
+            android:layout_height="wrap_content"
+            android:text="@string/title_text"
+            android:textSize="14sp"
+            android:background="#ffffff"
+            android:iconifiedByDefault="false"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="3dp"
             />
 
     </LinearLayout>
 
-</android.support.v4.widget.DrawerLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_cat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyle"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
+
+
+</LinearLayout>
+
+
