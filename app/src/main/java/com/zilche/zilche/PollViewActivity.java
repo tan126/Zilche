@@ -338,8 +338,10 @@ public class PollViewActivity extends ActionBarActivity {
             rb.setLayoutParams(layParams);
             rb.setText(options[i]);
             rb.setTextColor(0xff666666);
-            rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            rb.setPadding(30, 30, 30, 30);
+            rb.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 14);
+            int pad = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 13,
+                    getResources().getDisplayMetrics());
+            rb.setPadding(pad, pad, pad, pad);
             rb.setGravity(Gravity.CENTER_VERTICAL);
             rb.setId(i);
             View v = new View(this);
@@ -359,10 +361,16 @@ public class PollViewActivity extends ActionBarActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        par.setMargins(0, 30, 20, 30);
+
+        int pad = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 13,
+                getResources().getDisplayMetrics());
+
+        int pad2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10,
+                getResources().getDisplayMetrics());
+        par.setMargins(0, pad, pad2, pad);
         LinearLayout.LayoutParams par2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        par2.setMargins(0, 30, 0, 30);
+        par2.setMargins(0, pad, 0, pad);
         int total = 0;
         int total_tmp = 0;
         for (int i = 0; i < options.length; i++)
