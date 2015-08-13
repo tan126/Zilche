@@ -1,6 +1,9 @@
 package com.zilche.zilche;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
@@ -21,6 +24,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +38,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -113,6 +118,7 @@ public class MyPollActivity extends ActionBarActivity {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         query.whereEqualTo("author", ParseUser.getCurrentUser().getEmail());
         query.setLimit(15);
+        query.whereNotEqualTo("archived", 1);
         query.setSkip(skip2 * 15);
         query.orderByDescending("lastUpdate");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -159,6 +165,45 @@ public class MyPollActivity extends ActionBarActivity {
     public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
 
         List<Poll> polls;
+        View.OnClickListener openMenu = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(MyPollActivity.this, v);
+                menu.getMenuInflater().inflate(R.menu.menu_my_poll, menu.getMenu());
+                final View tag_v = v;
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MyPollActivity.this);
+                            builder.setTitle("Delete poll ?");
+                            builder.setMessage(" ");
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    int tag = (int) tag_v.getTag();
+                                    ParseObject o = ParseObject.createWithoutData("poll", polls.get(tag).getId());
+                                    o.put("archived", 1);
+                                    o.saveInBackground();
+                                    polls.remove(tag);
+                                    rv.getAdapter().notifyDataSetChanged();
+                                }
+                            });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                            return false;
+                        }
+                    });
+                menu.show();
+            }
+        };
         View.OnClickListener onclick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,6 +218,7 @@ public class MyPollActivity extends ActionBarActivity {
 
         public class PollViewHolder extends RecyclerView.ViewHolder{
 
+            ImageView overflow;
             LinearLayout main;
             ProgressBar pb;
             CardView cv;
@@ -196,6 +242,8 @@ public class MyPollActivity extends ActionBarActivity {
                 has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
                 author = (TextView) itemView.findViewById(R.id.author);
                 pb = (ProgressBar) itemView.findViewById(R.id.pb);
+                overflow = (ImageView) itemView.findViewById(R.id.overflow);
+                overflow.setOnClickListener(openMenu);
             }
         }
 
@@ -227,6 +275,7 @@ public class MyPollActivity extends ActionBarActivity {
             pollViewHolder.date.setText(p.getDate_added());
             pollViewHolder.question.setText(p.getQuestion());
             pollViewHolder.cv.setTag(i);
+            pollViewHolder.overflow.setTag(i);
             if (map.get(p.getId()) != null) {
                 pollViewHolder.iv.setImageResource(R.drawable.ic_done_green_18dp);
             } else {

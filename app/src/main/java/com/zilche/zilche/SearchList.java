@@ -133,6 +133,7 @@ public class SearchList extends AppCompatActivity {
         ParseQuery<ParseObject> q = ParseQuery.or(list);
 
         q.setLimit(15);
+        q.whereNotEqualTo("archived", 1);
         q.setSkip(skip2 * 15);
         q.orderByDescending("lastUpdate");
         q.findInBackground(new FindCallback<ParseObject>() {

@@ -211,6 +211,7 @@ public class NewestFragment extends Fragment{
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         query.setLimit(15);
         query.setSkip(skip2 * 15);
+        query.whereNotEqualTo("archived", 1);
         query.orderByDescending("lastUpdate");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override

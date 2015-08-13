@@ -85,6 +85,7 @@
                     android:layout_gravity= "center_vertical"
                     android:paddingLeft="1dp"
                     android:paddingRight="3dp"
+                    android:id="@+id/overflow"
                     android:src="@drawable/ic_more_vert_grey_18dp"/>
 
             </LinearLayout>
@@ -111,7 +112,7 @@
             <LinearLayout
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:background="#08000000"
+                android:background="#09000000"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 

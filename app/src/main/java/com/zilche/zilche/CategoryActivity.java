@@ -144,6 +144,7 @@ public class CategoryActivity extends AppCompatActivity {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         query.setLimit(15);
         query.setSkip(skip2 * 15);
+        query.whereNotEqualTo("archived", 1);
         if (category != 0)
             query.whereEqualTo("category", category);
         if (sortBy == 1) {
@@ -343,13 +344,6 @@ public class CategoryActivity extends AppCompatActivity {
             menu.getMenu().findItem(R.id.sort_date).setCheckable(true);
             menu.getMenu().findItem(R.id.sort_date).setChecked(true);
         }
-        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(CategoryActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
         menu.show();
     }
 
