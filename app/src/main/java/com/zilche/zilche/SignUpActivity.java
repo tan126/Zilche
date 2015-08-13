@@ -311,7 +311,7 @@ public class SignUpActivity extends FragmentActivity {
                         String userName = flname.getText().toString();
                         boolean failed = false;
                         int err = 0;
-                        if (userName.length() < 2) {
+                        if (userName.length() < 2 || userName.toLowerCase().compareTo("anonymous") == 0) {
                             failed = true;
                             err = 1;
                             flname.setError(getString(R.string.fl_name));
