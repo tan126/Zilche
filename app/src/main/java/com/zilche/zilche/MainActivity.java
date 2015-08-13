@@ -364,5 +364,17 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);*/
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Zilche app = (Zilche) getApplication();
+        if (app.getFav() == null || app.getMap() == null) {
+            Intent i = new Intent(this, SplashScreenActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        }
+    }
 
 }

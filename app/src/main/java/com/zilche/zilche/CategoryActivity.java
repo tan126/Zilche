@@ -224,6 +224,15 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        Zilche app = (Zilche) getApplication();
+        if (app.getFav() == null || app.getMap() == null) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("restart", 1);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+            return;
+        }
         rv.getAdapter().notifyDataSetChanged();
     }
 
