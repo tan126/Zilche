@@ -111,6 +111,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RetrieveProfileActivity"
+            android:label="@string/title_activity_retrieve_profile" >
+        </activity>
     </application>
 
 </manifest>

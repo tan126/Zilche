@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -192,7 +193,7 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                     dialog.setTitle("Your personal message:");
 
                     editMessageField = (EditText) dialog.findViewById(R.id.editMessageLine);
-                    if (currentUser.getString("message").toString() != null)
+                    if (currentUser.getString("message") != null)
                         editMessageField.setText(currentUser.getString("message").toString());
 
                     Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
@@ -296,6 +297,12 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                     dialog.setTitle("Select Country:");
                     final Spinner countrySpinner = (Spinner) dialog.findViewById(R.id.countrySpinner);
 
+
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.countries, android.R.layout.simple_spinner_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    countrySpinner.setAdapter(adapter);
+
+
                     Button cancelButton = (Button) dialog.findViewById(R.id.cancelButton);
                     cancelButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -309,10 +316,9 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                     doneButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(countrySpinner.getSelectedItem().toString().equals("Do not display")){
+                            if (countrySpinner.getSelectedItem().toString().equals("Do not display")) {
                                 currentUser.put("country", "Unknown");
-                            }
-                            else {
+                            } else {
                                 currentUser.put("country", countrySpinner.getSelectedItem().toString());
                             }
                             currentUser.saveInBackground();
@@ -320,6 +326,8 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                             dialog.dismiss();
                         }
                     });
+
+                    //countrySpinner.setOnItemSelectedListener(new EditCountryOnItemSelected());
 
                     dialog.show();
 

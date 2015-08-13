@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="country_prompt">Choose a country</string>
+
     <string-array name="countries">
         <item>Do not display</item>
         <item>Afghanistan</item>

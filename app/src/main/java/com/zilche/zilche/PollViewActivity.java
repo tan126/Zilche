@@ -66,6 +66,9 @@ public class PollViewActivity extends ActionBarActivity {
     private ImageButton fav_button;
     private boolean favourite = false;
 
+
+    private String authorLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -260,6 +263,15 @@ public class PollViewActivity extends ActionBarActivity {
 
     }
 
+    public void retrieveAuthorProfile(View view){
+        if(authorLogin != null) {
+            Intent t = new Intent(PollViewActivity.this, RetrieveProfileActivity.class);
+            t.putExtra("authorName", authorLogin);
+            t.putExtra("authorRealName", poll.getAuthor());
+            startActivity(t);
+        }
+    }
+
     private void saveRecord(String id, final int c) {
         final ParseObject po = new ParseObject("Records");
         po.put("Key", id);
@@ -300,6 +312,7 @@ public class PollViewActivity extends ActionBarActivity {
                     author.setText("Anonymous");
                 } else {
                     author.setText(poll2.getAuthor());
+                    authorLogin = poll2.getAuthorLogin();
                 }
                 total.setText(Integer.toString(poll2.totalVotes()));
                 if (map.get(object_id) != null) {

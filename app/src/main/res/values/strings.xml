@@ -36,6 +36,8 @@
     <string name="title_activity_create_poll">CreatePoll</string>
     <string name="title_activity_tmp_new_poll">tmpNewPoll</string>
     <string name="title_activity_signup">signupActivity</string>
+
+    <string name="title_activity_retrieve_profile">RetrieveProfileActivity</string>
     <string name="existing_user">EXISTING USER</string>
     <string name="new_user">NEW USER</string>
     <string name="title_activity_upload_image">UploadImage</string>

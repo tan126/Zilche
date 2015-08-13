@@ -7,8 +7,7 @@
         android:id="@+id/countrySpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
-        android:entries="@array/countries"/>
+        android:layout_margin="25dp"/>
 
     <Button
         android:id="@+id/cancelButton"

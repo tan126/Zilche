@@ -655,7 +655,8 @@ public class CreatePollActivity2 extends AppCompatActivity {
             String date_added = tmp;
             String author = thisPoll.getString("nickname");
             int categorty = thisPoll.getInt("category");
-            Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
+            String authorLogin = thisPoll.getString("author");
+            Poll newPoll = new Poll(id, question, options, votes, date_added, author, authorLogin, options_count, categorty);
             if (categorty ==  0) {
                 categorty = 8;
             } else if (categorty < 9) {

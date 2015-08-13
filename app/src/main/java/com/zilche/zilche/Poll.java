@@ -15,6 +15,7 @@ public class Poll implements Parcelable{
     private int[] votes;
     private String date_added;
     private String author;
+    private String authorLogin;
     private int options_count;
     private int category;
     private String category_title;
@@ -48,13 +49,14 @@ public class Poll implements Parcelable{
     }
 
     public Poll(String id, String question, String[] options, int[] votes,
-                String date, String author, int options_count,
+                String date, String author, String authorLogin, int options_count,
                 int category) {
         this.question = question;
         this.options = options;
         this.options_count = options_count;
         this.date_added = date;
         this.author = author;
+        this.authorLogin = authorLogin;
         this.votes = votes;
         this.category = category;
         this.id = id;
@@ -118,6 +120,14 @@ public class Poll implements Parcelable{
         this.author = author;
     }
 
+    public String getAuthorLogin() {
+        return authorLogin;
+    }
+
+    public void setAuthorLogin(String authorLogin) {
+        this.authorLogin = authorLogin;
+    }
+
     public int getCategory() {
         return category;
     }
@@ -147,6 +157,7 @@ public class Poll implements Parcelable{
         dest.writeIntArray(votes);
         dest.writeString(date_added);
         dest.writeString(author);
+        dest.writeString(authorLogin);
         dest.writeInt(options_count);
         dest.writeInt(category);
         dest.writeString(category_title);
@@ -159,7 +170,7 @@ public class Poll implements Parcelable{
         @Override
         public Poll createFromParcel(Parcel source) {
             Poll poll = new Poll(source.readString(), source.readString(), source.createStringArray(), source.createIntArray(),
-                    source.readString(), source.readString(), source.readInt(), source.readInt());
+                    source.readString(), source.readString(), source.readString(), source.readInt(), source.readInt());
             poll.setCategory_title(source.readString());
             poll.setAnon(source.readInt());
             poll.setHasImage(source.readInt());

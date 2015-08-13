@@ -134,6 +134,8 @@
                             android:maxLength="23"
                             android:ellipsize="end"
                             android:id="@+id/author_poll_view"
+                            android:onClick="retrieveAuthorProfile"
+                            android:clickable="true"
                             android:textColor="#666"
                             android:textSize="14sp"
                             android:fontFamily="sans-serif-medium"

@@ -82,8 +82,9 @@ public class Util {
             tmp += " 1 minute ago";
         String date_added = tmp;
         String author = object.getString("nickname");
+        String authorLogin = object.getString("author");
         int categorty = object.getInt("category");
-        Poll newPoll = new Poll(id, question, options, votes, date_added, author, options_count, categorty);
+        Poll newPoll = new Poll(id, question, options, votes, date_added, author, authorLogin, options_count, categorty);
         newPoll.setAnon(object.getInt("anon"));
         newPoll.setHasImage(object.getInt("haveImage"));
         if (object.getInt("haveImage") == 1)
