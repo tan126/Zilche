@@ -18,8 +18,8 @@ import java.util.List;
 
 public class Zilche extends Application {
 
-    HashMap<String, Integer> map = new HashMap<String, Integer>();
-    HashMap<String, Integer> fav = new HashMap<>();
+    HashMap<String, Integer> map;
+    HashMap<String, Integer> fav;
 
     @Override
     public void onCreate() {
