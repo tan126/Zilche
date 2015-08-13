@@ -25,9 +25,11 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import org.json.JSONException;
@@ -158,12 +160,8 @@ public class SignUpActivity extends FragmentActivity {
                             @Override
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
-
-                                    Zilche zilche = (Zilche)getActivity().getApplication();
-                                    HashMap<String, Integer> map = zilche.getMap();
-                                    map = new HashMap<String, Integer>();
-
                                     Intent i = new Intent(getActivity(), MainActivity.class);
+                                    i.putExtra("restart", 1);
                                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     getActivity().finish();
                                     startActivity(i);
@@ -201,6 +199,7 @@ public class SignUpActivity extends FragmentActivity {
                                                 });
                                         request.executeAsync();
                                         Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.putExtra("restart", 1);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
                                         startActivity(i);
@@ -209,6 +208,7 @@ public class SignUpActivity extends FragmentActivity {
                                 } else {
                                     if (ParseUser.getCurrentUser() != null) {
                                         Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.putExtra("restart", 1);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
                                         startActivity(i);
@@ -333,16 +333,38 @@ public class SignUpActivity extends FragmentActivity {
                             registerButton.setEnabled(true);
                             break;
                         }
-                        ParseUser newUser = new ParseUser();
+                        ParseUser newUser;
+                        newUser = ParseUser.getCurrentUser();
+                         if (newUser == null)
+                            newUser = new ParseUser();
                         newUser.setUsername(userEmail);
                         newUser.setPassword(userPassword);
                         newUser.setEmail(userEmail);
                         newUser.put("name", userName);
+                        if (ParseUser.getCurrentUser() != null) {
+                            newUser.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.putExtra("restart", 1);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        getActivity().finish();
+                                        startActivity(i);
+                                    } else {
+                                        Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        registerButton.setEnabled(true);
+                                    }
+                                }
+                            });
+                            return;
+                        }
                         newUser.signUpInBackground(new SignUpCallback() {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
                                     Intent i = new Intent(getActivity(), MainActivity.class);
+                                    i.putExtra("restart", 1);
                                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     getActivity().finish();
                                     startActivity(i);
@@ -352,6 +374,7 @@ public class SignUpActivity extends FragmentActivity {
                                 }
                             }
                         });
+
                         break;
                     }
 
@@ -380,6 +403,7 @@ public class SignUpActivity extends FragmentActivity {
                                                 });
                                         request.executeAsync();
                                         Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.putExtra("restart", 1);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
                                         startActivity(i);
@@ -388,6 +412,7 @@ public class SignUpActivity extends FragmentActivity {
                                 } else {
                                     if (ParseUser.getCurrentUser() != null) {
                                         Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.putExtra("restart", 1);
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
                                         startActivity(i);

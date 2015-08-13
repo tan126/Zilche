@@ -60,6 +60,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().get("restart") != null) {
+            Intent i = new Intent(MainActivity.this, SplashScreenActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            return;
+        }
         Zilche app = (Zilche) getApplication();
 
         int SELECTED_POSITION = 0;
@@ -176,9 +184,10 @@ public class MainActivity extends AppCompatActivity {
                 else if (v.getText() == "Log Out") {
                     ParseUser u = new ParseUser();
                     u.logOut();
-                    Intent i = new Intent(MainActivity.this, MainActivity.class);
+                    Intent i = new Intent(MainActivity.this, SplashScreenActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    finish();
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 }
             }

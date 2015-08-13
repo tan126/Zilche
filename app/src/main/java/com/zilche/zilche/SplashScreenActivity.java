@@ -13,6 +13,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +36,15 @@ public class SplashScreenActivity extends ActionBarActivity {
                 @Override
                 public void done(ParseUser parseUser, ParseException e) {
                     if (e == null) {
-                        updateMap();
+                        parseUser.put("count", 1);
+                        parseUser.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    updateMap();
+                                }
+                            }
+                        });
                     } else {
                         // Alert and close app
                     }
