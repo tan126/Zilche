@@ -175,8 +175,8 @@ public class MyPollActivity extends ActionBarActivity {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(MyPollActivity.this);
-                            builder.setTitle("Delete poll ?");
-                            builder.setMessage(" ");
+                            builder.setTitle("Delete Confirmation?");
+                            builder.setMessage("Do you really want to delete this poll?");
                             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

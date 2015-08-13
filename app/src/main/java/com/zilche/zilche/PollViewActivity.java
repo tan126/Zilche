@@ -203,7 +203,7 @@ public class PollViewActivity extends ActionBarActivity {
             @Override
             public void onPanelOpened(View panel) {
                 PollViewActivity.this.finish();
-                PollViewActivity.this.overridePendingTransition(0, R.anim.toolbar_dissapear);
+                PollViewActivity.this.overridePendingTransition(0, 0);
             }
 
             @Override
