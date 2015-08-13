@@ -6,7 +6,9 @@
 
     <View
         android:layout_width="fill_parent"
+        android:id="@+id/background"
         android:layout_gravity="left"
+        android:background="#aa000000"
         android:layout_height="match_parent"/>
 
     <LinearLayout

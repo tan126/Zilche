@@ -65,7 +65,7 @@ public class PollViewActivity extends ActionBarActivity {
     private Poll poll;
     private ImageButton fav_button;
     private boolean favourite = false;
-
+    private View background;
 
     private String authorLogin;
 
@@ -86,6 +86,7 @@ public class PollViewActivity extends ActionBarActivity {
         sv = (ScrollView) findViewById(R.id.scroll_view_poll);
         loading = (LinearLayout) findViewById(R.id.loading);
         fav_button = (ImageButton) findViewById(R.id.fav_poll_view);
+        background = findViewById(R.id.background);
 
         final Zilche app = (Zilche) getApplication();
 
@@ -189,7 +190,15 @@ public class PollViewActivity extends ActionBarActivity {
         spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
             @Override
-            public void onPanelSlide(View panel, float slideOffset) {}
+            public void onPanelSlide(View panel, float slideOffset) {
+                if (Build.VERSION.SDK_INT >= 21) {
+                    int off = (int) ((1 - slideOffset) * 250);
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    getWindow().setStatusBarColor((Util.noti_color[category] & 0x00ffffff) | (off << 24));
+                }
+                int color = (int) ((1 - slideOffset) * 170);
+                background.setBackgroundColor(0x00000000 | (color << 24));
+            }
 
             @Override
             public void onPanelOpened(View panel) {
