@@ -2,8 +2,14 @@ package com.zilche.zilche;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +20,9 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.graphics.Typeface;
 import android.view.View;
@@ -27,241 +36,219 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Intent;
 
 public class MyPollActivity extends ActionBarActivity {
-    GridView gv;
-    ArrayList<String> pollList;
-    ArrayList<String> timeList;
-    ArrayList<String> totalList;
-    ArrayList<String> authorList;
-    ArrayList<String> hotnessList;
 
-
-    ArrayList<String> pollIdList;
-    ImageButton removePollButton;
+    private boolean load = false;
+    private TextView title;
+    int category = 0;
+    private ImageButton sort;
+    private LinkedList<Poll> pollList;
+    private ProgressBar spinner;
+    private RecyclerView rv;
+    private int isRefreshing = 0;
+    private HashMap<String, Integer> map;
+    private int skip = 0;
+    private int complete = 0;
+    private int visibleThreshold = 15;
+    private int sortBy = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_poll);
-        getList();
+        Zilche app = (Zilche) getApplication();
+        map = app.getMap();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            category = extras.getInt("category_index");
+        }
+        spinner = (ProgressBar) findViewById(R.id.progress_bar);
+        ((ImageButton)findViewById(R.id.back_button_cat)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        rv = (RecyclerView) findViewById(R.id.rv_cat);
+        rv.setHasFixedSize(true);
+        final LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+        pollList = new LinkedList<>();
+        populateList(skip);
+        RVadapter rva = new RVadapter(pollList);
+        rv.setAdapter(rva);
+
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = recyclerView.getChildCount();
+                int totalItemCount = llm.getItemCount();
+                int firstVisibleItem = llm.findFirstVisibleItemPosition();
+                //if (!load && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                if (!load && ((pollList.size() > 0 && pollList.size() - firstVisibleItem <= visibleThreshold) || !rv.canScrollVertically(1))) {
+                    if (complete == 0) {
+                        if (pollList.size() == 0 || pollList.getLast().getId().compareTo("-1") != 0) {
+                            Poll tmp = new Poll();
+                            tmp.setId("-1");
+                            pollList.add(tmp);
+                            rv.getAdapter().notifyDataSetChanged();
+                        }
+                        populateList(skip);
+                    }
+                }
+
+            }
+        });
     }
 
-    public void getList(){
-
-        gv = (GridView) findViewById(R.id.gridv);
-
-        pollIdList = new ArrayList<String>();
-
-        pollList = new ArrayList<String>();
-        timeList = new ArrayList<String>();
-        totalList = new ArrayList<String>();
-        authorList = new ArrayList<String>();
-        hotnessList = new ArrayList<String>();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
+    public void populateList(final int skip2) {
+        load = true;
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
+        query.whereEqualTo("author", ParseUser.getCurrentUser().getEmail());
+        query.setLimit(15);
+        query.setSkip(skip2 * 15);
         query.orderByDescending("lastUpdate");
-        query.whereEqualTo("author", ParseUser.getCurrentUser().getString("username"));
-
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    //Log.d("poll", "Retrieved " + list.size() + " polls");
-                    if (list.size() == 0) {
-                        Toast.makeText(getApplicationContext(), "You have no polls", Toast.LENGTH_SHORT).show();
-                        TextView title = (TextView) findViewById(R.id.title);
-                        title.setText("My Polls");
+                    if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
+                        pollList.removeLast();
+                        rv.getAdapter().notifyDataSetChanged();
+                    }
+                    if (list.size() < 15) {
+                        complete = 1;
                     } else {
-                        for (int i = 0; i < list.size(); i++) {
-                            ParseObject thisPoll = list.get(i);
-                            String tmpStr = thisPoll.getString("question");
-
-                            pollList.add(tmpStr);
-
-                            //String tmpString = thisPoll.getString("objectId");
-                            String tmpString = thisPoll.getObjectId();
-                            pollIdList.add(tmpString);
-
-                            //timeList.add(thisPoll.getCreatedAt().toString());
-                            String tmp = "";
-                            int total = thisPoll.getInt("total");
-                            totalList.add("" + total + " participants");
-                            if (total < 50)
-                                hotnessList.add("g");
-                            else if (total < 100)
-                                hotnessList.add("y");
-                            else if (total >= 100)
-                                hotnessList.add("r");
-                            else
-                                hotnessList.add("g");
-                            long updatedTime = thisPoll.getLong("lastUpdate");
-                            long diffMS = System.currentTimeMillis() - updatedTime;
-                            long diffS = diffMS / 1000;
-                            if (diffS > 60) {
-                                long diffM = diffS / 60;
-                                if (diffM > 60) {
-                                    long diffH = diffM / 60;
-                                    if (diffH > 24) {
-                                        long diffD = diffH / 24;
-                                        tmp += "last updated " + diffD + " days ago";
-                                    } else
-                                        tmp += "last updated " + diffH + " hours ago";
-                                    ;
-                                } else
-                                    tmp += "last updated " + diffM + " minutes ago";
-                            } else
-                                tmp += "last updated 1 minute ago";
-                            timeList.add(tmp);
-                            gv.setAdapter(new PollListAdapter(MyPollActivity.this));
-                            TextView title = (TextView) findViewById(R.id.title);
-                            title.setText("My Polls");
+                        complete = 0;
+                    }
+                    if (list != null && list.size() != 0) {
+                        if (skip2 == 0) {
+                            pollList.clear();
                         }
+                        for (int i = 0; i < list.size(); i++) {
+                            pollList.add(Util.parsePollObject(list.get(i)));
+                        }
+
+                        rv.getAdapter().notifyDataSetChanged();
+                        isRefreshing = 0;
+                        load = false;
+                        skip++;
                     }
                 } else {
-                    Log.d("poll", "Error: " + e.getMessage());
+                    if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
+                        pollList.removeLast();
+                        rv.getAdapter().notifyDataSetChanged();
+                    }
+                    load = false;
+                    Toast.makeText(MyPollActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                if (spinner.getVisibility() == View.VISIBLE) {
+                    spinner.setVisibility(View.GONE);
                 }
             }
         });
-
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
+    public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
-    }
+        List<Poll> polls;
+        View.OnClickListener onclick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int pos = (int) v.getTag();
+                Intent i = new Intent(MyPollActivity.this, PollViewActivity.class);
+                i.putExtra("poll", polls.get(pos));
+                startActivity(i);
+                overridePendingTransition(R.anim.right_to_left, 0);
+            }
 
-    public void backButtonLogin(View v) {
-        finish();
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
+        };
 
-    public class PollListAdapter extends BaseAdapter {
+        public class PollViewHolder extends RecyclerView.ViewHolder{
 
-        private Context c;
+            LinearLayout main;
+            ProgressBar pb;
+            CardView cv;
+            TextView question;
+            TextView date;
+            TextView total_votes;
+            ImageView iv;
+            ImageView has_photo;
+            ImageView category_icon;
+            TextView author;
 
-        /*private String[] polls = {
-                "What's is the color?", "What is the number?"
-        };*/
-        private String[] polls = pollList.toArray(new String[pollList.size()]);
-        /*private String[] times= {
-                "2hr ago", "1day ago"
-        };*/
-        private String[] times = timeList.toArray(new String[timeList.size()]);
-        private String[] totals = totalList.toArray(new String[totalList.size()]);
-        private String [] hots = hotnessList.toArray(new String[hotnessList.size()]);
+            public PollViewHolder(View itemView) {
+                super(itemView);
+                cv = (CardView) itemView.findViewById(R.id.cv);
+                question = (TextView) itemView.findViewById(R.id.question);
+                date = (TextView) itemView.findViewById(R.id.date);
+                total_votes = (TextView) itemView.findViewById(R.id.category);
+                cv.setOnClickListener(onclick);
+                iv = (ImageView) itemView.findViewById(R.id.done);
+                category_icon = (ImageView) itemView.findViewById(R.id.category_icon);
+                has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
+                author = (TextView) itemView.findViewById(R.id.author);
+                pb = (ProgressBar) itemView.findViewById(R.id.pb);
+            }
+        }
 
-        private String[] pollIDs = pollIdList.toArray(new String[pollIdList.size()]);
-
-        public PollListAdapter(Context c) {
-            this.c = c;
+        public RVadapter(List<Poll> pollList) {
+            polls = pollList;
         }
 
         @Override
-        public int getCount() {
-            return polls.length;
+        public RVadapter.PollViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.items2, viewGroup, false);
+            v.setTag(i);
+            PollViewHolder pvh = new PollViewHolder(v);
+            return pvh;
         }
 
         @Override
-        public Object getItem(int position) {
-            return null;
+        public void onBindViewHolder(RVadapter.PollViewHolder pollViewHolder, int i) {
+            if (polls.get(i).getId().compareTo("-1") == 0) {
+                pollViewHolder.pb.setVisibility(View.VISIBLE);
+                pollViewHolder.cv.setVisibility(View.GONE);
+                return;
+            } else {
+                pollViewHolder.pb.setVisibility(View.GONE);
+                pollViewHolder.cv.setVisibility(View.VISIBLE);
+            }
+            Poll p = polls.get(i);
+            pollViewHolder.total_votes.setText(Integer.toString(p.totalVotes()));
+            pollViewHolder.category_icon.setImageResource(Util.drawables[p.getCategory()]);
+            pollViewHolder.date.setText(p.getDate_added());
+            pollViewHolder.question.setText(p.getQuestion());
+            pollViewHolder.cv.setTag(i);
+            if (map.get(p.getId()) != null) {
+                pollViewHolder.iv.setImageResource(R.drawable.ic_done_green_18dp);
+            } else {
+                pollViewHolder.iv.setImageResource(R.drawable.ic_done_grey_18dp);
+            }
+            if (p.hasImage() == 1) {
+                pollViewHolder.has_photo.setVisibility(View.VISIBLE);
+            } else {
+                pollViewHolder.has_photo.setVisibility(View.GONE);
+            }
+            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
         }
 
         @Override
-        public long getItemId(int position) {
-            return position;
+        public void onAttachedToRecyclerView(RecyclerView rv) {
+            super.onAttachedToRecyclerView(rv);
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-
-
-            if (convertView == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                convertView = vi.inflate(R.layout.mypolls, null);
-            }
-
-            removePollButton = (ImageButton) convertView.findViewById(R.id.pollRemove);
-
-            ImageView check = (ImageView) convertView.findViewById(R.id.check);
-
-            TextView total = (TextView) convertView.findViewById(R.id.total);
-
-            if ( hots[position] == "y" ) {
-                check.setColorFilter(Color.parseColor("#FF9800"));
-                total.setTextColor(Color.parseColor("#FF9800"));
-            }
-            else if ( hots[position] == "r" ) {
-                check.setImageResource(R.drawable.ic_whatshot_white_18dp);
-                check.setColorFilter(Color.parseColor("#F44336"));
-                total.setTextColor(Color.parseColor("#F44336"));
-            }
-            else {
-                check.setColorFilter(Color.parseColor("#00C853"));
-            }
-
-            TextView tv = (TextView) convertView.findViewById(R.id.poll_name);
-            tv.setText(polls[position]);
-            TextView timev = (TextView) convertView.findViewById(R.id.time);
-            timev.setText(times[position]);
-
-            total.setText(totals[position]);
-            convertView.setTag(position);
-            ImageView iv = (ImageView) convertView.findViewById(R.id.assignment);
-            iv.setImageResource(R.drawable.ic_assessment_white_48dp);
-            iv.setColorFilter(Color.parseColor("#11110000"));
-
-            removePollButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    //Toast.makeText(getApplicationContext(), "DELETING", Toast.LENGTH_SHORT).show();
-                    String pollID = pollIDs[position];
-                    ParseQuery<ParseObject> query2 = ParseQuery.getQuery("poll");
-                    query2.whereEqualTo("objectId", pollID);
-                    query2.findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> parseObjects, ParseException e) {
-                            if (e == null) {
-//                                System.out.println(parseObjects.get(0));
-                                // Unfortunately, Zilche has stopped. ^
-                                for (ParseObject delete : parseObjects) {
-                                    delete.deleteInBackground();
-                                    Toast.makeText(getApplicationContext(), "Poll deleted", Toast.LENGTH_SHORT).show();
-                                    Intent intent = getIntent();
-                                    finish();
-                                    startActivity(intent);
-                                }
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Error in deleting", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                    getList();
-                }
-
-            });
-
-
-
-            return convertView;
+        public int getItemCount() {
+            return polls.size();
         }
-
-
     }
 
 

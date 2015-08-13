@@ -179,16 +179,16 @@
                             android:textAlignment="gravity"
                             android:fontFamily="sans-serif-medium"
                             android:layout_weight="1"
-                            android:paddingTop="10dp"
+                            android:paddingTop="9dp"
                             android:paddingLeft="2dp"
                             android:paddingBottom="10dp"
-                            android:paddingRight="2dp"
+                            android:paddingRight="1dp"
                             android:textSize="14sp"/>
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_person_grey_18dp"
+                            android:src="@drawable/ic_beenhere_grey_18dp"
                             android:layout_gravity="right|center_vertical"
                             android:paddingRight="8dp"
                             android:paddingTop="10dp"
