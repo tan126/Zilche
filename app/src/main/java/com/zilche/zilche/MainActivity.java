@@ -1,11 +1,7 @@
 package com.zilche.zilche;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -15,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
@@ -23,38 +18,29 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.HashMap;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    SlideViewAdapter adapter;
-    ViewPager viewPager;
-    PagerTabStrip pts;
-    FloatingActionsMenu plusButton;
+    private SlideViewAdapter adapter;
+    private ViewPager viewPager;
+    private PagerTabStrip pts;
+    private FloatingActionsMenu plusButton;
     private ImageView filter_bg;
-    boolean loginFlag;
-    HashMap<String, Integer> map;
+    private boolean loginFlag;
+    private HashMap<String, Integer> map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -375,6 +361,11 @@ public class MainActivity extends AppCompatActivity {
             finish();
             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
+    }
+
+    public void openProfile(View v) {
+        Intent i = new Intent(this, MyProfileActivity.class);
+        startActivity(i);
     }
 
 }

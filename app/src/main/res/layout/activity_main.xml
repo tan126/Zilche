@@ -71,13 +71,14 @@
                     android:id="@+id/notification_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@mipmap/ic_notifications_white"
-            android:background="@null"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            />
-        </RelativeLayout>
+                    android:layout_centerVertical="true"
+                    android:onClick="openProfile"
+                    android:src="@drawable/ic_person_white_24dp"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                />
+            </RelativeLayout>
 
 
         </android.support.v7.widget.Toolbar>

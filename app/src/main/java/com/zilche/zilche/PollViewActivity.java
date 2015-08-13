@@ -471,5 +471,14 @@ public class PollViewActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Zilche app = (Zilche) getApplication();
+        if (app.getMap() == null || app.getFav() == null) {
+            finish();
+            overridePendingTransition(0, 0);
+        }
+    }
 
 }

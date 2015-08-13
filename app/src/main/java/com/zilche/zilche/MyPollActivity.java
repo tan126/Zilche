@@ -1,35 +1,23 @@
 package com.zilche.zilche;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.graphics.Typeface;
-import android.view.View;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -38,14 +26,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
-import android.content.Intent;
 
 public class MyPollActivity extends ActionBarActivity {
 
@@ -300,5 +283,17 @@ public class MyPollActivity extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Zilche app = (Zilche) getApplication();
+        if (app.getFav() == null || app.getMap() == null) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("restart", 1);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+        }
+    }
 
 }
