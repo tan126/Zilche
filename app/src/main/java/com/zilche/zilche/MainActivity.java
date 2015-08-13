@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(0);
         viewPager.setOffscreenPageLimit(3);
         map = app.getMap();
-        app.updateFav();
         ImageView v = (ImageView) findViewById(R.id.loginArea);
         v.setClickable(true);
         // Load Username
@@ -85,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
             v.setClickable(false);
             loginFlag = true;
             plusButton.setVisibility(View.VISIBLE);
-            getUserRecord(0);
         } else {
             // show the signup or login screen
             SELECTED_POSITION = 1;
@@ -358,34 +356,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public void getUserRecord(int skip) {
-        final int s = skip;
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Records");
-        query.setLimit(1000);
-        query.setSkip(1000 * s);
-        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
-                    for (ParseObject o : list) {
-                        map.put(o.getString("Key"), o.getInt("choice"));
-                    }
-                    if (list.size() == 1000) {
-                        getUserRecord(s + 1);
-                    }
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Zilche z = (Zilche) getApplication();
-        if (z.getMap() == null) {
-            z.updateMap();
-        }
-    }
 }

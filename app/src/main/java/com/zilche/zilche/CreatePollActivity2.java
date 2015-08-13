@@ -880,14 +880,6 @@ public class CreatePollActivity2 extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Zilche z = (Zilche) getApplication();
-        if (z.getMap() == null) {
-            z.updateMap();
-        }
-    }
 
 }
 

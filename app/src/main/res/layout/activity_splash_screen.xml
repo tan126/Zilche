@@ -1,0 +1,19 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="#3F51B5"
+    android:gravity="center"
+    tools:context="com.zilche.zilche.SplashScreenActivity">
+
+    <TextView
+        android:textSize="40sp"
+        android:textColor="#fff"
+        android:fontFamily="sans-serif-medium"
+        android:text="Zilche"
+        android:textStyle="italic|bold"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

@@ -224,10 +224,6 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        Zilche z = (Zilche) getApplication();
-        if (z.getMap() == null) {
-            z.updateMap();
-        }
         rv.getAdapter().notifyDataSetChanged();
     }
 

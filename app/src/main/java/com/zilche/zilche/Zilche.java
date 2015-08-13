@@ -4,7 +4,9 @@ import android.app.Application;
 
 import com.facebook.FacebookSdk;
 import com.parse.FindCallback;
+import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
@@ -28,59 +30,19 @@ public class Zilche extends Application {
         ParseFacebookUtils.initialize(getApplicationContext());
     }
 
+    public void createMap() {
+        map = new HashMap<>();
+    }
+
+    public void createFav() {
+        fav = new HashMap<>();
+    }
+
     public HashMap<String, Integer> getMap() {
         return map;
     }
 
     public HashMap<String, Integer> getFav() {return fav; }
-
-    public void updateMap() {
-        map = new HashMap<>();
-        updateMap(0);
-    }
-
-    public void updateMap(int skip) {
-        final int s = skip;
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Records");
-        query.setLimit(1000);
-        query.setSkip(1000 * s);
-        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                for (ParseObject o : list) {
-                    map.put(o.getString("Key"), o.getInt("choice"));
-                }
-                if (list.size() == 1000) {
-                    updateMap(s + 1);
-                }
-            }
-        });
-    }
-
-    public void updateFav() {
-        updateFav(0);
-    }
-
-    public void updateFav(final int skip) {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Favourite");
-        query.setLimit(1000);
-        query.setSkip(1000 * skip);
-        query.whereEqualTo("user", ParseUser.getCurrentUser().getObjectId());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
-                    for (ParseObject o : list) {
-                        fav.put(o.getString("Key"), o.getInt("Fav"));
-                    }
-                    if (list.size() == 1000) {
-                        updateFav(skip + 1);
-                    }
-                }
-            }
-        });
-    }
 
 }
 
