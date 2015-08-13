@@ -271,4 +271,10 @@ public class PopularFragment extends Fragment{
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        rv.getAdapter().notifyDataSetChanged();
+    }
+
 }

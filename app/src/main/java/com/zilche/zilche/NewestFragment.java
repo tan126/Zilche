@@ -257,4 +257,10 @@ public class NewestFragment extends Fragment{
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        rv.getAdapter().notifyDataSetChanged();
+    }
+
 }

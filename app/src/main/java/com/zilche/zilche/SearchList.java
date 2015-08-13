@@ -298,5 +298,10 @@ public class SearchList extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        rv.getAdapter().notifyDataSetChanged();
+    }
 
 }
