@@ -34,50 +34,44 @@ public class SplashScreenActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         app = (Zilche) getApplication();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (ParseUser.getCurrentUser() == null) {
-                    ParseAnonymousUtils.logIn(new LogInCallback() {
+        if (ParseUser.getCurrentUser() == null) {
+            ParseAnonymousUtils.logIn(new LogInCallback() {
 
-                        @Override
-                        public void done(ParseUser parseUser, ParseException e) {
-                            if (e == null) {
-                                parseUser.put("count", 1);
-                                parseUser.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e == null) {
-                                            updateMap();
-                                        }
-                                    }
-                                });
-                            } else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreenActivity.this);
-                                AlertDialog dia = null;
-                                builder.setTitle("Connection Failed.");
-                                builder.setMessage( "Please try again later.");
-                                builder.setCancelable(false);
-                                builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                        finish();
-                                    }
-                                });
-                                dia = builder.create();
-                                dia.show();
+                @Override
+                public void done(ParseUser parseUser, ParseException e) {
+                    if (e == null) {
+                        parseUser.put("count", 1);
+                        parseUser.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    updateMap();
+                                }
                             }
-                        }
-                    });
-
-                } else {
-                    updateMap();
+                        });
+                    } else {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreenActivity.this);
+                        AlertDialog dia = null;
+                        builder.setTitle("Connection Failed.");
+                        builder.setMessage( "Please try again later.");
+                        builder.setCancelable(false);
+                        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                        dia = builder.create();
+                        dia.show();
+                    }
                 }
-            }
-        }, 300);
-
+            });
+        } else {
+            updateMap();
+        }
     }
+
 
     public void updateMap() {
         app.createMap();
@@ -144,10 +138,15 @@ public class SplashScreenActivity extends ActionBarActivity {
                     if (list.size() == 1000) {
                         updateFav(skip + 1);
                     } else {
-                        Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
-                        startActivity(i);
-                        finish();
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
+                                startActivity(i);
+                                finish();
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            }
+                        }, 300);
                     }
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreenActivity.this);
