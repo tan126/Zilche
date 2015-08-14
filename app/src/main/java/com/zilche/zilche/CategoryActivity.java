@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +48,8 @@ public class CategoryActivity extends AppCompatActivity {
     private int complete = 0;
     private int visibleThreshold = 15;
     private int sortBy = 1;
+    private SlidingPaneLayout spl;
+    private View background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
         Zilche app = (Zilche) getApplication();
         map = app.getMap();
+
         Bundle extras = getIntent().getExtras();
         title = (TextView) findViewById(R.id.title_cat);
         sort = (ImageButton) findViewById(R.id.sort_cat);
@@ -73,6 +77,31 @@ public class CategoryActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Util.noti_color[category]);
         }
+        spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
+        background = findViewById(R.id.background);
+        spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                if (Build.VERSION.SDK_INT >= 21) {
+                    int off = (int) ((1 - slideOffset) * 250);
+                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    getWindow().setStatusBarColor((Util.noti_color[category] & 0x00ffffff) | (off << 24));
+                }
+                int color = (int) ((1 - slideOffset) * 170);
+                background.setBackgroundColor(0x00000000 | (color << 24));
+            }
+
+            @Override
+            public void onPanelOpened(View panel) {
+                finish();
+                overridePendingTransition(0, 0);
+            }
+
+            @Override
+            public void onPanelClosed(View panel) {
+
+            }
+        });
         srl = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

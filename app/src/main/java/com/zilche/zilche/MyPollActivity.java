@@ -45,6 +45,8 @@ public class MyPollActivity extends ActionBarActivity {
     private int complete = 0;
     private int visibleThreshold = 15;
     private int sortBy = 1;
+    private SlidingPaneLayout spl;
+    private View background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,26 @@ public class MyPollActivity extends ActionBarActivity {
         if (extras != null) {
             category = extras.getInt("category_index");
         }
+        background = findViewById(R.id.background);
+        spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
+        spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                int color = (int) ((1 - slideOffset) * 170);
+                background.setBackgroundColor(0x00000000 | (color << 24));
+            }
+
+            @Override
+            public void onPanelOpened(View panel) {
+                finish();
+                overridePendingTransition(0, 0);
+            }
+
+            @Override
+            public void onPanelClosed(View panel) {
+
+            }
+        });
         spinner = (ProgressBar) findViewById(R.id.progress_bar);
         ((ImageButton)findViewById(R.id.back_button_cat)).setOnClickListener(new View.OnClickListener() {
             @Override

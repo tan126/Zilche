@@ -29,6 +29,7 @@
         </activity>
         <activity
             android:name=".MyPollActivity"
+            android:theme="@style/transparent"
             android:label="@string/title_activity_my_poll" >
         </activity>
         <activity
@@ -64,6 +65,7 @@
 
         <activity
             android:name=".CategoryActivity"
+            android:theme="@style/transparent"
             android:label="@string/title_activity_category" >
         </activity>
         <activity
