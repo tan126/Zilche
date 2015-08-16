@@ -413,6 +413,7 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
             query.whereEqualTo("author", ParseUser.getCurrentUser().getEmail());
 
+            query.whereNotEqualTo("anon", 1);
             query.setLimit(15);
             query.whereNotEqualTo("archived", 1);
             query.setSkip(skip2 * 15);
