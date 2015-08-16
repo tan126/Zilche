@@ -53,7 +53,6 @@ public class PollViewActivity extends ActionBarActivity {
     private TextView category_title;
     private SlidingPaneLayout spl;
     private Button submit_btn;
-    private Button showGraph_btn;
     private String id;
     private int checked;
     private LinearLayout lin;
@@ -81,7 +80,6 @@ public class PollViewActivity extends ActionBarActivity {
         category_title = (TextView) findViewById(R.id.category_poll_view);
         submit_btn = (Button) findViewById(R.id.submit_poll_view);
         lin = (LinearLayout) findViewById(R.id.result_poll_view);
-        showGraph_btn = (Button) findViewById(R.id.showGraph);
         total = (TextView) findViewById(R.id.total);
         sv = (ScrollView) findViewById(R.id.scroll_view_poll);
         loading = (LinearLayout) findViewById(R.id.loading);
@@ -171,16 +169,7 @@ public class PollViewActivity extends ActionBarActivity {
             favourite = false;
         }
 
-        showGraph_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent gpIntent = new Intent(PollViewActivity.this, BarChart.class);
-                gpIntent.putExtra("poll", poll);
-                startActivity(gpIntent);
-            }
-        });
         category = poll.getCategory();
-        showGraph_btn.setVisibility(View.GONE);
         if (category == 0)
             category_title.setText("Other");
         else
@@ -378,7 +367,6 @@ public class PollViewActivity extends ActionBarActivity {
     private void generateResult(int[] votes, String[] options) {
         radioGroup.setVisibility(View.GONE);
         submit_btn.setVisibility(View.GONE);
-        showGraph_btn.setVisibility(View.VISIBLE);
         LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,

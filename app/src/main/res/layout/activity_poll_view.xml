@@ -65,7 +65,7 @@
             android:visibility="gone"
             android:id="@+id/scroll_view_poll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -243,27 +243,6 @@
                         android:textSize="16sp"
                         android:background="@drawable/login_button2"
                         android:textColor="#fff"/>
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/showGraph"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginBottom="40dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:text="Graph"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="16sp"
-                        android:background="@drawable/login_button2"
-                        android:textColor="#fff"/>
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="Your identity will be kept anonymous to other users."/>
 
                 </LinearLayout>
             </LinearLayout>
