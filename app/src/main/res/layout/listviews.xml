@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.zilche.zilche.SlidingPaneLayout
+        android:id="@+id/sliding_pane"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent">
+
+        <View
+            android:layout_width="fill_parent"
+            android:id="@+id/background"
+            android:layout_gravity="left"
+            android:background="#aa000000"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/header_poll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="#3F51B5"
+                android:elevation="2dp">
+
+                <ImageButton
+                    android:id="@+id/back_button_poll_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_chevron_left_white_24dp"
+                    android:background="@null"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="left" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Categories"
+                    android:textColor="#fff"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:id="@+id/category_poll_view"
+                    />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/fav_poll_view"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_favorite_border_white_24dp"
+                    android:background="@null"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:background="#FFF"
+                android:gravity="center"
+                android:id="@+id/loading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/progress_bar"
+                    style="?android:attr/progressBarStyle"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cal"
+                android:background="#FFF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/comments"
+                android:background="#fff" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.zilche.zilche.SlidingPaneLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:id="@+id/fab"
+        app:borderWidth="0dp"
+        app:fab_colorNormal="#303F9F"
+        app:fab_colorPressed="#202E8E"
+        app:fab_colorDisabled="#66303F9F"
+        android:visibility="gone"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_create_white_24dp"
+        app:layout_anchorGravity="bottom|right"
+    />
+
+</android.support.design.widget.CoordinatorLayout>

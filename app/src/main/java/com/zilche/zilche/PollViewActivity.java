@@ -1,23 +1,31 @@
 package com.zilche.zilche;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.*;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -65,13 +73,21 @@ public class PollViewActivity extends ActionBarActivity {
     private ImageButton fav_button;
     private boolean favourite = false;
     private View background;
-
+    private ListView comments;
     private String authorLogin;
+    private LinearLayout ll;
+    private LinearLayout comment_lay;
+    private RelativeLayout lay;
+    private android.support.design.widget.FloatingActionButton fab;
+    private LinearLayout cal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_poll_view);
+        setContentView(R.layout.listviews);
+        comments = (ListView) findViewById(R.id.comments);
+        View header = getLayoutInflater().inflate(R.layout.activity_poll_view, null, false);
+        comments.addHeaderView(header);
         imageView = (GridItemView) findViewById(R.id.image_poll_view);
         question = (TextView) findViewById(R.id.title_poll_view);
         author = (TextView) findViewById(R.id.author_poll_view);
@@ -85,6 +101,19 @@ public class PollViewActivity extends ActionBarActivity {
         loading = (LinearLayout) findViewById(R.id.loading);
         fav_button = (ImageButton) findViewById(R.id.fav_poll_view);
         background = findViewById(R.id.background);
+        comment_lay = (LinearLayout) findViewById(R.id.comment_title);
+        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
+        cal = (LinearLayout) findViewById(R.id.cal);
+
+        // todo
+        String[] val = new String[]{};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, val);
+        comments.setAdapter(adapter);
+
+
+
+
+        //
 
         final Zilche app = (Zilche) getApplication();
 
@@ -209,14 +238,28 @@ public class PollViewActivity extends ActionBarActivity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(Util.noti_color[category]);
         }
-        final RelativeLayout lay = (RelativeLayout) findViewById(R.id.header_poll_view);
+        lay = (RelativeLayout) findViewById(R.id.header_poll_view);
         lay.setBackgroundColor(Util.title_color[category]);
-        final LinearLayout ll = (LinearLayout) findViewById(R.id.linlay_view_poll);
+        ll =(LinearLayout) findViewById(R.id.linlay_view_poll);
         Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
+        final Point size = new Point();
         display.getSize(size);
-        int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77, getResources().getDisplayMetrics()));
+        final int height = (int) (size.y - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 77, getResources().getDisplayMetrics()));
         ll.setMinimumHeight(height);
+
+        sv.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int[] aa = new int[2];
+                comment_lay.getLocationOnScreen(aa);
+               // if (aa[1] < lay.getHeight() + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics())) {
+                if (aa[1] < size.y) {
+                    fab.setVisibility(View.VISIBLE);
+                } else {
+                    fab.setVisibility(View.GONE);
+                }
+            }
+        });
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,12 +295,14 @@ public class PollViewActivity extends ActionBarActivity {
                                     }
                                 });
                             }
-                        };
+                        }
+
+                        ;
                     });
-                };
+                }
+                ;
             }
         });
-
 
     }
 
@@ -365,8 +410,11 @@ public class PollViewActivity extends ActionBarActivity {
     }
 
     private void generateResult(int[] votes, String[] options) {
+        ll.setMinimumHeight(0);
         radioGroup.setVisibility(View.GONE);
         submit_btn.setVisibility(View.GONE);
+        fab.setVisibility(View.VISIBLE);
+        comment_lay.setVisibility(View.VISIBLE);
         LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         LinearLayout.LayoutParams par = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -468,5 +516,7 @@ public class PollViewActivity extends ActionBarActivity {
             overridePendingTransition(0, 0);
         }
     }
+
+
 
 }

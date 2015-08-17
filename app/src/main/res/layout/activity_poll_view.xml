@@ -1,273 +1,224 @@
-<com.zilche.zilche.SlidingPaneLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sliding_pane"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
 
-    <View
-        android:layout_width="fill_parent"
-        android:id="@+id/background"
-        android:layout_gravity="left"
-        android:background="#aa000000"
-        android:layout_height="match_parent"/>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:visibility="gone"
+    android:id="@+id/scroll_view_poll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:background="#fff3f3f3"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_height="match_parent">
+        >
 
-        <RelativeLayout
-            android:id="@+id/header_poll_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="#3F51B5"
-            android:elevation="2dp"
-            >
-
-            <ImageButton
-                android:id="@+id/back_button_poll_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:src="@drawable/ic_chevron_left_white_24dp"
-                android:background="@null"
-                android:layout_centerVertical="true"
-                android:layout_gravity="left" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Categories"
-                android:textColor="#fff"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:fontFamily="sans-serif-medium"
-                android:id="@+id/category_poll_view"
-                />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/fav_poll_view"
-                android:padding="10dp"
-                android:src="@drawable/ic_favorite_border_white_24dp"
-                android:background="@null"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                />
-
-        </RelativeLayout>
-
-        <ScrollView
-            android:visibility="gone"
-            android:id="@+id/scroll_view_poll"
+        <LinearLayout
+            android:background="#fff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <com.zilche.zilche.GridItemView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-
-                <LinearLayout
-                    android:background="#fff"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.zilche.zilche.GridItemView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginRight="6dp"
-                        android:layout_marginLeft="6dp"
-                        android:layout_marginBottom="4dp"
-                        android:id="@+id/image_poll_view"
-                        android:background="#fff"
-                        android:visibility="gone"
-                        android:scaleType="fitXY"
-                        />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="5dp"
-                    android:background="#ddd"
-                    />
-
-                <LinearLayout
-                    android:background="#fff"
-                    android:orientation="vertical"
-                    android:id="@+id/linlay_view_poll"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:textColor="#444"
-                        android:fontFamily="sans-serif"
-                        android:layout_margin="8dp"
-                        android:scrollHorizontally="false"
-                        android:layout_marginBottom="20dp"
-                        android:id="@+id/title_poll_view"
-                        android:minHeight="60dp"
-                        />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="5dp"
-                        android:padding="5dp"
-                        android:background="#fff"
-                        android:layout_marginBottom="5dp"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:maxLength="23"
-                            android:ellipsize="end"
-                            android:id="@+id/author_poll_view"
-                            android:onClick="retrieveAuthorProfile"
-                            android:clickable="true"
-                            android:textColor="#666"
-                            android:textSize="14sp"
-                            android:fontFamily="sans-serif-medium"
-                            />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:textColor="#666"
-                            android:textSize="14sp"
-                            android:id="@+id/date_poll_view"
-                            android:fontFamily="sans-serif-medium"
-                            android:layout_alignParentRight="true"
-                            />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:background="#ddd"
-                        />
-
-
-                    <LinearLayout
-                        android:background="#fff"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:layout_gravity="center_vertical"
-                            android:gravity="right"
-                            android:id="@+id/total"
-                            android:textAlignment="gravity"
-                            android:fontFamily="sans-serif-medium"
-                            android:layout_weight="1"
-                            android:paddingTop="9dp"
-                            android:paddingLeft="2dp"
-                            android:paddingBottom="10dp"
-                            android:paddingRight="1dp"
-                            android:textSize="14sp"/>
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_beenhere_grey_18dp"
-                            android:layout_gravity="right|center_vertical"
-                            android:paddingRight="8dp"
-                            android:paddingTop="10dp"
-                            android:paddingLeft="2dp"
-                            android:paddingBottom="10dp"
-                            />
-
-                    </LinearLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="#bbb"
-                        />
-
-                    <RadioGroup
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:background="#fff"
-                        android:layout_marginRight="10dp"
-                        android:id="@+id/radio_group_poll_view">
-
-                    </RadioGroup>
-
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:orientation="vertical"
-                        android:id="@+id/result_poll_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="5dp"
-                        android:background="#ddd"
-                        />
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/submit_poll_view"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginBottom="40dp"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:text="Submit"
-                        android:fontFamily="sans-serif-medium"
-                        android:textSize="16sp"
-                        android:background="@drawable/login_button2"
-                        android:textColor="#fff"/>
-
-                </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
-
-        <LinearLayout
-            android:background="#FFF"
-            android:gravity="center"
-            android:id="@+id/loading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progress_bar"
-                style="?android:attr/progressBarStyle"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="6dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginBottom="4dp"
+                android:id="@+id/image_poll_view"
+                android:background="#fff"
+                android:visibility="gone"
+                android:scaleType="fitXY"
                 />
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#ddd"
+            />
+
+        <LinearLayout
+            android:background="#fff"
+            android:orientation="vertical"
+            android:id="@+id/linlay_view_poll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="#444"
+                android:fontFamily="sans-serif"
+                android:layout_margin="8dp"
+                android:scrollHorizontally="false"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/title_poll_view"
+                android:minHeight="60dp"
+                />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:padding="5dp"
+                android:background="#fff"
+                android:layout_marginBottom="5dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:maxLength="23"
+                    android:ellipsize="end"
+                    android:id="@+id/author_poll_view"
+                    android:onClick="retrieveAuthorProfile"
+                    android:clickable="true"
+                    android:textColor="#666"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif-medium"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:textColor="#666"
+                    android:textSize="14sp"
+                    android:id="@+id/date_poll_view"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_alignParentRight="true"
+                    />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="#ddd"
+                />
+
+            <LinearLayout
+                android:background="#fff"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:id="@+id/total"
+                    android:textAlignment="gravity"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_weight="1"
+                    android:paddingTop="9dp"
+                    android:paddingLeft="2dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="1dp"
+                    android:textSize="14sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_beenhere_grey_18dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:paddingRight="8dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="2dp"
+                    android:paddingBottom="10dp"
+                    />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ccc"
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="#fff"
+                android:layout_marginRight="10dp"
+                android:id="@+id/radio_group_poll_view">
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:id="@+id/result_poll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="#ddd"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/submit_poll_view"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Submit"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="16sp"
+                android:background="@drawable/login_button2"
+                android:textColor="#fff"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/comment_title"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ccc"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comment (11)"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingLeft="5dp"
+                android:textSize="15sp"
+                android:padding="10dp"
+                android:fontFamily="sans-serif-medium"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd"
+                />
+
+        </LinearLayout>
+
+
+
     </LinearLayout>
+</ScrollView>
 
-
-
-
-
-</com.zilche.zilche.SlidingPaneLayout>
