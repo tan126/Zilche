@@ -106,8 +106,9 @@ public class PollViewActivity extends ActionBarActivity {
         cal = (LinearLayout) findViewById(R.id.cal);
 
         // todo
-        String[] val = new String[]{};
+        String[] val = new String[]{"", ""};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, val);
+        comments.setDivider(null);
         comments.setAdapter(adapter);
 
 
@@ -209,6 +210,7 @@ public class PollViewActivity extends ActionBarActivity {
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
+                fab.setVisibility(View.GONE);
                 if (Build.VERSION.SDK_INT >= 21) {
                     int off = (int) ((1 - slideOffset) * 250);
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -225,7 +227,9 @@ public class PollViewActivity extends ActionBarActivity {
             }
 
             @Override
-            public void onPanelClosed(View panel) {}
+            public void onPanelClosed(View panel) {
+                fab.setVisibility(View.VISIBLE);
+            }
         });
         ((ImageButton)findViewById(R.id.back_button_poll_view)).setOnClickListener(new View.OnClickListener() {
             @Override

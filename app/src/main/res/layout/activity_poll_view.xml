@@ -38,6 +38,12 @@
             android:background="#ddd"
             />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ccc"
+            />
+
         <LinearLayout
             android:background="#fff"
             android:orientation="vertical"
@@ -96,8 +102,20 @@
 
             <View
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ccc"
+                />
+
+            <View
+                android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:background="#ddd"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ccc"
                 />
 
             <LinearLayout
