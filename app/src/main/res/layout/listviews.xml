@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.zilche.zilche.SlidingPaneLayout
         android:id="@+id/sliding_pane"
         android:layout_height="fill_parent"
-        android:layout_width="fill_parent">
+        android:layout_width="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
 
         <View
             android:layout_width="fill_parent"
@@ -83,36 +80,74 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/cal"
-                android:background="#FFF"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
+
+
 
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/comments"
                 android:background="#fff" />
-            </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:id="@+id/cal"
+                    android:background="#FFF"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#ccc"
+                        />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Comment (11)"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:paddingLeft="5dp"
+                            android:textSize="16sp"
+                            android:padding="10dp"
+                            android:fontFamily="sans-serif-medium"
+                            />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="1dp"/>
+
+                        <ImageButton
+                            android:background="?android:attr/selectableItemBackground"
+                            android:padding="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_create_grey_24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#ccc"
+                        />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </com.zilche.zilche.SlidingPaneLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:id="@+id/fab"
-        app:borderWidth="0dp"
-        app:fab_colorNormal="#303F9F"
-        app:fab_colorPressed="#202E8E"
-        app:fab_colorDisabled="#66303F9F"
-        android:visibility="gone"
-        android:layout_gravity="bottom|right"
-        android:src="@drawable/ic_create_white_24dp"
-        app:layout_anchorGravity="bottom|right"
-    />
-
-</android.support.design.widget.CoordinatorLayout>

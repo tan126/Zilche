@@ -78,7 +78,6 @@ public class PollViewActivity extends ActionBarActivity {
     private LinearLayout ll;
     private LinearLayout comment_lay;
     private RelativeLayout lay;
-    private android.support.design.widget.FloatingActionButton fab;
     private LinearLayout cal;
 
     @Override
@@ -86,7 +85,7 @@ public class PollViewActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listviews);
         comments = (ListView) findViewById(R.id.comments);
-        View header = getLayoutInflater().inflate(R.layout.activity_poll_view, null, false);
+        final View header = getLayoutInflater().inflate(R.layout.activity_poll_view, null, false);
         comments.addHeaderView(header);
         imageView = (GridItemView) findViewById(R.id.image_poll_view);
         question = (TextView) findViewById(R.id.title_poll_view);
@@ -102,11 +101,11 @@ public class PollViewActivity extends ActionBarActivity {
         fav_button = (ImageButton) findViewById(R.id.fav_poll_view);
         background = findViewById(R.id.background);
         comment_lay = (LinearLayout) findViewById(R.id.comment_title);
-        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         cal = (LinearLayout) findViewById(R.id.cal);
 
         // todo
-        String[] val = new String[]{"", ""};
+        String[] val = new String[]{"", "", "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda"
+                , "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, val);
         comments.setDivider(null);
         comments.setAdapter(adapter);
@@ -210,7 +209,6 @@ public class PollViewActivity extends ActionBarActivity {
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-                fab.setVisibility(View.GONE);
                 if (Build.VERSION.SDK_INT >= 21) {
                     int off = (int) ((1 - slideOffset) * 250);
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -228,7 +226,7 @@ public class PollViewActivity extends ActionBarActivity {
 
             @Override
             public void onPanelClosed(View panel) {
-                fab.setVisibility(View.VISIBLE);
+
             }
         });
         ((ImageButton)findViewById(R.id.back_button_poll_view)).setOnClickListener(new View.OnClickListener() {
@@ -255,12 +253,12 @@ public class PollViewActivity extends ActionBarActivity {
             @Override
             public void onScrollChanged() {
                 int[] aa = new int[2];
-                comment_lay.getLocationOnScreen(aa);
+                comment_lay.getLocationInWindow(aa);
                // if (aa[1] < lay.getHeight() + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics())) {
-                if (aa[1] < size.y) {
-                    fab.setVisibility(View.VISIBLE);
+                if (comment_lay.getVisibility() != View.GONE &&  aa[1] < lay.getHeight() + comment_lay.getHeight() / 2) {
+                    cal.setVisibility(View.VISIBLE);
                 } else {
-                    fab.setVisibility(View.GONE);
+                    cal.setVisibility(View.GONE);
                 }
             }
         });
@@ -417,7 +415,6 @@ public class PollViewActivity extends ActionBarActivity {
         ll.setMinimumHeight(0);
         radioGroup.setVisibility(View.GONE);
         submit_btn.setVisibility(View.GONE);
-        fab.setVisibility(View.VISIBLE);
         comment_lay.setVisibility(View.VISIBLE);
         LinearLayout.LayoutParams layParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
