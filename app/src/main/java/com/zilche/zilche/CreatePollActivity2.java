@@ -317,7 +317,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
             if (externalStorage.canWrite())
             {
-                appFolderPath = externalStorage.getAbsolutePath() + "/Zilche";
+                appFolderPath = externalStorage.getAbsolutePath() + "/Zilche/.imgfldr";
                 File dir = new File(appFolderPath);
 
                 if (!dir.exists())

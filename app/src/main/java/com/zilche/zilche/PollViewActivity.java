@@ -123,6 +123,12 @@ public class PollViewActivity extends ActionBarActivity {
 
         final Zilche app = (Zilche) getApplication();
 
+        if (app.getMap() == null || app.getFav() == null) {
+            finish();
+            overridePendingTransition(0, 0);
+            return;
+        }
+
         fav_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -543,9 +549,9 @@ public class PollViewActivity extends ActionBarActivity {
         ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
         la.notifyDataSetChanged();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Comment");
-        query.setLimit(9);
+        query.setLimit(20);
         query.whereEqualTo("pollId", poll.getId());
-        query.setSkip(skip * 9);
+        query.setSkip(skip * 20);
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -557,7 +563,7 @@ public class PollViewActivity extends ActionBarActivity {
                         comments_list.add(c);
                     }
                     comment_total += list.size();
-                    if (list.size() < 9) {
+                    if (list.size() < 20) {
                         complete = true;
                     }
                     HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
