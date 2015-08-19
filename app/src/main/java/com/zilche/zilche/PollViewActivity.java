@@ -533,7 +533,8 @@ public class PollViewActivity extends ActionBarActivity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (visibleItemCount + firstVisibleItem >= totalItemCount - 3 && !isLoading && !complete) {
+                if (visibleItemCount + firstVisibleItem >= totalItemCount && !isLoading && !complete) {
+                    isLoading = true;
                     loadComments(comment_skip);
                 }
             }
@@ -572,7 +573,11 @@ public class PollViewActivity extends ActionBarActivity {
                     comment_skip++;
                     isLoading = false;
                 } else {
-
+                    comments_list.removeLast();
+                    comments_list.add("reload");
+                    HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
+                    ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
+                    la.notifyDataSetChanged();
                 }
             }
         });
@@ -648,6 +653,18 @@ public class PollViewActivity extends ActionBarActivity {
                     LayoutInflater vi = getLayoutInflater();
                     v = vi.inflate(R.layout.progress_spinner_small, null);
                     return v;
+                } else if (((String) comment.get(position)).compareTo("reload") == 0) {
+                    LayoutInflater vi = getLayoutInflater();
+                    v = vi.inflate(R.layout.reload_small, null);
+
+                    v.findViewById(R.id.reload).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            comments_list.removeLast();
+                            loadComments(comment_skip);
+                        }
+                    });
+                    return v;
                 }
                 return null;
             }
@@ -702,6 +719,7 @@ public class PollViewActivity extends ActionBarActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == 33) {
                 comment_skip = 0;
+                complete = false;
                 int total = data.getExtras().getInt("total");
                 comment_count1.setText("Comment " + Integer.toString(total));
                 comment_count2.setText("Comment " + Integer.toString(total));
@@ -709,5 +727,6 @@ public class PollViewActivity extends ActionBarActivity {
             }
         }
     }
+
 
 }
