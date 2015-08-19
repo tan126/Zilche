@@ -1,28 +1,28 @@
 package com.zilche.zilche;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.*;
 import android.support.v7.app.ActionBarActivity;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -44,8 +44,12 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.w3c.dom.Text;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PollViewActivity extends ActionBarActivity {
@@ -79,6 +83,14 @@ public class PollViewActivity extends ActionBarActivity {
     private LinearLayout comment_lay;
     private RelativeLayout lay;
     private LinearLayout cal;
+    private LinkedList comments_list;
+    private int comment_skip = 0;
+    private TextView comment_count1;
+    private TextView comment_count2;
+    private int comment_count = 0;
+    private int comment_total = 0;
+    private boolean isLoading = false;
+    private boolean complete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,18 +114,12 @@ public class PollViewActivity extends ActionBarActivity {
         background = findViewById(R.id.background);
         comment_lay = (LinearLayout) findViewById(R.id.comment_title);
         cal = (LinearLayout) findViewById(R.id.cal);
-
-        // todo
-        String[] val = new String[]{"", "", "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda"
-                , "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda", "asda"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, val);
-        comments.setDivider(null);
-        comments.setAdapter(adapter);
+        comment_count1 = (TextView) findViewById(R.id.comment_count1);
+        comment_count2 = (TextView) findViewById(R.id.comment_count2);
 
 
-
-
-        //
+        comments_list = new LinkedList<>();
+        comments.setAdapter(new ListAdapter(comments_list));
 
         final Zilche app = (Zilche) getApplication();
 
@@ -252,6 +258,10 @@ public class PollViewActivity extends ActionBarActivity {
         sv.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
+                if (comment_lay == null || lay == null || cal == null ) {
+                    sv.getViewTreeObserver().removeOnScrollChangedListener(this);
+                    return;
+                }
                 int[] aa = new int[2];
                 comment_lay.getLocationInWindow(aa);
                // if (aa[1] < lay.getHeight() + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics())) {
@@ -270,6 +280,32 @@ public class PollViewActivity extends ActionBarActivity {
                 if (checked == -1) {
                     submit_btn.setEnabled(true);
                 } else {
+                    final ParseObject po = ParseObject.createWithoutData("poll", poll.getId());
+                    po.increment("total");
+                    po.increment("votes" + Integer.toString(checked));
+                    po.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                poll.getVotes()[checked]++;
+                                final int[] votes = new int[poll.getCount()];
+                                for (int i = 0; i < poll.getCount(); i++) {
+                                    votes[i] = po.getInt("votes" + Integer.toString(i));
+                                }
+                                c = checked;
+                                comment_count = po.getInt("comments_count");
+                                comment_count1.setText("Comment " + Integer.toString(comment_count));
+                                comment_count2.setText("Comment " + Integer.toString(comment_count));
+                                generateResult(votes, poll.getOptions());
+                                saveRecord(po.getObjectId(), checked);
+                            } else {
+                                submit_btn.setEnabled(true);
+                                Toast.makeText(PollViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+/*
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
                     query.getInBackground(id, new GetCallback<ParseObject>() {
                         @Override
@@ -288,6 +324,7 @@ public class PollViewActivity extends ActionBarActivity {
                                                 votes[i] = object.getInt("votes" + Integer.toString(i));
                                             }
                                             c = checked;
+                                            comment_count = object.getInt("comments_count");
                                             generateResult(votes, poll.getOptions());
                                             saveRecord(object.getObjectId(), checked);
                                         } else {
@@ -300,7 +337,7 @@ public class PollViewActivity extends ActionBarActivity {
                         }
 
                         ;
-                    });
+                    }); */
                 }
                 ;
             }
@@ -362,10 +399,13 @@ public class PollViewActivity extends ActionBarActivity {
                 total.setText(Integer.toString(poll2.totalVotes()));
                 if (map.get(object_id) != null) {
                     c = map.get(object_id);
+                    comment_count1.setText("Comment " + Integer.toString(object.getInt("comments_count")));
+                    comment_count2.setText("Comment " + Integer.toString(object.getInt("comments_count")));
                     generateResult(poll2.getVotes(), poll2.getOptions());
                 } else {
                     populatePoll(poll2);
                 }
+                comment_count = object.getInt("comments_count");
                 if (poll2.hasImage() == 1) {
                     poll2.getFile().getDataInBackground(new GetDataCallback() {
                         @Override
@@ -478,6 +518,58 @@ public class PollViewActivity extends ActionBarActivity {
             lin.addView(v1);
         }
         lin.setVisibility(View.VISIBLE);
+        loadComments(comment_skip);
+        comments.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (visibleItemCount + firstVisibleItem >= totalItemCount - 3 && !isLoading && !complete) {
+                    loadComments(comment_skip);
+                }
+            }
+        });
+    }
+
+    public void loadComments(int skip) {
+        isLoading = true;
+        if (skip == 0)
+            comments_list.clear();
+        comments_list.add("progress");
+        HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
+        ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
+        la.notifyDataSetChanged();
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Comment");
+        query.setLimit(9);
+        query.whereEqualTo("pollId", poll.getId());
+        query.setSkip(skip * 9);
+        query.orderByDescending("createdAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    comments_list.removeLast();
+                    for (ParseObject o : list) {
+                        Comment c = Util.parseComment(o);
+                        comments_list.add(c);
+                    }
+                    comment_total += list.size();
+                    if (list.size() < 9) {
+                        complete = true;
+                    }
+                    HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
+                    ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
+                    la.notifyDataSetChanged();
+                    comment_skip++;
+                    isLoading = false;
+                } else {
+
+                }
+            }
+        });
     }
 
     @Override
@@ -519,5 +611,97 @@ public class PollViewActivity extends ActionBarActivity {
     }
 
 
+    public class ListAdapter extends BaseAdapter {
+
+        LinkedList comment;
+
+        public ListAdapter(LinkedList list) {
+            comment = list;
+        }
+
+        @Override
+        public int getCount() {
+            return comment.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            if (comment.get(position) instanceof String) {
+                if (((String) comment.get(position)).compareTo("progress") == 0) {
+                    LayoutInflater vi = getLayoutInflater();
+                    v = vi.inflate(R.layout.progress_spinner_small, null);
+                    return v;
+                }
+                return null;
+            }
+            LayoutInflater vi = getLayoutInflater();
+            v = vi.inflate(R.layout.comment_item, null);
+            ImageView iv = (ImageView) v.findViewById(R.id.image);
+            TextView author = (TextView) v.findViewById(R.id.author);
+            TextView date = (TextView) v.findViewById(R.id.date);
+            TextView comment = (TextView) v.findViewById(R.id.comment);
+            TextView mod = (TextView) v.findViewById(R.id.mod);
+            TextView op = (TextView) v.findViewById(R.id.op);
+            Comment c = (Comment) this.comment.get(position);
+            author.setText(c.getName());
+            date.setText(c.getDate_added());
+            comment.setText(c.getComment_text());
+            if (c.getOp() == 1) {
+                op.setVisibility(View.VISIBLE);
+            } else {
+                op.setVisibility(View.GONE);
+            }
+            if (c.getMod() == 1) {
+                mod.setVisibility(View.VISIBLE);
+            } else {
+                mod.setVisibility(View.GONE);
+            }
+            return v;
+        }
+    }
+
+    public void addComment(View v) {
+        if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+            Intent i = new Intent(this, SignUpActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+        } else {
+            Intent i = new Intent(this, CreateCommentActivity.class);
+            i.putExtra("poll", poll.getId());
+            i.putExtra("question", poll.getQuestion());
+            i.putExtra("choice", poll.getOptions()[c]);
+            i.putExtra("category", category);
+            i.putExtra("isAnon", poll.getAnon());
+            i.putExtra("owner", poll.getAuthorLogin());
+            startActivityForResult(i, 33);
+            overridePendingTransition(R.anim.right_to_left, 0);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 33) {
+                comment_skip = 0;
+                int total = data.getExtras().getInt("total");
+                comment_count1.setText("Comment " + Integer.toString(total));
+                comment_count2.setText("Comment " + Integer.toString(total));
+                loadComments(comment_skip);
+            }
+        }
+    }
 
 }

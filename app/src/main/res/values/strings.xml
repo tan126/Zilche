@@ -90,6 +90,7 @@
     <string name="title_activity_crop_image">CropImageActivity</string>
     <string name="title_activity_my_profile">MyProfileActivity</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_create_comment">CreateCommentActivity</string>
 
 39
 </resources>

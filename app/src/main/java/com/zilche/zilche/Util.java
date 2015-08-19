@@ -10,6 +10,10 @@ import com.parse.ParseObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Util {
 
     public static int[] drawables = {
@@ -96,6 +100,16 @@ public class Util {
         ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+    }
+
+    public static Comment parseComment(ParseObject po) {
+        Date d = po.getCreatedAt();
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        String date = df.format(d);
+        Comment c = new Comment(po.getString("author"), po.getString("comment"), date);
+        c.setOp(po.getInt("op"));
+        c.setMod(po.getInt("mod"));
+        return c;
     }
 
 }
