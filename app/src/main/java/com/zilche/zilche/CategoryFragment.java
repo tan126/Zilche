@@ -49,6 +49,7 @@ public class CategoryFragment extends Fragment {
                 Intent i = new Intent(getActivity(), CategoryActivity.class);
                 i.putExtra("category_index", position);
                 startActivity(i);
+                getActivity().overridePendingTransition(R.anim.right_to_left, 0);
             }
         });
         return rootView;
