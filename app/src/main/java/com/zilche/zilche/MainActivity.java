@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setPageTransformer(false, new FadePageTransformer());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(0);
-        viewPager.setOffscreenPageLimit(0);
+        viewPager.setOffscreenPageLimit(3);
         map = app.getMap();
         ImageView v = (ImageView) findViewById(R.id.loginArea);
         v.setClickable(true);

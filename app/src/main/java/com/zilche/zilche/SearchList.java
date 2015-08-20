@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,7 +45,8 @@ public class SearchList extends AppCompatActivity {
     private int visibleThreshold = 15;
     private boolean load = false;
     private String str;
-
+    private LinearLayout reload_bg_full;
+    private Button reload_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,16 @@ public class SearchList extends AppCompatActivity {
         setContentView(R.layout.activity_search_list);
         Zilche app = (Zilche) getApplication();
         map = app.getMap();
+        reload_bg_full = (LinearLayout) findViewById(R.id.reload_bg_full);
+        reload_btn = (Button) findViewById(R.id.reload_btn);
+        reload_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reload_bg_full.setVisibility(View.GONE);
+                spinner.setVisibility(View.VISIBLE);
+                populateList(skip, str);
+            }
+        });
         spinner = (ProgressBar) findViewById(R.id.progress_bar);
         sv = (SearchView) findViewById(R.id.my_search_bar);
         sv.setFocusable(true);
@@ -74,6 +86,8 @@ public class SearchList extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 skip = 0;
                 str = query;
+                pollList.clear();
+                rv.getAdapter().notifyDataSetChanged();
                 if (pollList.size() == 0) {
                     spinner.setVisibility(View.VISIBLE);
                 }
@@ -140,6 +154,9 @@ public class SearchList extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
+                    if (reload_bg_full.getVisibility() == View.VISIBLE) {
+                        reload_bg_full.setVisibility(View.GONE);
+                    }
                     if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
@@ -167,10 +184,13 @@ public class SearchList extends AppCompatActivity {
                 } else {
                     if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                         pollList.removeLast();
+                        Poll tmp = new Poll();
+                        tmp.setId("-2");
+                        pollList.add(tmp);
                         rv.getAdapter().notifyDataSetChanged();
+                    } else {
+                        reload_bg_full.setVisibility(View.VISIBLE);
                     }
-                    load = false;
-                    Toast.makeText(SearchList.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 if (spinner.getVisibility() == View.VISIBLE) {
                     spinner.setVisibility(View.GONE);
@@ -193,9 +213,22 @@ public class SearchList extends AppCompatActivity {
             }
 
         };
+        View.OnClickListener reload = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pollList.removeLast();
+                Poll tmp = new Poll();
+                tmp.setId("-1");
+                pollList.add(tmp);
+                rv.getAdapter().notifyDataSetChanged();
+                populateList(skip, str);
+            }
+        };
 
         public class PollViewHolder extends RecyclerView.ViewHolder{
 
+            LinearLayout reload_bg;
+            Button reload;
             LinearLayout main;
             ProgressBar pb;
             CardView cv;
@@ -219,6 +252,8 @@ public class SearchList extends AppCompatActivity {
                 has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
                 author = (TextView) itemView.findViewById(R.id.author);
                 pb = (ProgressBar) itemView.findViewById(R.id.pb);
+                reload_bg = (LinearLayout) itemView.findViewById(R.id.reload_bg);
+                reload = (Button) itemView.findViewById(R.id.reload);
             }
         }
 
@@ -239,8 +274,16 @@ public class SearchList extends AppCompatActivity {
             if (polls.get(i).getId().compareTo("-1") == 0) {
                 pollViewHolder.pb.setVisibility(View.VISIBLE);
                 pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
+                return;
+            } if (polls.get(i).getId().compareTo("-2") == 0 ) {
+                pollViewHolder.pb.setVisibility(View.GONE);
+                pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.VISIBLE);
+                pollViewHolder.reload.setOnClickListener(reload);
                 return;
             } else {
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
                 pollViewHolder.pb.setVisibility(View.GONE);
                 pollViewHolder.cv.setVisibility(View.VISIBLE);
             }
