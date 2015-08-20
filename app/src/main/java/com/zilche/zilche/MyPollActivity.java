@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,14 +40,13 @@ public class MyPollActivity extends ActionBarActivity {
     private LinkedList<Poll> pollList;
     private ProgressBar spinner;
     private RecyclerView rv;
-    private int isRefreshing = 0;
     private HashMap<String, Integer> map;
     private int skip = 0;
     private int complete = 0;
     private int visibleThreshold = 15;
-    private int sortBy = 1;
     private SlidingPaneLayout spl;
     private View background;
+    private LinearLayout reload_bg_full;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,7 @@ public class MyPollActivity extends ActionBarActivity {
             category = extras.getInt("category_index");
         }
         background = findViewById(R.id.background);
+        reload_bg_full = (LinearLayout) findViewById(R.id.reload_bg_full);
         spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
             @Override
@@ -98,11 +99,8 @@ public class MyPollActivity extends ActionBarActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = recyclerView.getChildCount();
-                int totalItemCount = llm.getItemCount();
                 int firstVisibleItem = llm.findFirstVisibleItemPosition();
-                //if (!load && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-                if (!load && ((pollList.size() > 0 && pollList.size() - firstVisibleItem <= visibleThreshold) || !rv.canScrollVertically(1))) {
+                if (!load && ((pollList.size() < 0 && pollList.size() - firstVisibleItem <= visibleThreshold) || !rv.canScrollVertically(1))) {
                     if (complete == 0) {
                         if (pollList.size() == 0 || pollList.getLast().getId().compareTo("-1") != 0) {
                             Poll tmp = new Poll();
@@ -130,6 +128,9 @@ public class MyPollActivity extends ActionBarActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
+                    if (reload_bg_full.getVisibility() == View.VISIBLE) {
+                        reload_bg_full.setVisibility(View.GONE);
+                    }
                     if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
@@ -148,17 +149,19 @@ public class MyPollActivity extends ActionBarActivity {
                         }
 
                         rv.getAdapter().notifyDataSetChanged();
-                        isRefreshing = 0;
                         load = false;
                         skip++;
                     }
                 } else {
                     if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                         pollList.removeLast();
+                        Poll tmp = new Poll();
+                        tmp.setId("-2");
+                        pollList.add(tmp);
                         rv.getAdapter().notifyDataSetChanged();
+                    } else {
+                        reload_bg_full.setVisibility(View.VISIBLE);
                     }
-                    load = false;
-                    Toast.makeText(MyPollActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 if (spinner.getVisibility() == View.VISIBLE) {
                     spinner.setVisibility(View.GONE);
@@ -220,9 +223,22 @@ public class MyPollActivity extends ActionBarActivity {
             }
 
         };
+        View.OnClickListener reload = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pollList.removeLast();
+                Poll tmp = new Poll();
+                tmp.setId("-1");
+                pollList.add(tmp);
+                rv.getAdapter().notifyDataSetChanged();
+                populateList(skip);
+            }
+        };
 
         public class PollViewHolder extends RecyclerView.ViewHolder{
 
+            LinearLayout reload_bg;
+            Button reload;
             ImageView overflow;
             LinearLayout main;
             ProgressBar pb;
@@ -249,6 +265,8 @@ public class MyPollActivity extends ActionBarActivity {
                 pb = (ProgressBar) itemView.findViewById(R.id.pb);
                 overflow = (ImageView) itemView.findViewById(R.id.overflow);
                 overflow.setOnClickListener(openMenu);
+                reload_bg = (LinearLayout) itemView.findViewById(R.id.reload_bg);
+                reload = (Button) itemView.findViewById(R.id.reload);
             }
         }
 
@@ -269,8 +287,16 @@ public class MyPollActivity extends ActionBarActivity {
             if (polls.get(i).getId().compareTo("-1") == 0) {
                 pollViewHolder.pb.setVisibility(View.VISIBLE);
                 pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
+                return;
+            } if (polls.get(i).getId().compareTo("-2") == 0 ) {
+                pollViewHolder.pb.setVisibility(View.GONE);
+                pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.VISIBLE);
+                pollViewHolder.reload.setOnClickListener(reload);
                 return;
             } else {
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
                 pollViewHolder.pb.setVisibility(View.GONE);
                 pollViewHolder.cv.setVisibility(View.VISIBLE);
             }
@@ -316,6 +342,12 @@ public class MyPollActivity extends ActionBarActivity {
             startActivity(i);
             finish();
         }
+    }
+
+    public void reload(View v) {
+        reload_bg_full.setVisibility(View.GONE);
+        spinner.setVisibility(View.VISIBLE);
+        populateList(skip);
     }
 
 }
