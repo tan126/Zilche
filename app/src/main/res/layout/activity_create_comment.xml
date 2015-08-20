@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Comment"
+            android:text="@string/comment_2"
             android:textColor="#fff"
             android:textSize="20sp"
             android:gravity="center"
@@ -79,7 +79,7 @@
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="abcdefg"/>
+            android:text="option"/>
 
 
         <View
@@ -93,7 +93,7 @@
             android:fontFamily="sans-serif"
             android:textSize="16sp"
             android:inputType="textCapSentences|textMultiLine"
-            android:hint="Enter your comment"
+            android:hint="@string/enter_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -101,7 +101,7 @@
             android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit"
+            android:text="@string/submit"
             android:layout_margin="10dp"
             android:textColor="#fff"
             android:background="@drawable/login_button2"/>

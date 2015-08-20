@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="Categories"
+                    android:text="@string/Category"
                     android:textColor="#fff"
                     android:textSize="20sp"
                     android:gravity="center"
@@ -76,13 +76,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Connection failed"
+                    android:text="@string/connection_failed"
                     android:textSize="16sp"/>
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Retry"
+                    android:text="@string/reload"
                     android:textSize="14sp"
                     android:textColor="#666"
                     android:onClick="reload"
@@ -138,7 +138,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Comment 0"
+                            android:text="@string/comment_0"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:id="@+id/comment_count2"

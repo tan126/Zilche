@@ -11,7 +11,7 @@
         <item
             android:checkable="false"
             android:id="@+id/sort_popular"
-            android:title="Sort by Popularity"
+            android:title="@string/sort_popular"
             android:orderInCategory="100"
             android:onClick="sortPopular"
             app:showAsAction="never" />
@@ -19,7 +19,7 @@
         <item
             android:checkable="false"
             android:id="@+id/sort_date"
-            android:title="Sort by Date"
+            android:title="@string/sort_date"
             android:orderInCategory="100"
             android:onClick="sortDate"
             app:showAsAction="never" />

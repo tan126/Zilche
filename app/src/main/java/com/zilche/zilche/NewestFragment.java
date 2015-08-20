@@ -82,7 +82,7 @@ public class NewestFragment extends Fragment{
                     @Override
                     public void run() {
                         if (isRefreshing == 1) {
-                            Toast.makeText(getActivity(), "Connection Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             srl.setRefreshing(false);
                             isRefreshing = 0;
                         }
@@ -229,7 +229,7 @@ public class NewestFragment extends Fragment{
             } else {
                 pollViewHolder.has_photo.setVisibility(View.GONE);
             }
-            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
+            pollViewHolder.author.setText(p.getAnon() == 1 ? getString(R.string.anonymous) : p.getAuthor());
         }
 
         @Override
@@ -274,7 +274,7 @@ public class NewestFragment extends Fragment{
                             pollList.clear();
                         }
                         for (int i = 0; i < list.size(); i++) {
-                            pollList.add(Util.parsePollObject(list.get(i)));
+                            pollList.add(Util.parsePollObject(list.get(i), getActivity()));
                         }
                         rv.getAdapter().notifyDataSetChanged();
                         srl.setRefreshing(false);

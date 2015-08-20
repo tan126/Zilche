@@ -103,12 +103,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
-        actionA.setTitle("New Poll");
+        actionA.setTitle(getString(R.string.new_poll));
 
         actionA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent t = new Intent(MainActivity.this, tmpNewPoll.class);
                 Intent t = new Intent(MainActivity.this, CreatePollActivity2.class);
                 startActivity(t);
                 plusButton.collapse();
@@ -184,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //plusButton.setVisibility(View.INVISIBLE);
                 myDrawer.openDrawer(Gravity.LEFT);
             }
         });
@@ -228,38 +226,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        LinearLayout searchBar = (LinearLayout) findViewById(R.id.my_search_bar);
-        ImageView searchIcon = (ImageView) findViewById(R.id.searchicon);
-        searchIcon.setColorFilter(0x66ffffff, PorterDuff.Mode.MULTIPLY);
-        searchBar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, SearchList.class);
-                startActivity(i);
-            }
-        });
-        return true;
-    }
-
-    @Override
     public void onBackPressed() {
         if (plusButton.isExpanded()) {
             plusButton.collapse();
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        return super.onOptionsItemSelected(item);
     }
 
     public class SlideViewAdapter extends FragmentPagerAdapter {
@@ -297,17 +269,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public static class placeHolder extends Fragment {
-        public static final String ARG_OBJECT = "object";
-
-        public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inf.inflate(R.layout.placeholder, container, false);
-            Bundle args = getArguments();
-            ((TextView) rootView.findViewById(R.id.text1)).setText(Integer.toString(args.getInt(ARG_OBJECT)));
-            return rootView;
-        }
-    }
-
     private static class FadePageTransformer implements ViewPager.PageTransformer {
         private static final float MIN_SCALE = 0.80f;
         private static final float MIN_ALPHA = 0.5f;
@@ -339,14 +300,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void newPoll(View v) {
-
         Intent i = new Intent(this, CreatePollActivity2.class);
         startActivity(i);
         plusButton.collapse();
-        /*
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);*/
     }
 
     @Override

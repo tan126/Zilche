@@ -24,7 +24,6 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -44,8 +43,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -150,10 +147,9 @@ public class PollViewActivity extends ActionBarActivity {
                                     public void done(ParseException e) {
                                         if (e != null) {
                                             fav_button.setImageResource(R.drawable.ic_favorite_white_24dp);
-                                            //fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
                                             fav_button.setEnabled(true);
                                             fav_button.setClickable(true);
-                                            Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(PollViewActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                         } else {
                                             app.getFav().remove(poll.getId());
                                             favourite = false;
@@ -164,16 +160,14 @@ public class PollViewActivity extends ActionBarActivity {
                                 });
                             } else {
                                 fav_button.setImageResource(R.drawable.ic_favorite_white_24dp);
-                                //fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
                                 fav_button.setEnabled(true);
                                 fav_button.setClickable(true);
-                                Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PollViewActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 } else {
                     fav_button.setImageResource(R.drawable.ic_favorite_white_24dp);
-                    //fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
                     ParseObject po = new ParseObject("Favourite");
                     po.put("user", ParseUser.getCurrentUser().getObjectId());
                     po.put("Key", poll.getId());
@@ -182,7 +176,7 @@ public class PollViewActivity extends ActionBarActivity {
                         @Override
                         public void done(ParseException e) {
                             if (e != null) {
-                                Toast.makeText(PollViewActivity.this, "Connection Failed. Please try again later.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PollViewActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                 fav_button.setImageResource(R.drawable.ic_favorite_border_white_24dp);
                                 fav_button.setEnabled(true);
                                 fav_button.setClickable(true);
@@ -205,7 +199,6 @@ public class PollViewActivity extends ActionBarActivity {
         if (app.getFav().get(poll.getId()) != null) {
             favourite = true;
             fav_button.setImageResource(R.drawable.ic_favorite_white_24dp);
-           // fav_button.setImageResource(R.drawable.ic_favorite_border_red_24dp);
         } else {
             fav_button.setImageResource(R.drawable.ic_favorite_border_white_24dp);
             favourite = false;
@@ -213,7 +206,7 @@ public class PollViewActivity extends ActionBarActivity {
 
         category = poll.getCategory();
         if (category == 0)
-            category_title.setText("Other");
+            category_title.setText(getString(R.string.other));
         else
             category_title.setText(Util.strings[category]);
         id = poll.getId();
@@ -271,7 +264,6 @@ public class PollViewActivity extends ActionBarActivity {
                 }
                 int[] aa = new int[2];
                 comment_lay.getLocationInWindow(aa);
-               // if (aa[1] < lay.getHeight() + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics())) {
                 if (comment_lay.getVisibility() != View.GONE &&  aa[1] < lay.getHeight() + comment_lay.getHeight() / 2) {
                     cal.setVisibility(View.VISIBLE);
                 } else {
@@ -301,13 +293,13 @@ public class PollViewActivity extends ActionBarActivity {
                                 }
                                 c = checked;
                                 comment_count = po.getInt("comments_count");
-                                comment_count1.setText("Comment " + Integer.toString(comment_count));
-                                comment_count2.setText("Comment " + Integer.toString(comment_count));
+                                comment_count1.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
+                                comment_count2.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
                                 generateResult(votes, poll.getOptions());
                                 saveRecord(po.getObjectId(), checked);
                             } else {
                                 submit_btn.setEnabled(true);
-                                Toast.makeText(PollViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PollViewActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -360,11 +352,11 @@ public class PollViewActivity extends ActionBarActivity {
             @Override
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
-                    final Poll poll2 = Util.parsePollObject(object);
+                    final Poll poll2 = Util.parsePollObject(object, PollViewActivity.this);
                     question.setText(poll2.getQuestion());
                     dateAdded.setText(poll2.getDate_added());
                     if (poll2.getAnon() == 1) {
-                        author.setText("Anonymous");
+                        author.setText(getString(R.string.anonymous));
                     } else {
                         author.setText(poll2.getAuthor());
                         authorLogin = poll2.getAuthorLogin();
@@ -380,8 +372,8 @@ public class PollViewActivity extends ActionBarActivity {
                                     worker.execute();
                                     if (map.get(object_id) != null) {
                                         c = map.get(object_id);
-                                        comment_count1.setText("Comment " + Integer.toString(comment_count));
-                                        comment_count2.setText("Comment " + Integer.toString(comment_count));
+                                        comment_count1.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
+                                        comment_count2.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
                                         generateResult(poll2.getVotes(), poll2.getOptions());
                                     } else {
                                         populatePoll(poll2);
@@ -398,8 +390,8 @@ public class PollViewActivity extends ActionBarActivity {
                     } else {
                         if (map.get(object_id) != null) {
                             c = map.get(object_id);
-                            comment_count1.setText("Comment " + Integer.toString(comment_count));
-                            comment_count2.setText("Comment " + Integer.toString(comment_count));
+                            comment_count1.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
+                            comment_count2.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
                             generateResult(poll2.getVotes(), poll2.getOptions());
                         } else {
                             populatePoll(poll2);
@@ -705,8 +697,8 @@ public class PollViewActivity extends ActionBarActivity {
                 comment_skip = 0;
                 complete = false;
                 int total = data.getExtras().getInt("total");
-                comment_count1.setText("Comment " + Integer.toString(total));
-                comment_count2.setText("Comment " + Integer.toString(total));
+                comment_count1.setText(getString(R.string.comment_2) + " " + Integer.toString(total));
+                comment_count2.setText(getString(R.string.comment_2) + " " + Integer.toString(total));
                 loadComments(comment_skip);
             }
         }

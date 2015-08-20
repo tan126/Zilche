@@ -82,21 +82,21 @@ public class CropImageActivity extends ActionBarActivity {
             public void onClick(View v) {
                 final Bitmap ret = iv.getCroppedImage();
                 if (ret.getWidth() < 300) {
-                    Toast.makeText(CropImageActivity.this, "Image is too small.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CropImageActivity.this, getString(R.string.image_small), Toast.LENGTH_SHORT).show();
                     iv.setFixedAspectRatio(false);
                     iv.setFixedAspectRatio(true);
                     return;
                 }
                 final AlertDialog.Builder builder = new AlertDialog.Builder(CropImageActivity.this);
-                builder.setTitle("Crop image?");
+                builder.setTitle(getString(R.string.crop_image));
                 AlertDialog dialog = null;
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
-                builder.setPositiveButton("Comfirm", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

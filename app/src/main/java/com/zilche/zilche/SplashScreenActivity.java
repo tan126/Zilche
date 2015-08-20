@@ -52,10 +52,10 @@ public class SplashScreenActivity extends ActionBarActivity {
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreenActivity.this);
                         AlertDialog dia = null;
-                        builder.setTitle("Connection Failed.");
-                        builder.setMessage( "Please try again later.");
+                        builder.setTitle(getString(R.string.connection_failed));
+                        builder.setMessage( getString(R.string.try_again));
                         builder.setCancelable(false);
-                        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -102,10 +102,10 @@ public class SplashScreenActivity extends ActionBarActivity {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreenActivity.this);
                     AlertDialog dia = null;
-                    builder.setTitle("Connection Failed.");
-                    builder.setMessage("Please try again later.");
+                    builder.setTitle(getString(R.string.connection_failed));
+                    builder.setMessage(getString(R.string.try_again));
                     builder.setCancelable(false);
-                    builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -151,10 +151,10 @@ public class SplashScreenActivity extends ActionBarActivity {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreenActivity.this);
                     AlertDialog dia = null;
-                    builder.setTitle("Connection Failed.");
-                    builder.setMessage("Please try again later.");
+                    builder.setTitle(getString(R.string.connection_failed));
+                    builder.setMessage(getString(R.string.try_again));
                     builder.setCancelable(false);
-                    builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();

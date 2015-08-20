@@ -38,7 +38,7 @@ public class Util {
             0xff00796B, 0xff0097A7, 0xffC2185B, 0xffF57C00, 0xff455A64
     };
 
-    public static Poll parsePollObject(ParseObject object) {
+    public static Poll parsePollObject(ParseObject object, Context c) {
         String id = object.getObjectId();
         String question = object.getString("question");
         int options_count = object.getInt("optionNum");
@@ -66,24 +66,24 @@ public class Util {
                 if ( diffH > 24 ) {
                     long diffD = diffH / 24;
                     if (diffD == 1) {
-                        tmp += diffD + " day ago";
+                        tmp += diffD + " " +c.getString(R.string.day_ago);
                     } else {
-                        tmp += diffD + " days ago";
+                        tmp += diffD + " " +c.getString(R.string.days_ago);
                     }
                 }
                 else {
                     if (diffH == 1) {
-                        tmp += diffH + " hour ago";
+                        tmp += diffH + " " + c.getString(R.string.hour_ago);
                     } else {
-                        tmp += diffH + " hours ago";
+                        tmp += diffH + " " + c.getString(R.string.hours_ago);
                     }
                 }
             }
             else
-                tmp += diffM + " minutes ago";
+                tmp += diffM + " " + c.getString(R.string.minutes_ago);
         }
         else
-            tmp += " 1 minute ago";
+            tmp += c.getString(R.string.minute_ago);
         String date_added = tmp;
         String author = object.getString("nickname");
         String authorLogin = object.getString("author");

@@ -27,15 +27,15 @@ public class FullScreenImage extends Activity
     }
     public void acceptPhotoSelection(View v) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Discard image?");
+        builder.setTitle(getString(R.string.discard_image));
         AlertDialog dialog = null;
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        builder.setPositiveButton("Comfirm", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 setResult(RESULT_OK);

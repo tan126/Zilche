@@ -112,15 +112,15 @@ public class CreateCommentActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 submit.setEnabled(false);
-                if (comment.getText().toString().length() < 2) {
-                    Toast.makeText(CreateCommentActivity.this, "Please enter a proper comment", Toast.LENGTH_SHORT).show();
+                if (comment.getText().toString().trim().length() < 1) {
+                    Toast.makeText(CreateCommentActivity.this, getString(R.string.comment_err), Toast.LENGTH_SHORT).show();
                     submit.setEnabled(true);
                 } else {
                     final ParseObject po = ParseObject.createWithoutData("poll", pollId);
                     final ParseObject comment_obj = new ParseObject("Comment");
                     comment_obj.put("pollId", pollId);
                     comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
-                    comment_obj.put("comment", comment.getText().toString());
+                    comment_obj.put("comment", comment.getText().toString().trim());
                     if (isAnon != 1) {
                         if (ParseUser.getCurrentUser().getUsername().compareTo(owner) == 0) {
                             comment_obj.put("op", 1);
@@ -133,7 +133,7 @@ public class CreateCommentActivity extends ActionBarActivity {
                     final ProgressDialog dialog = new ProgressDialog(CreateCommentActivity.this);
                     dialog.setIndeterminate(true);
                     dialog.setCancelable(false);
-                    dialog.setMessage("Uploading Comment");
+                    dialog.setMessage(getString(R.string.upload_comment));
                     dialog.show();
                     comment_obj.saveInBackground(new SaveCallback() {
                         @Override
@@ -155,7 +155,7 @@ public class CreateCommentActivity extends ActionBarActivity {
                             } else {
                                 dialog.dismiss();
                                 submit.setEnabled(true);
-                                Toast.makeText(CreateCommentActivity.this, "Connection failed. Try again later", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateCommentActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

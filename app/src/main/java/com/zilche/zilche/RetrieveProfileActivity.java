@@ -343,7 +343,7 @@ public class RetrieveProfileActivity extends FragmentActivity implements ViewPag
                                 spinner.setVisibility(View.VISIBLE);
                             }
                             for (int i = 0; i < list.size(); i++) {
-                                pollList.add(Util.parsePollObject(list.get(i)));
+                                pollList.add(Util.parsePollObject(list.get(i), getActivity()));
                             }
                             rv.getAdapter().notifyDataSetChanged();
                             skip++;

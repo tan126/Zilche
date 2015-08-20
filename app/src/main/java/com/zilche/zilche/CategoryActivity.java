@@ -115,7 +115,7 @@ public class CategoryActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (isRefreshing == 1) {
-                            Toast.makeText(CategoryActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CategoryActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             srl.setRefreshing(false);
                             isRefreshing = 0;
                         }
@@ -195,7 +195,7 @@ public class CategoryActivity extends AppCompatActivity {
                             pollList.clear();
                         }
                         for (int i = 0; i < list.size(); i++) {
-                            pollList.add(Util.parsePollObject(list.get(i)));
+                            pollList.add(Util.parsePollObject(list.get(i), CategoryActivity.this));
                         }
                         rv.getAdapter().notifyDataSetChanged();
                         srl.setRefreshing(false);
@@ -340,7 +340,7 @@ public class CategoryActivity extends AppCompatActivity {
             } else {
                 pollViewHolder.has_photo.setVisibility(View.GONE);
             }
-            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
+            pollViewHolder.author.setText(p.getAnon() == 1 ? getString(R.string.anonymous) : p.getAuthor());
         }
 
         @Override
@@ -391,6 +391,12 @@ public class CategoryActivity extends AppCompatActivity {
         reload_bg_full.setVisibility(View.GONE);
         spinner.setVisibility(View.VISIBLE);
         populateList(skip, sortBy);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.left_to_right);
     }
 
 }

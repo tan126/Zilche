@@ -199,13 +199,13 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(vp.getWindowToken(), 0);
                 switch (position) {
                     case 0:
-                        title.setText("New Poll");
+                        title.setText(getString(R.string.new_poll));
                         break;
                     case 1:
-                        title.setText("Options");
+                        title.setText(getString(R.string.options));
                         break;
                     case 2:
-                        title.setText("Categories");
+                        title.setText(getString(R.string.Category));
                         break;
                     default:
                         break;
@@ -272,9 +272,9 @@ public class CreatePollActivity2 extends AppCompatActivity {
         private View.OnClickListener onclick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] items = {"Take Photo", "Choose from library", "Cancel"};
+                final CharSequence[] items = {getString(R.string.take_photo), getString(R.string.gallery), getString(R.string.cancel)};
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Select Image (Optional)");
+                builder.setTitle(getString(R.string.select_image));
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -300,7 +300,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 if (imageBound) {
                     if (image == null) {
-                        Toast.makeText(getActivity(), "Image is still loading.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.image_loading), Toast.LENGTH_SHORT).show();
                     } else {
                         Intent i = new Intent(getActivity(), FullScreenImage.class);
                         i.putExtra("picture", image);
@@ -352,7 +352,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
             ret = question.getText().toString().trim();
             if (ret.length() == 0) {
                 question.requestFocus();
-                Toast.makeText(getActivity(), "Question should not be empty", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.question_empty), Toast.LENGTH_SHORT).show();
                 return null;
             }
             return ret;
@@ -400,21 +400,12 @@ public class CreatePollActivity2 extends AppCompatActivity {
             return rootView;
         }
 
-        public Uri getImageUri(Context con, Bitmap bm) {
-            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-            String path = MediaStore.Images.Media.insertImage(con.getContentResolver(), bm, "Title", null);
-            return Uri.parse(path);
-        };
-
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
 
             if (resultCode == RESULT_OK) {
                 if (requestCode == REQUEST_CAMERA) {
-//                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    //Uri uri = getImageUri(getActivity(), image);
                     CreatePollActivity2 act = (CreatePollActivity2) getActivity();
                     Uri uri = act.getUri();
                     Intent i = new Intent(getActivity(), CropImageActivity.class);
@@ -436,7 +427,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     imageBound = true;
                     byte[] bm = (byte[]) data.getExtras().get("data");
                     this.image = bm;
-                    Toast.makeText(getActivity(), "Click button again to view image.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.click_button_view_image), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -499,7 +490,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (layouts.size() >= 10) {
-                        Toast.makeText(getActivity(), "You reached the maximum of 10 options", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.maximum_10), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     fab.setVisibility(View.GONE);
@@ -562,7 +553,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                         ret[i] = et.getText().toString().trim();
                         if (ret[i].length() == 0) {
                             et.requestFocus();
-                            Toast.makeText(getActivity(), "Option should not be empty", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.option_empty), Toast.LENGTH_SHORT).show();
                             return null;
                         }
                         break;
@@ -570,7 +561,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                 }
             }
             if (ret.length < 2) {
-                Toast.makeText(getActivity(), "You should provide at least 2 options", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.two_options), Toast.LENGTH_SHORT).show();
                 return null;
             }
             return ret;
@@ -610,70 +601,6 @@ public class CreatePollActivity2 extends AppCompatActivity {
             super.onCreate(savedInstanceState);
         }
 
-        private Poll parsePollObject(ParseObject thisPoll){
-            String id = thisPoll.getObjectId();
-            String question = thisPoll.getString("question");
-            int options_count = thisPoll.getInt("optionNum");
-            JSONArray tmpOptions = thisPoll.getJSONArray("options");
-            String[] options = new String[options_count];
-            for( int i = 0; i < options_count; i ++ ) {
-                try{
-                    options[i] = tmpOptions.getString(i);
-                } catch ( JSONException e ){
-                    Log.d("JSON", "Array index out of bound");
-                }
-            }
-            int[] votes = new int[options_count];
-            for( int i = 0; i < options_count; i ++ ) {
-                votes[i] = thisPoll.getInt("votes" + Integer.toString(i));
-            }
-            String tmp = "";
-            long updatedTime = thisPoll.getLong("createTime");
-            long diffMS = System.currentTimeMillis() - updatedTime;
-            long diffS = diffMS / 1000;
-            if ( diffS > 60 ) {
-                long diffM = diffS / 60;
-                if ( diffM > 60 ){
-                    long diffH = diffM / 60;
-                    if ( diffH > 24 ) {
-                        long diffD = diffH / 24;
-                        tmp +=  diffD + " days ago";
-                    }
-                    else {
-                        if (diffH == 1) {
-                            tmp += diffH + " hour ago";
-                        } else {
-                            tmp += +diffH + " hours ago";
-                        }
-                    }
-                }
-                else
-                    tmp += + diffM + " minutes ago";
-            }
-            else
-                tmp += " 1 minute ago";
-            String date_added = tmp;
-            String author = thisPoll.getString("nickname");
-            int categorty = thisPoll.getInt("category");
-            String authorLogin = thisPoll.getString("author");
-            Poll newPoll = new Poll(id, question, options, votes, date_added, author, authorLogin, options_count, categorty);
-            if (categorty ==  0) {
-                categorty = 8;
-            } else if (categorty < 9) {
-                categorty--;
-            }
-            newPoll.setCategory_title(getString(strings[categorty]));
-            newPoll.setAnon(thisPoll.getInt("anon"));
-            newPoll.setHasImage(thisPoll.getInt("haveImage"));
-            newPoll.setFile(thisPoll.getParseFile("image"));
-            CreatePollActivity2 a = (CreatePollActivity2) getActivity();
-            byte[] image = a.getImage();
-            if (image != null)
-                newPoll.setImage(image);
-            return newPoll;
-        }
-
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -686,7 +613,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     fab.setEnabled(false);
                     fab.setClickable(false);
                     final ProgressDialog dialog = new ProgressDialog(getActivity());
-                    dialog.setMessage("Creating poll");
+                    dialog.setMessage(getString(R.string.creating_poll));
                     dialog.setCancelable(false);
                     CreatePollActivity2 activity = (CreatePollActivity2) getActivity();
                     final ParseObject parseObject = activity.makeObject();
@@ -703,10 +630,10 @@ public class CreatePollActivity2 extends AppCompatActivity {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
-                                    Poll poll = parsePollObject(parseObject);
+                                    Poll poll = Util.parsePollObject(parseObject, getActivity());
                                     Intent i = new Intent(getActivity(), PollViewActivity.class);
                                     i.putExtra("poll", poll);
-                                    Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.create_success), Toast.LENGTH_SHORT).show();
                                     startActivity(i);
                                     getActivity().finish();
                                     dialog.dismiss();
@@ -714,7 +641,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                     fab.setEnabled(true);
                                     fab.setClickable(true);
                                     dialog.dismiss();
-                                    Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -730,10 +657,10 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                         @Override
                                         public void done(ParseException e) {
                                             if (e == null) {
-                                                Poll poll = parsePollObject(parseObject);
+                                                Poll poll = Util.parsePollObject(parseObject, getActivity());
                                                 Intent i = new Intent(getActivity(), PollViewActivity.class);
                                                 i.putExtra("poll", poll);
-                                                Toast.makeText(getActivity(), "Create poll successful.", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), getString(R.string.create_success), Toast.LENGTH_SHORT).show();
                                                 startActivity(i);
                                                 dialog.dismiss();
                                                 getActivity().finish();
@@ -741,7 +668,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                                 dialog.dismiss();
                                                 fab.setEnabled(true);
                                                 fab.setClickable(true);
-                                                Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                             }
                                         }
 
@@ -750,7 +677,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                                     dialog.dismiss();
                                     fab.setEnabled(true);
                                     fab.setClickable(true);
-                                    Toast.makeText(getActivity(), "Unsuccessful. Please try again later.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

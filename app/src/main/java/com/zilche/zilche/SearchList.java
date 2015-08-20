@@ -172,7 +172,7 @@ public class SearchList extends AppCompatActivity {
                             spinner.setVisibility(View.VISIBLE);
                         }
                         for (int i = 0; i < list.size(); i++) {
-                            pollList.add(Util.parsePollObject(list.get(i)));
+                            pollList.add(Util.parsePollObject(list.get(i), SearchList.this));
                         }
                         rv.getAdapter().notifyDataSetChanged();
                         skip++;
@@ -303,7 +303,7 @@ public class SearchList extends AppCompatActivity {
             } else {
                 pollViewHolder.has_photo.setVisibility(View.GONE);
             }
-            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
+            pollViewHolder.author.setText(p.getAnon() == 1 ? getString(R.string.anonymous) : p.getAuthor());
         }
 
         @Override

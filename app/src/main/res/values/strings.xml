@@ -57,7 +57,7 @@
     <string name="reset_pw_text">The instructions to reset your password will be sent to this email.</string>
     <string name="cancel">Cancel</string>
     <string name="reset">Reset</string>
-    <string name="connection_err">Cannot connect to server. Please try again later.</string>
+    <string name="connection_err">Error connecting to server. Please try again later.</string>
     <string name="no_email">Email address is not registered.</string>
     <string name="email_sent">Instructions to reset your password has been sent to your email address.</string>
     <string name="title_activity_category">CategoryActivity</string>
@@ -83,7 +83,6 @@
     <string name="title_activity_create_survey">CreateSurvey</string>
     <string name="title_activity_popular">PopularActivity</string>
     <string name="other">Other</string>
-<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_survey_options">AddSurveyOptions</string>
     <string name="title_activity_create_poll_activity2">CreatePollActivity2</string>
@@ -91,6 +90,47 @@
     <string name="title_activity_my_profile">MyProfileActivity</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_create_comment">CreateCommentActivity</string>
-
-39
+    <string name="connection_failed">Connection failed</string>
+    <string name="anonymous">Anonymous</string>
+    <string name="comment_err">Comment should not be empty</string>
+    <string name="upload_comment">Uploading comment</string>
+    <string name="new_poll">New Poll</string>
+    <string name="options">Options</string>
+    <string name="Category">Categories</string>
+    <string name="take_photo">Take photo</string>
+    <string name="gallery">Choose from gallery</string>
+    <string name="select_image">Select Image (Optional)</string>
+    <string name="image_loading">Image is still loading&#8230;</string>
+    <string name="question_empty">Question should not be empty</string>
+    <string name="click_button_view_image">Click button again to view image</string>
+    <string name="maximum_10">You reached the maximum of 10 options</string>
+    <string name="option_empty">Option should not be empty</string>
+    <string name="two_options">You should provide at least 2 options</string>
+    <string name="creating_poll">Creating poll</string>
+    <string name="create_success">Create poll successful</string>
+    <string name="image_small">Image is too small</string>
+    <string name="crop_image">Crop Image?</string>
+    <string name="confirm">Confirm</string>
+    <string name="discard_image">Discard Image?</string>
+    <string name="delete_confirm">Delete Confirmation</string>
+    <string name="delete_confirm_2">Do you really want to delete this poll?</string>
+    <string name="delete">Delete</string>
+    <string name="comment_2">Comment</string>
+    <string name="try_again">Please try again later.</string>
+    <string name="close">Close</string>
+    <string name="day_ago">day ago</string>
+    <string name="days_ago">days ago</string>
+    <string name="hour_ago">hour ago</string>
+    <string name="hours_ago">hours ago</string>
+    <string name="minutes_ago">minutes ago</string>
+    <string name="minute_ago">1 minute ago</string>
+    <string name="reload">Reload</string>
+    <string name="submit">Submit</string>
+    <string name="my_polls">My Polls</string>
+    <string name="comment_0">Comment 0</string>
+    <string name="enter_comment">Enter your comment</string>
+    <string name="enter_question">Enter your question here</string>
+    <string name="post_anon">Post as Anonymous</string>
+    <string name="sort_popular">Sort by Popularity</string>
+    <string name="sort_date">Sort by Date</string>
 </resources>

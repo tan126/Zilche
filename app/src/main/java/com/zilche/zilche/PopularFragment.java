@@ -30,7 +30,6 @@ import java.util.List;
 public class PopularFragment extends Fragment{
 
     private LinearLayout reload_bg_full;
-    private Button reload_btn;
     private ProgressBar spinner;
     private boolean load;
     private LinkedList<Poll> pollList;
@@ -54,8 +53,7 @@ public class PopularFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_newest, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_newest, container, false);
     }
 
     @Override
@@ -64,8 +62,7 @@ public class PopularFragment extends Fragment{
         Zilche app = (Zilche) getActivity().getApplication();
         map = app.getMap();
         reload_bg_full = (LinearLayout) v.findViewById(R.id.reload_bg_full);
-        reload_btn = (Button) v.findViewById(R.id.reload_btn);
-        reload_btn.setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.reload_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 reload_bg_full.setVisibility(View.GONE);
@@ -84,7 +81,7 @@ public class PopularFragment extends Fragment{
                     @Override
                     public void run() {
                         if (isRefreshing == 1) {
-                            Toast.makeText(getActivity(), "Connection Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             srl.setRefreshing(false);
                             isRefreshing = 0;
                         }
@@ -192,8 +189,7 @@ public class PopularFragment extends Fragment{
         public RVadapter.PollViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.items, viewGroup, false);
             v.setTag(i);
-            PollViewHolder pvh = new PollViewHolder(v);
-            return pvh;
+            return new PollViewHolder(v);
         }
 
         @Override
@@ -230,7 +226,7 @@ public class PopularFragment extends Fragment{
             } else {
                 pollViewHolder.has_photo.setVisibility(View.GONE);
             }
-            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
+            pollViewHolder.author.setText(p.getAnon() == 1 ? getString(R.string.anonymous) : p.getAuthor());
         }
 
         @Override
@@ -246,7 +242,7 @@ public class PopularFragment extends Fragment{
 
     public void populateList(final int skip2) {
         load = true;
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
+        ParseQuery<ParseObject> query = new ParseQuery<>("poll");
         query.setLimit(15);
         query.setSkip(skip2 * 15);
         query.whereNotEqualTo("archived", 1);
@@ -270,12 +266,12 @@ public class PopularFragment extends Fragment{
                     } else {
                         complete = 0;
                     }
-                    if (list != null && list.size() != 0) {
+                    if (list.size() != 0) {
                         if (skip2 == 0) {
                             pollList.clear();
                         }
                         for (int i = 0; i < list.size(); i++) {
-                            pollList.add(Util.parsePollObject(list.get(i)));
+                            pollList.add(Util.parsePollObject(list.get(i), getActivity()));
                         }
 
                         rv.getAdapter().notifyDataSetChanged();

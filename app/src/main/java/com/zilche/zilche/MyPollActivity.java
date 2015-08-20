@@ -145,7 +145,7 @@ public class MyPollActivity extends ActionBarActivity {
                             pollList.clear();
                         }
                         for (int i = 0; i < list.size(); i++) {
-                            pollList.add(Util.parsePollObject(list.get(i)));
+                            pollList.add(Util.parsePollObject(list.get(i), MyPollActivity.this));
                         }
 
                         rv.getAdapter().notifyDataSetChanged();
@@ -183,15 +183,15 @@ public class MyPollActivity extends ActionBarActivity {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(MyPollActivity.this);
-                            builder.setTitle("Delete Confirmation?");
-                            builder.setMessage("Do you really want to delete this poll?");
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            builder.setTitle(getString(R.string.delete_confirm));
+                            builder.setMessage(getString(R.string.delete_confirm_2));
+                            builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                 }
                             });
-                            builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            builder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -317,7 +317,7 @@ public class MyPollActivity extends ActionBarActivity {
             } else {
                 pollViewHolder.has_photo.setVisibility(View.GONE);
             }
-            pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
+            pollViewHolder.author.setText(p.getAnon() == 1 ? getString(R.string.anonymous) : p.getAuthor());
         }
 
         @Override

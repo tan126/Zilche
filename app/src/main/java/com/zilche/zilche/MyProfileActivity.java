@@ -437,7 +437,7 @@ public class MyProfileActivity extends FragmentActivity implements ViewPager.OnP
                                 spinner.setVisibility(View.VISIBLE);
                             }
                             for (int i = 0; i < list.size(); i++) {
-                                pollList.add(Util.parsePollObject(list.get(i)));
+                                pollList.add(Util.parsePollObject(list.get(i), getActivity()));
                             }
                             rv.getAdapter().notifyDataSetChanged();
                             skip++;

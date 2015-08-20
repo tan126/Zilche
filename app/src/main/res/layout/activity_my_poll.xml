@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="My Polls"
+                android:text="@string/my_polls"
                 android:textColor="#fff"
                 android:textSize="20sp"
                 android:gravity="center"
@@ -85,14 +85,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Connection failed"
+                    android:text="@string/connection_failed"
                     android:textSize="16sp"
                     />
 
                 <Button
                     android:onClick="reload"
                     android:textSize="14sp"
-                    android:text="Reload"
+                    android:text="@string/reload"
                     android:textColor="#666"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
