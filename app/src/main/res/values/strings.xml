@@ -133,4 +133,6 @@
     <string name="post_anon">Post as Anonymous</string>
     <string name="sort_popular">Sort by Popularity</string>
     <string name="sort_date">Sort by Date</string>
+    <string name="invalid_credentials">Invalid username or password</string>
+    <string name="email_taken">Email address is already taken</string>
 </resources>

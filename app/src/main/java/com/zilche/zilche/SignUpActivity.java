@@ -166,7 +166,11 @@ public class SignUpActivity extends FragmentActivity {
                                     getActivity().finish();
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    if (e.getCode() == 101 || e.getCode() == 205) {
+                                        Toast.makeText(getActivity().getBaseContext(), getString(R.string.invalid_credentials), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity().getBaseContext(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                    }
                                     loginBtn.setEnabled(true);
                                 }
                             }
@@ -352,7 +356,11 @@ public class SignUpActivity extends FragmentActivity {
                                         getActivity().finish();
                                         startActivity(i);
                                     } else {
-                                        Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        if (e.getCode() == 202 || e.getCode() == 203) {
+                                            Toast.makeText(getActivity().getBaseContext(), getString(R.string.email_taken), Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(getActivity().getBaseContext(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                        }
                                         registerButton.setEnabled(true);
                                     }
                                 }
@@ -369,7 +377,11 @@ public class SignUpActivity extends FragmentActivity {
                                     getActivity().finish();
                                     startActivity(i);
                                 } else {
-                                    Toast.makeText(getActivity().getBaseContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    if (e.getCode() == 202 || e.getCode() == 203) {
+                                        Toast.makeText(getActivity().getBaseContext(), getString(R.string.email_taken), Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getActivity().getBaseContext(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                    }
                                     registerButton.setEnabled(true);
                                 }
                             }
@@ -382,7 +394,7 @@ public class SignUpActivity extends FragmentActivity {
                         ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile","email"), new LogInCallback() {
                             @Override
                             public void done(final ParseUser parseUser, ParseException e) {
-                                if (parseUser == null) {
+                                if (e != null || parseUser == null) {
 
                                 } else if (parseUser.isNew()) {
                                     if (ParseUser.getCurrentUser() != null) {

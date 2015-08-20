@@ -26,7 +26,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.LogOutCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.HashMap;
@@ -167,12 +170,20 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else if (v.getText() == "Log Out") {
                     ParseUser u = new ParseUser();
-                    u.logOut();
-                    Intent i = new Intent(MainActivity.this, SplashScreenActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                    finish();
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    u.logOutInBackground(new LogOutCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Intent i = new Intent(MainActivity.this, SplashScreenActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+                                finish();
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            } else {
+                                Toast.makeText(MainActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
             }
         });
