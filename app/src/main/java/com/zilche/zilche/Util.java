@@ -66,24 +66,47 @@ public class Util {
                 if ( diffH > 24 ) {
                     long diffD = diffH / 24;
                     if (diffD == 1) {
-                        tmp += diffD + " " +c.getString(R.string.day_ago);
+                        if (c != null) {
+                            tmp += diffD + " " + c.getString(R.string.day_ago);
+                        } else {
+                            tmp += diffD + " " + "day ago";
+                        }
                     } else {
-                        tmp += diffD + " " +c.getString(R.string.days_ago);
+                        if (c != null) {
+                            tmp += diffD + " " + c.getString(R.string.days_ago);
+                        } else {
+                            tmp += diffD + " " + "days ago";
+                        }
+                    }
+                } else {
+                    if (diffH == 1) {
+                        if (c != null) {
+                            tmp += diffH + " " + c.getString(R.string.hour_ago);
+                        } else {
+                            tmp += diffH + " " + "hour ago";
+                        }
+                    } else {
+                        if (c != null) {
+                            tmp += diffH + " " + c.getString(R.string.hours_ago);
+                        } else {
+                            tmp += diffH + " " + "hours ago";
+                        }
                     }
                 }
-                else {
-                    if (diffH == 1) {
-                        tmp += diffH + " " + c.getString(R.string.hour_ago);
-                    } else {
-                        tmp += diffH + " " + c.getString(R.string.hours_ago);
-                    }
+            } else {
+                if (c != null) {
+                    tmp += diffM + " " + c.getString(R.string.minutes_ago);
+                } else {
+                    tmp += diffM + " " + "minutes ago";
                 }
             }
-            else
-                tmp += diffM + " " + c.getString(R.string.minutes_ago);
+        } else {
+            if (c != null) {
+                tmp += c.getString(R.string.minute_ago);
+            } else {
+                tmp += "1 minute ago";
+            }
         }
-        else
-            tmp += c.getString(R.string.minute_ago);
         String date_added = tmp;
         String author = object.getString("nickname");
         String authorLogin = object.getString("author");
