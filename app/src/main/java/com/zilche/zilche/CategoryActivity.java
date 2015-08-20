@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +51,7 @@ public class CategoryActivity extends AppCompatActivity {
     private int sortBy = 1;
     private SlidingPaneLayout spl;
     private View background;
+    private LinearLayout reload_bg_full;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class CategoryActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Util.noti_color[category]);
         }
+        reload_bg_full = (LinearLayout) findViewById(R.id.reload_bg_full);
         spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
         background = findViewById(R.id.background);
         spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
@@ -141,10 +144,7 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int visibleItemCount = recyclerView.getChildCount();
-                int totalItemCount = llm.getItemCount();
                 int firstVisibleItem = llm.findFirstVisibleItemPosition();
-                //if (!load && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                 if (!load && ((pollList.size() > 0 && pollList.size() - firstVisibleItem <= visibleThreshold) || !rv.canScrollVertically(1))) {
                     if (complete == 0) {
                         if (pollList.size() == 0 || pollList.getLast().getId().compareTo("-1") != 0) {
@@ -178,6 +178,9 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
+                    if (reload_bg_full.getVisibility() == View.VISIBLE) {
+                        reload_bg_full.setVisibility(View.GONE);
+                    }
                     if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
@@ -194,7 +197,6 @@ public class CategoryActivity extends AppCompatActivity {
                         for (int i = 0; i < list.size(); i++) {
                             pollList.add(Util.parsePollObject(list.get(i)));
                         }
-
                         rv.getAdapter().notifyDataSetChanged();
                         srl.setRefreshing(false);
                         isRefreshing = 0;
@@ -204,41 +206,16 @@ public class CategoryActivity extends AppCompatActivity {
                 } else {
                     if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                         pollList.removeLast();
+                        Poll tmp = new Poll();
+                        tmp.setId("-2");
+                        pollList.add(tmp);
                         rv.getAdapter().notifyDataSetChanged();
+                    } else {
+                        reload_bg_full.setVisibility(View.VISIBLE);
                     }
-                    load = false;
-                    Toast.makeText(CategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 if (spinner.getVisibility() == View.VISIBLE) {
                     spinner.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
-
-    private void get_updated() {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
-        if (category != 0)
-            query.whereEqualTo("category", category);
-        query.orderByDescending("lastUpdate");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (e == null) {
-                    int tmp = 0;
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i).getObjectId().compareTo(pollList.get(tmp).getId()) != 0) {
-                            pollList.addFirst(Util.parsePollObject(list.get(i)));
-                        } else {
-                            pollList.set(tmp, Util.parsePollObject(list.get(i)));
-                        }
-                        tmp++;
-                    }
-                    rv.getAdapter().notifyDataSetChanged();
-                    srl.setRefreshing(false);
-                    isRefreshing = 0;
-                } else {
-                    Toast.makeText(CategoryActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -273,9 +250,22 @@ public class CategoryActivity extends AppCompatActivity {
             }
 
         };
+        View.OnClickListener reload = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pollList.removeLast();
+                Poll tmp = new Poll();
+                tmp.setId("-1");
+                pollList.add(tmp);
+                rv.getAdapter().notifyDataSetChanged();
+                populateList(skip, sortBy);
+            }
+        };
 
         public class PollViewHolder extends RecyclerView.ViewHolder{
 
+            LinearLayout reload_bg;
+            Button reload;
             LinearLayout main;
             ProgressBar pb;
             CardView cv;
@@ -299,6 +289,8 @@ public class CategoryActivity extends AppCompatActivity {
                 has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
                 author = (TextView) itemView.findViewById(R.id.author);
                 pb = (ProgressBar) itemView.findViewById(R.id.pb);
+                reload = (Button) itemView.findViewById(R.id.reload);
+                reload_bg = (LinearLayout) itemView.findViewById(R.id.reload_bg);
             }
         }
 
@@ -319,8 +311,16 @@ public class CategoryActivity extends AppCompatActivity {
             if (polls.get(i).getId().compareTo("-1") == 0) {
                 pollViewHolder.pb.setVisibility(View.VISIBLE);
                 pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
+                return;
+            } if (polls.get(i).getId().compareTo("-2") == 0 ){
+                pollViewHolder.pb.setVisibility(View.GONE);
+                pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.VISIBLE);
+                pollViewHolder.reload.setOnClickListener(reload);
                 return;
             } else {
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
                 pollViewHolder.pb.setVisibility(View.GONE);
                 pollViewHolder.cv.setVisibility(View.VISIBLE);
             }
@@ -386,4 +386,11 @@ public class CategoryActivity extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);
         populateList(skip, sortBy);
     }
+
+    public void reload(View v) {
+        reload_bg_full.setVisibility(View.GONE);
+        spinner.setVisibility(View.VISIBLE);
+        populateList(skip, sortBy);
+    }
+
 }
