@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ import java.util.List;
 
 public class PopularFragment extends Fragment{
 
+    private LinearLayout reload_bg_full;
+    private Button reload_btn;
     private ProgressBar spinner;
     private boolean load;
     private LinkedList<Poll> pollList;
@@ -59,6 +63,16 @@ public class PopularFragment extends Fragment{
         super.onActivityCreated(savedInstanced);
         Zilche app = (Zilche) getActivity().getApplication();
         map = app.getMap();
+        reload_bg_full = (LinearLayout) v.findViewById(R.id.reload_bg_full);
+        reload_btn = (Button) v.findViewById(R.id.reload_btn);
+        reload_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reload_bg_full.setVisibility(View.GONE);
+                spinner.setVisibility(View.VISIBLE);
+                populateList(skip);
+            }
+        });
         spinner = (ProgressBar) v.findViewById(R.id.progress_bar);
         srl = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -127,9 +141,22 @@ public class PopularFragment extends Fragment{
             }
 
         };
+        View.OnClickListener reload = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pollList.removeLast();
+                Poll tmp = new Poll();
+                tmp.setId("-1");
+                pollList.add(tmp);
+                rv.getAdapter().notifyDataSetChanged();
+                populateList(skip);
+            }
+        };
 
         public class PollViewHolder extends RecyclerView.ViewHolder{
 
+            LinearLayout reload_bg;
+            Button reload;
             ProgressBar pb;
             CardView cv;
             TextView question;
@@ -152,6 +179,8 @@ public class PopularFragment extends Fragment{
                 has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
                 author = (TextView) itemView.findViewById(R.id.author);
                 pb = (ProgressBar) itemView.findViewById(R.id.pb);
+                reload_bg = (LinearLayout) itemView.findViewById(R.id.reload_bg);
+                reload = (Button) itemView.findViewById(R.id.reload);
             }
         }
 
@@ -172,8 +201,16 @@ public class PopularFragment extends Fragment{
             if (polls.get(i).getId().compareTo("-1") == 0) {
                 pollViewHolder.pb.setVisibility(View.VISIBLE);
                 pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
+                return;
+            } if (polls.get(i).getId().compareTo("-2") == 0 ) {
+                pollViewHolder.pb.setVisibility(View.GONE);
+                pollViewHolder.cv.setVisibility(View.GONE);
+                pollViewHolder.reload_bg.setVisibility(View.VISIBLE);
+                pollViewHolder.reload.setOnClickListener(reload);
                 return;
             } else {
+                pollViewHolder.reload_bg.setVisibility(View.GONE);
                 pollViewHolder.pb.setVisibility(View.GONE);
                 pollViewHolder.cv.setVisibility(View.VISIBLE);
             }
@@ -218,6 +255,9 @@ public class PopularFragment extends Fragment{
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
+                    if (reload_bg_full.getVisibility() == View.VISIBLE) {
+                        reload_bg_full.setVisibility(View.GONE);
+                    }
                     if (spinner.getVisibility() == View.VISIBLE) {
                         spinner.setVisibility(View.GONE);
                     }
@@ -247,10 +287,13 @@ public class PopularFragment extends Fragment{
                 } else {
                     if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                         pollList.removeLast();
+                        Poll tmp = new Poll();
+                        tmp.setId("-2");
+                        pollList.add(tmp);
                         rv.getAdapter().notifyDataSetChanged();
+                    } else {
+                        reload_bg_full.setVisibility(View.VISIBLE);
                     }
-                    load = false;
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 if (spinner.getVisibility() == View.VISIBLE) {
                     spinner.setVisibility(View.GONE);
