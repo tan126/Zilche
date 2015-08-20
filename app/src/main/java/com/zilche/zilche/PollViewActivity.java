@@ -91,6 +91,7 @@ public class PollViewActivity extends ActionBarActivity {
     private int comment_total = 0;
     private boolean isLoading = false;
     private boolean complete = false;
+    private LinearLayout reload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class PollViewActivity extends ActionBarActivity {
         cal = (LinearLayout) findViewById(R.id.cal);
         comment_count1 = (TextView) findViewById(R.id.comment_count1);
         comment_count2 = (TextView) findViewById(R.id.comment_count2);
-
+        reload = (LinearLayout) findViewById(R.id.retry_bg);
 
         comments_list = new LinkedList<>();
         comments.setAdapter(new ListAdapter(comments_list));
@@ -310,42 +311,7 @@ public class PollViewActivity extends ActionBarActivity {
                             }
                         }
                     });
-
-/*
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("poll");
-                    query.getInBackground(id, new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject parseObject, ParseException e) {
-                            if (e == null) {
-                                final ParseObject object = parseObject;
-                                poll.getVotes()[checked]++;
-                                object.increment("total");
-                                object.increment("votes" + Integer.toString(checked));
-                                object.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e == null) {
-                                            final int[] votes = new int[poll.getCount()];
-                                            for (int i = 0; i < poll.getCount(); i++) {
-                                                votes[i] = object.getInt("votes" + Integer.toString(i));
-                                            }
-                                            c = checked;
-                                            comment_count = object.getInt("comments_count");
-                                            generateResult(votes, poll.getOptions());
-                                            saveRecord(object.getObjectId(), checked);
-                                        } else {
-                                            submit_btn.setEnabled(true);
-                                            Toast.makeText(PollViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            }
-                        }
-
-                        ;
-                    }); */
-                }
-                ;
+              }
             }
         });
 
@@ -393,40 +359,58 @@ public class PollViewActivity extends ActionBarActivity {
         query.getInBackground(object_id, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject object, ParseException e) {
-                Poll poll2 = Util.parsePollObject(object);
-                question.setText(poll2.getQuestion());
-                dateAdded.setText(poll2.getDate_added());
-                if (poll2.getAnon() == 1) {
-                    author.setText("Anonymous");
-                } else {
-                    author.setText(poll2.getAuthor());
-                    authorLogin = poll2.getAuthorLogin();
-                }
-                total.setText(Integer.toString(poll2.totalVotes()));
-                if (map.get(object_id) != null) {
-                    c = map.get(object_id);
-                    comment_count1.setText("Comment " + Integer.toString(object.getInt("comments_count")));
-                    comment_count2.setText("Comment " + Integer.toString(object.getInt("comments_count")));
-                    generateResult(poll2.getVotes(), poll2.getOptions());
-                } else {
-                    populatePoll(poll2);
-                }
-                comment_count = object.getInt("comments_count");
-                if (poll2.hasImage() == 1) {
-                    poll2.getFile().getDataInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] bytes, ParseException e) {
-                            BitmapWorker worker = new BitmapWorker(imageView, bytes);
-                            worker.execute();
-                            imageView.setVisibility(View.VISIBLE);
-                            sv.setVisibility(View.VISIBLE);
-                            loading.setVisibility(View.GONE);
+                if (e == null) {
+                    final Poll poll2 = Util.parsePollObject(object);
+                    question.setText(poll2.getQuestion());
+                    dateAdded.setText(poll2.getDate_added());
+                    if (poll2.getAnon() == 1) {
+                        author.setText("Anonymous");
+                    } else {
+                        author.setText(poll2.getAuthor());
+                        authorLogin = poll2.getAuthorLogin();
+                    }
+                    total.setText(Integer.toString(poll2.totalVotes()));
+                    comment_count = object.getInt("comments_count");
+                    if (poll2.hasImage() == 1) {
+                        poll2.getFile().getDataInBackground(new GetDataCallback() {
+                            @Override
+                            public void done(byte[] bytes, ParseException e) {
+                                if (e == null) {
+                                    BitmapWorker worker = new BitmapWorker(imageView, bytes);
+                                    worker.execute();
+                                    if (map.get(object_id) != null) {
+                                        c = map.get(object_id);
+                                        comment_count1.setText("Comment " + Integer.toString(comment_count));
+                                        comment_count2.setText("Comment " + Integer.toString(comment_count));
+                                        generateResult(poll2.getVotes(), poll2.getOptions());
+                                    } else {
+                                        populatePoll(poll2);
+                                    }
+                                    imageView.setVisibility(View.VISIBLE);
+                                    sv.setVisibility(View.VISIBLE);
+                                    loading.setVisibility(View.GONE);
+                                } else {
+                                    loading.setVisibility(View.GONE);
+                                    reload.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
+                    } else {
+                        if (map.get(object_id) != null) {
+                            c = map.get(object_id);
+                            comment_count1.setText("Comment " + Integer.toString(comment_count));
+                            comment_count2.setText("Comment " + Integer.toString(comment_count));
+                            generateResult(poll2.getVotes(), poll2.getOptions());
+                        } else {
+                            populatePoll(poll2);
                         }
-                    });
+                        imageView.setVisibility(View.GONE);
+                        sv.setVisibility(View.VISIBLE);
+                        loading.setVisibility(View.GONE);
+                    }
                 } else {
-                    imageView.setVisibility(View.GONE);
-                    sv.setVisibility(View.VISIBLE);
                     loading.setVisibility(View.GONE);
+                    reload.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -726,6 +710,12 @@ public class PollViewActivity extends ActionBarActivity {
                 loadComments(comment_skip);
             }
         }
+    }
+
+    public void reload(View v) {
+        reload.setVisibility(View.GONE);
+        loading.setVisibility(View.VISIBLE);
+        populateView(poll);
     }
 
 
