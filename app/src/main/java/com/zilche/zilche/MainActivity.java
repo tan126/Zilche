@@ -334,4 +334,27 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        LinearLayout searchBar = (LinearLayout) findViewById(R.id.my_search_bar);
+        ImageView searchIcon = (ImageView) findViewById(R.id.searchicon);
+        searchIcon.setColorFilter(0x66ffffff, PorterDuff.Mode.MULTIPLY);
+        searchBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, SearchList.class);
+                startActivity(i);
+            }
+        });
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
