@@ -139,7 +139,7 @@ public class CategoryFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Bitmap bm) {
-            if (isCancelled()) return;
+            if (isCancelled() || bm == null || image.get() == null) return;
             if ((int)(image.get().getTag()) != position) return;
             image.get().setImageBitmap(bm);
             bg.get().setBackgroundColor(bgc);
