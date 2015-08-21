@@ -3,10 +3,13 @@ package com.zilche.zilche;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
@@ -22,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.lang.ref.WeakReference;
 
 public class CategoryFragment extends Fragment {
 
@@ -104,12 +109,42 @@ public class CategoryFragment extends Fragment {
             TextView tv = (TextView) convertView.findViewById(R.id.category_text);
             ImageView bg = (ImageView) convertView.findViewById(R.id.imageViewBg);
             tv.setText(c.getResources().getString(strings[position]));
-            iv.setImageResource(thumbnails[position]);
-            bg.setBackgroundColor(bg_color[position]);
+            iv.setTag(position);
+            new BitmapLoader(iv, thumbnails[position], position, bg, bg_color[position]).execute();
             convertView.setTag(position);
             return convertView;
         }
     }
 
+    public class BitmapLoader extends AsyncTask<String, Void, Bitmap> {
+
+        private final WeakReference<ImageView> image;
+        private int cat;
+        private int position;
+        private final WeakReference<ImageView> bg;
+        private int bgc;
+
+        public BitmapLoader(ImageView iv, int cat, int pos, ImageView bg, int bgc) {
+            image = new WeakReference<ImageView>(iv);
+            this.cat = cat;
+            position = pos;
+            this.bg = new WeakReference<ImageView>(bg);
+            this.bgc = bgc;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            return BitmapFactory.decodeResource(getResources(), cat);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bm) {
+            if (isCancelled()) return;
+            if ((int)(image.get().getTag()) != position) return;
+            image.get().setImageBitmap(bm);
+            bg.get().setBackgroundColor(bgc);
+        }
+
+    }
 
 }
