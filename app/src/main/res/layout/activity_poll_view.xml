@@ -230,6 +230,7 @@
                     android:id="@+id/comment_count1"
                     android:textSize="16sp"
                     android:padding="10dp"
+                    android:textColor="#444"
                     android:fontFamily="sans-serif"
                     />
 

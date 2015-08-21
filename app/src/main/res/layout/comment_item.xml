@@ -13,10 +13,10 @@
         android:paddingLeft="10dp"
         android:paddingBottom="10dp"
         android:paddingRight="10dp"
-        android:src="@drawable/anon"/>
+        android:src="@drawable/anon_30"/>
 
     <LinearLayout
-        android:paddingLeft="10dp"
+        android:paddingLeft="5dp"
         android:paddingTop="7dp"
         android:paddingBottom="10dp"
         android:paddingRight="15dp"

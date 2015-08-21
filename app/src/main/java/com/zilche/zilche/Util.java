@@ -14,6 +14,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// todo : show date when days is more than 30
+
 public class Util {
 
     public static int[] drawables = {
