@@ -61,12 +61,13 @@ public class Util {
         long updatedTime = object.getLong("createTime");
         long diffMS = System.currentTimeMillis() - updatedTime;
         long diffS = diffMS / 1000;
+        long diffD = 0;
         if ( diffS > 60 ) {
             long diffM = diffS / 60;
             if ( diffM > 60 ){
                 long diffH = diffM / 60;
                 if ( diffH > 24 ) {
-                    long diffD = diffH / 24;
+                    diffD = diffH / 24;
                     if (diffD == 1) {
                         if (c != null) {
                             tmp += diffD + " " + c.getString(R.string.day_ago);
@@ -108,6 +109,11 @@ public class Util {
             } else {
                 tmp += "1 minute ago";
             }
+        }
+        if (diffD > 3) {
+            Date d = object.getCreatedAt();
+            DateFormat df = new SimpleDateFormat("M/dd/yyyy");
+            tmp = df.format(d);
         }
         String date_added = tmp;
         String author = object.getString("nickname");

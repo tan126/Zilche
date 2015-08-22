@@ -108,7 +108,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
             return null;
         }
         poll.put("question", question);
-        poll.put("author", ParseUser.getCurrentUser().getString("username"));
+        poll.put("author", ParseUser.getCurrentUser().getEmail());
         poll.put("createTime", System.currentTimeMillis());
         poll.put("total", 0);
         poll.put("nickname", ParseUser.getCurrentUser().getString("name"));

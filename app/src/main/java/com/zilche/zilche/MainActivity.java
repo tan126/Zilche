@@ -15,11 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,6 +35,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Toolbar toolbar;
     private SlideViewAdapter adapter;
     private ViewPager viewPager;
     private PagerTabStrip pts;
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         pts.setTextColor(0xffffffff);
         pts.setDrawFullUnderline(true);
         pts.setTabIndicatorColor(0xffffffff);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         filter_bg = (ImageView) findViewById(R.id.filter_bg);
@@ -355,6 +354,5 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
-
 
 }
