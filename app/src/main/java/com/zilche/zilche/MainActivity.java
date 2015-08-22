@@ -2,6 +2,7 @@ package com.zilche.zilche;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -90,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
         pts = (PagerTabStrip) findViewById(R.id.pager_tab_strip);
         pts.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         pts.setTextColor(0xffffffff);
-        pts.setDrawFullUnderline(true);
-        pts.setTabIndicatorColor(0xffffffff);
+        pts.setTabIndicatorColor(0xFF3F51B5);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static class FadePageTransformer implements ViewPager.PageTransformer {
-        private static final float MIN_SCALE = 0.80f;
+        private static final float MIN_SCALE = 0.90f;
         private static final float MIN_ALPHA = 0.5f;
 
         public void transformPage(View view, float position) {

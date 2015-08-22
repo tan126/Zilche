@@ -92,8 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:paddingTop="15dp"
-                android:paddingBottom="10dp"
+                android:paddingBottom="8dp"
                 android:background="#3F51B5"
                 android:id="@+id/pager_tab_strip" />
 
