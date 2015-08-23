@@ -565,6 +565,36 @@ public class PollViewActivity extends ActionBarActivity {
         overridePendingTransition(0, R.anim.left_to_right);
     }
 
+    public class CommentBitmapWorker extends AsyncTask<Integer, Void, Bitmap> {
+
+        private final WeakReference<ImageView> imageViewWeakReference;
+        private byte[] data;
+        private int anon;
+
+        public CommentBitmapWorker(ImageView iv, byte[] data, int anon) {
+            imageViewWeakReference = new WeakReference<ImageView>(iv);
+            this.data = data;
+            this.anon = anon;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            if (data == null) {
+                return BitmapFactory.decodeResource(getResources(), anon);
+            }
+            Bitmap fac = BitmapFactory.decodeByteArray(data, 0, data.length);
+            Bitmap bm = Bitmap.createScaledBitmap(fac, (int) Util.convertDpToPixel(30, PollViewActivity.this),
+                    (int) Util.convertDpToPixel(30, PollViewActivity.this), true);
+            return bm;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (isCancelled() || bitmap == null || imageViewWeakReference.get() == null) return;
+            imageViewWeakReference.get().setImageBitmap(bitmap);
+        }
+    }
+
     public class BitmapWorker extends AsyncTask<Integer, Void, Bitmap>  {
 
         private final WeakReference<GridItemView> imageViewReference;
@@ -667,10 +697,11 @@ public class PollViewActivity extends ActionBarActivity {
                 mod.setVisibility(View.GONE);
             }
             if (c.hasImage()) {
-                Bitmap fac = BitmapFactory.decodeByteArray(c.getImage(), 0, c.getImage().length);
-                Bitmap bm = Bitmap.createScaledBitmap(fac, (int) Util.convertDpToPixel(30, PollViewActivity.this),
-                            (int) Util.convertDpToPixel(30, PollViewActivity.this), true);
-                iv.setImageBitmap(bm);
+                CommentBitmapWorker cbw = new CommentBitmapWorker(iv, c.getImage(), R.drawable.anon_30);
+                cbw.execute();
+            } else {
+                CommentBitmapWorker cbw = new CommentBitmapWorker(iv, null, R.drawable.anon_30);
+                cbw.execute();
             }
             return v;
         }
