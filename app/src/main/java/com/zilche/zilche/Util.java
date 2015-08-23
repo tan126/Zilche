@@ -145,6 +145,10 @@ public class Util {
         Comment c = new Comment(po.getString("author"), po.getString("comment"), date);
         c.setOp(po.getInt("op"));
         c.setMod(po.getInt("mod"));
+        if (po.getBytes("image") != null) {
+            c.setHasImage(true);
+            c.setImage(po.getBytes("image"));
+        }
         return c;
     }
 

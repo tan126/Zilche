@@ -119,6 +119,9 @@ public class CreateCommentActivity extends ActionBarActivity {
                     final ParseObject po = ParseObject.createWithoutData("poll", pollId);
                     final ParseObject comment_obj = new ParseObject("Comment");
                     comment_obj.put("pollId", pollId);
+                    if (ParseUser.getCurrentUser().getBytes("image") != null) {
+                        comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
+                    }
                     comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
                     comment_obj.put("comment", comment.getText().toString().trim());
                     if (isAnon != 1) {

@@ -666,6 +666,12 @@ public class PollViewActivity extends ActionBarActivity {
             } else {
                 mod.setVisibility(View.GONE);
             }
+            if (c.hasImage()) {
+                Bitmap fac = BitmapFactory.decodeByteArray(c.getImage(), 0, c.getImage().length);
+                Bitmap bm = Bitmap.createScaledBitmap(fac, (int) Util.convertDpToPixel(30, PollViewActivity.this),
+                            (int) Util.convertDpToPixel(30, PollViewActivity.this), true);
+                iv.setImageBitmap(bm);
+            }
             return v;
         }
     }
