@@ -134,7 +134,7 @@
         <activity
             android:name=".EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:theme="@style/transparent" >
         </activity>
         <activity

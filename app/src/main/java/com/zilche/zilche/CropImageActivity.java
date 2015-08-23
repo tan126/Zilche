@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,6 +25,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 
@@ -92,7 +94,7 @@ public class CropImageActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 final Bitmap ret = iv.getCroppedImage();
-                if (ret.getWidth() < 300) {
+                if (ret.getWidth() < 200 || ret.getHeight() < 200) {
                     Toast.makeText(CropImageActivity.this, getString(R.string.image_small), Toast.LENGTH_SHORT).show();
                     iv.setFixedAspectRatio(false);
                     iv.setFixedAspectRatio(true);

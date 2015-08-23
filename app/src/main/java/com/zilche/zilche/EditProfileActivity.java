@@ -198,7 +198,6 @@ public class EditProfileActivity extends ActionBarActivity {
                             setResult(RESULT_OK);
                             finish();
                             overridePendingTransition(0, R.anim.left_to_right);
-                            dialog.dismiss();
                         } else {
                             Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
@@ -235,7 +234,6 @@ public class EditProfileActivity extends ActionBarActivity {
                                         setResult(RESULT_OK);
                                         finish();
                                         overridePendingTransition(0, R.anim.left_to_right);
-                                        dialog.dismiss();
                                     } else {
                                         Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
@@ -272,7 +270,6 @@ public class EditProfileActivity extends ActionBarActivity {
                         setResult(RESULT_OK);
                         finish();
                         overridePendingTransition(0, R.anim.left_to_right);
-                        dialog.dismiss();
                     } else {
                         Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                         dialog.dismiss();

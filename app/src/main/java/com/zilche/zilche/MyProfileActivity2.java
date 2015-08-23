@@ -89,6 +89,8 @@ public class MyProfileActivity2 extends FragmentActivity {
         findViewById(R.id.edit_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                findViewById(R.id.edit_profile).setClickable(false);
+                findViewById(R.id.edit_profile).setEnabled(false);
                 Intent i = new Intent(MyProfileActivity2.this, EditProfileActivity.class);
                 startActivityForResult(i, 2222);
                 overridePendingTransition(R.anim.right_to_left, 0);
@@ -593,6 +595,8 @@ public class MyProfileActivity2 extends FragmentActivity {
     @Override
     public void onResume() {
         super.onResume();
+        findViewById(R.id.edit_profile).setClickable(true);
+        findViewById(R.id.edit_profile).setEnabled(true);
         Zilche app = (Zilche) getApplication();
         if (app.getFav() == null || app.getMap() == null) {
             Intent i = new Intent(this, MainActivity.class);
