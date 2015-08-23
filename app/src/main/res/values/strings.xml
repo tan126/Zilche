@@ -135,4 +135,5 @@
     <string name="sort_date">Sort by Date</string>
     <string name="invalid_credentials">Invalid username or password</string>
     <string name="email_taken">Email address is already taken</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
 </resources>

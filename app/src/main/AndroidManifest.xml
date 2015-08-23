@@ -107,8 +107,8 @@
         <activity
             android:name=".SplashScreenActivity"
             android:label="@string/app_name"
-            android:theme="@style/splashScreen"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:theme="@style/splashScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -121,9 +121,17 @@
         </activity>
         <activity
             android:name=".CreateCommentActivity"
+            android:label="@string/title_activity_create_comment"
             android:launchMode="singleTop"
-            android:theme="@style/transparent"
-            android:label="@string/title_activity_create_comment" >
+            android:theme="@style/transparent" >
+        </activity>
+        <activity
+            android:name=".MyProfileActivity2"
+            android:label="@string/title_activity_my_profile" >
+        </activity>
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="@string/title_activity_edit_profile" >
         </activity>
     </application>
 
