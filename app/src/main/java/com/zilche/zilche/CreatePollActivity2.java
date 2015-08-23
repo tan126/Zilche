@@ -260,7 +260,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
     public static class FirstFragment extends Fragment {
 
-        private File file = new File(appFolderCheckandCreate(), ".img" + "_temp" + ".png");
+        private File file = new File(appFolderCheckandCreate(), ".img" + "_temp" + ".jpg");
         private String filePath = file.getPath();
         private Uri uri;
         private boolean imageBound = false;
@@ -336,7 +336,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
         }
 
         public String getFilePath() {
-            return filePath;
+            return file.getAbsolutePath();
         }
 
         public byte[] getImage() {

@@ -4,6 +4,8 @@ package com.zilche.zilche;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
@@ -143,6 +145,7 @@ public class MyProfileActivity2 extends FragmentActivity {
         TextView age;
         TextView gender;
         TextView country;
+        ImageView iv;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,6 +157,7 @@ public class MyProfileActivity2 extends FragmentActivity {
             age = (TextView) v.findViewById(R.id.age_pi);
             gender = (TextView) v.findViewById(R.id.gender_pi);
             country = (TextView) v.findViewById(R.id.country_pi);
+            iv = (ImageView) v.findViewById(R.id.image_pi);
             update();
             return v;
         }
@@ -189,6 +193,12 @@ public class MyProfileActivity2 extends FragmentActivity {
             } else {
                 birthday.setText("unspecified");
                 age.setText("unspecified");
+            }
+            byte[] image = u.getBytes("image");
+            if (image != null) {
+                Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(image, 0, image.length), (int)Util.convertDpToPixel(54, getActivity()),
+                        (int)Util.convertDpToPixel(54, getActivity()), true);
+                iv.setImageBitmap(bm);
             }
         }
 

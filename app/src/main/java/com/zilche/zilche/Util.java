@@ -1,8 +1,13 @@
 package com.zilche.zilche;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.parse.ParseObject;
@@ -142,5 +147,29 @@ public class Util {
         c.setMod(po.getInt("mod"));
         return c;
     }
+
+    public static float convertDpToPixel(float dp, Activity context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * (metrics.densityDpi / 160f);
+        return px;
+    }
+
+    public static Bitmap decodeFile(String path) {
+        Bitmap bm;
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, opt);
+        final int size = 1024;
+        int scale = 1;
+        while (opt.outWidth / scale / 2 >= size || opt.outHeight / scale / 2 >= size) {
+            scale *= 2;
+        }
+        opt.inSampleSize = scale;
+        opt.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(path, opt);
+        return bm;
+    }
+
 
 }

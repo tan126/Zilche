@@ -1,30 +1,34 @@
 package com.zilche.zilche;
 
-import android.app.ProgressDialog;
-import android.support.v7.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.*;
-import android.support.v7.app.ActionBarActivity;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +37,10 @@ import java.util.Date;
 
 public class EditProfileActivity extends ActionBarActivity {
 
+    private final static int REQUEST_CAMERA = 3333;
+    private final static int SELECT_FILE = 4444;
+    private final static int CROP_IMAGE = 5555;
+    private final static int REMOVE_FILE = 6666;
     private TextView email;
     private TextView user;
     private TextView birthday;
@@ -46,6 +54,15 @@ public class EditProfileActivity extends ActionBarActivity {
     private String init_name = null;
     private String init_gender = null;
     private String init_country = null;
+    private File file = new File(appFolderCheckandCreate(), ".img" + "_temp2" + ".jpg");
+    private String filePath = file.getPath();
+    private Uri uri;
+    private boolean imageBound = false;
+    private byte[] fullScreenImage;
+    private ImageView image;
+    private byte[] bm50;
+    private int changed = 0;
+    private int from = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +75,7 @@ public class EditProfileActivity extends ActionBarActivity {
         age = (TextView) findViewById(R.id.age_pi);
         gender = (TextView) findViewById(R.id.gender_pi);
         country = (TextView) findViewById(R.id.country_pi);
+        image = (ImageView) findViewById(R.id.image_pi);
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         ParseUser u = ParseUser.getCurrentUser();
         email.setText(u.getEmail());
@@ -102,36 +120,80 @@ public class EditProfileActivity extends ActionBarActivity {
         dialog.setMessage("Saving");
         dialog.setCancelable(false);
         dialog.show();
-
-        ParseUser user = ParseUser.getCurrentUser();
-        if (bdate != null) {
-            user.put("bday", bdate);
-        }
-        if (init_name != null) {
-            user.put("name", init_name);
-        }
-        if (init_country != null) {
-            user.put("country", init_country);
-        }
-        if (init_intro != null) {
-            user.put("message", init_intro);
-        }
-        if (init_gender != null) {
-            user.put("gender", init_gender);
-        }
-        user.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    setResult(RESULT_OK);
-                    finish();
-                    dialog.dismiss();
-                } else {
-                    Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+        final ParseUser user = ParseUser.getCurrentUser();
+        if (changed == 1) {
+            if (bm50 == null || fullScreenImage == null) {
+                if (bdate != null) {
+                    user.put("bday", bdate);
                 }
+                if (init_name != null) {
+                    user.put("name", init_name);
+                }
+                if (init_country != null) {
+                    user.put("country", init_country);
+                }
+                if (init_intro != null) {
+                    user.put("message", init_intro);
+                }
+                if (init_gender != null) {
+                    user.put("gender", init_gender);
+                }
+                user.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            setResult(RESULT_OK);
+                            finish();
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    }
+                });
+            } else {
+                ParseFile f = new ParseFile("img.jpg", fullScreenImage);
+                f.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            user.put("image", bm50);
+                            if (bdate != null) {
+                                user.put("bday", bdate);
+                            }
+                            if (init_name != null) {
+                                user.put("name", init_name);
+                            }
+                            if (init_country != null) {
+                                user.put("country", init_country);
+                            }
+                            if (init_intro != null) {
+                                user.put("message", init_intro);
+                            }
+                            if (init_gender != null) {
+                                user.put("gender", init_gender);
+                            }
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        setResult(RESULT_OK);
+                                        finish();
+                                        dialog.dismiss();
+                                    } else {
+                                        Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    }
+                                }
+                            });
+                        } else {
+                            Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
-        });
+        }
+
     }
 
     public void edit_name(View v) {
@@ -359,5 +421,114 @@ public class EditProfileActivity extends ActionBarActivity {
         dialog = builder.create();
         dialog.show();
     }
+
+    public void takeImage(View v) {
+        final CharSequence[] items = {getString(R.string.take_photo), getString(R.string.gallery), getString(R.string.cancel)};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.select_image));
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    uri = Uri.fromFile(file);
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                } else if (which == 1) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private String appFolderCheckandCreate(){
+
+        String appFolderPath="";
+        File externalStorage = Environment.getExternalStorageDirectory();
+
+        if (externalStorage.canWrite())
+        {
+            appFolderPath = externalStorage.getAbsolutePath() + "/Zilche/.imgfldr";
+            File dir = new File(appFolderPath);
+
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+
+        }
+
+        return appFolderPath;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CAMERA) {
+                Uri uri = this.uri;
+                Intent i = new Intent(this, CropImageActivity.class);
+                i.putExtra("uri", uri);
+                i.putExtra("filepath", file.getAbsolutePath());
+                i.putExtra("edit_profile", 1);
+                from = 1;
+                startActivityForResult(i, CROP_IMAGE);
+                overridePendingTransition(0, 0);
+            } else if (requestCode == SELECT_FILE) {
+                Intent i = new Intent(this, CropImageActivity.class);
+                uri = data.getData();
+                i.putExtra("uri", data.getData());
+                i.putExtra("edit_profile", 1);
+                from = 2;
+                startActivityForResult(i, CROP_IMAGE);
+            } else if (requestCode == CROP_IMAGE) {
+                imageBound = true;
+                bm50 = (byte[]) data.getExtras().getByteArray("data_50");
+                Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(bm50, 0, bm50.length), (int)Util.convertDpToPixel(54, this), (int)Util.convertDpToPixel(54, this), true);
+                image.setImageBitmap(bm);
+                Bitmap bm_full;
+                if (from == 1) {
+                     bm_full = Util.decodeFile(file.getAbsolutePath());
+                } else if (from == 2) {
+                    String[] projection = {MediaStore.MediaColumns.DATA};
+                    Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+                    int col = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+                    cursor.moveToFirst();
+                    bm_full = Util.decodeFile(cursor.getString(col));
+                } else {
+                    bm_full = null;
+                }
+                if (bm_full != null) {
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bm_full.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+                    fullScreenImage = bytes.toByteArray();
+                    changed = 1;
+                }
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (fullScreenImage != null) {
+                            Intent i = new Intent(EditProfileActivity.this, FullScreenImage.class);
+                            i.putExtra("picture", fullScreenImage);
+                            startActivityForResult(i, REMOVE_FILE);
+                        }
+                    }
+                });
+                Toast.makeText(this, getString(R.string.click_button_view_image), Toast.LENGTH_SHORT).show();
+            } else if (requestCode == REMOVE_FILE) {
+                changed = 1;
+                image.setImageResource(R.drawable.anon_54);
+                fullScreenImage = null;
+                bm50 = null;
+            }
+        }
+    }
+
 
 }
