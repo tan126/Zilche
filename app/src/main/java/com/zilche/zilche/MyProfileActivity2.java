@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -66,6 +68,8 @@ public class MyProfileActivity2 extends FragmentActivity {
     private ViewPager pager;
     private TextView name;
     private Frag frag_global;
+    private SlidingPaneLayout spl;
+    private View background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,27 @@ public class MyProfileActivity2 extends FragmentActivity {
         pager.setPageTransformer(false, new ZoomOutPageTransformer());
         pager.setAdapter(new ProfileAdapter(getSupportFragmentManager()));
         pager.setOffscreenPageLimit(2);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    spl.setmCanSlide(true);
+                } else {
+                    spl.setmCanSlide(false);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         SlidingTabLayout stl = (SlidingTabLayout) findViewById(R.id.pager_tab_strip2);
         stl.setDistributeEvenly(true);
@@ -101,6 +126,28 @@ public class MyProfileActivity2 extends FragmentActivity {
         stl.setCustomTabView(R.layout.custom_tab, 0);
         stl.setSelectedIndicatorColors(0xff3F51B5);
         stl.setViewPager(pager);
+
+        spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
+        background = findViewById(R.id.background);
+
+        spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                int color = (int) ((1 - slideOffset) * 170);
+                background.setBackgroundColor(0x00000000 | (color << 24));
+            }
+
+            @Override
+            public void onPanelOpened(View panel) {
+                MyProfileActivity2.this.finish();
+                MyProfileActivity2.this.overridePendingTransition(0, 0);
+            }
+
+            @Override
+            public void onPanelClosed(View panel) {
+
+            }
+        });
 
         name.setText("Profile");
     }
@@ -469,6 +516,12 @@ public class MyProfileActivity2 extends FragmentActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.right_to_left, 0);
     }
 
 }

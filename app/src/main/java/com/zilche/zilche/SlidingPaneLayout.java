@@ -1404,4 +1404,9 @@ public class SlidingPaneLayout extends ViewGroup {
             mPostedRunnables.remove(this);
         }
     }
+
+    public void setmCanSlide(boolean canSlide) {
+        mCanSlide = canSlide;
+    }
+
 }

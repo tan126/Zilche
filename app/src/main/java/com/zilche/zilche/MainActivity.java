@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.LogOutCallback;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -329,8 +330,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openProfile(View v) {
+        if (ParseUser.getCurrentUser() == null || ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+            Intent i = new Intent(MainActivity.this, SignUpActivity.class);
+            startActivity(i);
+        }
         Intent i = new Intent(this, MyProfileActivity2.class);
         startActivity(i);
+        overridePendingTransition(R.anim.right_to_left, 0);
     }
 
     @Override
