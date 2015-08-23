@@ -132,7 +132,7 @@ public class SlidingPaneLayout extends ViewGroup {
     private PanelSlideListener mPanelSlideListener;
 
     private final ViewDragHelper mDragHelper;
-
+    private boolean canSlide2 = false;
     /**
      * Stores whether or not the pane was open the last time it was slideable.
      * If open/close operations are invoked this state is modified. Used by
@@ -653,7 +653,7 @@ public class SlidingPaneLayout extends ViewGroup {
         final int action = MotionEventCompat.getActionMasked(ev);
 
         // Preserve the open state based on the last view that was touched.
-        if (!mCanSlide && action == MotionEvent.ACTION_DOWN && getChildCount() > 1) {
+        if (canSlide2 && !mCanSlide && action == MotionEvent.ACTION_DOWN && getChildCount() > 1) {
             // After the first things will be slideable.
             final View secondChild = getChildAt(1);
             if (secondChild != null) {
@@ -662,7 +662,7 @@ public class SlidingPaneLayout extends ViewGroup {
             }
         }
 
-        if (!mCanSlide || (mIsUnableToDrag && action != MotionEvent.ACTION_DOWN)) {
+        if (canSlide2 || !mCanSlide || (mIsUnableToDrag && action != MotionEvent.ACTION_DOWN)) {
             mDragHelper.cancel();
             return super.onInterceptTouchEvent(ev);
         }
@@ -710,7 +710,7 @@ public class SlidingPaneLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (!mCanSlide) {
+        if (canSlide2 && !mCanSlide) {
             return super.onTouchEvent(ev);
         }
 
@@ -1406,7 +1406,7 @@ public class SlidingPaneLayout extends ViewGroup {
     }
 
     public void setmCanSlide(boolean canSlide) {
-        mCanSlide = canSlide;
+        canSlide2 = !canSlide;
     }
 
 }
