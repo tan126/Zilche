@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -16,12 +17,14 @@ import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -63,6 +66,8 @@ public class EditProfileActivity extends ActionBarActivity {
     private byte[] bm50;
     private int changed = 0;
     private int from = 0;
+    private SlidingPaneLayout spl;
+    private View background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +81,27 @@ public class EditProfileActivity extends ActionBarActivity {
         gender = (TextView) findViewById(R.id.gender_pi);
         country = (TextView) findViewById(R.id.country_pi);
         image = (ImageView) findViewById(R.id.image_pi);
+        spl = (SlidingPaneLayout) findViewById(R.id.sliding_pane);
+        background = findViewById(R.id.background);
+        spl.setPanelSlideListener(new SlidingPaneLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                int color = (int) ((1 - slideOffset) * 170);
+                background.setBackgroundColor(0x00000000 | (color << 24));
+                //fab.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onPanelOpened(View panel) {
+                EditProfileActivity.this.finish();
+                overridePendingTransition(0, 0);
+            }
+
+            @Override
+            public void onPanelClosed(View panel) {
+                //fab.setVisibility(View.VISIBLE);
+            }
+        });
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         ParseUser u = ParseUser.getCurrentUser();
         email.setText(u.getEmail());
@@ -109,10 +135,41 @@ public class EditProfileActivity extends ActionBarActivity {
             birthday.setText("unspecified");
             age.setText("unspecified");
         }
+        if (u.getBytes("image") != null) {
+            Bitmap b = BitmapFactory.decodeByteArray(u.getBytes("image"), 0, u.getBytes("image").length);
+            Bitmap bm = Bitmap.createScaledBitmap(b, (int)Util.convertDpToPixel(54, this), (int)Util.convertDpToPixel(54, this), true);
+            image.setImageBitmap(bm);
+            if (u.getParseFile("full_image") != null) {
+                u.getParseFile("full_image").getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] bytes, ParseException e) {
+                        if (e == null) {
+                            fullScreenImage = bytes;
+                            image.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (fullScreenImage != null) {
+                                        Intent i = new Intent(EditProfileActivity.this, FullScreenImage.class);
+                                        i.putExtra("picture", fullScreenImage);
+                                        startActivityForResult(i, REMOVE_FILE);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
     }
 
     public void backButton(View v) {
         onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.left_to_right);
     }
 
     public void upload(View v) {
@@ -152,7 +209,7 @@ public class EditProfileActivity extends ActionBarActivity {
                     }
                 });
             } else {
-                ParseFile f = new ParseFile("img.jpg", fullScreenImage);
+                final ParseFile f = new ParseFile("img.jpg", fullScreenImage);
                 f.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -173,12 +230,14 @@ public class EditProfileActivity extends ActionBarActivity {
                             if (init_gender != null) {
                                 user.put("gender", init_gender);
                             }
+                            user.put("full_image", f);
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
                                     if (e == null) {
                                         setResult(RESULT_OK);
                                         finish();
+                                        overridePendingTransition(0, R.anim.left_to_right);
                                         dialog.dismiss();
                                     } else {
                                         Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
@@ -188,6 +247,7 @@ public class EditProfileActivity extends ActionBarActivity {
                             });
                         } else {
                             Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }
                     }
                 });

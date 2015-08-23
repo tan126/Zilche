@@ -84,6 +84,7 @@ public class MyProfileActivity2 extends FragmentActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MyProfileActivity2.this, EditProfileActivity.class);
                 startActivityForResult(i, 2222);
+                overridePendingTransition(R.anim.right_to_left, 0);
             }
         });
 

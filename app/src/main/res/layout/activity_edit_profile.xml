@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout
-    android:background="#fff"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.zilche.zilche.SlidingPaneLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/sliding_pane"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.zilche.zilche.MyPollActivity"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent">
+
+    <View
+        android:layout_width="fill_parent"
+        android:id="@+id/background"
+        android:layout_gravity="left"
+        android:background="#aa000000"
+        android:layout_height="match_parent"/>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:background="#fff"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -463,6 +479,7 @@
 
     </LinearLayout>
 
+
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -477,3 +494,4 @@
         />
 
 </android.support.design.widget.CoordinatorLayout>
+</com.zilche.zilche.SlidingPaneLayout>

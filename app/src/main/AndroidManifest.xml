@@ -127,10 +127,14 @@
         </activity>
         <activity
             android:name=".MyProfileActivity2"
+            android:launchMode="singleTop"
+            android:theme="@style/transparent"
             android:label="@string/title_activity_my_profile" >
         </activity>
         <activity
             android:name=".EditProfileActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/transparent"
             android:label="@string/title_activity_edit_profile" >
         </activity>
     </application>
