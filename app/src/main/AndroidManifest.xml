@@ -127,15 +127,19 @@
         </activity>
         <activity
             android:name=".MyProfileActivity2"
+            android:label="@string/title_activity_my_profile"
             android:launchMode="singleTop"
-            android:theme="@style/transparent"
-            android:label="@string/title_activity_my_profile" >
+            android:theme="@style/transparent" >
         </activity>
         <activity
             android:name=".EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
             android:launchMode="singleTop"
-            android:theme="@style/transparent"
-            android:label="@string/title_activity_edit_profile" >
+            android:theme="@style/transparent" >
+        </activity>
+        <activity
+            android:name=".FullScreenImageActivity"
+            android:label="@string/title_activity_full_screen_image" >
         </activity>
     </application>
 

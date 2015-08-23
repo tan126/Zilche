@@ -47,7 +47,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -80,7 +82,7 @@ public class MyProfileActivity2 extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                overridePendingTransition(R.anim.right_to_left, 0);
+                overridePendingTransition(0, R.anim.left_to_right);
             }
         });
 
@@ -195,6 +197,7 @@ public class MyProfileActivity2 extends FragmentActivity {
         TextView gender;
         TextView country;
         ImageView iv;
+        byte[] fullImage;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -248,6 +251,24 @@ public class MyProfileActivity2 extends FragmentActivity {
                 Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(image, 0, image.length), (int)Util.convertDpToPixel(54, getActivity()),
                         (int)Util.convertDpToPixel(54, getActivity()), true);
                 iv.setImageBitmap(bm);
+                u.getParseFile("full_image").getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] bytes, ParseException e) {
+                        if (e == null) {
+                            fullImage = bytes;
+                            iv.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (fullImage != null) {
+                                        Intent i = new Intent(getActivity(), FullScreenImageActivity.class);
+                                        i.putExtra("image", fullImage);
+                                        startActivity(i);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
             }
         }
 
@@ -566,7 +587,7 @@ public class MyProfileActivity2 extends FragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.right_to_left, 0);
+        overridePendingTransition(0, R.anim.left_to_right);
     }
 
     @Override
