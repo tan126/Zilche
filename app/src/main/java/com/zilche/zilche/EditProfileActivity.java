@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,7 +16,6 @@ import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -88,7 +86,6 @@ public class EditProfileActivity extends ActionBarActivity {
             public void onPanelSlide(View panel, float slideOffset) {
                 int color = (int) ((1 - slideOffset) * 170);
                 background.setBackgroundColor(0x00000000 | (color << 24));
-                //fab.setVisibility(View.GONE);
             }
 
             @Override
@@ -99,7 +96,6 @@ public class EditProfileActivity extends ActionBarActivity {
 
             @Override
             public void onPanelClosed(View panel) {
-                //fab.setVisibility(View.VISIBLE);
             }
         });
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
@@ -201,6 +197,7 @@ public class EditProfileActivity extends ActionBarActivity {
                         if (e == null) {
                             setResult(RESULT_OK);
                             finish();
+                            overridePendingTransition(0, R.anim.left_to_right);
                             dialog.dismiss();
                         } else {
                             Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
@@ -252,6 +249,36 @@ public class EditProfileActivity extends ActionBarActivity {
                     }
                 });
             }
+        } else {
+            if (bdate != null) {
+                user.put("bday", bdate);
+            }
+            if (init_name != null) {
+                user.put("name", init_name);
+            }
+            if (init_country != null) {
+                user.put("country", init_country);
+            }
+            if (init_intro != null) {
+                user.put("message", init_intro);
+            }
+            if (init_gender != null) {
+                user.put("gender", init_gender);
+            }
+            user.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e == null) {
+                        setResult(RESULT_OK);
+                        finish();
+                        overridePendingTransition(0, R.anim.left_to_right);
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }
+            });
         }
 
     }
