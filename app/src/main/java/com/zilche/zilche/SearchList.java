@@ -149,7 +149,7 @@ public class SearchList extends AppCompatActivity {
         q.setLimit(15);
         q.whereNotEqualTo("archived", 1);
         q.setSkip(skip2 * 15);
-        q.orderByDescending("lastUpdate");
+        q.orderByDescending("createdAt");
         q.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {

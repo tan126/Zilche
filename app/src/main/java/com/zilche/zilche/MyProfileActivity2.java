@@ -79,7 +79,8 @@ public class MyProfileActivity2 extends FragmentActivity {
         findViewById(R.id.back_button_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                finish();
+                overridePendingTransition(R.anim.right_to_left, 0);
             }
         });
 
@@ -255,26 +256,35 @@ public class MyProfileActivity2 extends FragmentActivity {
 
     public static class SecondFragment extends Fragment {
 
-        private ImageButton back_button;
         private SearchView sv;
         private RecyclerView rv;
         private LinkedList<Poll> pollList;
         private ProgressBar spinner;
-        private int isRefreshing = 0;
         private HashMap<String, Integer> map;
         private int skip = 0;
         private int complete = 0;
         private int visibleThreshold = 15;
         private boolean load = false;
-        //private String str;
+        private LinearLayout reload_bg_full;
+        private Button reload_btn;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.profile_activity, container, false);
+            View v = inflater.inflate(R.layout.fragment_profile2, container, false);
 
             Zilche app = (Zilche) getActivity().getApplication();
             map = app.getMap();
             spinner = (ProgressBar) v.findViewById(R.id.progress_bar);
+            reload_bg_full = (LinearLayout) v.findViewById(R.id.reload_bg_full);
+            reload_btn = (Button) v.findViewById(R.id.reload_btn);
+            reload_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    reload_bg_full.setVisibility(View.GONE);
+                    spinner.setVisibility(View.VISIBLE);
+                    populateList(skip);
+                }
+            });
 
             populateList(skip);
 
@@ -317,19 +327,22 @@ public class MyProfileActivity2 extends FragmentActivity {
             query.whereEqualTo("author", ParseUser.getCurrentUser().getEmail());
 
             query.whereNotEqualTo("anon", 1);
-            query.setLimit(15);
+            query.setLimit(25);
             query.whereNotEqualTo("archived", 1);
-            query.setSkip(skip2 * 15);
-            query.orderByDescending("lastUpdate");
+            query.setSkip(skip2 * 25);
+            query.orderByDescending("createdAt");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
                     if (e == null) {
+                        if (reload_bg_full.getVisibility() == View.VISIBLE) {
+                            reload_bg_full.setVisibility(View.GONE);
+                        }
                         if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                             pollList.removeLast();
                             rv.getAdapter().notifyDataSetChanged();
                         }
-                        if (list.size() < 15) {
+                        if (list.size() < 25) {
                             complete = 1;
                         } else {
                             complete = 0;
@@ -352,10 +365,13 @@ public class MyProfileActivity2 extends FragmentActivity {
                     } else {
                         if (pollList.size() != 0 && pollList.getLast() != null && pollList.getLast().getId().compareTo("-1") == 0) {
                             pollList.removeLast();
+                            Poll tmp = new Poll();
+                            tmp.setId("-2");
+                            pollList.add(tmp);
                             rv.getAdapter().notifyDataSetChanged();
+                        } else {
+                            reload_bg_full.setVisibility(View.VISIBLE);
                         }
-                        load = false;
-                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     if (spinner.getVisibility() == View.VISIBLE) {
                         spinner.setVisibility(View.GONE);
@@ -374,13 +390,26 @@ public class MyProfileActivity2 extends FragmentActivity {
                     Intent i = new Intent(getActivity(), PollViewActivity.class);
                     i.putExtra("poll", polls.get(pos));
                     startActivity(i);
-                    //overridePendingTransition(R.anim.right_to_left, 0);
+                    getActivity().overridePendingTransition(R.anim.right_to_left, 0);
                 }
 
+            };
+            View.OnClickListener reload = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pollList.removeLast();
+                    Poll tmp = new Poll();
+                    tmp.setId("-1");
+                    pollList.add(tmp);
+                    rv.getAdapter().notifyDataSetChanged();
+                    populateList(skip);
+                }
             };
 
             public class PollViewHolder extends RecyclerView.ViewHolder {
 
+                LinearLayout reload_bg;
+                Button reload;
                 LinearLayout main;
                 ProgressBar pb;
                 CardView cv;
@@ -404,6 +433,8 @@ public class MyProfileActivity2 extends FragmentActivity {
                     has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
                     author = (TextView) itemView.findViewById(R.id.author);
                     pb = (ProgressBar) itemView.findViewById(R.id.pb);
+                    reload_bg = (LinearLayout) itemView.findViewById(R.id.reload_bg);
+                    reload = (Button) itemView.findViewById(R.id.reload);
                 }
             }
 
@@ -424,8 +455,16 @@ public class MyProfileActivity2 extends FragmentActivity {
                 if (polls.get(i).getId().compareTo("-1") == 0) {
                     pollViewHolder.pb.setVisibility(View.VISIBLE);
                     pollViewHolder.cv.setVisibility(View.GONE);
+                    pollViewHolder.reload_bg.setVisibility(View.GONE);
+                    return;
+                } if (polls.get(i).getId().compareTo("-2") == 0 ) {
+                    pollViewHolder.pb.setVisibility(View.GONE);
+                    pollViewHolder.cv.setVisibility(View.GONE);
+                    pollViewHolder.reload_bg.setVisibility(View.VISIBLE);
+                    pollViewHolder.reload.setOnClickListener(reload);
                     return;
                 } else {
+                    pollViewHolder.reload_bg.setVisibility(View.GONE);
                     pollViewHolder.pb.setVisibility(View.GONE);
                     pollViewHolder.cv.setVisibility(View.VISIBLE);
                 }
@@ -445,7 +484,7 @@ public class MyProfileActivity2 extends FragmentActivity {
                 } else {
                     pollViewHolder.has_photo.setVisibility(View.GONE);
                 }
-                pollViewHolder.author.setText(p.getAnon() == 1 ? "Anonymous" : p.getAuthor());
+                pollViewHolder.author.setText(p.getAnon() == 1 ? getString(R.string.anonymous) : p.getAuthor());
             }
 
             @Override
@@ -457,6 +496,12 @@ public class MyProfileActivity2 extends FragmentActivity {
             public int getItemCount() {
                 return polls.size();
             }
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            rv.getAdapter().notifyDataSetChanged();
         }
 
         public SecondFragment() {
@@ -522,6 +567,20 @@ public class MyProfileActivity2 extends FragmentActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.right_to_left, 0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Zilche app = (Zilche) getApplication();
+        if (app.getFav() == null || app.getMap() == null) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("restart", 1);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+            return;
+        }
     }
 
 }
