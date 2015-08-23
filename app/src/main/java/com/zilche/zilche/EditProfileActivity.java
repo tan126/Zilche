@@ -1,7 +1,10 @@
 package com.zilche.zilche;
 
-import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.support.v7.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.*;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -11,13 +14,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -35,6 +41,11 @@ public class EditProfileActivity extends ActionBarActivity {
     private TextView gender;
     private TextView country;
     private android.support.design.widget.FloatingActionButton fab;
+    private Date bdate = null;
+    private String init_intro = null;
+    private String init_name = null;
+    private String init_gender = null;
+    private String init_country = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +77,9 @@ public class EditProfileActivity extends ActionBarActivity {
         } else {
             country.setText("unspecified");
         }
-        if (u.getDate("birthday") != null) {
-            Date d = u.getDate("birthday");
+        if (u.getDate("bday") != null) {
+            Date d = u.getDate("bday");
+            bdate = d;
             Calendar c = Calendar.getInstance();
             c.setTime(d);
             int age_val = Calendar.getInstance().get(Calendar.YEAR) - c.get(Calendar.YEAR);
@@ -86,7 +98,40 @@ public class EditProfileActivity extends ActionBarActivity {
     }
 
     public void upload(View v) {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage("Saving");
+        dialog.setCancelable(false);
+        dialog.show();
 
+        ParseUser user = ParseUser.getCurrentUser();
+        if (bdate != null) {
+            user.put("bday", bdate);
+        }
+        if (init_name != null) {
+            user.put("name", init_name);
+        }
+        if (init_country != null) {
+            user.put("country", init_country);
+        }
+        if (init_intro != null) {
+            user.put("message", init_intro);
+        }
+        if (init_gender != null) {
+            user.put("gender", init_gender);
+        }
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    setResult(RESULT_OK);
+                    finish();
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(EditProfileActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }
+            }
+        });
     }
 
     public void edit_name(View v) {
@@ -106,6 +151,7 @@ public class EditProfileActivity extends ActionBarActivity {
                     Toast.makeText(EditProfileActivity.this, getString(R.string.fl_name), Toast.LENGTH_SHORT).show();
                     return;
                 } else {
+                    init_name = text;
                     user.setText(text);
                     dialog.dismiss();
                 }
@@ -123,7 +169,39 @@ public class EditProfileActivity extends ActionBarActivity {
     }
 
     public void edit_bday(View v) {
-
+        final Calendar c = Calendar.getInstance();
+        final int c_year = c.get(Calendar.YEAR);
+        int year = 0;
+        int month = 0;
+        int day = 0;
+        if (bdate != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(bdate);
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+        } else {
+            year = c_year;
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
+        }
+        DatePickerDialog dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year2, int monthOfYear, int dayOfMonth) {
+                if (c_year < year2) {
+                    Toast.makeText(EditProfileActivity.this, "Invalid birth date", Toast.LENGTH_SHORT).show();
+                } else {
+                    int diff = c_year - year2;
+                    age.setText(Integer.toString(diff));
+                    DateFormat df = new SimpleDateFormat("M-dd-yyyy");
+                    Calendar c = Calendar.getInstance();
+                    c.set(year2, monthOfYear, dayOfMonth);
+                    bdate = c.getTime();
+                    birthday.setText(df.format(c.getTime()));
+                }
+            }
+        }, year, month, day);
+        dpd.show();
     }
 
     public void edit_intro(View v) {
@@ -142,6 +220,7 @@ public class EditProfileActivity extends ActionBarActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String text = et.getText().toString().trim();
                 intro.setText(text);
+                init_intro = text;
                 dialog.dismiss();
             }
         });
@@ -181,6 +260,7 @@ public class EditProfileActivity extends ActionBarActivity {
                         gender.setText(items[2]);
                         break;
                 }
+                init_gender = items[which].toString();
                 dialog.dismiss();
             }
         });
@@ -272,6 +352,7 @@ public class EditProfileActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 country.setText(items[which]);
+                init_country = items[which].toString();
                 dialog.dismiss();
             }
         });

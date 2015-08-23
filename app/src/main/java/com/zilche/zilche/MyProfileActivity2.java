@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -62,12 +63,13 @@ public class MyProfileActivity2 extends FragmentActivity {
 
     private ViewPager pager;
     private TextView name;
+    private Frag frag_global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile2);
-
+        frag_global = new Frag();
         findViewById(R.id.back_button_profile).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,10 +114,9 @@ public class MyProfileActivity2 extends FragmentActivity {
         public Fragment getItem(int position) {
             Fragment frag = null;
             switch (position) {
-                case 0 :
-                    frag = new Frag();
-                    break;
-                case 1 :
+                case 0:
+                    return frag_global;
+                case 1:
                     frag = new SecondFragment();
                     break;
             }
@@ -134,16 +135,30 @@ public class MyProfileActivity2 extends FragmentActivity {
     }
 
     public static class Frag extends Fragment {
+
+        TextView email;
+        TextView user;
+        TextView birthday;
+        TextView intro;
+        TextView age;
+        TextView gender;
+        TextView country;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_profile, container, false);
-            TextView email = (TextView) v.findViewById(R.id.email_pi);
-            TextView user = (TextView) v.findViewById(R.id.name_pi);
-            TextView birthday = (TextView) v.findViewById(R.id.bday_pi);
-            TextView intro = (TextView) v.findViewById(R.id.intro_pi);
-            TextView age = (TextView) v.findViewById(R.id.age_pi);
-            TextView gender = (TextView) v.findViewById(R.id.gender_pi);
-            TextView country = (TextView) v.findViewById(R.id.country_pi);
+            email = (TextView) v.findViewById(R.id.email_pi);
+            user = (TextView) v.findViewById(R.id.name_pi);
+            birthday = (TextView) v.findViewById(R.id.bday_pi);
+            intro = (TextView) v.findViewById(R.id.intro_pi);
+            age = (TextView) v.findViewById(R.id.age_pi);
+            gender = (TextView) v.findViewById(R.id.gender_pi);
+            country = (TextView) v.findViewById(R.id.country_pi);
+            update();
+            return v;
+        }
+
+        public void update() {
             ParseUser u = ParseUser.getCurrentUser();
             email.setText(u.getEmail());
             user.setText(u.getString("name"));
@@ -162,8 +177,8 @@ public class MyProfileActivity2 extends FragmentActivity {
             } else {
                 country.setText("unspecified");
             }
-            if (u.getDate("birthday") != null) {
-                Date d = u.getDate("birthday");
+            if (u.getDate("bday") != null) {
+                Date d = u.getDate("bday");
                 Calendar c = Calendar.getInstance();
                 c.setTime(d);
                 int age_val = Calendar.getInstance().get(Calendar.YEAR) - c.get(Calendar.YEAR);
@@ -175,8 +190,8 @@ public class MyProfileActivity2 extends FragmentActivity {
                 birthday.setText("unspecified");
                 age.setText("unspecified");
             }
-            return v;
         }
+
     }
 
 
@@ -306,7 +321,7 @@ public class MyProfileActivity2 extends FragmentActivity {
 
             };
 
-            public class PollViewHolder extends RecyclerView.ViewHolder{
+            public class PollViewHolder extends RecyclerView.ViewHolder {
 
                 LinearLayout main;
                 ProgressBar pb;
@@ -432,5 +447,17 @@ public class MyProfileActivity2 extends FragmentActivity {
         }
     }
 
-}
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 2222) {
+                if (frag_global != null) {
+                    frag_global.update();
+                }
+            }
+        }
+    }
+
+}
