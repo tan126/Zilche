@@ -122,6 +122,7 @@ public class CreateCommentActivity extends ActionBarActivity {
                     if (ParseUser.getCurrentUser().getBytes("image") != null) {
                         comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
                     }
+                    comment_obj.put("author_id", ParseUser.getCurrentUser().getObjectId());
                     comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
                     comment_obj.put("comment", comment.getText().toString().trim());
                     if (isAnon != 1) {
