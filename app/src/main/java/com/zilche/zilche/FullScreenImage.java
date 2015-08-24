@@ -49,6 +49,6 @@ public class FullScreenImage extends Activity
     public void cancelPhotoSelection(View v) {
         setResult(RESULT_CANCELED);
         finish();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        overridePendingTransition(0, R.anim.fade_out);
     }
 }

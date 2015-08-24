@@ -57,7 +57,7 @@ public class CropImageActivity extends ActionBarActivity {
         if (uri == null) {
             setResult(RESULT_CANCELED);
             finish();
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            overridePendingTransition(0, R.anim.fade_out);
             return;
         }
 
@@ -87,7 +87,7 @@ public class CropImageActivity extends ActionBarActivity {
             public void onClick(View v) {
                 setResult(RESULT_CANCELED);
                 finish();
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                overridePendingTransition(0, R.anim.fade_out);
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,7 @@ public class CropImageActivity extends ActionBarActivity {
                         }
                         setResult(RESULT_OK, i);
                         finish();
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        overridePendingTransition(0, R.anim.fade_out);
                     }
                 });
                 dialog = builder.create();

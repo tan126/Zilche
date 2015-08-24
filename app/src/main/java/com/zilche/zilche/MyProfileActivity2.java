@@ -265,6 +265,7 @@ public class MyProfileActivity2 extends FragmentActivity {
                                         Intent i = new Intent(getActivity(), FullScreenImageActivity.class);
                                         i.putExtra("image", fullImage);
                                         startActivity(i);
+                                        getActivity().overridePendingTransition(R.anim.fade_in, 0);
                                     }
                                 }
                             });

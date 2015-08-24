@@ -24,15 +24,25 @@ public class FullScreenImageActivity extends ActionBarActivity {
             getWindow().setStatusBarColor(0xff000000);
         }
         ImageView iv = (ImageView) findViewById(R.id.iv);
-        iv.setImageResource(R.drawable.category_all);
         if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().getByteArray("image") != null) {
             byte[] image = getIntent().getExtras().getByteArray("image");
             Bitmap b = BitmapFactory.decodeByteArray(image, 0, image.length);
             iv.setImageBitmap(b);
+            iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
         } else {
             finish();
-            overridePendingTransition(0, 0);
+            overridePendingTransition(0, R.anim.fade_out);
         }
+    }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.fade_out);
     }
 
     public void backButton(View v) {
