@@ -229,6 +229,8 @@ public class RetrieveProfileActivity extends FragmentActivity {
 
         public void update(ParseUser u) {
             email.setText(u.getEmail());
+            RetrieveProfileActivity main = (RetrieveProfileActivity) getActivity();
+            main.updateAuthorName(u.getString("name"));
             user.setText(u.getString("name"));
             if (u.getString("message") != null) {
                 intro.setText(u.getString("message"));
@@ -607,6 +609,10 @@ public class RetrieveProfileActivity extends FragmentActivity {
             finish();
             return;
         }
+    }
+
+    public void updateAuthorName(String name) {
+        authorName = name;
     }
 
 }

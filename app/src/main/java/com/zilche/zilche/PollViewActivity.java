@@ -90,6 +90,21 @@ public class PollViewActivity extends ActionBarActivity {
     private boolean isLoading = false;
     private boolean complete = false;
     private LinearLayout reload;
+    private View.OnClickListener load_user_profile = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int val = (int) v.getTag();
+            Intent t = new Intent(PollViewActivity.this, RetrieveProfileActivity.class);
+            if (val > comments_list.size() || comments_list.get(val) instanceof String) {
+                return;
+            }
+            Comment c = (Comment) comments_list.get(val);
+            t.putExtra("author", c.getEmail());
+            t.putExtra("authorRealName", c.getName());
+            startActivity(t);
+            overridePendingTransition(R.anim.right_to_left, 0);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -595,6 +610,7 @@ public class PollViewActivity extends ActionBarActivity {
         protected void onPostExecute(Bitmap bitmap) {
             if (isCancelled() || bitmap == null || imageViewWeakReference.get() == null) return;
             imageViewWeakReference.get().setImageBitmap(bitmap);
+            imageViewWeakReference.get().setOnClickListener(load_user_profile);
         }
     }
 
@@ -695,6 +711,8 @@ public class PollViewActivity extends ActionBarActivity {
             TextView op = (TextView) v.findViewById(R.id.op);
             Comment c = (Comment) this.comment.get(position);
             author.setText(c.getName());
+            author.setTag(position);
+            author.setOnClickListener(load_user_profile);
             date.setText(c.getDate_added());
             comment.setText(c.getComment_text());
             if (c.getOp() == 1) {
@@ -708,6 +726,7 @@ public class PollViewActivity extends ActionBarActivity {
                 mod.setVisibility(View.GONE);
             }
             if (c.hasImage()) {
+                iv.setTag(position);
                 CommentBitmapWorker cbw = new CommentBitmapWorker(iv, c.getImage(), R.drawable.anon_30);
                 cbw.execute();
             } else {

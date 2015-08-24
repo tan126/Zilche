@@ -12,6 +12,15 @@ public class Comment {
     String date_added;
     private int op;
     private int mod;
+    String email;
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     public void setMod(int mod) {
         this.mod = mod;

@@ -149,6 +149,7 @@ public class Util {
             c.setHasImage(true);
             c.setImage(po.getBytes("image"));
         }
+        c.setEmail(po.getString("email"));
         return c;
     }
 
