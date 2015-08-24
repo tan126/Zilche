@@ -260,8 +260,8 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
     public static class FirstFragment extends Fragment {
 
-        private File file = new File(appFolderCheckandCreate(), ".img" + "_temp" + ".jpg");
-        private String filePath = file.getPath();
+        private File file;
+        private String filePath;
         private Uri uri;
         private boolean imageBound = false;
         private TextView question;
@@ -279,6 +279,8 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
+                            file = new File(appFolderCheckandCreate(), "." + System.currentTimeMillis() + ".jpg");
+                            filePath = file.getAbsolutePath();
                             uri = Uri.fromFile(file);
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -371,6 +373,13 @@ public class CreatePollActivity2 extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.create_poll_new1, container, false);
+            File root = new File(appFolderCheckandCreate());
+            File[] list = root.listFiles();
+            if (list != null) {
+                for (int i = 0; i < list.length; i++) {
+                    list[i].delete();
+                }
+            }
             question = (TextView) rootView.findViewById(R.id.question);
             fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
             fab.setOnClickListener(onclick);

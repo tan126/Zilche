@@ -55,8 +55,8 @@ public class EditProfileActivity extends ActionBarActivity {
     private String init_name = null;
     private String init_gender = null;
     private String init_country = null;
-    private File file = new File(appFolderCheckandCreate(), ".img" + "_temp2" + ".jpg");
-    private String filePath = file.getPath();
+    private File file;
+    private String filePath;
     private Uri uri;
     private boolean imageBound = false;
     private byte[] fullScreenImage;
@@ -71,6 +71,13 @@ public class EditProfileActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        File root = new File(appFolderCheckandCreate());
+        File[] files = root.listFiles();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                files[i].delete();
+            }
+        }
         email = (TextView) findViewById(R.id.email_pi);
         user = (TextView) findViewById(R.id.name_pi);
         birthday = (TextView) findViewById(R.id.bday_pi);
@@ -520,6 +527,8 @@ public class EditProfileActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
+                    file = new File(appFolderCheckandCreate(), "." + System.currentTimeMillis() + ".jpg");
+                    filePath = file.getAbsolutePath();
                     uri = Uri.fromFile(file);
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
