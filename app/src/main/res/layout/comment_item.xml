@@ -11,14 +11,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/image"
+        <FrameLayout
+            android:layout_margin="4dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="10dp" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/image"
+                android:src="@drawable/anon_30"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="6dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/corners_white"
+                />
+
+        </FrameLayout>
 
         <LinearLayout
             android:paddingLeft="5dp"

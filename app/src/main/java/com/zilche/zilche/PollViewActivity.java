@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -118,6 +119,7 @@ public class PollViewActivity extends ActionBarActivity {
 
         comments_list = new LinkedList<>();
         comments.setAdapter(new ListAdapter(comments_list));
+        comments.setSelector(android.R.color.transparent);
 
         final Zilche app = (Zilche) getApplication();
 
