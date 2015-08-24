@@ -1,89 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingBottom="10dp"
-        android:paddingRight="10dp" />
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:paddingLeft="5dp"
-        android:paddingTop="7dp"
-        android:paddingBottom="10dp"
-        android:paddingRight="15dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:id="@+id/comment_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp" />
+
+        <LinearLayout
+            android:paddingLeft="5dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="15dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Author"
+                    android:maxLength="30"
+                    android:ellipsize="end"
+                    android:paddingBottom="5dp"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="#555"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/op"
+                    android:text="  OP"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mod"
+                    android:visibility="gone"
+                    android:text="  Mod"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    android:textColor="#EF5350"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="8-18-15 01:11"
+                android:paddingBottom="5dp"
+                android:textColor="#999"
+                android:textSize="10sp"
+                android:fontFamily="sans-serif"/>
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hello World"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progress_lay"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            style="@style/progress"
+            android:layout_gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/reload_lay"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Author"
-                android:maxLength="30"
-                android:ellipsize="end"
-                android:paddingBottom="5dp"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif"
-                android:textColor="#555"/>
-
-            <TextView
-                android:visibility="gone"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/op"
-                android:text="  OP"
-                android:textSize="10sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/mod"
-                android:visibility="gone"
-                android:text="  Mod"
-                android:textSize="10sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="bold"
-                android:textColor="#EF5350"/>
-
-        </LinearLayout>
-
         <TextView
-            android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="8-18-15 01:11"
-            android:paddingBottom="5dp"
-            android:textColor="#999"
-            android:textSize="10sp"
-            android:fontFamily="sans-serif"/>
-
-        <TextView
-            android:id="@+id/comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World"
+            android:text="Connection failed"
             android:textSize="14sp"
-            android:fontFamily="sans-serif"/>
+            />
+
+
+        <Button
+            android:id="@+id/reload"
+            android:textSize="14sp"
+            android:text="Reload"
+            android:textColor="#666"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

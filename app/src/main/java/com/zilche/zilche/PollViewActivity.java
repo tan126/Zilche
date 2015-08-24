@@ -527,9 +527,9 @@ public class PollViewActivity extends ActionBarActivity {
         ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
         la.notifyDataSetChanged();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Comment");
-        query.setLimit(20);
+        query.setLimit(10);
         query.whereEqualTo("pollId", poll.getId());
-        query.setSkip(skip * 20);
+        query.setSkip(skip * 10);
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -541,7 +541,7 @@ public class PollViewActivity extends ActionBarActivity {
                         comments_list.add(c);
                     }
                     comment_total += list.size();
-                    if (list.size() < 20) {
+                    if (list.size() < 10) {
                         complete = true;
                     }
                     HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
@@ -655,15 +655,20 @@ public class PollViewActivity extends ActionBarActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
+            if (v == null) {
+                LayoutInflater vi = getLayoutInflater();
+                v = vi.inflate(R.layout.comment_item, null);
+            }
             if (comment.get(position) instanceof String) {
                 if (((String) comment.get(position)).compareTo("progress") == 0) {
-                    LayoutInflater vi = getLayoutInflater();
-                    v = vi.inflate(R.layout.progress_spinner_small, null);
+                    v.findViewById(R.id.progress_lay).setVisibility(View.VISIBLE);
+                    v.findViewById(R.id.reload_lay).setVisibility(View.GONE);
+                    v.findViewById(R.id.comment_lay).setVisibility(View.GONE);
                     return v;
                 } else if (((String) comment.get(position)).compareTo("reload") == 0) {
-                    LayoutInflater vi = getLayoutInflater();
-                    v = vi.inflate(R.layout.reload_small, null);
-
+                    v.findViewById(R.id.progress_lay).setVisibility(View.GONE);
+                    v.findViewById(R.id.reload_lay).setVisibility(View.VISIBLE);
+                    v.findViewById(R.id.comment_lay).setVisibility(View.GONE);
                     v.findViewById(R.id.reload).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -675,8 +680,11 @@ public class PollViewActivity extends ActionBarActivity {
                 }
                 return null;
             }
-            LayoutInflater vi = getLayoutInflater();
-            v = vi.inflate(R.layout.comment_item, null);
+
+            v.findViewById(R.id.progress_lay).setVisibility(View.GONE);
+            v.findViewById(R.id.reload_lay).setVisibility(View.GONE);
+            v.findViewById(R.id.comment_lay).setVisibility(View.VISIBLE);
+
             ImageView iv = (ImageView) v.findViewById(R.id.image);
             TextView author = (TextView) v.findViewById(R.id.author);
             TextView date = (TextView) v.findViewById(R.id.date);
