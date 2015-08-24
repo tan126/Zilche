@@ -312,9 +312,10 @@ public class PollViewActivity extends ActionBarActivity {
     public void retrieveAuthorProfile(View view){
         if(authorLogin != null) {
             Intent t = new Intent(PollViewActivity.this, RetrieveProfileActivity.class);
-            t.putExtra("authorName", authorLogin);
+            t.putExtra("author", authorLogin);
             t.putExtra("authorRealName", poll.getAuthor());
             startActivity(t);
+            overridePendingTransition(R.anim.right_to_left, 0);
         }
     }
 
