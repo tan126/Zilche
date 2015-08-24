@@ -45,7 +45,7 @@
                 android:ellipsize="end"
                 android:ems="3"
                 android:singleLine="true"
-                android:text="aaaa"
+                android:text="Profile"
                 android:textColor="#fff"
                 android:textSize="20sp"
                 android:gravity="center"

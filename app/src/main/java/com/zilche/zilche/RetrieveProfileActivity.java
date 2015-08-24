@@ -52,6 +52,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
     private SlidingPaneLayout spl;
     private View background;
     private String author;
+    private String authorName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,9 @@ public class RetrieveProfileActivity extends FragmentActivity {
         Intent i = getIntent();
         if (i != null && i.getExtras() != null && i.getExtras().getString("author") != null) {
             author = i.getExtras().getString("author");
+            if (i.getExtras().getString("authorRealName") != null) {
+                authorName = i.getExtras().getString("authorRealName");
+            }
         } else {
             Toast.makeText(this, "User profile does not exist", Toast.LENGTH_SHORT).show();
             finish();
@@ -92,8 +96,12 @@ public class RetrieveProfileActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
+                    name.setText("Profile");
                     spl.setmCanSlide(true);
                 } else {
+                    if (authorName != null) {
+                        name.setText(authorName);
+                    }
                     spl.setmCanSlide(false);
                 }
 
@@ -138,7 +146,6 @@ public class RetrieveProfileActivity extends FragmentActivity {
 
             }
         });
-        name.setText("Profile");
     }
 
     private class ProfileAdapter extends FragmentPagerAdapter {

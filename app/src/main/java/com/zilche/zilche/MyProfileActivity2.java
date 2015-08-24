@@ -112,8 +112,12 @@ public class MyProfileActivity2 extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
+                    name.setText("Profile");
                     spl.setmCanSlide(true);
                 } else {
+                    if (ParseUser.getCurrentUser().getString("name") != null) {
+                        name.setText(ParseUser.getCurrentUser().getString("name"));
+                    }
                     spl.setmCanSlide(false);
                 }
 
@@ -154,7 +158,6 @@ public class MyProfileActivity2 extends FragmentActivity {
             }
         });
 
-        name.setText("Profile");
     }
 
     private class ProfileAdapter extends FragmentPagerAdapter {
