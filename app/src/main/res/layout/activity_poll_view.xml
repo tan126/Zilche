@@ -79,7 +79,6 @@
                     android:maxLength="23"
                     android:ellipsize="end"
                     android:padding="5dp"
-                    android:background="?android:attr/selectableItemBackground"
                     android:id="@+id/author_poll_view"
                     android:onClick="retrieveAuthorProfile"
                     android:clickable="true"

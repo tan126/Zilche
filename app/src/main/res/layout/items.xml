@@ -94,7 +94,7 @@
                 android:textSize="18sp"
                 android:ellipsize="end"
                 android:layout_margin="3dp"
-                android:minHeight="80dp"
+                android:minHeight="90dp"
                 android:id="@+id/question"
                 android:maxLines="2"/>
 
