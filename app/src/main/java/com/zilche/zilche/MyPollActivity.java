@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -195,12 +196,28 @@ public class MyPollActivity extends ActionBarActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    int tag = (int) tag_v.getTag();
-                                    ParseObject o = ParseObject.createWithoutData("poll", polls.get(tag).getId());
-                                    o.put("archived", 1);
-                                    o.saveInBackground();
-                                    polls.remove(tag);
-                                    rv.getAdapter().notifyDataSetChanged();
+                                    final int tag = (int) tag_v.getTag();
+                                    final ParseObject o = ParseObject.createWithoutData("poll", polls.get(tag).getId());
+                                    if (!o.isDataAvailable()) {
+                                        o.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+                                            @Override
+                                            public void done(ParseObject object, ParseException e) {
+                                                if (e == null) {
+                                                    o.put("archived", 1);
+                                                    o.saveInBackground();
+                                                    polls.remove(tag);
+                                                    rv.getAdapter().notifyDataSetChanged();
+                                                } else {
+                                                    Toast.makeText(MyPollActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                                    } else {
+                                        o.put("archived", 1);
+                                        o.saveInBackground();
+                                        polls.remove(tag);
+                                        rv.getAdapter().notifyDataSetChanged();
+                                    }
                                 }
                             });
 

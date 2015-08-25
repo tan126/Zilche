@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -117,52 +118,114 @@ public class CreateCommentActivity extends ActionBarActivity {
                     submit.setEnabled(true);
                 } else {
                     final ParseObject po = ParseObject.createWithoutData("poll", pollId);
-                    final ParseObject comment_obj = new ParseObject("Comment");
-                    comment_obj.put("pollId", pollId);
-                    if (ParseUser.getCurrentUser().getBytes("image") != null) {
-                        comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
-                    }
-                    comment_obj.put("email", ParseUser.getCurrentUser().getEmail());
-                    comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
-                    comment_obj.put("comment", comment.getText().toString().trim());
-                    if (isAnon != 1) {
-                        if (ParseUser.getCurrentUser().getEmail().compareTo(owner) == 0) {
-                            comment_obj.put("op", 1);
-                        } else if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
-                            comment_obj.put("mod", 1);
-                        }
-                    } if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
-                        comment_obj.put("mod", 1);
-                    }
-                    final ProgressDialog dialog = new ProgressDialog(CreateCommentActivity.this);
-                    dialog.setIndeterminate(true);
-                    dialog.setCancelable(false);
-                    dialog.setMessage(getString(R.string.upload_comment));
-                    dialog.show();
-                    comment_obj.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                po.increment("comments_count");
-                                po.saveInBackground(new SaveCallback() {
-
-                                    @Override
-                                    public void done(ParseException e) {
-                                        dialog.dismiss();
-                                        Intent i = new Intent();
-                                        i.putExtra("total", po.getInt("comments_count"));
-                                        setResult(RESULT_OK, i);
-                                        finish();
-                                        overridePendingTransition(0, R.anim.left_to_right);
+                    if (!po.isDataAvailable()) {
+                        final ProgressDialog dialog = new ProgressDialog(CreateCommentActivity.this);
+                        dialog.setIndeterminate(true);
+                        dialog.setCancelable(false);
+                        dialog.setMessage(getString(R.string.upload_comment));
+                        dialog.show();
+                        po.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject object, ParseException e) {
+                                if (e == null) {
+                                    final ParseObject comment_obj = new ParseObject("Comment");
+                                    comment_obj.put("pollId", pollId);
+                                    if (ParseUser.getCurrentUser().getBytes("image") != null) {
+                                        comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
                                     }
-                                });
-                            } else {
-                                dialog.dismiss();
-                                submit.setEnabled(true);
-                                Toast.makeText(CreateCommentActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                    comment_obj.put("email", ParseUser.getCurrentUser().getEmail());
+                                    comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
+                                    comment_obj.put("comment", comment.getText().toString().trim());
+                                    if (isAnon != 1) {
+                                        if (ParseUser.getCurrentUser().getEmail().compareTo(owner) == 0) {
+                                            comment_obj.put("op", 1);
+                                        } else if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
+                                            comment_obj.put("mod", 1);
+                                        }
+                                    }
+                                    if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
+                                        comment_obj.put("mod", 1);
+                                    }
+                                    comment_obj.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if (e == null) {
+                                                po.increment("comments_count");
+                                                po.saveInBackground(new SaveCallback() {
+
+                                                    @Override
+                                                    public void done(ParseException e) {
+                                                        dialog.dismiss();
+                                                        Intent i = new Intent();
+                                                        i.putExtra("total", po.getInt("comments_count"));
+                                                        setResult(RESULT_OK, i);
+                                                        finish();
+                                                        overridePendingTransition(0, R.anim.left_to_right);
+                                                    }
+                                                });
+                                            } else {
+                                                dialog.dismiss();
+                                                submit.setEnabled(true);
+                                                Toast.makeText(CreateCommentActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    dialog.dismiss();
+                                    submit.setEnabled(true);
+                                    Toast.makeText(CreateCommentActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    } else {
+                        final ParseObject comment_obj = new ParseObject("Comment");
+                        comment_obj.put("pollId", pollId);
+                        if (ParseUser.getCurrentUser().getBytes("image") != null) {
+                            comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
+                        }
+                        comment_obj.put("email", ParseUser.getCurrentUser().getEmail());
+                        comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
+                        comment_obj.put("comment", comment.getText().toString().trim());
+                        if (isAnon != 1) {
+                            if (ParseUser.getCurrentUser().getEmail().compareTo(owner) == 0) {
+                                comment_obj.put("op", 1);
+                            } else if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
+                                comment_obj.put("mod", 1);
                             }
                         }
-                    });
+                        if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
+                            comment_obj.put("mod", 1);
+                        }
+                        final ProgressDialog dialog = new ProgressDialog(CreateCommentActivity.this);
+                        dialog.setIndeterminate(true);
+                        dialog.setCancelable(false);
+                        dialog.setMessage(getString(R.string.upload_comment));
+                        dialog.show();
+                        comment_obj.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    po.increment("comments_count");
+                                    po.saveInBackground(new SaveCallback() {
+
+                                        @Override
+                                        public void done(ParseException e) {
+                                            dialog.dismiss();
+                                            Intent i = new Intent();
+                                            i.putExtra("total", po.getInt("comments_count"));
+                                            setResult(RESULT_OK, i);
+                                            finish();
+                                            overridePendingTransition(0, R.anim.left_to_right);
+                                        }
+                                    });
+                                } else {
+                                    dialog.dismiss();
+                                    submit.setEnabled(true);
+                                    Toast.makeText(CreateCommentActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
                 }
             }
         });

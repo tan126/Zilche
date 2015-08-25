@@ -296,31 +296,44 @@ public class PollViewActivity extends ActionBarActivity {
                 if (checked == -1) {
                     submit_btn.setEnabled(true);
                 } else {
-                    final ParseObject po = ParseObject.createWithoutData("poll", poll.getId());
-                    po.increment("total");
-                    po.increment("votes" + Integer.toString(checked));
-                    po.saveInBackground(new SaveCallback() {
+                    final ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
+                    query.whereEqualTo("objectId", poll.getId());
+                    query.findInBackground(new FindCallback<ParseObject>() {
                         @Override
-                        public void done(ParseException e) {
+                        public void done(List<ParseObject> list, ParseException e) {
                             if (e == null) {
-                                poll.getVotes()[checked]++;
-                                final int[] votes = new int[poll.getCount()];
-                                for (int i = 0; i < poll.getCount(); i++) {
-                                    votes[i] = po.getInt("votes" + Integer.toString(i));
-                                }
-                                c = checked;
-                                comment_count = po.getInt("comments_count");
-                                comment_count1.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
-                                comment_count2.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
-                                generateResult(votes, poll.getOptions());
-                                saveRecord(po.getObjectId(), checked);
+                                final ParseObject po = list.get(0);
+                                po.increment("total");
+                                po.increment("votes" + Integer.toString(checked));
+                                po.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            poll.getVotes()[checked]++;
+                                            final int[] votes = new int[poll.getCount()];
+                                            for (int i = 0; i < poll.getCount(); i++) {
+                                                votes[i] = po.getInt("votes" + Integer.toString(i));
+                                            }
+                                            c = checked;
+                                            comment_count = po.getInt("comments_count");
+                                            comment_count1.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
+                                            comment_count2.setText(getString(R.string.comment_2) + " " + Integer.toString(comment_count));
+                                            generateResult(votes, poll.getOptions());
+                                            saveRecord(po.getObjectId(), checked);
+                                        } else {
+                                            submit_btn.setEnabled(true);
+                                            Toast.makeText(PollViewActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                             } else {
                                 submit_btn.setEnabled(true);
                                 Toast.makeText(PollViewActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-              }
+
+                }
             }
         });
 
