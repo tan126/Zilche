@@ -333,10 +333,11 @@ public class MainActivity extends AppCompatActivity {
         if (ParseUser.getCurrentUser() == null || ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
             Intent i = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(i);
+        } else {
+            Intent i = new Intent(this, MyProfileActivity2.class);
+            startActivity(i);
+            overridePendingTransition(R.anim.right_to_left, 0);
         }
-        Intent i = new Intent(this, MyProfileActivity2.class);
-        startActivity(i);
-        overridePendingTransition(R.anim.right_to_left, 0);
     }
 
     @Override
