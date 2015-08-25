@@ -27,6 +27,7 @@
             app:contentInsetStart="0dp"
             >
             <LinearLayout
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
@@ -77,6 +78,7 @@
                     android:onClick="openProfile"
                     android:padding="10dp"
                     android:layout_marginRight="5dp"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_person_white_24dp"
                     android:background="?android:attr/selectableItemBackground"
                 />

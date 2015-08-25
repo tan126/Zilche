@@ -1,6 +1,7 @@
 package com.zilche.zilche;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -156,9 +157,15 @@ public class SignUpActivity extends FragmentActivity {
                             loginBtn.setEnabled(true);
                             break;
                         }
+                        final ProgressDialog dialog = new ProgressDialog(getActivity());
+                        dialog.setIndeterminate(true);
+                        dialog.setCancelable(false);
+                        dialog.setMessage(getString(R.string.logging_in));
+                        dialog.show();
                         ParseUser.logInInBackground(userName, passWord, new LogInCallback() {
                             @Override
                             public void done(ParseUser user, ParseException e) {
+                                dialog.dismiss();
                                 if (user != null) {
                                     Intent i = new Intent(getActivity(), MainActivity.class);
                                     i.putExtra("restart", 1);
@@ -337,6 +344,12 @@ public class SignUpActivity extends FragmentActivity {
                             registerButton.setEnabled(true);
                             break;
                         }
+                        final ProgressDialog dialog = new ProgressDialog(getActivity());
+                        dialog.setIndeterminate(true);
+                        dialog.setCancelable(false);
+                        dialog.setMessage(getString(R.string.signing_up));
+                        dialog.show();
+
                         ParseUser newUser;
                         newUser = ParseUser.getCurrentUser();
                          if (newUser == null)
@@ -349,6 +362,7 @@ public class SignUpActivity extends FragmentActivity {
                             newUser.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
+                                    dialog.dismiss();
                                     if (e == null) {
                                         Intent i = new Intent(getActivity(), MainActivity.class);
                                         i.putExtra("restart", 1);
@@ -370,6 +384,7 @@ public class SignUpActivity extends FragmentActivity {
                         newUser.signUpInBackground(new SignUpCallback() {
                             @Override
                             public void done(ParseException e) {
+                                dialog.dismiss();
                                 if (e == null) {
                                     Intent i = new Intent(getActivity(), MainActivity.class);
                                     i.putExtra("restart", 1);
