@@ -100,7 +100,7 @@ public class PollViewActivity extends ActionBarActivity {
                 return;
             }
             Comment c = (Comment) comments_list.get(val);
-            t.putExtra("author", c.getEmail());
+            t.putExtra("author_id", c.getAuthor_id());
             t.putExtra("authorRealName", c.getName());
             startActivity(t);
             overridePendingTransition(R.anim.right_to_left, 0);
@@ -344,7 +344,7 @@ public class PollViewActivity extends ActionBarActivity {
     public void retrieveAuthorProfile(View view){
         if(authorLogin != null) {
             Intent t = new Intent(PollViewActivity.this, RetrieveProfileActivity.class);
-            t.putExtra("author", authorLogin);
+            t.putExtra("author_id", authorLogin);
             t.putExtra("authorRealName", poll.getAuthor());
             startActivity(t);
             overridePendingTransition(R.anim.right_to_left, 0);
@@ -392,7 +392,7 @@ public class PollViewActivity extends ActionBarActivity {
                         author.setText(getString(R.string.anonymous));
                     } else {
                         author.setText(poll2.getAuthor());
-                        authorLogin = poll2.getAuthorLogin();
+                        authorLogin = poll2.getAuthor_id();
                     }
                     total.setText(Integer.toString(poll2.totalVotes()));
                     comment_count = object.getInt("comments_count");
@@ -753,6 +753,7 @@ public class PollViewActivity extends ActionBarActivity {
                 CommentBitmapWorker cbw = new CommentBitmapWorker(iv, c.getImage(), R.drawable.anon_30);
                 cbw.execute();
             } else {
+                iv.setTag(position);
                 CommentBitmapWorker cbw = new CommentBitmapWorker(iv, null, R.drawable.anon_30);
                 cbw.execute();
             }

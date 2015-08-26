@@ -129,6 +129,7 @@ public class Util {
         newPoll.setHasImage(object.getInt("haveImage"));
         if (object.getInt("haveImage") == 1)
             newPoll.setFile(object.getParseFile("image"));
+        newPoll.setAuthor_id(object.getString("author_id"));
         return newPoll;
     }
 
@@ -150,6 +151,7 @@ public class Util {
             c.setImage(po.getBytes("image"));
         }
         c.setEmail(po.getString("email"));
+        c.setAuthor_id(po.getString("author_id"));
         return c;
     }
 

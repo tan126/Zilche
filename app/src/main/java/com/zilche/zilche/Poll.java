@@ -23,6 +23,15 @@ public class Poll implements Parcelable{
     private int hasImage;
     private byte[] image;
     private ParseFile file;
+    private String author_id;
+
+    public void setAuthor_id(String id) {
+        author_id = id;
+    }
+
+    public String getAuthor_id() {
+        return author_id;
+    }
 
     public ParseFile getFile() {
         return file;
@@ -164,6 +173,7 @@ public class Poll implements Parcelable{
         dest.writeInt(anon);
         dest.writeInt(hasImage);
         dest.writeByteArray(image);
+        dest.writeString(author_id);
     }
 
     public static final Parcelable.Creator<Poll> CREATOR = new Creator<Poll>() {
@@ -175,6 +185,7 @@ public class Poll implements Parcelable{
             poll.setAnon(source.readInt());
             poll.setHasImage(source.readInt());
             poll.setImage(source.createByteArray());
+            poll.setAuthor_id(source.readString());
             return poll;
         }
 

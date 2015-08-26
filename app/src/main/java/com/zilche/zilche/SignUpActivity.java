@@ -186,10 +186,11 @@ public class SignUpActivity extends FragmentActivity {
                     }
 
                     case R.id.login_fb_btn: {
-                        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile, email"), new LogInCallback() {
+
+                        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile","email"), new LogInCallback() {
                             @Override
-                            public void done(ParseUser parseUser, ParseException e) {
-                                if (parseUser == null) {
+                            public void done(final ParseUser parseUser, ParseException e) {
+                                if (e != null || parseUser == null) {
 
                                 } else if (parseUser.isNew()) {
                                     if (ParseUser.getCurrentUser() != null) {
@@ -203,18 +204,18 @@ public class SignUpActivity extends FragmentActivity {
                                                             ParseUser.getCurrentUser().setEmail(email_str);
                                                             ParseUser.getCurrentUser().put("name", name_str);
                                                             ParseUser.getCurrentUser().saveInBackground();
+                                                            Intent i = new Intent(getActivity(), MainActivity.class);
+                                                            i.putExtra("restart", 1);
+                                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                            getActivity().finish();
+                                                            startActivity(i);
+                                                            getActivity().overridePendingTransition(0, R.anim.fade_out);
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
                                                         }
                                                     }
                                                 });
                                         request.executeAsync();
-                                        Intent i = new Intent(getActivity(), MainActivity.class);
-                                        i.putExtra("restart", 1);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        getActivity().finish();
-                                        startActivity(i);
-                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                     }
                                 } else {
                                     if (ParseUser.getCurrentUser() != null) {
@@ -223,11 +224,97 @@ public class SignUpActivity extends FragmentActivity {
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
                                         startActivity(i);
-                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                        getActivity().overridePendingTransition(0, R.anim.fade_out);
                                     }
                                 }
                             }
                         });
+/*
+                        ParseFacebookUtils.linkWithReadPermissionsInBackground(ParseUser.getCurrentUser(), getActivity(), Arrays.asList("public_profile, email"), new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    if (ParseUser.getCurrentUser().getString("name") == null) {
+                                        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                                                new GraphRequest.GraphJSONObjectCallback() {
+                                                    @Override
+                                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                                        try {
+                                                            String email_str = jsonObject.getString("email");
+                                                            String name_str = jsonObject.getString("name");
+                                                            ParseUser.getCurrentUser().setEmail(email_str);
+                                                            ParseUser.getCurrentUser().put("name", name_str);
+                                                            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                                                @Override
+                                                                public void done(ParseException e) {
+                                                                    if (e == null) {
+                                                                        Intent i = new Intent(getActivity(), SplashScreenActivity.class);
+                                                                        i.putExtra("restart", 1);
+                                                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                        getActivity().finish();
+                                                                        startActivity(i);
+                                                                        getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                                                    }
+                                                                }
+                                                            });
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                });
+                                        request.executeAsync();
+                                    }
+                                } else {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                        });
+                        /*ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile, email"), new LogInCallback() {
+                            @Override
+                            public void done(ParseUser parseUser, ParseException e) {
+                                if (e == null) {
+                                    if (parseUser == null) {
+
+                                    } else if (!parseUser.isNew()) {
+                                        if (ParseUser.getCurrentUser() != null) {
+                                            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                                                    new GraphRequest.GraphJSONObjectCallback() {
+                                                        @Override
+                                                        public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                                            try {
+                                                                String email_str = jsonObject.getString("email");
+                                                                String name_str = jsonObject.getString("name");
+                                                                ParseUser.getCurrentUser().setEmail(email_str);
+                                                                ParseUser.getCurrentUser().put("name", name_str);
+                                                                ParseUser.getCurrentUser().saveInBackground();
+                                                                Intent i = new Intent(getActivity(), SplashScreenActivity.class);
+                                                                i.putExtra("restart", 1);
+                                                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                getActivity().finish();
+                                                                startActivity(i);
+                                                                getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                                            } catch (JSONException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    });
+                                            request.executeAsync();
+                                        }
+                                    } else {
+                                        if (ParseUser.getCurrentUser() != null) {
+                                            Intent i = new Intent(getActivity(), MainActivity.class);
+                                            i.putExtra("restart", 1);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            getActivity().finish();
+                                            startActivity(i);
+                                            getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                        }
+                                    }
+                                } else {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                        }); */
                         break;
                     }
                     case R.id.forgot_pw: {
@@ -423,18 +510,18 @@ public class SignUpActivity extends FragmentActivity {
                                                             ParseUser.getCurrentUser().setEmail(email_str);
                                                             ParseUser.getCurrentUser().put("name", name_str);
                                                             ParseUser.getCurrentUser().saveInBackground();
+                                                            Intent i = new Intent(getActivity(), MainActivity.class);
+                                                            i.putExtra("restart", 1);
+                                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                            getActivity().finish();
+                                                            startActivity(i);
+                                                            getActivity().overridePendingTransition(0, R.anim.fade_out);
                                                         } catch (JSONException e) {
                                                             e.printStackTrace();
                                                         }
                                                     }
                                                 });
                                         request.executeAsync();
-                                        Intent i = new Intent(getActivity(), MainActivity.class);
-                                        i.putExtra("restart", 1);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        getActivity().finish();
-                                        startActivity(i);
-                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                     }
                                 } else {
                                     if (ParseUser.getCurrentUser() != null) {
@@ -443,7 +530,7 @@ public class SignUpActivity extends FragmentActivity {
                                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         getActivity().finish();
                                         startActivity(i);
-                                        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                        getActivity().overridePendingTransition(0, R.anim.fade_out);
                                     }
                                 }
                             }

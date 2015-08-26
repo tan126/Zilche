@@ -13,6 +13,15 @@ public class Comment {
     private int op;
     private int mod;
     String email;
+    private String author_id;
+
+    public void setAuthor_id(String author_id) {
+        this.author_id = author_id;
+    }
+
+    public String getAuthor_id() {
+        return author_id;
+    }
 
     public void setEmail(String email) {
         this.email = email;

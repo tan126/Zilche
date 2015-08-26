@@ -122,7 +122,7 @@ public class MyPollActivity extends ActionBarActivity {
     public void populateList(final int skip2) {
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
-        query.whereEqualTo("author", ParseUser.getCurrentUser().getEmail());
+        query.whereEqualTo("author_id", ParseUser.getCurrentUser().getObjectId());
         query.setLimit(25);
         query.whereNotEqualTo("archived", 1);
         if (skip2 % 400 == 0 && skip2 != 0) {

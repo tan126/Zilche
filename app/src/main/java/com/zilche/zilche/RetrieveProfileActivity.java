@@ -51,7 +51,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
     private SecondFragment frag2_global;
     private SlidingPaneLayout spl;
     private View background;
-    private String author;
+    private String author_id;
     private String authorName;
 
     @Override
@@ -69,8 +69,8 @@ public class RetrieveProfileActivity extends FragmentActivity {
         });
 
         Intent i = getIntent();
-        if (i != null && i.getExtras() != null && i.getExtras().getString("author") != null) {
-            author = i.getExtras().getString("author");
+        if (i != null && i.getExtras() != null && i.getExtras().getString("author_id") != null) {
+            author_id = i.getExtras().getString("author_id");
             if (i.getExtras().getString("authorRealName") != null) {
                 authorName = i.getExtras().getString("authorRealName");
             }
@@ -79,8 +79,8 @@ public class RetrieveProfileActivity extends FragmentActivity {
             finish();
             overridePendingTransition(0, 0);
         }
-        frag2_global.setAuthor(author);
-        frag_global.setAuthor(author);
+        frag2_global.setAuthor(author_id);
+        frag_global.setAuthor(author_id);
         name = (TextView) findViewById(R.id.name);
         pager = (ViewPager) findViewById(R.id.viewPager);
 
@@ -209,7 +209,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
             country = (TextView) v.findViewById(R.id.country_pi);
             iv = (ImageView) v.findViewById(R.id.image_pi);
             ParseQuery<ParseUser> query = ParseUser.getQuery();
-            query.whereEqualTo("email", author);
+            query.whereEqualTo("objectId", author);
             query.findInBackground(new FindCallback<ParseUser>() {
                 @Override
                 public void done(List<ParseUser> list, ParseException e) {
@@ -303,11 +303,11 @@ public class RetrieveProfileActivity extends FragmentActivity {
         private boolean load = false;
         private LinearLayout reload_bg_full;
         private Button reload_btn;
-        private String author;
+        private String author_id;
         private Date lastCreated;
 
         public void setAuthor(String author) {
-            this.author = author;
+            this.author_id = author;
         }
 
         @Override
@@ -365,7 +365,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
         public void populateList(final int skip2) {
             load = true;
             ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
-            query.whereEqualTo("author", author);
+            query.whereEqualTo("author_id", author_id);
             query.whereNotEqualTo("anon", 1);
             query.setLimit(25);
             query.whereNotEqualTo("archived", 1);
