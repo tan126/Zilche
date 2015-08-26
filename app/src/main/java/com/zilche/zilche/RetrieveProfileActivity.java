@@ -328,8 +328,6 @@ public class RetrieveProfileActivity extends FragmentActivity {
                 }
             });
 
-            populateList(skip);
-
             rv = (RecyclerView) v.findViewById(R.id.rv_cat);
             rv.setHasFixedSize(true);
             final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
@@ -338,6 +336,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
             RVadapter rva = new RVadapter(pollList);
             rv.setAdapter(rva);
 
+            populateList(skip);
 
             rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

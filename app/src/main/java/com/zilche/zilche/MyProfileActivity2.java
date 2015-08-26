@@ -314,7 +314,6 @@ public class MyProfileActivity2 extends FragmentActivity {
                 }
             });
 
-            populateList(skip);
 
             rv = (RecyclerView) v.findViewById(R.id.rv_cat);
             rv.setHasFixedSize(true);
@@ -324,6 +323,7 @@ public class MyProfileActivity2 extends FragmentActivity {
             RVadapter rva = new RVadapter(pollList);
             rv.setAdapter(rva);
 
+            populateList(skip);
 
             rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
