@@ -385,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (image_ori != null) {
+        if (image != null && image_ori != null) {
             if (image_ori != ParseUser.getCurrentUser().getBytes("image")) {
                 image_ori = ParseUser.getCurrentUser().getBytes("image");
                 Bitmap b = BitmapFactory.decodeByteArray(ParseUser.getCurrentUser().getBytes("image"), 0, ParseUser.getCurrentUser().getBytes("image").length);
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
                 image_ori = ParseUser.getCurrentUser().getBytes("image");
             }
         }
-        if (name_ori.compareTo(ParseUser.getCurrentUser().getString("name")) != 0) {
+        if (name != null && name_ori != null && ParseUser.getCurrentUser().getString("name") != null && name_ori.compareTo(ParseUser.getCurrentUser().getString("name")) != 0) {
             name_ori = ParseUser.getCurrentUser().getString("name");
             name.setText(name_ori);
         }
