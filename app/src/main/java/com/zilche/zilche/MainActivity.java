@@ -234,6 +234,21 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
+                } else if (v.getText() == "Favourite") {
+                    if (loginFlag) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(MainActivity.this, FavouriteActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+                                overridePendingTransition(R.anim.right_to_left, 0);
+                            }
+                        }, 250);
+                        myDrawer.closeDrawer(Gravity.LEFT);
+                    } else {
+                        loginAndSignup();
+                    }
                 }
             }
         });

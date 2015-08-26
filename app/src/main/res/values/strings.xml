@@ -138,4 +138,5 @@
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="logging_in">Log in to your account</string>
     <string name="signing_up">Signing up</string>
+    <string name="title_activity_favourite">FavouriteActivity</string>
 </resources>
