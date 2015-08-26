@@ -1,6 +1,8 @@
 package com.zilche.zilche;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -27,12 +29,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetDataCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -45,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     private ImageView filter_bg;
     private boolean loginFlag;
     private HashMap<String, Integer> map;
+    private byte[] image_ori;
+    private String name_ori;
+    private CircleImageView image;
+    private TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +78,12 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(0);
         viewPager.setOffscreenPageLimit(3);
         map = app.getMap();
-        ImageView v = (ImageView) findViewById(R.id.loginArea);
-        v.setClickable(true);
+        //v.setClickable(true);
         // Load Username
-        TextView pt = (TextView) findViewById(R.id.portfolio_text);
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if ((currentUser != null) && (currentUser.getString("name") != null)) {
+        if ((currentUser != null) && !ParseAnonymousUtils.isLinked(currentUser)) {
             // do stuff with the user
             String n = currentUser.getString("name");
-            pt.setText("Welcome " + n);
-            pt.setClickable(false);
-            v.setClickable(false);
             loginFlag = true;
             plusButton.setVisibility(View.VISIBLE);
         } else {
@@ -120,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         final DrawerLayout myDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        myDrawer.setStatusBarBackgroundColor(0xff303F9F);
         plusButton.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
 
             @Override
@@ -133,42 +138,87 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String menu[] = {"All Posts", "My Poll", "My Profile", "Settings", "Log Out"};
-        Integer imgID[] = {R.drawable.ic_dashboard_white_24dp, R.mipmap.ic_assignment_white_24dp, R.mipmap.ic_assignment_ind_white_24dp,
-                R.drawable.ic_settings_white_24dp, R.drawable.ic_power_settings_new_white_24dp};
-
-        CustomListAdapter myadapter=new CustomListAdapter(this, menu, imgID, SELECTED_POSITION);
         ListView list=(ListView)findViewById(R.id.menulist);
-        list.setAdapter(myadapter);
+        if (loginFlag) {
+            String menu[] = {"Browse Zilche", "My Polls", "My Profile", "Favourite", "Log out"};
+            Integer imgID[] = {R.drawable.dashgrey, R.drawable.assesgrey, R.drawable.persongrey,
+                    R.drawable.favgrey, R.drawable.powergrey};
+
+            CustomListAdapter myadapter=new CustomListAdapter(this, menu, imgID, SELECTED_POSITION);
+            list.setAdapter(myadapter);
+            list.setSelection(0);
+
+            View header = getLayoutInflater().inflate(R.layout.nav_header, null, false);
+            list.addHeaderView(header);
+            name = (TextView) findViewById(R.id.name);
+            TextView email = (TextView) findViewById(R.id.email);
+            name.setText(currentUser.getString("name"));
+            name_ori = currentUser.getString("name");
+            email.setText(currentUser.getEmail());
+            image = (CircleImageView) findViewById(R.id.circleView);
+            if (currentUser.getBytes("image") != null) {
+                image_ori = currentUser.getBytes("image");
+                Bitmap b = BitmapFactory.decodeByteArray(currentUser.getBytes("image"), 0, currentUser.getBytes("image").length);
+                Bitmap bm = Bitmap.createScaledBitmap(b, (int) Util.convertDpToPixel(54, this), (int) Util.convertDpToPixel(54, this), true);
+                image.setImageBitmap(bm);
+            }
+        } else {
+            String menu[] = {"Browse Zilche", "My Polls", "My Profile", "Favourite"};
+            Integer imgID[] = {R.drawable.dashgrey, R.drawable.assesgrey, R.drawable.persongrey,
+                    R.drawable.favgrey};
+
+            CustomListAdapter myadapter=new CustomListAdapter(this, menu, imgID, SELECTED_POSITION);
+            list.setAdapter(myadapter);
+            list.setSelection(0);
+
+            View header = getLayoutInflater().inflate(R.layout.nav_header_not_login, null, false);
+            list.addHeaderView(header);
+            findViewById(R.id.full_lay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    loginAndSignup();
+                }
+            });
+        }
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView v = (TextView) view.findViewById(R.id.item);
-                if (v.getText() == "My Poll") {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent i = new Intent(MainActivity.this, MyPollActivity.class);
-                            startActivity(i);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                        }
-                    }, 250);
-                    myDrawer.closeDrawer(Gravity.LEFT);
-
+                if (v == null) {
+                    return;
                 }
-                else if (v.getText() == "My Profile"){
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(i);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                        }
-                    }, 250);
-                    myDrawer.closeDrawer(Gravity.LEFT);
+                if (v.getText() == "My Polls") {
+                    if (loginFlag) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(MainActivity.this, MyPollActivity.class);
+                                startActivity(i);
+                                overridePendingTransition(R.anim.right_to_left, 0);
+                            }
+                        }, 250);
+                        myDrawer.closeDrawer(Gravity.LEFT);
+                    } else {
+                        loginAndSignup();
+                    }
                 }
-                else if (v.getText() == "Log Out") {
+                else if (v.getText() == "My Profile") {
+                    if (loginFlag) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent i = new Intent(MainActivity.this, MyProfileActivity2.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+                                overridePendingTransition(R.anim.right_to_left, 0);
+                            }
+                        }, 250);
+                        myDrawer.closeDrawer(Gravity.LEFT);
+                    } else {
+                        loginAndSignup();
+                    }
+                }
+                else if (v.getText() == "Log out") {
                     ParseUser u = new ParseUser();
                     u.logOutInBackground(new LogOutCallback() {
                         @Override
@@ -231,9 +281,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void loginAndSignup(View v) {
+    public void loginAndSignup() {
         Intent i = new Intent(MainActivity.this, SignUpActivity.class);
         startActivity(i);
+        overridePendingTransition(R.anim.fade_in, 0);
     }
 
     @Override
@@ -319,6 +370,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+        if (image_ori != null) {
+            if (image_ori != ParseUser.getCurrentUser().getBytes("image")) {
+                image_ori = ParseUser.getCurrentUser().getBytes("image");
+                Bitmap b = BitmapFactory.decodeByteArray(ParseUser.getCurrentUser().getBytes("image"), 0, ParseUser.getCurrentUser().getBytes("image").length);
+                Bitmap bm = Bitmap.createScaledBitmap(b, (int) Util.convertDpToPixel(54, this), (int) Util.convertDpToPixel(54, this), true);
+                image.setImageBitmap(bm);
+                image_ori = ParseUser.getCurrentUser().getBytes("image");
+            }
+        }
+        if (name_ori.compareTo(ParseUser.getCurrentUser().getString("name")) != 0) {
+            name_ori = ParseUser.getCurrentUser().getString("name");
+            name.setText(name_ori);
+        }
         Zilche app = (Zilche) getApplication();
         if (app.getFav() == null || app.getMap() == null) {
             Intent i = new Intent(this, SplashScreenActivity.class);

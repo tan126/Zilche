@@ -9,11 +9,23 @@
         <item name="colorAccent">#EF5350</item>
     </style>
 
+    <style name="AppTheme_main" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#3F51B5</item>
+        <item name="colorPrimaryDark">#303F9F</item>
+        <item name="colorAccent">#EF5350</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#303F9F</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <style name="splashScreen" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#3F51B5</item>
         <item name="colorPrimaryDark">#303F9F</item>
         <item name="colorAccent">#EF5350</item>
         <item name="android:windowBackground">@color/blue</item>
+        <item name="android:statusBarColor">#303F9F</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="menu_labels_style">

@@ -203,6 +203,7 @@ public class EditProfileActivity extends ActionBarActivity {
                     public void done(ParseException e) {
                         if (e == null) {
                             setResult(RESULT_OK);
+                            dialog.dismiss();
                             finish();
                             overridePendingTransition(0, R.anim.left_to_right);
                         } else {
@@ -239,6 +240,7 @@ public class EditProfileActivity extends ActionBarActivity {
                                 public void done(ParseException e) {
                                     if (e == null) {
                                         setResult(RESULT_OK);
+                                        dialog.dismiss();
                                         finish();
                                         overridePendingTransition(0, R.anim.left_to_right);
                                     } else {
@@ -274,6 +276,7 @@ public class EditProfileActivity extends ActionBarActivity {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
+                        dialog.dismiss();
                         setResult(RESULT_OK);
                         finish();
                         overridePendingTransition(0, R.anim.left_to_right);
