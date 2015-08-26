@@ -168,7 +168,7 @@ public class CategoryActivity extends AppCompatActivity {
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         query.setLimit(25);
-        if (sortBy == 1 && skip2 % 400 == 0 && pollList.size() > 10) {
+        if (sortBy == 1 && skip2 % 400 == 0 && pollList.size() > 10 && isRefreshing == 0) {
             query.whereLessThanOrEqualTo("createdAt", lastCreated);
             query.setSkip(skip2 % 400 * 25 + 1);
         } else if (sortBy == 0 && skip2 % 400 == 0 && pollList.size() > 10) {
