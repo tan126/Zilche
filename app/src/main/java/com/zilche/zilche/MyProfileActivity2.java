@@ -357,7 +357,7 @@ public class MyProfileActivity2 extends FragmentActivity {
             query.whereNotEqualTo("anon", 1);
             query.setLimit(25);
             query.whereNotEqualTo("archived", 1);
-            if (skip2 % 400 == 0 && pollList.size() > 10) {
+            if (skip2 % 400 == 0 && skip2 != 0) {
                 query.whereLessThanOrEqualTo("createdAt", lastCreated);
                 query.setSkip(skip2 % 400 * 25 + 1);
             } else {

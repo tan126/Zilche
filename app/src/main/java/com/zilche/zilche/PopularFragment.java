@@ -245,7 +245,7 @@ public class PopularFragment extends Fragment{
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<>("poll");
         query.setLimit(25);
-        if (skip2 % 400 == 0 && pollList.size() > 10 && isRefreshing == 0) {
+        if (skip2 % 400 == 0 && skip2 != 0 && isRefreshing == 0) {
             query.whereLessThanOrEqualTo("total", lastTotal);
             query.setSkip(skip2 % 400 * 25 + 1);
         } else {

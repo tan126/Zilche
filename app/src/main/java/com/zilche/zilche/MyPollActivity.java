@@ -125,7 +125,7 @@ public class MyPollActivity extends ActionBarActivity {
         query.whereEqualTo("author", ParseUser.getCurrentUser().getEmail());
         query.setLimit(25);
         query.whereNotEqualTo("archived", 1);
-        if (skip2 % 400 == 0 && pollList.size() > 10) {
+        if (skip2 % 400 == 0 && skip2 != 0) {
             query.whereLessThanOrEqualTo("createdAt", LastCreatedAt);
             query.setSkip(skip2 % 400 * 25 + 1);
         } else {

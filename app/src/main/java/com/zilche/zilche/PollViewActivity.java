@@ -561,7 +561,7 @@ public class PollViewActivity extends ActionBarActivity {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Comment");
         query.setLimit(50);
         query.whereEqualTo("pollId", poll.getId());
-        if (skip % 200 == 0 && comments_list.size() > 10) {
+        if (skip % 200 == 0 && skip != 0) {
             query.whereLessThanOrEqualTo("createdAt", lastCreatedComment);
             query.setSkip(skip % 200 * 50 + 1);
         } else {

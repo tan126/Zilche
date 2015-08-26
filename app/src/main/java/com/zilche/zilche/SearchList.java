@@ -150,7 +150,7 @@ public class SearchList extends AppCompatActivity {
 
         q.setLimit(25);
         q.whereNotEqualTo("archived", 1);
-        if (skip2 % 400 == 0 && pollList.size() > 10) {
+        if (skip2 % 400 == 0 && skip2 != 0) {
             q.whereLessThanOrEqualTo("createdAt", lastCreated);
             q.setSkip(skip2 % 400 * 25 + 1);
         } else {
