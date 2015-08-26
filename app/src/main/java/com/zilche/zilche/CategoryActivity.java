@@ -52,6 +52,8 @@ public class CategoryActivity extends AppCompatActivity {
     private SlidingPaneLayout spl;
     private View background;
     private LinearLayout reload_bg_full;
+    private long lastCreated;
+    private int lastVotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,11 +163,19 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    public void populateList(final int skip2, int sortBy) {
+    public void populateList(final int skip2, final int sortBy) {
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
-        query.setLimit(15);
-        query.setSkip(skip2 * 15);
+        query.setLimit(25);
+        if (sortBy == 1 && skip2 % 400 == 0 && pollList.size() != 0) {
+            query.whereLessThan("createTime", lastCreated);
+            query.setSkip(skip2 % 400 * 25);
+        } else if (sortBy == 0 && skip2 % 400 == 0 && pollList.size() != 0) {
+            query.whereLessThan("total", lastVotes);
+            query.setSkip(skip2 % 400 * 25);
+        } else {
+            query.setSkip(skip2 * 25);
+        }
         query.whereNotEqualTo("archived", 1);
         if (category != 0)
             query.whereEqualTo("category", category);
@@ -185,7 +195,7 @@ public class CategoryActivity extends AppCompatActivity {
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
                     }
-                    if (list.size() < 15) {
+                    if (list.size() < 25) {
                         complete = 1;
                     } else {
                         complete = 0;
@@ -196,6 +206,12 @@ public class CategoryActivity extends AppCompatActivity {
                         }
                         for (int i = 0; i < list.size(); i++) {
                             pollList.add(Util.parsePollObject(list.get(i), CategoryActivity.this));
+                            if (i == list.size() - 1) {
+                                if (sortBy == 1)
+                                    lastCreated = list.get(i).getLong("createTime");
+                                else
+                                    lastVotes = list.get(i).getInt("total");
+                            }
                         }
                         rv.getAdapter().notifyDataSetChanged();
                         srl.setRefreshing(false);
