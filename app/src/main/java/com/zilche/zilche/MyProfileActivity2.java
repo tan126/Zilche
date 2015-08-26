@@ -294,6 +294,7 @@ public class MyProfileActivity2 extends FragmentActivity {
         private boolean load = false;
         private LinearLayout reload_bg_full;
         private Button reload_btn;
+        private Date lastCreated;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -356,7 +357,12 @@ public class MyProfileActivity2 extends FragmentActivity {
             query.whereNotEqualTo("anon", 1);
             query.setLimit(25);
             query.whereNotEqualTo("archived", 1);
-            query.setSkip(skip2 * 25);
+            if (skip2 % 400 == 0 && pollList.size() > 10) {
+                query.whereLessThanOrEqualTo("createdAt", lastCreated);
+                query.setSkip(skip2 % 400 * 25 + 1);
+            } else {
+                query.setSkip(skip2 * 25);
+            }
             query.orderByDescending("createdAt");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -381,6 +387,9 @@ public class MyProfileActivity2 extends FragmentActivity {
                             }
                             for (int i = 0; i < list.size(); i++) {
                                 pollList.add(Util.parsePollObject(list.get(i), getActivity()));
+                                if (i == list.size() - 1) {
+                                    lastCreated = list.get(i).getCreatedAt();
+                                }
                             }
                             rv.getAdapter().notifyDataSetChanged();
                             skip++;

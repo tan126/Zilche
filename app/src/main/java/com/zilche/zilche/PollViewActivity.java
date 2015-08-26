@@ -46,6 +46,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,6 +106,7 @@ public class PollViewActivity extends ActionBarActivity {
             overridePendingTransition(R.anim.right_to_left, 0);
         }
     };
+    private Date lastCreatedComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -557,9 +559,14 @@ public class PollViewActivity extends ActionBarActivity {
         ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
         la.notifyDataSetChanged();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Comment");
-        query.setLimit(10);
+        query.setLimit(50);
         query.whereEqualTo("pollId", poll.getId());
-        query.setSkip(skip * 10);
+        if (skip % 200 == 0 && comments_list.size() > 10) {
+            query.whereLessThanOrEqualTo("createdAt", lastCreatedComment);
+            query.setSkip(skip % 200 * 50 + 1);
+        } else {
+            query.setSkip(skip * 50);
+        }
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -570,8 +577,11 @@ public class PollViewActivity extends ActionBarActivity {
                         Comment c = Util.parseComment(o);
                         comments_list.add(c);
                     }
+                    if (list.size() != 0) {
+                        lastCreatedComment = list.get(list.size() - 1).getCreatedAt();
+                    }
                     comment_total += list.size();
-                    if (list.size() < 10) {
+                    if (list.size() < 50) {
                         complete = true;
                     }
                     HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());

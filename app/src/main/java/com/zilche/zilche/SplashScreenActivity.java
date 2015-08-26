@@ -86,8 +86,8 @@ public class SplashScreenActivity extends ActionBarActivity {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Records");
         query.setLimit(1000);
         if (skip % 10 == 0 && map.size() != 0) {
-            query.whereLessThan("createdAt", lastCreated);
-            query.setSkip(skip % 10 * 1000);
+            query.whereLessThanOrEqualTo("createdAt", lastCreated);
+            query.setSkip(skip % 10 * 1000 + 1);
         } else {
             query.setSkip(1000 * s);
         }
@@ -136,8 +136,8 @@ public class SplashScreenActivity extends ActionBarActivity {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Favourite");
         query.setLimit(1000);
         if (skip % 10 == 0 && fav.size() != 0) {
-            query.whereLessThan("createdAt", lastCreated_fav);
-            query.setSkip(skip % 10 * 1000);
+            query.whereLessThanOrEqualTo("createdAt", lastCreated_fav);
+            query.setSkip(skip % 10 * 1000 + 1);
         } else {
             query.setSkip(1000 * skip);
         }

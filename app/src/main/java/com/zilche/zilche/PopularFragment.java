@@ -40,6 +40,7 @@ public class PopularFragment extends Fragment{
     private RecyclerView rv;
     private SwipeRefreshLayout srl;
     private int visibleThreshold = 15;
+    private int lastTotal;
 
     public PopularFragment() {
         // Required empty public constructor
@@ -243,8 +244,13 @@ public class PopularFragment extends Fragment{
     public void populateList(final int skip2) {
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<>("poll");
-        query.setLimit(15);
-        query.setSkip(skip2 * 15);
+        query.setLimit(25);
+        if (skip2 % 400 == 0 && pollList.size() > 10) {
+            query.whereLessThanOrEqualTo("total", lastTotal);
+            query.setSkip(skip2 % 400 * 25 + 1);
+        } else {
+            query.setSkip(skip2 * 25);
+        }
         query.whereNotEqualTo("archived", 1);
         query.orderByDescending("total");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -261,7 +267,7 @@ public class PopularFragment extends Fragment{
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
                     }
-                    if (list.size() < 15) {
+                    if (list.size() < 25) {
                         complete = 1;
                     } else {
                         complete = 0;
@@ -272,6 +278,9 @@ public class PopularFragment extends Fragment{
                         }
                         for (int i = 0; i < list.size(); i++) {
                             pollList.add(Util.parsePollObject(list.get(i), getActivity()));
+                            if (i == list.size() - 1) {
+                                lastTotal = list.get(i).getInt("total");
+                            }
                         }
 
                         rv.getAdapter().notifyDataSetChanged();

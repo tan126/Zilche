@@ -28,6 +28,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class MyPollActivity extends ActionBarActivity {
     private SlidingPaneLayout spl;
     private View background;
     private LinearLayout reload_bg_full;
+    private Date LastCreatedAt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +123,15 @@ public class MyPollActivity extends ActionBarActivity {
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         query.whereEqualTo("author", ParseUser.getCurrentUser().getEmail());
-        query.setLimit(15);
+        query.setLimit(25);
         query.whereNotEqualTo("archived", 1);
-        query.setSkip(skip2 * 15);
-        query.orderByDescending("lastUpdate");
+        if (skip2 % 400 == 0 && pollList.size() > 10) {
+            query.whereLessThanOrEqualTo("createdAt", LastCreatedAt);
+            query.setSkip(skip2 % 400 * 25 + 1);
+        } else {
+            query.setSkip(skip2 * 25);
+        }
+        query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -136,7 +143,7 @@ public class MyPollActivity extends ActionBarActivity {
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
                     }
-                    if (list.size() < 15) {
+                    if (list.size() < 25) {
                         complete = 1;
                     } else {
                         complete = 0;
@@ -147,6 +154,9 @@ public class MyPollActivity extends ActionBarActivity {
                         }
                         for (int i = 0; i < list.size(); i++) {
                             pollList.add(Util.parsePollObject(list.get(i), MyPollActivity.this));
+                            if (i == list.size() - 1) {
+                                LastCreatedAt = list.get(i).getCreatedAt();
+                            }
                         }
 
                         rv.getAdapter().notifyDataSetChanged();

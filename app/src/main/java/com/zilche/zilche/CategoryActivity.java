@@ -29,6 +29,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class CategoryActivity extends AppCompatActivity {
     private SlidingPaneLayout spl;
     private View background;
     private LinearLayout reload_bg_full;
-    private long lastCreated;
+    private Date lastCreated;
     private int lastVotes;
 
     @Override
@@ -167,12 +168,12 @@ public class CategoryActivity extends AppCompatActivity {
         load = true;
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("poll");
         query.setLimit(25);
-        if (sortBy == 1 && skip2 % 400 == 0 && pollList.size() != 0) {
-            query.whereLessThan("createTime", lastCreated);
-            query.setSkip(skip2 % 400 * 25);
-        } else if (sortBy == 0 && skip2 % 400 == 0 && pollList.size() != 0) {
-            query.whereLessThan("total", lastVotes);
-            query.setSkip(skip2 % 400 * 25);
+        if (sortBy == 1 && skip2 % 400 == 0 && pollList.size() > 10) {
+            query.whereLessThanOrEqualTo("createdAt", lastCreated);
+            query.setSkip(skip2 % 400 * 25 + 1);
+        } else if (sortBy == 0 && skip2 % 400 == 0 && pollList.size() > 10) {
+            query.whereLessThanOrEqualTo("total", lastVotes);
+            query.setSkip(skip2 % 400 * 25 + 1);
         } else {
             query.setSkip(skip2 * 25);
         }
@@ -180,7 +181,7 @@ public class CategoryActivity extends AppCompatActivity {
         if (category != 0)
             query.whereEqualTo("category", category);
         if (sortBy == 1) {
-            query.orderByDescending("lastUpdate");
+            query.orderByDescending("createdAt");
         } else {
             query.orderByDescending("total");
         }
@@ -208,7 +209,7 @@ public class CategoryActivity extends AppCompatActivity {
                             pollList.add(Util.parsePollObject(list.get(i), CategoryActivity.this));
                             if (i == list.size() - 1) {
                                 if (sortBy == 1)
-                                    lastCreated = list.get(i).getLong("createTime");
+                                    lastCreated = list.get(i).getCreatedAt();
                                 else
                                     lastVotes = list.get(i).getInt("total");
                             }

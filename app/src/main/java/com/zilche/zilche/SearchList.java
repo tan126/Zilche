@@ -26,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class SearchList extends AppCompatActivity {
     private String str;
     private LinearLayout reload_bg_full;
     private Button reload_btn;
+    private Date lastCreated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,9 +148,14 @@ public class SearchList extends AppCompatActivity {
 
         ParseQuery<ParseObject> q = ParseQuery.or(list);
 
-        q.setLimit(15);
+        q.setLimit(25);
         q.whereNotEqualTo("archived", 1);
-        q.setSkip(skip2 * 15);
+        if (skip2 % 400 == 0 && pollList.size() > 10) {
+            q.whereLessThanOrEqualTo("createdAt", lastCreated);
+            q.setSkip(skip2 % 400 * 25 + 1);
+        } else {
+            q.setSkip(skip2 * 25);
+        }
         q.orderByDescending("createdAt");
         q.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -161,7 +168,7 @@ public class SearchList extends AppCompatActivity {
                         pollList.removeLast();
                         rv.getAdapter().notifyDataSetChanged();
                     }
-                    if (list.size() < 15) {
+                    if (list.size() < 25) {
                         complete = 1;
                     } else {
                         complete = 0;
@@ -173,6 +180,9 @@ public class SearchList extends AppCompatActivity {
                         }
                         for (int i = 0; i < list.size(); i++) {
                             pollList.add(Util.parsePollObject(list.get(i), SearchList.this));
+                            if (i == list.size() - 1) {
+                                lastCreated = list.get(i).getCreatedAt();
+                            }
                         }
                         rv.getAdapter().notifyDataSetChanged();
                         skip++;
