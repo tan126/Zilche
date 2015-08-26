@@ -179,61 +179,6 @@ public class FavouriteActivity extends ActionBarActivity {
     public class RVadapter extends RecyclerView.Adapter<RVadapter.PollViewHolder> {
 
         List<Poll> polls;
-        View.OnClickListener openMenu = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu menu = new PopupMenu(FavouriteActivity.this, v);
-                menu.getMenuInflater().inflate(R.menu.menu_my_poll, menu.getMenu());
-                final View tag_v = v;
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(FavouriteActivity.this);
-                        builder.setTitle(getString(R.string.delete_confirm));
-                        builder.setMessage(getString(R.string.delete_confirm_2));
-                        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                        builder.setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                final int tag = (int) tag_v.getTag();
-                                final ParseObject o = ParseObject.createWithoutData("poll", polls.get(tag).getId());
-                                if (!o.isDataAvailable()) {
-                                    o.fetchIfNeededInBackground(new GetCallback<ParseObject>() {
-                                        @Override
-                                        public void done(ParseObject object, ParseException e) {
-                                            if (e == null) {
-                                                o.put("archived", 1);
-                                                o.saveInBackground();
-                                                polls.remove(tag);
-                                                rv.getAdapter().notifyDataSetChanged();
-                                            } else {
-                                                Toast.makeText(FavouriteActivity.this, getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    o.put("archived", 1);
-                                    o.saveInBackground();
-                                    polls.remove(tag);
-                                    rv.getAdapter().notifyDataSetChanged();
-                                }
-                            }
-                        });
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        return false;
-                    }
-                });
-                menu.show();
-            }
-        };
         View.OnClickListener onclick = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,7 +206,6 @@ public class FavouriteActivity extends ActionBarActivity {
 
             LinearLayout reload_bg;
             Button reload;
-            ImageView overflow;
             LinearLayout main;
             ProgressBar pb;
             CardView cv;
@@ -285,8 +229,6 @@ public class FavouriteActivity extends ActionBarActivity {
                 has_photo = (ImageView) itemView.findViewById(R.id.have_photo);
                 author = (TextView) itemView.findViewById(R.id.author);
                 pb = (ProgressBar) itemView.findViewById(R.id.pb);
-                overflow = (ImageView) itemView.findViewById(R.id.overflow);
-                overflow.setOnClickListener(openMenu);
                 reload_bg = (LinearLayout) itemView.findViewById(R.id.reload_bg);
                 reload = (Button) itemView.findViewById(R.id.reload);
             }
@@ -298,7 +240,7 @@ public class FavouriteActivity extends ActionBarActivity {
 
         @Override
         public RVadapter.PollViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.items2, viewGroup, false);
+            View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.items, viewGroup, false);
             v.setTag(i);
             PollViewHolder pvh = new PollViewHolder(v);
             return pvh;
@@ -328,7 +270,6 @@ public class FavouriteActivity extends ActionBarActivity {
             pollViewHolder.date.setText(p.getDate_added());
             pollViewHolder.question.setText(p.getQuestion());
             pollViewHolder.cv.setTag(i);
-            pollViewHolder.overflow.setTag(i);
             if (map.get(p.getId()) != null) {
                 pollViewHolder.iv.setImageResource(R.drawable.ic_done_green_18dp);
             } else {
