@@ -154,7 +154,13 @@ public class MainActivity extends AppCompatActivity {
             TextView email = (TextView) findViewById(R.id.email);
             name.setText(currentUser.getString("name"));
             name_ori = currentUser.getString("name");
-            email.setText(currentUser.getEmail());
+            if (currentUser.getEmail() == null) {
+                if (currentUser.getString("email_str") != null) {
+                    email.setText(currentUser.getString("email_str"));
+                }
+            } else {
+                email.setText(currentUser.getEmail());
+            }
             image = (CircleImageView) findViewById(R.id.circleView);
             if (currentUser.getBytes("image") != null) {
                 image_ori = currentUser.getBytes("image");

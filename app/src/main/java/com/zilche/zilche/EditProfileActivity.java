@@ -107,7 +107,12 @@ public class EditProfileActivity extends ActionBarActivity {
         });
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         ParseUser u = ParseUser.getCurrentUser();
-        email.setText(u.getEmail());
+        if (u.getEmail() == null) {
+            if (u.getString("email_str") != null)
+                email.setText(u.getString("email_str"));
+        } else {
+            email.setText(u.getEmail());
+        }
         user.setText(u.getString("name"));
         if (u.getString("message") != null) {
             intro.setText(u.getString("message"));

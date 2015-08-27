@@ -109,7 +109,13 @@ public class CreatePollActivity2 extends AppCompatActivity {
         }
         poll.put("author_id", ParseUser.getCurrentUser().getObjectId());
         poll.put("question", question);
-        poll.put("author", ParseUser.getCurrentUser().getEmail());
+        if (ParseUser.getCurrentUser().getEmail() == null) {
+            if (ParseUser.getCurrentUser().getString("email_str") != null) {
+                poll.put("author", ParseUser.getCurrentUser().getString("email_str"));
+            }
+        } else {
+            poll.put("author", ParseUser.getCurrentUser().getEmail());
+        }
         poll.put("createTime", System.currentTimeMillis());
         poll.put("total", 0);
         poll.put("nickname", ParseUser.getCurrentUser().getString("name"));

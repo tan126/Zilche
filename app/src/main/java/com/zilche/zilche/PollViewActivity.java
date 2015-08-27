@@ -773,7 +773,7 @@ public class PollViewActivity extends ActionBarActivity {
             i.putExtra("choice", poll.getOptions()[c]);
             i.putExtra("category", category);
             i.putExtra("isAnon", poll.getAnon());
-            i.putExtra("owner", poll.getAuthorLogin());
+            i.putExtra("owner", poll.getAuthor_id());
             startActivityForResult(i, 33);
             overridePendingTransition(R.anim.right_to_left, 0);
         }

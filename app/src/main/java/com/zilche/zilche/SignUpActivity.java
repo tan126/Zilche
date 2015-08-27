@@ -26,6 +26,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -187,134 +188,65 @@ public class SignUpActivity extends FragmentActivity {
 
                     case R.id.login_fb_btn: {
 
-                        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile","email"), new LogInCallback() {
-                            @Override
-                            public void done(final ParseUser parseUser, ParseException e) {
-                                if (e != null || parseUser == null) {
-
-                                } else if (parseUser.isNew()) {
-                                    if (ParseUser.getCurrentUser() != null) {
-                                        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                                                new GraphRequest.GraphJSONObjectCallback() {
-                                                    @Override
-                                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                                                        try {
-                                                            String email_str = jsonObject.getString("email");
-                                                            String name_str = jsonObject.getString("name");
-                                                            ParseUser.getCurrentUser().setEmail(email_str);
-                                                            ParseUser.getCurrentUser().put("name", name_str);
-                                                            ParseUser.getCurrentUser().saveInBackground();
-                                                            Intent i = new Intent(getActivity(), MainActivity.class);
-                                                            i.putExtra("restart", 1);
-                                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                            getActivity().finish();
-                                                            startActivity(i);
-                                                            getActivity().overridePendingTransition(0, R.anim.fade_out);
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                });
-                                        request.executeAsync();
-                                    }
-                                } else {
-                                    if (ParseUser.getCurrentUser() != null) {
-                                        Intent i = new Intent(getActivity(), MainActivity.class);
-                                        i.putExtra("restart", 1);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        getActivity().finish();
-                                        startActivity(i);
-                                        getActivity().overridePendingTransition(0, R.anim.fade_out);
-                                    }
-                                }
-                            }
-                        });
-/*
-                        ParseFacebookUtils.linkWithReadPermissionsInBackground(ParseUser.getCurrentUser(), getActivity(), Arrays.asList("public_profile, email"), new SaveCallback() {
+                        ParseUser.logOutInBackground(new LogOutCallback() {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
-                                    if (ParseUser.getCurrentUser().getString("name") == null) {
-                                        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                                                new GraphRequest.GraphJSONObjectCallback() {
-                                                    @Override
-                                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                                                        try {
-                                                            String email_str = jsonObject.getString("email");
-                                                            String name_str = jsonObject.getString("name");
-                                                            ParseUser.getCurrentUser().setEmail(email_str);
-                                                            ParseUser.getCurrentUser().put("name", name_str);
-                                                            ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                    ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile", "email"), new LogInCallback() {
+                                        @Override
+                                        public void done(final ParseUser parseUser, ParseException e) {
+                                            if (e != null || parseUser == null) {
+                                                System.out.println(e.getMessage());
+                                                Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                            } else if (parseUser.isNew()) {
+                                                if (ParseUser.getCurrentUser() != null) {
+                                                    GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                                                            new GraphRequest.GraphJSONObjectCallback() {
                                                                 @Override
-                                                                public void done(ParseException e) {
-                                                                    if (e == null) {
-                                                                        Intent i = new Intent(getActivity(), SplashScreenActivity.class);
-                                                                        i.putExtra("restart", 1);
-                                                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                        getActivity().finish();
-                                                                        startActivity(i);
-                                                                        getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                                                public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                                                    try {
+                                                                        String email_str = jsonObject.getString("email");
+                                                                        String name_str = jsonObject.getString("name");
+                                                                        ParseUser.getCurrentUser().put("email_str", email_str);
+                                                                        ParseUser.getCurrentUser().put("name", name_str);
+                                                                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                                                            @Override
+                                                                            public void done(ParseException e) {
+                                                                                if (e == null) {
+                                                                                    Intent i = new Intent(getActivity(), MainActivity.class);
+                                                                                    i.putExtra("restart", 1);
+                                                                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                    getActivity().finish();
+                                                                                    startActivity(i);
+                                                                                    getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                                                                } else {
+                                                                                    Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                        Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                                                     }
                                                                 }
                                                             });
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                });
-                                        request.executeAsync();
-                                    }
-                                } else {
-                                    System.out.println(e.getMessage());
+                                                    request.executeAsync();
+                                                }
+                                            } else {
+                                                if (ParseUser.getCurrentUser() != null) {
+                                                    Intent i = new Intent(getActivity(), MainActivity.class);
+                                                    i.putExtra("restart", 1);
+                                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    getActivity().finish();
+                                                    startActivity(i);
+                                                    getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                                }
+                                            }
+                                        }
+                                    });
                                 }
                             }
                         });
-                        /*ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile, email"), new LogInCallback() {
-                            @Override
-                            public void done(ParseUser parseUser, ParseException e) {
-                                if (e == null) {
-                                    if (parseUser == null) {
-
-                                    } else if (!parseUser.isNew()) {
-                                        if (ParseUser.getCurrentUser() != null) {
-                                            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                                                    new GraphRequest.GraphJSONObjectCallback() {
-                                                        @Override
-                                                        public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                                                            try {
-                                                                String email_str = jsonObject.getString("email");
-                                                                String name_str = jsonObject.getString("name");
-                                                                ParseUser.getCurrentUser().setEmail(email_str);
-                                                                ParseUser.getCurrentUser().put("name", name_str);
-                                                                ParseUser.getCurrentUser().saveInBackground();
-                                                                Intent i = new Intent(getActivity(), SplashScreenActivity.class);
-                                                                i.putExtra("restart", 1);
-                                                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                                getActivity().finish();
-                                                                startActivity(i);
-                                                                getActivity().overridePendingTransition(0, R.anim.fade_out);
-                                                            } catch (JSONException e) {
-                                                                e.printStackTrace();
-                                                            }
-                                                        }
-                                                    });
-                                            request.executeAsync();
-                                        }
-                                    } else {
-                                        if (ParseUser.getCurrentUser() != null) {
-                                            Intent i = new Intent(getActivity(), MainActivity.class);
-                                            i.putExtra("restart", 1);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            getActivity().finish();
-                                            startActivity(i);
-                                            getActivity().overridePendingTransition(0, R.anim.fade_out);
-                                        }
-                                    }
-                                } else {
-                                    System.out.println(e.getMessage());
-                                }
-                            }
-                        }); */
                         break;
                     }
                     case R.id.forgot_pw: {
@@ -493,45 +425,62 @@ public class SignUpActivity extends FragmentActivity {
                     }
 
                     case R.id.regis_fb_btn: {
-                        ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile","email"), new LogInCallback() {
+                        ParseUser.logOutInBackground(new LogOutCallback() {
                             @Override
-                            public void done(final ParseUser parseUser, ParseException e) {
-                                if (e != null || parseUser == null) {
-
-                                } else if (parseUser.isNew()) {
-                                    if (ParseUser.getCurrentUser() != null) {
-                                        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-                                                new GraphRequest.GraphJSONObjectCallback() {
-                                                    @Override
-                                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                                                        try {
-                                                            String email_str = jsonObject.getString("email");
-                                                            String name_str = jsonObject.getString("name");
-                                                            ParseUser.getCurrentUser().setEmail(email_str);
-                                                            ParseUser.getCurrentUser().put("name", name_str);
-                                                            ParseUser.getCurrentUser().saveInBackground();
-                                                            Intent i = new Intent(getActivity(), MainActivity.class);
-                                                            i.putExtra("restart", 1);
-                                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                            getActivity().finish();
-                                                            startActivity(i);
-                                                            getActivity().overridePendingTransition(0, R.anim.fade_out);
-                                                        } catch (JSONException e) {
-                                                            e.printStackTrace();
-                                                        }
-                                                    }
-                                                });
-                                        request.executeAsync();
-                                    }
-                                } else {
-                                    if (ParseUser.getCurrentUser() != null) {
-                                        Intent i = new Intent(getActivity(), MainActivity.class);
-                                        i.putExtra("restart", 1);
-                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        getActivity().finish();
-                                        startActivity(i);
-                                        getActivity().overridePendingTransition(0, R.anim.fade_out);
-                                    }
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    ParseFacebookUtils.logInWithReadPermissionsInBackground(getActivity(), Arrays.asList("public_profile", "email"), new LogInCallback() {
+                                        @Override
+                                        public void done(final ParseUser parseUser, ParseException e) {
+                                            if (e != null || parseUser == null) {
+                                                System.out.println(e.getMessage());
+                                                Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                            } else if (parseUser.isNew()) {
+                                                if (ParseUser.getCurrentUser() != null) {
+                                                    GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                                                            new GraphRequest.GraphJSONObjectCallback() {
+                                                                @Override
+                                                                public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                                                    try {
+                                                                        String email_str = jsonObject.getString("email");
+                                                                        String name_str = jsonObject.getString("name");
+                                                                        ParseUser.getCurrentUser().put("email_str", email_str);
+                                                                        ParseUser.getCurrentUser().put("name", name_str);
+                                                                        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                                                                            @Override
+                                                                            public void done(ParseException e) {
+                                                                                if (e == null) {
+                                                                                    Intent i = new Intent(getActivity(), MainActivity.class);
+                                                                                    i.putExtra("restart", 1);
+                                                                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                                    getActivity().finish();
+                                                                                    startActivity(i);
+                                                                                    getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                                                                } else {
+                                                                                    Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                    } catch (JSONException e) {
+                                                                        e.printStackTrace();
+                                                                        Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                }
+                                                            });
+                                                    request.executeAsync();
+                                                }
+                                            } else {
+                                                if (ParseUser.getCurrentUser() != null) {
+                                                    Intent i = new Intent(getActivity(), MainActivity.class);
+                                                    i.putExtra("restart", 1);
+                                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    getActivity().finish();
+                                                    startActivity(i);
+                                                    getActivity().overridePendingTransition(0, R.anim.fade_out);
+                                                }
+                                            }
+                                        }
+                                    });
                                 }
                             }
                         });

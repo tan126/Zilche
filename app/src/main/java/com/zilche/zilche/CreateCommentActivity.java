@@ -134,11 +134,17 @@ public class CreateCommentActivity extends ActionBarActivity {
                                         comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
                                     }
                                     comment_obj.put("author_id", ParseUser.getCurrentUser().getObjectId());
-                                    comment_obj.put("email", ParseUser.getCurrentUser().getEmail());
+                                    if (ParseUser.getCurrentUser().getEmail() == null) {
+                                        if (ParseUser.getCurrentUser().getString("email_str") != null) {
+                                            comment_obj.put("email", ParseUser.getCurrentUser().getString("email_str"));
+                                        }
+                                    } else {
+                                        comment_obj.put("email", ParseUser.getCurrentUser().getEmail());
+                                    }
                                     comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
                                     comment_obj.put("comment", comment.getText().toString().trim());
                                     if (isAnon != 1) {
-                                        if (ParseUser.getCurrentUser().getEmail().compareTo(owner) == 0) {
+                                        if (ParseUser.getCurrentUser().getObjectId().compareTo(owner) == 0) {
                                             comment_obj.put("op", 1);
                                         } else if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
                                             comment_obj.put("mod", 1);
@@ -185,11 +191,17 @@ public class CreateCommentActivity extends ActionBarActivity {
                             comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
                         }
                         comment_obj.put("author_id", ParseUser.getCurrentUser().getObjectId());
-                        comment_obj.put("email", ParseUser.getCurrentUser().getEmail());
+                        if (ParseUser.getCurrentUser().getEmail() == null) {
+                            if (ParseUser.getCurrentUser().getString("email_str") != null) {
+                                comment_obj.put("email", ParseUser.getCurrentUser().getString("email_str"));
+                            }
+                        } else {
+                            comment_obj.put("email", ParseUser.getCurrentUser().getEmail());
+                        }
                         comment_obj.put("author", ParseUser.getCurrentUser().get("name"));
                         comment_obj.put("comment", comment.getText().toString().trim());
                         if (isAnon != 1) {
-                            if (ParseUser.getCurrentUser().getEmail().compareTo(owner) == 0) {
+                            if (ParseUser.getCurrentUser().getObjectId().compareTo(owner) == 0) {
                                 comment_obj.put("op", 1);
                             } else if (ParseUser.getCurrentUser().get("mod") != null && ParseUser.getCurrentUser().getInt("mod") == 1) {
                                 comment_obj.put("mod", 1);
