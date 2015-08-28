@@ -422,6 +422,10 @@ public class CreatePollActivity2 extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 if (requestCode == REQUEST_CAMERA) {
+                    if (!file.exists()) {
+                        Toast.makeText(getActivity(), "Something went wrong. Please select your image from the gallery.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     CreatePollActivity2 act = (CreatePollActivity2) getActivity();
                     Uri uri = act.getUri();
                     Intent i = new Intent(getActivity(), CropImageActivity.class);

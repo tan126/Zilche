@@ -579,6 +579,10 @@ public class EditProfileActivity extends ActionBarActivity {
 
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
+                if (!file.exists()) {
+                    Toast.makeText(this, "Something went wrong. Please select your image from the gallery.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Uri uri = this.uri;
                 Intent i = new Intent(this, CropImageActivity.class);
                 i.putExtra("uri", uri);
