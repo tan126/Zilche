@@ -196,7 +196,6 @@ public class SignUpActivity extends FragmentActivity {
                                         @Override
                                         public void done(final ParseUser parseUser, ParseException e) {
                                             if (e != null || parseUser == null) {
-                                                System.out.println(e.getMessage());
                                                 Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                             } else if (parseUser.isNew()) {
                                                 if (ParseUser.getCurrentUser() != null) {
@@ -433,7 +432,6 @@ public class SignUpActivity extends FragmentActivity {
                                         @Override
                                         public void done(final ParseUser parseUser, ParseException e) {
                                             if (e != null || parseUser == null) {
-                                                System.out.println(e.getMessage());
                                                 Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
                                             } else if (parseUser.isNew()) {
                                                 if (ParseUser.getCurrentUser() != null) {
