@@ -136,7 +136,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
     }
 
     public ParseFile createImage() {
-        if (frag1.imageBound()) {
+        if (frag1.imageBound() && frag1.getImage() != null) {
             ParseFile file = new ParseFile("image.jpg", frag1.getImage());
             return file;
         }
@@ -785,12 +785,6 @@ public class CreatePollActivity2 extends AppCompatActivity {
         }
     }
 
-    public byte[] decodeImageInBackground(FloatingActionButton fab, Uri uri) {
-        byte[] data = null;
-        BitmapWorker worker = new BitmapWorker(data, uri);
-        return worker.doInBackground();
-    }
-
     public class BitmapWorker extends AsyncTask<Integer, Void, byte[]> {
 
         private byte[] data2;
@@ -826,6 +820,19 @@ public class CreatePollActivity2 extends AppCompatActivity {
             bm.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
             data2 = bytes.toByteArray();
             return data2;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Zilche app = (Zilche) getApplication();
+        if (frag1 == null || frag2 == null || frag3 == null || app.getFav() == null || app.getMap() == null) {
+            Intent i = new Intent(this, SplashScreenActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     }
 

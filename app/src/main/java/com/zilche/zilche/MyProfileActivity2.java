@@ -69,9 +69,9 @@ public class MyProfileActivity2 extends FragmentActivity {
 
     private ViewPager pager;
     private TextView name;
-    private Frag frag_global;
     private SlidingPaneLayout spl;
     private View background;
+    private Frag frag_global;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
