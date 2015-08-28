@@ -169,7 +169,7 @@ public class Util {
         BitmapFactory.decodeFile(path, opt);
         final int size = 1024;
         int scale = 1;
-        while (opt.outWidth / scale / 2 >= size || opt.outHeight / scale / 2 >= size) {
+        while (opt.outWidth / scale >= size || opt.outHeight / scale >= size) {
             scale *= 2;
         }
         opt.inSampleSize = scale;

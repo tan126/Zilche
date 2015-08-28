@@ -287,7 +287,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             file = new File(appFolderCheckandCreate(), "." + System.currentTimeMillis() + ".jpg");
-                            filePath = file.getAbsolutePath();
+                            filePath = file.getPath();
                             uri = Uri.fromFile(file);
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -668,6 +668,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
                             @Override
                             public void done(ParseException e) {
                                 if (e == null) {
+
                                     parseObject.put("image", file);
                                     parseObject.saveInBackground(new SaveCallback() {
                                         @Override

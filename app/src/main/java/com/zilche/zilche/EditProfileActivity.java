@@ -369,7 +369,7 @@ public class EditProfileActivity extends ActionBarActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Edit intro");
         final EditText et = (EditText) View.inflate(this, R.layout.edittext_material2, null);
-        et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE|InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         if (ParseUser.getCurrentUser().getString("message") != null) {
             et.setText(intro.getText().toString());
             et.setSelection(intro.getText().toString().length());
@@ -631,6 +631,7 @@ public class EditProfileActivity extends ActionBarActivity {
             } else if (requestCode == REMOVE_FILE) {
                 changed = 1;
                 image.setImageResource(R.drawable.anon_54);
+                ParseUser.getCurrentUser().remove("image");
                 fullScreenImage = null;
                 bm50 = null;
             }

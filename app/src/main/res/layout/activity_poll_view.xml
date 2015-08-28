@@ -49,6 +49,7 @@
             android:orientation="vertical"
             android:id="@+id/linlay_view_poll"
             android:layout_width="match_parent"
+            android:minHeight="80dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -58,10 +59,10 @@
                 android:textColor="#444"
                 android:fontFamily="sans-serif"
                 android:layout_margin="8dp"
+                android:paddingBottom="15dp"
                 android:scrollHorizontally="false"
                 android:layout_marginBottom="20dp"
                 android:id="@+id/title_poll_view"
-                android:minHeight="60dp"
                 />
 
             <RelativeLayout

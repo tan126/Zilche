@@ -281,6 +281,9 @@ public class MyProfileActivity2 extends FragmentActivity {
                         }
                     }
                 });
+            } else {
+                iv.setOnClickListener(null);
+                iv.setImageResource(R.drawable.anon_54);
             }
         }
 
