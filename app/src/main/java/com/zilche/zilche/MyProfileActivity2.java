@@ -235,7 +235,16 @@ public class MyProfileActivity2 extends FragmentActivity {
                 intro.setText(getString(R.string.unspecified));
             }
             if (u.getString("gender") != null) {
-                gender.setText(u.getString("gender"));
+                String g = u.getString("gender");
+                if (g.compareTo("Male") == 0 || g.compareTo("男") == 0) {
+                    gender.setText(getString(R.string.male));
+                } else if (g.compareTo("女") == 0 || g.compareTo("Female") == 0) {
+                    gender.setText(getString(R.string.female));
+                } else if (g.compareTo("其他") == 0 || g.compareTo("Other") == 0) {
+                    gender.setText(getString(R.string.other));
+                } else {
+                    gender.setText(g);
+                }
             } else {
                 gender.setText(getString(R.string.unspecified));
             }
