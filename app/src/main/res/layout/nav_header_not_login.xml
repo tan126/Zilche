@@ -25,7 +25,7 @@
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:textSize="25sp"
-            android:text="Zilche"
+            android:text="@string/app_name"
             android:textStyle="bold"
             android:textColor="#FFF"
             android:fontFamily="sans-serif-medium"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_marginTop="6dp"
-            android:text="Login/Sign Up"
+            android:text="@string/login_signup"
             android:textColor="#FFF"
             android:fontFamily="sans-serif"
             />

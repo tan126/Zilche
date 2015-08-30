@@ -75,7 +75,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
                 authorName = i.getExtras().getString("authorRealName");
             }
         } else {
-            Toast.makeText(this, "User profile does not exist", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.profile_dont_exist), Toast.LENGTH_SHORT).show();
             finish();
             overridePendingTransition(0, 0);
         }
@@ -96,7 +96,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    name.setText("Profile");
+                    name.setText(getString(R.string.profile));
                     spl.setmCanSlide(true);
                 } else {
                     if (authorName != null) {
@@ -150,7 +150,7 @@ public class RetrieveProfileActivity extends FragmentActivity {
 
     private class ProfileAdapter extends FragmentPagerAdapter {
 
-        private String[] title = {"About", "Activity"};
+        private String[] title = {getString(R.string.about), getString(R.string.activity)};
 
         public ProfileAdapter(FragmentManager fm) {
             super(fm);
@@ -241,17 +241,17 @@ public class RetrieveProfileActivity extends FragmentActivity {
             if (u.getString("message") != null) {
                 intro.setText(u.getString("message"));
             } else {
-                intro.setText("unspecified");
+                intro.setText(getString(R.string.unspecified));
             }
             if (u.getString("gender") != null) {
                 gender.setText(u.getString("gender"));
             } else {
-                gender.setText("unspecified");
+                gender.setText(getString(R.string.unspecified));
             }
             if (u.getString("country") != null) {
                 country.setText(u.getString("country"));
             } else {
-                country.setText("unspecified");
+                country.setText(getString(R.string.unspecified));
             }
             if (u.getDate("bday") != null) {
                 Date d = u.getDate("bday");
@@ -263,8 +263,8 @@ public class RetrieveProfileActivity extends FragmentActivity {
                 DateFormat df = new SimpleDateFormat("M-dd-yyyy");
                 birthday.setText(df.format(d));
             } else {
-                birthday.setText("unspecified");
-                age.setText("unspecified");
+                birthday.setText(getString(R.string.unspecified));
+                age.setText(getString(R.string.unspecified));
             }
             byte[] image = u.getBytes("image");
             if (image != null) {

@@ -24,7 +24,6 @@ import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,9 +46,6 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -423,7 +419,7 @@ public class CreatePollActivity2 extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 if (requestCode == REQUEST_CAMERA) {
                     if (!file.exists()) {
-                        Toast.makeText(getActivity(), "Something went wrong. Please select your image from the gallery.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.image_load_err), Toast.LENGTH_SHORT).show();
                         return;
                     }
                     CreatePollActivity2 act = (CreatePollActivity2) getActivity();
@@ -828,11 +824,12 @@ public class CreatePollActivity2 extends AppCompatActivity {
         super.onResume();
         Zilche app = (Zilche) getApplication();
         if (frag1 == null || frag2 == null || frag3 == null || app.getFav() == null || app.getMap() == null) {
-            Intent i = new Intent(this, SplashScreenActivity.class);
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("restart", 1);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
             finish();
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            return;
         }
     }
 

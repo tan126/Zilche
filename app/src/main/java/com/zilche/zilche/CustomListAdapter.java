@@ -37,8 +37,8 @@ public class CustomListAdapter extends ArrayAdapter<String> {
         txtTitle.setText(itemname[position]);
         imageView.setImageResource(imgid[position]);
         imageView.setColorFilter(0xbbffffff, PorterDuff.Mode.MULTIPLY);
-        switch(itemname[position]){
-            case "Browse Zilche":
+        switch(position){
+            case 0:
                 imageView.setColorFilter(Color.parseColor("#00BFA5"));
                 rowView.setClickable(false);
                 rowView.setSelected(true);

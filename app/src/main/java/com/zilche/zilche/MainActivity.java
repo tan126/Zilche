@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         ListView list=(ListView)findViewById(R.id.menulist);
         if (loginFlag) {
-            String menu[] = {"Browse Zilche", "My Polls", "My Profile", "Favourite", "Log out"};
+            String menu[] = {getString(R.string.browse_zilche), getString(R.string.my_poll), getString(R.string.my_profile), getString(R.string.Fav), getString(R.string.log_out)};
             Integer imgID[] = {R.drawable.dashgrey, R.drawable.assesgrey, R.drawable.persongrey,
                     R.drawable.favgrey, R.drawable.powergrey};
 
@@ -152,8 +152,10 @@ public class MainActivity extends AppCompatActivity {
             list.addHeaderView(header);
             name = (TextView) findViewById(R.id.name);
             TextView email = (TextView) findViewById(R.id.email);
-            name.setText(currentUser.getString("name"));
             name_ori = currentUser.getString("name");
+            if (name_ori != null) {
+                name.setText(currentUser.getString("name"));
+            }
             if (currentUser.getEmail() == null) {
                 if (currentUser.getString("email_str") != null) {
                     email.setText(currentUser.getString("email_str"));
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 image.setImageBitmap(bm);
             }
         } else {
-            String menu[] = {"Browse Zilche", "My Polls", "My Profile", "Favourite"};
+            String menu[] = {getString(R.string.browse_zilche), getString(R.string.my_poll), getString(R.string.my_profile), getString(R.string.Fav)};
             Integer imgID[] = {R.drawable.dashgrey, R.drawable.assesgrey, R.drawable.persongrey,
                     R.drawable.favgrey};
 
@@ -193,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 if (v == null) {
                     return;
                 }
-                if (v.getText() == "My Polls") {
+                if (v.getText() == getString(R.string.my_poll)) {
                     if (loginFlag) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -208,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                         loginAndSignup();
                     }
                 }
-                else if (v.getText() == "My Profile") {
+                else if (v.getText() == getString(R.string.my_profile)) {
                     if (loginFlag) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -224,9 +226,9 @@ public class MainActivity extends AppCompatActivity {
                         loginAndSignup();
                     }
                 }
-                else if (v.getText() == "Log out") {
+                else if (v.getText() == getString(R.string.log_out)) {
                     ParseUser u = new ParseUser();
-                    u.logOutInBackground(new LogOutCallback() {
+                    ParseUser.logOutInBackground(new LogOutCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
@@ -240,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
-                } else if (v.getText() == "Favourite") {
+                } else if (v.getText() == getString(R.string.Fav)) {
                     if (loginFlag) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -313,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
         if (plusButton.isExpanded()) {
             plusButton.collapse();
         } else {
-            super.onBackPressed();
+            moveTaskToBack(true);
         }
     }
 

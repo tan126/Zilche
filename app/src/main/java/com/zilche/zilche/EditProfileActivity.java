@@ -58,7 +58,6 @@ public class EditProfileActivity extends ActionBarActivity {
     private File file;
     private String filePath;
     private Uri uri;
-    private boolean imageBound = false;
     private byte[] fullScreenImage;
     private ImageView image;
     private byte[] bm50;
@@ -117,17 +116,17 @@ public class EditProfileActivity extends ActionBarActivity {
         if (u.getString("message") != null) {
             intro.setText(u.getString("message"));
         } else {
-            intro.setText("unspecified");
+            intro.setText(getString(R.string.unspecified));
         }
         if (u.getString("gender") != null) {
             gender.setText(u.getString("gender"));
         } else {
-            gender.setText("unspecified");
+            gender.setText(getString(R.string.unspecified));
         }
         if (u.getString("country") != null) {
             country.setText(u.getString("country"));
         } else {
-            country.setText("unspecified");
+            country.setText(getString(R.string.unspecified));
         }
         if (u.getDate("bday") != null) {
             Date d = u.getDate("bday");
@@ -140,8 +139,8 @@ public class EditProfileActivity extends ActionBarActivity {
             DateFormat df = new SimpleDateFormat("M-dd-yyyy");
             birthday.setText(df.format(d));
         } else {
-            birthday.setText("unspecified");
-            age.setText("unspecified");
+            birthday.setText(getString(R.string.unspecified));
+            age.setText(getString(R.string.unspecified));
         }
         if (u.getBytes("image") != null) {
             Bitmap b = BitmapFactory.decodeByteArray(u.getBytes("image"), 0, u.getBytes("image").length);
@@ -182,7 +181,7 @@ public class EditProfileActivity extends ActionBarActivity {
 
     public void upload(View v) {
         final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Saving");
+        dialog.setMessage(getString(R.string.saving));
         dialog.setCancelable(false);
         dialog.show();
         final ParseUser user = ParseUser.getCurrentUser();
@@ -297,14 +296,14 @@ public class EditProfileActivity extends ActionBarActivity {
 
     public void edit_name(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter your name");
+        builder.setTitle(getString(R.string.input_name));
         final EditText et = (EditText) View.inflate(this, R.layout.edittext_material2, null);
         et.setInputType(InputType.TYPE_CLASS_TEXT);
         et.setText(user.getText().toString());
         et.setSelection(user.getText().toString().length());
         int pad = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15,
                 getResources().getDisplayMetrics());
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String text = et.getText().toString().trim();
@@ -318,7 +317,7 @@ public class EditProfileActivity extends ActionBarActivity {
                 }
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -350,7 +349,7 @@ public class EditProfileActivity extends ActionBarActivity {
             @Override
             public void onDateSet(DatePicker view, int year2, int monthOfYear, int dayOfMonth) {
                 if (c_year < year2) {
-                    Toast.makeText(EditProfileActivity.this, "Invalid birth date", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, getString(R.string.invalid_date), Toast.LENGTH_SHORT).show();
                 } else {
                     int diff = c_year - year2;
                     age.setText(Integer.toString(diff));
@@ -367,7 +366,7 @@ public class EditProfileActivity extends ActionBarActivity {
 
     public void edit_intro(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Edit intro");
+        builder.setTitle(getString(R.string.edit_intro));
         final EditText et = (EditText) View.inflate(this, R.layout.edittext_material2, null);
         et.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE|InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         if (ParseUser.getCurrentUser().getString("message") != null) {
@@ -376,7 +375,7 @@ public class EditProfileActivity extends ActionBarActivity {
         }
         int pad = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15,
                 getResources().getDisplayMetrics());
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String text = et.getText().toString().trim();
@@ -385,7 +384,7 @@ public class EditProfileActivity extends ActionBarActivity {
                 dialog.dismiss();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -398,7 +397,7 @@ public class EditProfileActivity extends ActionBarActivity {
 
     public void edit_gender(View v) {
         AlertDialog dialog;
-        final CharSequence[] items = {"Male", "Female", "Other"};
+        final CharSequence[] items = {getString(R.string.male), getString(R.string.female), getString(R.string.other)};
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         int choice = -1;
         for (int i = 0; i < items.length; i++) {
@@ -580,7 +579,7 @@ public class EditProfileActivity extends ActionBarActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {
                 if (!file.exists()) {
-                    Toast.makeText(this, "Something went wrong. Please select your image from the gallery.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.image_load_err), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Uri uri = this.uri;
@@ -599,7 +598,6 @@ public class EditProfileActivity extends ActionBarActivity {
                 from = 2;
                 startActivityForResult(i, CROP_IMAGE);
             } else if (requestCode == CROP_IMAGE) {
-                imageBound = true;
                 bm50 = (byte[]) data.getExtras().getByteArray("data_50");
                 Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeByteArray(bm50, 0, bm50.length), (int)Util.convertDpToPixel(54, this), (int)Util.convertDpToPixel(54, this), true);
                 image.setImageBitmap(bm);

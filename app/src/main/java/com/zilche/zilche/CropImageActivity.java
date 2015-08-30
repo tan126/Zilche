@@ -1,22 +1,17 @@
 package com.zilche.zilche;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -24,8 +19,6 @@ import android.widget.Toast;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 
@@ -139,7 +132,6 @@ public class CropImageActivity extends ActionBarActivity {
         Bitmap bm;
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inJustDecodeBounds = false;
-        //BitmapFactory.decodeFile(path, opt);
         final int size = 1024;
         int scale = 1;
         while (opt.outWidth / scale / 2 >= size || opt.outHeight / scale / 2 >= size) {

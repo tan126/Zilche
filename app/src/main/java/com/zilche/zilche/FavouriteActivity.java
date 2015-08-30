@@ -313,4 +313,10 @@ public class FavouriteActivity extends ActionBarActivity {
         populateList(skip);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.left_to_right);
+    }
+
 }

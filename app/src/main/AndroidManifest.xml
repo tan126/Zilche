@@ -23,10 +23,6 @@
         </activity>
         <activity
             android:screenOrientation="portrait"
-            android:name=".LoginActivity"
-            android:label="Zilche" />
-        <activity
-            android:screenOrientation="portrait"
             android:name=".SearchList"
             android:label="@string/title_activity_search_list" >
         </activity>
@@ -38,25 +34,9 @@
         </activity>
         <activity
             android:screenOrientation="portrait"
-            android:name=".tmpNewPoll"
-            android:label="@string/title_activity_tmp_new_poll" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
             android:name=".SignUpActivity"
             android:label="@string/title_activity_signup"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".CreatePollActivity"
-            android:label="@string/title_activity_create_poll"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".UploadImage"
-            android:label="@string/title_activity_upload_image" >
-        </activity>
         <activity
             android:screenOrientation="portrait"
             android:name=".FullScreenImage"
@@ -89,27 +69,6 @@
         </activity>
         <activity
             android:screenOrientation="portrait"
-            android:name=".PieChart"
-            android:label="@string/title_activity_pie_chart" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".BarChart"
-            android:label="@string/title_activity_bar_chart" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".CreateSurveyActivity"
-            android:label="@string/title_activity_create_survey"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".AddSurveyOptions"
-            android:label="@string/title_activity_add_survey_options" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
             android:name=".CreatePollActivity2"
             android:label="@string/title_activity_create_poll_activity2"
             android:windowSoftInputMode="stateHidden" >
@@ -118,11 +77,6 @@
             android:screenOrientation="portrait"
             android:name=".CropImageActivity"
             android:label="@string/title_activity_crop_image" >
-        </activity>
-        <activity
-            android:screenOrientation="portrait"
-            android:name=".MyProfileActivity"
-            android:label="@string/title_activity_my_profile" >
         </activity>
         <activity
             android:screenOrientation="portrait"

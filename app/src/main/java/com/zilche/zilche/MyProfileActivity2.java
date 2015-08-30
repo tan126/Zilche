@@ -112,7 +112,7 @@ public class MyProfileActivity2 extends FragmentActivity {
             @Override
             public void onPageSelected(int position) {
                 if (position == 0) {
-                    name.setText("Profile");
+                    name.setText(getString(R.string.profile));
                     spl.setmCanSlide(true);
                 } else {
                     if (ParseUser.getCurrentUser().getString("name") != null) {
@@ -162,7 +162,7 @@ public class MyProfileActivity2 extends FragmentActivity {
 
     private class ProfileAdapter extends FragmentPagerAdapter {
 
-        private String[] title = {"About", "Activity"};
+        private String[] title = {getString(R.string.about), getString(R.string.activity)};
 
         public ProfileAdapter(FragmentManager fm) {
             super(fm);
@@ -232,17 +232,17 @@ public class MyProfileActivity2 extends FragmentActivity {
             if (u.getString("message") != null) {
                 intro.setText(u.getString("message"));
             } else {
-                intro.setText("unspecified");
+                intro.setText(getString(R.string.unspecified));
             }
             if (u.getString("gender") != null) {
                 gender.setText(u.getString("gender"));
             } else {
-                gender.setText("unspecified");
+                gender.setText(getString(R.string.unspecified));
             }
             if (u.getString("country") != null) {
                 country.setText(u.getString("country"));
             } else {
-                country.setText("unspecified");
+                country.setText(getString(R.string.unspecified));
             }
             if (u.getDate("bday") != null) {
                 Date d = u.getDate("bday");
@@ -254,8 +254,8 @@ public class MyProfileActivity2 extends FragmentActivity {
                 DateFormat df = new SimpleDateFormat("M-dd-yyyy");
                 birthday.setText(df.format(d));
             } else {
-                birthday.setText("unspecified");
-                age.setText("unspecified");
+                birthday.setText(getString(R.string.unspecified));
+                age.setText(getString(R.string.unspecified));
             }
             byte[] image = u.getBytes("image");
             if (image != null) {

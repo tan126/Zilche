@@ -59,7 +59,7 @@
                 android:textColor="#444"
                 android:fontFamily="sans-serif"
                 android:layout_margin="8dp"
-                android:paddingBottom="15dp"
+                android:minHeight="60dp"
                 android:scrollHorizontally="false"
                 android:layout_marginBottom="20dp"
                 android:id="@+id/title_poll_view"
@@ -67,9 +67,10 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="25dp"
                 android:layout_marginRight="5dp"
                 android:background="#fff"
+                android:layout_marginLeft="3dp"
                 android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content">
 
