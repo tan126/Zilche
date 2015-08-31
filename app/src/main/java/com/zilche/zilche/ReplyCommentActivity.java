@@ -89,6 +89,7 @@ public class ReplyCommentActivity extends ActionBarActivity {
         reload = (LinearLayout) findViewById(R.id.reload_bg_full);
         progress = (ProgressBar) findViewById(R.id.progress_bar);
         listview = (ListView) findViewById(R.id.comment_list);
+        listview.setSelector(android.R.color.transparent);
         comment_list = new LinkedList<>();
         Intent i = getIntent();
         if (i == null || i.getExtras() == null) {
@@ -371,6 +372,9 @@ public class ReplyCommentActivity extends ActionBarActivity {
                         comment_list.clear();
                         first = false;
                     }
+                    int index = list.size() + listview.getFirstVisiblePosition();
+                    View v = listview.getChildAt(listview.getHeaderViewsCount());
+                    int top = (v == null) ? 0 : v.getTop();
                     for (int i = 0; i < list.size(); i++) {
                         comment_list.addFirst(Util.parseComment(list.get(i)));
                     }
@@ -378,6 +382,8 @@ public class ReplyCommentActivity extends ActionBarActivity {
                     la.notifyDataSetChanged();
                     if (comment_list.size() == list.size() && comment_list.size() != 0) {
                         listview.setSelection(comment_list.size() - 1);
+                    } else {
+                        listview.setSelectionFromTop(index, top);
                     }
                     loading = false;
                     if (content.getVisibility() == View.GONE) {
