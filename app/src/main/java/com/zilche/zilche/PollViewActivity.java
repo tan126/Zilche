@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.HeaderViewListAdapter;
@@ -136,8 +137,23 @@ public class PollViewActivity extends ActionBarActivity {
 
         comments_list = new LinkedList<>();
         comments.setAdapter(new ListAdapter(comments_list));
-        comments.setSelector(android.R.color.transparent);
-
+        //comments.setSelector(android.R.color.transparent);
+        comments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(PollViewActivity.this, ReplyCommentActivity.class);
+                i.putExtra("category", category);
+                i.putExtra("isAnon", poll.getAnon());
+                i.putExtra("owner", poll.getAuthor_id());
+                i.putExtra("poll", poll.getId());
+                if (comments_list.get(position - 1) instanceof Comment) {
+                    i.putStringArrayListExtra("replies", ((Comment) comments_list.get(position - 1)).getReplies());
+                    i.putExtra("comment_id", ((Comment) comments_list.get(position - 1)).getId());
+                    i.putExtra("author_name", ((Comment) comments_list.get(position - 1)).getName());
+                    startActivityForResult(i, 444);
+                }
+            }
+        });
         final Zilche app = (Zilche) getApplication();
 
         if (app.getMap() == null || app.getFav() == null) {
@@ -784,7 +800,7 @@ public class PollViewActivity extends ActionBarActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == 33) {
+            if (requestCode == 33 || requestCode == 444) {
                 comment_skip = 0;
                 complete = false;
                 int total = data.getExtras().getInt("total");

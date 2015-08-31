@@ -1,5 +1,8 @@
 package com.zilche.zilche;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 /**
  * Created by Kjye on 8/18/2015.
  */
@@ -14,6 +17,24 @@ public class Comment {
     private int mod;
     String email;
     private String author_id;
+    private String id;
+    private ArrayList<String> replies;
+
+    public void setReplies(ArrayList<String> re) {
+        replies = re;
+    }
+
+    public ArrayList<String> getReplies() {
+        return replies;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public void setAuthor_id(String author_id) {
         this.author_id = author_id;

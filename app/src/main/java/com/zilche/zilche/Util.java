@@ -17,7 +17,9 @@ import org.json.JSONException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
 // todo : show date when days is more than 30
 
@@ -152,6 +154,14 @@ public class Util {
         }
         c.setEmail(po.getString("email"));
         c.setAuthor_id(po.getString("author_id"));
+        c.setId(po.getObjectId());
+        ArrayList<String> replies = new ArrayList<>();
+        if (po.getList("replies") != null) {
+            for (Object e : po.getList("replies")) {
+                replies.add((String) e);
+            }
+        }
+        c.setReplies(replies);
         return c;
     }
 
