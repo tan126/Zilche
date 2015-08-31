@@ -103,7 +103,7 @@ public class ReplyCommentActivity extends ActionBarActivity {
             replies = new ArrayList<>();
         }
         replies.add(comment_id);
-        if (replies.size() > 8) {
+        if (replies.size() > 20) {
             replies.remove(0);
         }
         back_button = (ImageButton) findViewById(R.id.back_button_reply);
@@ -360,7 +360,7 @@ public class ReplyCommentActivity extends ActionBarActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    if (list.size() < 8) {
+                    if (list.size() < 20) {
                         complete = true;
                     }
                     comment_list.remove(0);
