@@ -166,4 +166,5 @@
     <string name="edit_intro">Edit intro</string>
     <string name="input_name">Please enter your name</string>
     <string name="title_activity_reply_comment">ReplyCommentActivity</string>
+    <string name="reply">Reply</string>
 </resources>
