@@ -188,6 +188,10 @@ public class SignUpActivity extends FragmentActivity {
 
                     case R.id.login_fb_btn: {
 
+                        if (!hasInternetConnection()) {
+                            Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         ParseUser.logOutInBackground(new LogOutCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -424,6 +428,10 @@ public class SignUpActivity extends FragmentActivity {
                     }
 
                     case R.id.regis_fb_btn: {
+                        if (!hasInternetConnection()) {
+                            Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         ParseUser.logOutInBackground(new LogOutCallback() {
                             @Override
                             public void done(ParseException e) {
@@ -433,6 +441,7 @@ public class SignUpActivity extends FragmentActivity {
                                         public void done(final ParseUser parseUser, ParseException e) {
                                             if (e != null || parseUser == null) {
                                                 Toast.makeText(getActivity(), getString(R.string.connection_err), Toast.LENGTH_SHORT).show();
+
                                             } else if (parseUser.isNew()) {
                                                 if (ParseUser.getCurrentUser() != null) {
                                                     GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
@@ -507,6 +516,19 @@ public class SignUpActivity extends FragmentActivity {
         }
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (ParseUser.getCurrentUser() == null) {
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("restart", 1);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 
 
