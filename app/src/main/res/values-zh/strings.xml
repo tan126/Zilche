@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Zilche</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">设置</string>
-    <string name="title_text">Zilche</string>
     <string name="search_hint">搜索</string>
     <string name="categories">分类</string>
     <string name="newest_posts">最新</string>
     <string name="popular_posts">热门</string>
-    <string name="title_activity_search_list">SearchList</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="email">邮件</string>
@@ -30,17 +26,8 @@
     <string name="category_tech">科技</string>
     <string name="portfolio_text">注册/登入</string>
     <string name="portfolio_email">用户邮箱</string>
-    <string name="drawer_open">Open Navigation</string>
-    <string name="drawer_close">Close Navigation</string>
-    <string name="title_activity_my_poll">MyPollActivity</string>
-    <string name="title_activity_create_poll">CreatePoll</string>
-    <string name="title_activity_tmp_new_poll">tmpNewPoll</string>
-    <string name="title_activity_signup">signupActivity</string>
-
-    <string name="title_activity_retrieve_profile">RetrieveProfileActivity</string>
     <string name="existing_user">现有用户</string>
     <string name="new_user">新用户</string>
-    <string name="title_activity_upload_image">UploadImage</string>
     <string name="or">或</string>
     <string name="login_with_zilche">登入</string>
     <string name="login_with_facebook">面子书登入</string>
@@ -51,7 +38,6 @@
     <string name="password_too_short">密码长度需至少6个字符</string>
     <string name="invalid_email">您的邮箱格式有误,请从新输入</string>
     <string name="fl_name">请填写您的全名</string>
-    <string name="title_activity_full_screen_image">FullScreenImage</string>
     <string name="facebook_app_id">1086189198071072</string>
     <string name="reset_password">重设密码</string>
     <string name="reset_pw_text">重设密码的方式将传送至您所提供的邮箱</string>
@@ -60,8 +46,6 @@
     <string name="connection_err">链接失败 请稍后再试</string>
     <string name="no_email">用户邮箱不存在</string>
     <string name="email_sent">重设密码的方式已传送至您的邮箱</string>
-    <string name="title_activity_category">CategoryActivity</string>
-    <string name="title_activity_achart_engine_pie_chart">AChartEnginePieChartActivity</string>
     <string name="category_all_2">全部</string>
     <string name="category_auto_2">汽车</string>
     <string name="category_education_2">教育</string>
@@ -77,19 +61,7 @@
     <string name="category_sports_2">运动</string>
     <string name="category_travel_2">旅游</string>
     <string name="category_tech_2">科技</string>
-    <string name="title_activity_poll_view">PollViewActivity</string>
-    <string name="title_activity_pie_chart">PieChart</string>
-    <string name="title_activity_bar_chart">BarChart</string>
-    <string name="title_activity_create_survey">CreateSurvey</string>
-    <string name="title_activity_popular">PopularActivity</string>
     <string name="other">其他</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_add_survey_options">AddSurveyOptions</string>
-    <string name="title_activity_create_poll_activity2">CreatePollActivity2</string>
-    <string name="title_activity_crop_image">CropImageActivity</string>
-    <string name="title_activity_my_profile">MyProfileActivity</string>
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
-    <string name="title_activity_create_comment">CreateCommentActivity</string>
     <string name="connection_failed">链接失败</string>
     <string name="anonymous">匿名</string>
     <string name="comment_err">请输入您的评论</string>
@@ -135,10 +107,8 @@
     <string name="sort_date">排序时间</string>
     <string name="invalid_credentials">用户名或者密码有误</string>
     <string name="email_taken">邮箱已被注册</string>
-    <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="logging_in">正在登入您的账号</string>
     <string name="signing_up">注册中 请稍等</string>
-    <string name="title_activity_favourite">FavouriteActivity</string>
     <string name="image_load_err">图像载入失败 请从图库选择您想要的图像</string>
     <string name="unspecified">不明</string>
     <string name="invalid_date">生日日期格式有误</string>

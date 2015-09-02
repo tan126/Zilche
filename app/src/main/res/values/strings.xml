@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Zilche</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name" translatable="false">Zilche</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_text">Zilche</string>
+    <string name="title_text" translatable="false">Zilche</string>
     <string name="search_hint">Search Zilche</string>
     <string name="categories">CATEGORIES</string>
     <string name="newest_posts">NEWEST</string>
     <string name="popular_posts">POPULAR</string>
-    <string name="title_activity_search_list">SearchList</string>
+    <string name="title_activity_search_list" translatable="false">SearchList</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
@@ -30,17 +30,17 @@
     <string name="category_tech">TECHNOLOGY</string>
     <string name="portfolio_text">Sign up / Log in</string>
     <string name="portfolio_email">User Email</string>
-    <string name="drawer_open">Open Navigation</string>
-    <string name="drawer_close">Close Navigation</string>
-    <string name="title_activity_my_poll">MyPollActivity</string>
-    <string name="title_activity_create_poll">CreatePoll</string>
-    <string name="title_activity_tmp_new_poll">tmpNewPoll</string>
-    <string name="title_activity_signup">signupActivity</string>
+    <string name="drawer_open" translatable="false">Open Navigation</string>
+    <string name="drawer_close" translatable="false">Close Navigation</string>
+    <string name="title_activity_my_poll" translatable="false">MyPollActivity</string>
+    <string name="title_activity_create_poll" translatable="false">CreatePoll</string>
+    <string name="title_activity_tmp_new_poll" translatable="false">tmpNewPoll</string>
+    <string name="title_activity_signup" translatable="false">signupActivity</string>
 
-    <string name="title_activity_retrieve_profile">RetrieveProfileActivity</string>
+    <string name="title_activity_retrieve_profile" translatable="false">RetrieveProfileActivity</string>
     <string name="existing_user">EXISTING USER</string>
     <string name="new_user">NEW USER</string>
-    <string name="title_activity_upload_image">UploadImage</string>
+    <string name="title_activity_upload_image" translatable="false">UploadImage</string>
     <string name="or">OR</string>
     <string name="login_with_zilche">Log in with Zilche</string>
     <string name="login_with_facebook">Log in with Facebook</string>
@@ -51,7 +51,7 @@
     <string name="password_too_short">Password must contain at least 6 characters</string>
     <string name="invalid_email">Invalid email address</string>
     <string name="fl_name">Please enter your first and last name</string>
-    <string name="title_activity_full_screen_image">FullScreenImage</string>
+    <string name="title_activity_full_screen_image" translatable="false">FullScreenImage</string>
     <string name="facebook_app_id">1086189198071072</string>
     <string name="reset_password">Reset Password</string>
     <string name="reset_pw_text">The instructions to reset your password will be sent to this email.</string>
@@ -60,8 +60,8 @@
     <string name="connection_err">Error connecting to server. Please try again later.</string>
     <string name="no_email">Email address is not registered.</string>
     <string name="email_sent">Instructions to reset your password has been sent to your email address.</string>
-    <string name="title_activity_category">CategoryActivity</string>
-    <string name="title_activity_achart_engine_pie_chart">AChartEnginePieChartActivity</string>
+    <string name="title_activity_category" translatable="false">CategoryActivity</string>
+    <string name="title_activity_achart_engine_pie_chart" translatable="false">AChartEnginePieChartActivity</string>
     <string name="category_all_2">All Posts</string>
     <string name="category_auto_2">Automobile</string>
     <string name="category_education_2">Education</string>
@@ -77,19 +77,19 @@
     <string name="category_sports_2">Sports</string>
     <string name="category_travel_2">Travel</string>
     <string name="category_tech_2">Technology</string>
-    <string name="title_activity_poll_view">PollViewActivity</string>
-    <string name="title_activity_pie_chart">PieChart</string>
-    <string name="title_activity_bar_chart">BarChart</string>
-    <string name="title_activity_create_survey">CreateSurvey</string>
-    <string name="title_activity_popular">PopularActivity</string>
+    <string name="title_activity_poll_view" translatable="false">PollViewActivity</string>
+    <string name="title_activity_pie_chart" translatable="false">PieChart</string>
+    <string name="title_activity_bar_chart" translatable="false">BarChart</string>
+    <string name="title_activity_create_survey" translatable="false">CreateSurvey</string>
+    <string name="title_activity_popular" translatable="false">PopularActivity</string>
     <string name="other">Other</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_add_survey_options">AddSurveyOptions</string>
-    <string name="title_activity_create_poll_activity2">CreatePollActivity2</string>
-    <string name="title_activity_crop_image">CropImageActivity</string>
-    <string name="title_activity_my_profile">MyProfileActivity</string>
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
-    <string name="title_activity_create_comment">CreateCommentActivity</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_add_survey_options" translatable="false">AddSurveyOptions</string>
+    <string name="title_activity_create_poll_activity2" translatable="false">CreatePollActivity2</string>
+    <string name="title_activity_crop_image" translatable="false">CropImageActivity</string>
+    <string name="title_activity_my_profile" translatable="false">MyProfileActivity</string>
+    <string name="title_activity_splash_screen" translatable="false">SplashScreenActivity</string>
+    <string name="title_activity_create_comment" translatable="false">CreateCommentActivity</string>
     <string name="connection_failed">Connection failed</string>
     <string name="anonymous">Anonymous</string>
     <string name="comment_err">Comment should not be empty</string>
@@ -135,10 +135,10 @@
     <string name="sort_date">Sort by Date</string>
     <string name="invalid_credentials">Invalid username or password</string>
     <string name="email_taken">Email address is already taken</string>
-    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="title_activity_edit_profile" translatable="false">EditProfileActivity</string>
     <string name="logging_in">Logging in to your account</string>
     <string name="signing_up">Signing up</string>
-    <string name="title_activity_favourite">FavouriteActivity</string>
+    <string name="title_activity_favourite" translatable="false">FavouriteActivity</string>
     <string name="image_load_err">Something went wrong. Please select your image from the gallery.</string>
     <string name="unspecified">unspecified</string>
     <string name="invalid_date">Invalid birth date</string>
@@ -165,6 +165,6 @@
     <string name="saving">Saving</string>
     <string name="edit_intro">Edit intro</string>
     <string name="input_name">Please enter your name</string>
-    <string name="title_activity_reply_comment">ReplyCommentActivity</string>
+    <string name="title_activity_reply_comment" translatable="false">ReplyCommentActivity</string>
     <string name="reply">Reply</string>
 </resources>
