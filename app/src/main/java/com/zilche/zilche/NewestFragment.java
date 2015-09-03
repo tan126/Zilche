@@ -300,7 +300,11 @@ public class NewestFragment extends Fragment{
                         pollList.add(tmp);
                         rv.getAdapter().notifyDataSetChanged();
                     } else {
-                        reload_bg_full.setVisibility(View.VISIBLE);
+                        if (skip == 0 && pollList.size() != 0) {
+
+                        } else {
+                            reload_bg_full.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
                 if (spinner.getVisibility() == View.VISIBLE) {
