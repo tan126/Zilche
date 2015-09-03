@@ -136,4 +136,5 @@
     <string name="edit_intro">编辑简介</string>
     <string name="input_name">输入名字</string>
     <string name="reply">回复</string>
+    <string name="set_email">输入邮箱</string>
 </resources>

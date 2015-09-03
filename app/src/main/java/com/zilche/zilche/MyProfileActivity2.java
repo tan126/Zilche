@@ -221,13 +221,15 @@ public class MyProfileActivity2 extends FragmentActivity {
 
         public void update() {
             ParseUser u = ParseUser.getCurrentUser();
-            if (u.getEmail() == null) {
-                if (u.getString("email_str") != null) {
-                    email.setText(u.getString("email_str"));
+            //if (u.getEmail() == null) {
+                if (u.getString("email_str_p") != null) {
+                    email.setText(u.getString("email_str_p"));
+                } else {
+                    email.setText(getString(R.string.unspecified));
                 }
-            } else {
-                email.setText(u.getEmail());
-            }
+            //} else {
+             //   email.setText(u.getEmail());
+            //}
             user.setText(u.getString("name"));
             if (u.getString("message") != null) {
                 intro.setText(u.getString("message"));

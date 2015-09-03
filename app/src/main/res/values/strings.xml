@@ -167,4 +167,5 @@
     <string name="input_name">Please enter your name</string>
     <string name="title_activity_reply_comment" translatable="false">ReplyCommentActivity</string>
     <string name="reply">Reply</string>
+    <string name="set_email">Set email</string>
 </resources>

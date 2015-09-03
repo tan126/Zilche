@@ -51,6 +51,7 @@ public class EditProfileActivity extends ActionBarActivity {
     private TextView country;
     private android.support.design.widget.FloatingActionButton fab;
     private Date bdate = null;
+    private String init_email = null;
     private String init_intro = null;
     private String init_name = null;
     private String init_gender = null;
@@ -106,12 +107,15 @@ public class EditProfileActivity extends ActionBarActivity {
         });
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         ParseUser u = ParseUser.getCurrentUser();
-        if (u.getEmail() == null) {
-            if (u.getString("email_str") != null)
-                email.setText(u.getString("email_str"));
+        //if (u.getEmail() == null) {
+        if (u.getString("email_str_p") != null) {
+            email.setText(u.getString("email_str_p"));
         } else {
-            email.setText(u.getEmail());
+            email.setText(getString(R.string.unspecified));
         }
+        //} else {
+         //   email.setText(u.getEmail());
+       // }
         user.setText(u.getString("name"));
         if (u.getString("message") != null) {
             intro.setText(u.getString("message"));
@@ -211,6 +215,9 @@ public class EditProfileActivity extends ActionBarActivity {
                 if (init_gender != null) {
                     user.put("gender", init_gender);
                 }
+                if (init_email != null) {
+                    user.put("email_str_p", init_email);
+                }
                 user.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -246,6 +253,9 @@ public class EditProfileActivity extends ActionBarActivity {
                             }
                             if (init_gender != null) {
                                 user.put("gender", init_gender);
+                            }
+                            if (init_email != null) {
+                                user.put("email_str_p", init_email);
                             }
                             user.put("full_image", f);
                             user.saveInBackground(new SaveCallback() {
@@ -284,6 +294,9 @@ public class EditProfileActivity extends ActionBarActivity {
             }
             if (init_gender != null) {
                 user.put("gender", init_gender);
+            }
+            if (init_email != null) {
+                user.put("email_str_p", init_email);
             }
             user.saveInBackground(new SaveCallback() {
                 @Override
@@ -534,6 +547,43 @@ public class EditProfileActivity extends ActionBarActivity {
         dialog = builder.create();
         dialog.show();
     }
+
+    public void editEmail(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.set_email));
+        final EditText et = (EditText) View.inflate(this, R.layout.edittext_material2, null);
+        et.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        if (ParseUser.getCurrentUser().getString("email_str_p") != null) {
+            et.setText(email.getText().toString());
+            et.setSelection(email.getText().toString().length());
+        }
+        int pad = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15,
+                getResources().getDisplayMetrics());
+        builder.setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String text = et.getText().toString().trim();
+                if (!Util.isEmailValid(text)) {
+                    Toast.makeText(EditProfileActivity.this, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                } else {
+                    email.setText(text);
+                    init_email = text;
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog ad = builder.create();
+        ad.setView(et, pad, pad, pad, pad);
+        ad.show();
+    }
+
 
     public void takeImage(View v) {
         final CharSequence[] items = {getString(R.string.take_photo), getString(R.string.gallery), getString(R.string.cancel)};
