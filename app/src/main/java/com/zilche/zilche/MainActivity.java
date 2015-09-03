@@ -144,12 +144,12 @@ public class MainActivity extends AppCompatActivity {
             Integer imgID[] = {R.drawable.dashgrey, R.drawable.assesgrey, R.drawable.persongrey,
                     R.drawable.favgrey, R.drawable.powergrey};
 
+            View header = getLayoutInflater().inflate(R.layout.nav_header, null, false);
+            list.addHeaderView(header);
             CustomListAdapter myadapter=new CustomListAdapter(this, menu, imgID, SELECTED_POSITION);
             list.setAdapter(myadapter);
             list.setSelection(0);
 
-            View header = getLayoutInflater().inflate(R.layout.nav_header, null, false);
-            list.addHeaderView(header);
             name = (TextView) findViewById(R.id.name);
             TextView email = (TextView) findViewById(R.id.email);
             name_ori = currentUser.getString("name");
@@ -176,11 +176,11 @@ public class MainActivity extends AppCompatActivity {
                     R.drawable.favgrey};
 
             CustomListAdapter myadapter=new CustomListAdapter(this, menu, imgID, SELECTED_POSITION);
+            View header = getLayoutInflater().inflate(R.layout.nav_header_not_login, null, false);
+            list.addHeaderView(header);
             list.setAdapter(myadapter);
             list.setSelection(0);
 
-            View header = getLayoutInflater().inflate(R.layout.nav_header_not_login, null, false);
-            list.addHeaderView(header);
             findViewById(R.id.full_lay).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
