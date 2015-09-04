@@ -29,7 +29,7 @@ import com.parse.SaveCallback;
 
 import java.util.prefs.BackingStoreException;
 
-
+// todo: dont save user image into database anymore
 public class CreateCommentActivity extends ActionBarActivity {
 
     private SlidingPaneLayout spl;

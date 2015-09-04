@@ -143,6 +143,8 @@ public class Util {
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 
+
+    // todo: load image from parse user instead of comment parseobject
     public static Comment parseComment(ParseObject po) {
         Date d = po.getCreatedAt();
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");

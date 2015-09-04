@@ -52,6 +52,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+
+// todo load user profile when loading comments
 public class PollViewActivity extends ActionBarActivity {
 
     private GridItemView imageView;

@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-
+// todo: load user profile when loading comments, dont save user image anymore
 public class ReplyCommentActivity extends ActionBarActivity {
 
     private String replyTo;
