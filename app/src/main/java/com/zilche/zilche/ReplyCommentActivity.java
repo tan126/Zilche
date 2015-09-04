@@ -368,8 +368,6 @@ public class ReplyCommentActivity extends ActionBarActivity {
                             ids.add(list.get(i).getString("author_id"));
                         }
                     }
-                    System.out.println(ids.size());
-                    System.out.println(ids);
                     if (list.size() != 0) {
                         ParseQuery<ParseUser> q = ParseUser.getQuery();
                         q.whereContainedIn("objectId", ids);
@@ -377,7 +375,6 @@ public class ReplyCommentActivity extends ActionBarActivity {
                             @Override
                             public void done(List<ParseUser> list2, ParseException e) {
                                 if (e == null) {
-                                    System.out.println(list2.size());
                                     for (ParseUser u_iter : list2) {
                                         if (!profile.containsKey(u_iter.getObjectId())) {
                                             profile.put(u_iter.getObjectId(), u_iter);
