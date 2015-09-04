@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +24,6 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// todo : show date when days is more than 30
 
 public class Util {
 
@@ -144,17 +144,24 @@ public class Util {
     }
 
 
-    // todo: load image from parse user instead of comment parseobject
-    public static Comment parseComment(ParseObject po) {
+    public static Comment parseComment(ParseObject po, ParseUser user) {
         Date d = po.getCreatedAt();
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
         String date = df.format(d);
-        Comment c = new Comment(po.getString("author"), po.getString("comment"), date);
+        String author = null;
+        if (user != null) {
+            author = user.getString("name");
+        } else {
+            author = po.getString("author");
+        }
+        Comment c = new Comment(author, po.getString("comment"), date);
         c.setOp(po.getInt("op"));
         c.setMod(po.getInt("mod"));
-        if (po.getBytes("image") != null) {
-            c.setHasImage(true);
-            c.setImage(po.getBytes("image"));
+        if (user != null) {
+            if (user.getBytes("image") != null) {
+                c.setHasImage(true);
+                c.setImage(user.getBytes("image"));
+            }
         }
         c.setEmail(po.getString("email"));
         c.setAuthor_id(po.getString("author_id"));

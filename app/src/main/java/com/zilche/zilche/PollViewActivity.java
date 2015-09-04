@@ -53,9 +53,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-// todo load user profile when loading comments
 public class PollViewActivity extends ActionBarActivity {
 
+    private HashMap<String, ParseUser> comments_profile;
     private GridItemView imageView;
     private TextView question;
     private TextView author;
@@ -115,6 +115,7 @@ public class PollViewActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listviews);
+        comments_profile = new HashMap<>();
         comments = (ListView) findViewById(R.id.comments);
         final View header = getLayoutInflater().inflate(R.layout.activity_poll_view, null, false);
         comments.addHeaderView(header);
@@ -139,7 +140,6 @@ public class PollViewActivity extends ActionBarActivity {
 
         comments_list = new LinkedList<>();
         comments.setAdapter(new ListAdapter(comments_list));
-        //comments.setSelector(android.R.color.transparent);
         comments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -588,25 +588,71 @@ public class PollViewActivity extends ActionBarActivity {
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
+            public void done(final List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    comments_list.removeLast();
-                    for (ParseObject o : list) {
-                        Comment c = Util.parseComment(o);
-                        comments_list.add(c);
+                    LinkedList<String> user_id = new LinkedList<String>();
+                    for (int i = 0; i < list.size(); i++) {
+                        if (comments_profile.containsKey(list.get(i).getString("author_id")) == false) {
+                            user_id.add(list.get(i).getString("author_id"));
+                        }
                     }
-                    if (list.size() != 0) {
-                        lastCreatedComment = list.get(list.size() - 1).getCreatedAt();
+                    if (user_id.size() != 0) {
+                        ParseQuery<ParseUser> query = ParseUser.getQuery();
+                        query.whereContainedIn("objectId", user_id);
+                        query.findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> list2, ParseException e) {
+                                if (e == null) {
+                                    for (int i = 0; i < list2.size(); i++) {
+                                        if (!comments_profile.containsKey(list2.get(i).getObjectId())) {
+                                            comments_profile.put(list2.get(i).getObjectId(), list2.get(i));
+                                        }
+                                    }
+                                    comments_list.removeLast();
+                                    for (ParseObject o : list) {
+                                        Comment c = Util.parseComment(o, comments_profile.get(o.getString("author_id")));
+                                        comments_list.add(c);
+                                    }
+                                    if (list.size() != 0) {
+                                        lastCreatedComment = list.get(list.size() - 1).getCreatedAt();
+                                    }
+                                    comment_total += list.size();
+                                    if (list.size() < 50) {
+                                        complete = true;
+                                    }
+                                    HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
+                                    ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
+                                    la.notifyDataSetChanged();
+                                    comment_skip++;
+                                    isLoading = false;
+                                } else {
+                                    comments_list.removeLast();
+                                    comments_list.add("reload");
+                                    HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
+                                    ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
+                                    la.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    } else {
+                        comments_list.removeLast();
+                        for (ParseObject o : list) {
+                            Comment c = Util.parseComment(o, comments_profile.get(o.getString("author_id")));
+                            comments_list.add(c);
+                        }
+                        if (list.size() != 0) {
+                            lastCreatedComment = list.get(list.size() - 1).getCreatedAt();
+                        }
+                        comment_total += list.size();
+                        if (list.size() < 50) {
+                            complete = true;
+                        }
+                        HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
+                        ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
+                        la.notifyDataSetChanged();
+                        comment_skip++;
+                        isLoading = false;
                     }
-                    comment_total += list.size();
-                    if (list.size() < 50) {
-                        complete = true;
-                    }
-                    HeaderViewListAdapter ad = (HeaderViewListAdapter) (comments.getAdapter());
-                    ListAdapter la = (ListAdapter) ad.getWrappedAdapter();
-                    la.notifyDataSetChanged();
-                    comment_skip++;
-                    isLoading = false;
                 } else {
                     comments_list.removeLast();
                     comments_list.add("reload");

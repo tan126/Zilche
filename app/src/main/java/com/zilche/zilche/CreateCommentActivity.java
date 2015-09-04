@@ -2,14 +2,10 @@ package com.zilche.zilche;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -27,9 +23,6 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.prefs.BackingStoreException;
-
-// todo: dont save user image into database anymore
 public class CreateCommentActivity extends ActionBarActivity {
 
     private SlidingPaneLayout spl;
@@ -130,9 +123,9 @@ public class CreateCommentActivity extends ActionBarActivity {
                                 if (e == null) {
                                     final ParseObject comment_obj = new ParseObject("Comment");
                                     comment_obj.put("pollId", pollId);
-                                    if (ParseUser.getCurrentUser().getBytes("image") != null) {
-                                        comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
-                                    }
+                                   // if (ParseUser.getCurrentUser().getBytes("image") != null) {
+                                    //    comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
+                                   // }
                                     comment_obj.put("author_id", ParseUser.getCurrentUser().getObjectId());
                                     if (ParseUser.getCurrentUser().getEmail() == null) {
                                         if (ParseUser.getCurrentUser().getString("email_str") != null) {
@@ -187,9 +180,9 @@ public class CreateCommentActivity extends ActionBarActivity {
                     } else {
                         final ParseObject comment_obj = new ParseObject("Comment");
                         comment_obj.put("pollId", pollId);
-                        if (ParseUser.getCurrentUser().getBytes("image") != null) {
-                            comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
-                        }
+                       // if (ParseUser.getCurrentUser().getBytes("image") != null) {
+                        //    comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
+                       // }
                         comment_obj.put("author_id", ParseUser.getCurrentUser().getObjectId());
                         if (ParseUser.getCurrentUser().getEmail() == null) {
                             if (ParseUser.getCurrentUser().getString("email_str") != null) {

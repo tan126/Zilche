@@ -38,12 +38,13 @@ import com.parse.SaveCallback;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-// todo: load user profile when loading comments, dont save user image anymore
 public class ReplyCommentActivity extends ActionBarActivity {
 
+    private HashMap<String, ParseUser> profile;
     private String replyTo;
     private boolean first = true;
     private boolean loading = false;
@@ -81,6 +82,7 @@ public class ReplyCommentActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply_comment);
+        profile = new HashMap<>();
         content = (LinearLayout) findViewById(R.id.content);
         reload = (LinearLayout) findViewById(R.id.reload_bg_full);
         progress = (ProgressBar) findViewById(R.id.progress_bar);
@@ -230,9 +232,9 @@ public class ReplyCommentActivity extends ActionBarActivity {
                                     final ParseObject comment_obj = new ParseObject("Comment");
                                     comment_obj.put("pollId", pollId);
                                     comment_obj.put("replies", replies);
-                                    if (ParseUser.getCurrentUser().getBytes("image") != null) {
-                                        comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
-                                    }
+                                 //   if (ParseUser.getCurrentUser().getBytes("image") != null) {
+                                  //      comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
+                                  //  }
                                     comment_obj.put("author_id", ParseUser.getCurrentUser().getObjectId());
                                     if (ParseUser.getCurrentUser().getEmail() == null) {
                                         if (ParseUser.getCurrentUser().getString("email_str") != null) {
@@ -288,9 +290,9 @@ public class ReplyCommentActivity extends ActionBarActivity {
                         final ParseObject comment_obj = new ParseObject("Comment");
                         comment_obj.put("pollId", pollId);
                         comment_obj.put("replies", replies);
-                        if (ParseUser.getCurrentUser().getBytes("image") != null) {
-                            comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
-                        }
+                       // if (ParseUser.getCurrentUser().getBytes("image") != null) {
+                        //    comment_obj.put("image", ParseUser.getCurrentUser().getBytes("image"));
+                        //}
                         comment_obj.put("author_id", ParseUser.getCurrentUser().getObjectId());
                         if (ParseUser.getCurrentUser().getEmail() == null) {
                             if (ParseUser.getCurrentUser().getString("email_str") != null) {
@@ -358,38 +360,106 @@ public class ReplyCommentActivity extends ActionBarActivity {
         query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
+            public void done(final List<ParseObject> list, ParseException e) {
                 if (e == null) {
-                    if (list.size() < 20) {
-                        complete = true;
-                    }
-                    comment_list.remove(0);
-                    if (first) {
-                        comment_list.clear();
-                        first = false;
-                    }
-                    int index = list.size() + listview.getFirstVisiblePosition();
-                    View v = listview.getChildAt(listview.getHeaderViewsCount());
-                    int top = (v == null) ? 0 : v.getTop();
+                    LinkedList<String> ids = new LinkedList<String>();
                     for (int i = 0; i < list.size(); i++) {
-                        comment_list.addFirst(Util.parseComment(list.get(i)));
+                        if (!profile.containsKey(list.get(i).getString("author_id"))) {
+                            ids.add(list.get(i).getString("author_id"));
+                        }
                     }
-                    ListAdapter la = (ListAdapter) listview.getAdapter();
-                    la.notifyDataSetChanged();
-                    if (comment_list.size() == list.size() && comment_list.size() != 0) {
-                        listview.setSelection(comment_list.size() - 1);
+                    System.out.println(ids.size());
+                    System.out.println(ids);
+                    if (list.size() != 0) {
+                        ParseQuery<ParseUser> q = ParseUser.getQuery();
+                        q.whereContainedIn("objectId", ids);
+                        q.findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> list2, ParseException e) {
+                                if (e == null) {
+                                    System.out.println(list2.size());
+                                    for (ParseUser u_iter : list2) {
+                                        if (!profile.containsKey(u_iter.getObjectId())) {
+                                            profile.put(u_iter.getObjectId(), u_iter);
+                                        }
+                                    }
+                                    if (list.size() < 20) {
+                                        complete = true;
+                                    }
+                                    comment_list.remove(0);
+                                    if (first) {
+                                        comment_list.clear();
+                                        first = false;
+                                    }
+                                    int index = list.size() + listview.getFirstVisiblePosition();
+                                    View v = listview.getChildAt(listview.getHeaderViewsCount());
+                                    int top = (v == null) ? 0 : v.getTop();
+                                    for (int i = 0; i < list.size(); i++) {
+                                        comment_list.addFirst(Util.parseComment(list.get(i), profile.get(list.get(i).getString("author_id"))));
+                                    }
+                                    ListAdapter la = (ListAdapter) listview.getAdapter();
+                                    la.notifyDataSetChanged();
+                                    if (comment_list.size() == list.size() && comment_list.size() != 0) {
+                                        listview.setSelection(comment_list.size() - 1);
+                                    } else {
+                                        listview.setSelectionFromTop(index, top);
+                                    }
+                                    loading = false;
+                                    if (content.getVisibility() == View.GONE) {
+                                        content.setVisibility(View.VISIBLE);
+                                    }
+                                    if (progress.getVisibility() == View.VISIBLE) {
+                                        progress.setVisibility(View.GONE);
+                                    }
+                                    if (reload.getVisibility() == View.VISIBLE) {
+                                        reload.setVisibility(View.GONE);
+                                    }
+                                } else {
+                                    comment_list.remove(0);
+                                    ListAdapter la = (ListAdapter) listview.getAdapter();
+                                    la.notifyDataSetChanged();
+                                    if (id != replies) {
+                                        comment_list.add(0, "reload");
+                                    } else {
+                                        content.setVisibility(View.GONE);
+                                        progress.setVisibility(View.GONE);
+                                        reload.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                        });
                     } else {
-                        listview.setSelectionFromTop(index, top);
-                    }
-                    loading = false;
-                    if (content.getVisibility() == View.GONE) {
-                        content.setVisibility(View.VISIBLE);
-                    }
-                    if (progress.getVisibility() == View.VISIBLE) {
-                        progress.setVisibility(View.GONE);
-                    }
-                    if (reload.getVisibility() == View.VISIBLE) {
-                        reload.setVisibility(View.GONE);
+                        if (list.size() < 20) {
+                            complete = true;
+                        }
+                        comment_list.remove(0);
+                        if (first) {
+                            comment_list.clear();
+                            first = false;
+                        }
+                        int index = list.size() + listview.getFirstVisiblePosition();
+                        View v = listview.getChildAt(listview.getHeaderViewsCount());
+                        int top = (v == null) ? 0 : v.getTop();
+                        for (int i = 0; i < list.size(); i++) {
+                            comment_list.addFirst(Util.parseComment(list.get(i), profile.get(list.get(i).getString("author_id"))));
+                        }
+                        ListAdapter la = (ListAdapter) listview.getAdapter();
+                        la.notifyDataSetChanged();
+                        if (comment_list.size() == list.size() && comment_list.size() != 0) {
+                            listview.setSelection(comment_list.size() - 1);
+                        } else {
+                            listview.setSelectionFromTop(index, top);
+                        }
+                        loading = false;
+                        if (content.getVisibility() == View.GONE) {
+                            content.setVisibility(View.VISIBLE);
+                        }
+                        if (progress.getVisibility() == View.VISIBLE) {
+                            progress.setVisibility(View.GONE);
+                        }
+                        if (reload.getVisibility() == View.VISIBLE) {
+                            reload.setVisibility(View.GONE);
+                        }
                     }
                 } else {
                     comment_list.remove(0);
