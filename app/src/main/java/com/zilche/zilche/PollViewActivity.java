@@ -143,6 +143,12 @@ public class PollViewActivity extends ActionBarActivity {
         comments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ParseAnonymousUtils.isLinked(ParseUser.getCurrentUser())) {
+                    Intent i = new Intent(PollViewActivity.this, SignUpActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                    return;
+                }
                 Intent i = new Intent(PollViewActivity.this, ReplyCommentActivity.class);
                 i.putExtra("category", category);
                 i.putExtra("isAnon", poll.getAnon());
